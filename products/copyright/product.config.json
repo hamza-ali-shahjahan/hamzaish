@@ -1,0 +1,26 @@
+{
+  "slug": "copyright",
+  "name": "CopyRight",
+  "one_liner": "AI-assisted copyright + IP management for creators and small studios.",
+  "created": "2025-04-21",
+  "stage": "mvp",
+  "status": "active",
+  "code_path": "../copyright-code",
+  "aliases": ["copyright app"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Onboarded 2026-05-19. Real codebase with .git + .env.local + .env.example present. Stage assessment pending — needs domain + naming check (CopyRight name could conflict)."
+}

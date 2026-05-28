@@ -1,0 +1,26 @@
+{
+  "slug": "ai-growth-engine",
+  "name": "AI Growth Engine",
+  "one_liner": "Systems-agent-driven growth engine: automated content, lead gen, SEO, and lifecycle workflows for SMB founders.",
+  "created": "2025-04-16",
+  "stage": "idea",
+  "status": "active",
+  "code_path": "../ai-growth-engine-code",
+  "aliases": ["systems agent", "growth-engine", "ai growth"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Onboarded 2026-05-19. Source folder is 'Systems Agent' — contains AI-GROWTH-ENGINE-SPEC.md (36KB spec) + ai-growth-engine subdir + dashboard.html/design-system.css. Read the spec before any new work. Could be Hamzaish's adjacent product (factory-for-others) once internal factory is proven — flag for kill-or-keep review."
+}

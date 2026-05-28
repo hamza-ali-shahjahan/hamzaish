@@ -1,0 +1,26 @@
+{
+  "slug": "ventbox",
+  "name": "Ventbox",
+  "one_liner": "An anonymous vent space — say what's on your mind, get sense of relief without identity exposure.",
+  "created": "2025-04-04",
+  "stage": "mvp",
+  "status": "active",
+  "code_path": "../ventbox-code",
+  "aliases": ["ventbox app", "vent box"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Onboarded into factory 2026-05-19. Codebase exists at ~/Claude/Ventbox App Clone/. Stage assessment pending — needs review of validation evidence + retention data."
+}

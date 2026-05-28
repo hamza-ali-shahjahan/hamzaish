@@ -1,0 +1,26 @@
+{
+  "slug": "tasfort",
+  "name": "TASFORT",
+  "one_liner": "TBD — needs one-liner refresh; placeholder onboarding.",
+  "created": "2025-04-07",
+  "stage": "idea",
+  "status": "active",
+  "code_path": "../tasfort-code",
+  "aliases": ["tas-fort"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Onboarded 2026-05-19. TASFORT folder exists at ~/Claude/TASFORT/ (with dashboard.html + discover.html + design-system.css) AND inside ~/Claude/$1F&S/TASFORT/. Reconcile which is canonical before further work. Stage and one-liner need user input."
+}

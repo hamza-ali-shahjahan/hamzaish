@@ -1,0 +1,49 @@
+{
+  "slug": "muakkil",
+  "name": "Muakkil (موكّل)",
+  "one_liner": "Mystical AI-agent platform — four spirit agents (Scribe, Seeker, Maker, Herald) collaborate on cross-agent charges through a ritual UX.",
+  "created": "2026-05-23",
+  "stage": "mvp",
+  "status": "active",
+  "sprint": "buildathon-launch",
+  "code_path": "../muakkil-code",
+  "aliases": ["muakkil app", "muakkal", "موكّل"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": "G-RYWKGMVS7K",
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": "https://muakkil.app",
+    "staging_url": null,
+    "lovable_project": null
+  },
+  "stack": {
+    "framework": "TanStack Start (file-based routing)",
+    "runtime": "React 19 + Vite 7 + Cloudflare Workers (wrangler)",
+    "package_manager": "Bun",
+    "ui": "Tailwind v4 + shadcn/ui + Motion",
+    "backend": "Supabase",
+    "host": "Lovable (preview) + Cloudflare Workers (prod)",
+    "ai": {
+      "orchestrator": "Claude Sonnet 4.6",
+      "cleanup": "Claude Haiku 4.5",
+      "transcription": "Groq whisper-large-v3",
+      "dispatch": "Resend (email) + Slack Web API"
+    }
+  },
+  "demo_pattern": "Research X and email/Slack me Y",
+  "quotas_v1": {
+    "transcription_min_per_day": 30,
+    "charges_per_day": 50,
+    "seeker_per_day": 50,
+    "herald_per_day": 20
+  },
+  "notes": "Onboarded into factory 2026-05-26. Lovable buildathon submission = beta launch. First 100 sign-ups become beta cohort. Landing page already shipped; agent backends are the buildathon work. Scribe is the demo centerpiece. See status.md for current state."
+}

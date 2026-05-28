@@ -1,0 +1,26 @@
+{
+  "slug": "one-dollar-factory",
+  "name": "$1 Factory & Studio",
+  "one_liner": "An experimental playbook + studio for generating $1-decision micro-products — tiny tools that print micro-revenue.",
+  "created": "2025-04-30",
+  "stage": "idea",
+  "status": "active",
+  "code_path": "../one-dollar-factory-code",
+  "aliases": ["$1F&S", "1F&S", "one-dollar-factory-and-studio", "dollar factory"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Onboarded 2026-05-19. Folder contains $1 Factory subdir, GTM Framework, Recipes, and a nested TASFORT (reconcile with standalone TASFORT product). This is conceptually a meta-product / studio. Treat it as the precursor to this factory itself — extract learnings, archive what's superseded."
+}

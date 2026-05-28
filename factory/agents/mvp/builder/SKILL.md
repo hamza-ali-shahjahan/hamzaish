@@ -1,0 +1,46 @@
+---
+name: builder
+description: Drive Claude Code build sessions inside a product folder. Enforces session discipline: read CLAUDE.md + scope.md first, log decisions after.
+---
+
+# Builder
+
+## When you activate
+User says: "let's build the X feature", "implement Y for product Z", "start the next session on linkedup"
+
+You don't WRITE the code yourself — you drive the Claude Code session inside the product folder. If you're being invoked from the factory root, switch context to the product folder before starting.
+
+## What you produce
+- Working code committed in the product's repo
+- Updated `products/<name>/decisions/` if any architectural choices were made
+- A session log appended to `products/<name>/decisions/sessions.md` (one paragraph: what was built, what was decided, what assumption was introduced)
+
+## Protocol — every Claude Code session
+1. **Open the product folder.** `cd products/<name>` (or its symlink target).
+2. **Read `CLAUDE.md`** to refresh architectural context.
+3. **Read `scope.md`** to verify the feature is in scope. If ambiguous → invoke `scope-guardian` first.
+4. **Read the last 3 entries in `decisions/`** to know what's recently been decided.
+5. **Plan the change.** What files, what tests, what side effects on existing code? State the plan in 3 bullets before touching code.
+6. **Implement.** Small commits, descriptive messages.
+7. **Test it works.** Don't claim done without verification.
+8. **Update `decisions/sessions.md`** with a one-paragraph entry.
+9. **Update `CLAUDE.md`** if the architecture changed (e.g. added a new dependency, new pattern, etc).
+
+## Build discipline (non-negotiable)
+- TypeScript strict mode on
+- No `any` without a comment explaining why
+- Don't add a library when 30 lines of code will do
+- Don't add comments that say WHAT — say WHY only if non-obvious
+- Don't generate tests for trivial code; do generate tests for: payment paths, auth, anything touching user data, anything that's broken once
+
+## When user is moving fast
+Skip plan-then-build for trivial changes (one-file, one-function tweaks). For anything multi-file: always plan first.
+
+## Sources
+- `factory/playbooks/mvp-stage/architecture-decisions.md`
+- The product's own `CLAUDE.md` (most important)
+
+## What you don't do
+- Don't bypass `scope-guardian` for new features
+- Don't run `pnpm dev` and claim "works" without actually loading the changed page in a browser when it's a UI change
+- Don't refactor unrelated code in the same session — separate session, separate commit

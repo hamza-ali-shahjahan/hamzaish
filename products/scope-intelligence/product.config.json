@@ -1,0 +1,41 @@
+{
+  "slug": "scope-intelligence",
+  "name": "Scope Intelligence",
+  "one_liner": "Scope enforcement SaaS for small agencies (2-15 people) — integration layer on ClickUp/Asana/Monday that defines scope, tracks it, catches creep, prices the overage, recovers revenue.",
+  "created": "2026-05-23",
+  "stage": "mvp",
+  "status": "active",
+  "sprint": "vertical-slice-build",
+  "code_path": "../scope-intelligence-code",
+  "aliases": ["scope intelligence", "scope-intel", "scope"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "stack": {
+    "framework": "Next.js 16.2 (App Router, Turbopack)",
+    "runtime": "React 19 + Tailwind CSS v4 + shadcn/ui (new-york, dark mode default)",
+    "package_manager": "npm",
+    "database": "PostgreSQL via Supabase + Drizzle ORM",
+    "auth": "Clerk (multi-tenant, org-based)",
+    "ai": "Vercel AI SDK + Anthropic (Sonnet 4.6 + Haiku 4.5)",
+    "payments": "Stripe",
+    "email": "Resend",
+    "rate_limiting": "Upstash Redis",
+    "host": "Vercel"
+  },
+  "integration_targets": ["ClickUp", "Asana", "Monday.com"],
+  "icp": "Small agencies, 2-15 people",
+  "notes": "Onboarded into factory 2026-05-26. Substantial codebase already exists. Full spec at docs/SPEC.md and docs/SPEC-README.md. 15 vertical slices. Stage = mvp because architecture + scope are locked but real user validation pending. Next.js 16 specifics: proxy.ts not middleware.ts, all params are Promise<>, server actions for auth'd mutations, Drizzle schema as source of truth."
+}

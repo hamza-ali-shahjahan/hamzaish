@@ -1,0 +1,39 @@
+{
+  "slug": "dnsdoctor",
+  "name": "DNSDoctor",
+  "one_liner": "Differentiated DNS toolkit — global propagation across 20+ resolvers, AI diagnosis of DNS/email issues, and a stack-aware setup wizard.",
+  "created": "2026-05-22",
+  "stage": "mvp",
+  "status": "active",
+  "code_path": "../dnsdoctor-code",
+  "aliases": ["dns doctor", "dnschecker", "dns checker"],
+  "model": {
+    "primary": "free public tool",
+    "future": "paid monitoring tier (not in v1)"
+  },
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "stack": {
+    "framework": "Next.js 15 (App Router)",
+    "runtime": "TypeScript + React",
+    "package_manager": "pnpm",
+    "ui": "Tailwind + shadcn/ui",
+    "cache_and_ratelimit": "Upstash Redis",
+    "ai": "Anthropic SDK (Claude Sonnet 4.6)",
+    "host": "Vercel"
+  },
+  "notes": "Onboarded into factory 2026-05-26. Folder name on disk is DNSChecker; product brand is DNSDoctor. Substantial codebase already exists with SPEC.md, decisions log, prompt docs. DNS-specific gotchas in product CLAUDE.md (server-only queries, 5s budget, sha256 cache keys, AI citation post-validation). v1 is free public tool; monetization deferred."
+}

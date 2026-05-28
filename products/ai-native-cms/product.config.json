@@ -1,0 +1,26 @@
+{
+  "slug": "ai-native-cms",
+  "name": "AI Native CMS",
+  "one_liner": "TBD — folder reserved 2026-05-28; Hamza adding details soon.",
+  "created": "2026-05-28",
+  "stage": "idea",
+  "status": "slot_reserved",
+  "code_path": "../ai-native-cms-code",
+  "aliases": ["ai-native cms", "ai native cms", "cms"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Onboarded into factory 2026-05-28 as a slot. Folder at ~/Claude/AI Native CMS/ exists but empty — Hamza populating later. Stage = idea. When details arrive: update one_liner, set initial scope, run /validate before any /scaffold."
+}

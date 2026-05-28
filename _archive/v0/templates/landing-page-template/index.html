@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="{{ONE_LINER}}" />
+  <meta property="og:title" content="{{PRODUCT_NAME}}" />
+  <meta property="og:description" content="{{ONE_LINER}}" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <!-- GSC verification: paste in head when verifying -->
+  <!-- <meta name="google-site-verification" content="{{GSC_CONTENT}}" /> -->
+  <title>{{PRODUCT_NAME}} — {{ONE_LINER}}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="/favicon.ico" />
+</head>
+<body class="bg-white text-gray-900">
+  <main class="max-w-4xl mx-auto px-4 py-24">
+    <section class="text-center space-y-6">
+      <h1 class="text-5xl font-bold tracking-tight">{{PRODUCT_NAME}}</h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">{{ONE_LINER}}</p>
+      <form id="waitlist-form" class="max-w-md mx-auto flex gap-2 mt-8">
+        <input type="email" required placeholder="you@work.com"
+               class="flex-1 rounded-md border px-4 py-3" />
+        <button type="submit"
+                class="rounded-md bg-black text-white px-6 py-3 font-medium hover:opacity-90">
+          Join waitlist
+        </button>
+      </form>
+      <p id="waitlist-status" class="text-sm text-gray-600 mt-2"></p>
+    </section>
+
+    <section class="mt-24 grid md:grid-cols-3 gap-8">
+      <div class="rounded-lg border p-6"><h3 class="font-semibold">{{VALUE_PROP_1}}</h3><p class="text-gray-600 mt-2">{{Body 1}}</p></div>
+      <div class="rounded-lg border p-6"><h3 class="font-semibold">{{VALUE_PROP_2}}</h3><p class="text-gray-600 mt-2">{{Body 2}}</p></div>
+      <div class="rounded-lg border p-6"><h3 class="font-semibold">{{VALUE_PROP_3}}</h3><p class="text-gray-600 mt-2">{{Body 3}}</p></div>
+    </section>
+
+    <footer class="mt-24 text-center text-sm text-gray-500">© <span id="year"></span> {{PRODUCT_NAME}}</footer>
+  </main>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="script.js"></script>
+</body>
+</html>

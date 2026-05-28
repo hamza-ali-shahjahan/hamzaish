@@ -1,0 +1,26 @@
+{
+  "slug": "linkedup",
+  "name": "LinkedUp",
+  "one_liner": "LinkedIn-native outreach + content tooling for B2B founders and operators.",
+  "created": "2025-04-16",
+  "stage": "mvp",
+  "status": "active",
+  "code_path": "../linkedup-code",
+  "aliases": ["linkedup.io", "linked-up"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Onboarded 2026-05-19. Real Next.js codebase with .git + .env.example present. Check current PR status + last deploy. Stage assessment pending."
+}

@@ -1,0 +1,44 @@
+# Hamzaish — root .gitignore
+# brain.db is gitignored at brain/.gitignore (it's derived state)
+
+# Reference repos — re-cloned by scripts/install-references.sh, not tracked
+references/gbrain/
+references/hermes-agent/
+references/openclaw/
+
+# Node / build artifacts
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+.wrangler/
+out/
+.cache/
+
+# Environment / secrets — never commit
+.env
+.env.*
+!.env.example
+*.env.local
+*.env.production
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Logs
+*.log
+logs/
+
+# Test output
+coverage/
+.nyc_output/
+
+# Bun
+bun-debug.log
+.bun-cache/

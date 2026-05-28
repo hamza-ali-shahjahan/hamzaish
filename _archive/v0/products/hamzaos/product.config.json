@@ -1,0 +1,26 @@
+{
+  "slug": "hamzaos",
+  "name": "HamzaOS",
+  "one_liner": "Hamza's personal operating system — persona, strategy, calendar, research, content as a unified knowledge + workflow substrate.",
+  "created": "2025-05-14",
+  "stage": "mvp",
+  "status": "active",
+  "code_path": "../hamzaos-code",
+  "aliases": ["hamza-os", "personal-os"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Onboarded 2026-05-19. Personal OS with numbered folders (00-persona, 01-strategy, 02-calendar, 03-research, 04-content). Internal-use, not currently a product to sell. Treat as durable input source for this factory's brain (`brain/persona.md` may want to draw from here)."
+}

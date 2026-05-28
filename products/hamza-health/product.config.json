@@ -1,0 +1,26 @@
+{
+  "slug": "hamza-health",
+  "name": "Hamza Health Tracker",
+  "one_liner": "Personal health intelligence — turns blood reports, wearable data, and habits into actionable coaching across physical/mental/financial/career/spiritual coaches.",
+  "created": "2025-04-26",
+  "stage": "mvp",
+  "status": "active",
+  "code_path": "../hamza-health-code",
+  "aliases": ["health tracker", "hamza health"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Onboarded 2026-05-19. Personal-use product with a sophisticated multi-coach agent system already wired (business / career / financial / mental / physical / relationships / spiritual coaches). Consider productizing — could be a vertical SaaS. Stage assessment pending."
+}
