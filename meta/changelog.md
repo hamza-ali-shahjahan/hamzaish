@@ -4,6 +4,53 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-05-28 — v1.2 · Portfolio expansion + global commands + git repo
+
+**What changed**
+- **2 new real products registered**:
+  - `scope-intelligence` — Next.js 16 + Drizzle + Clerk SaaS for small agencies (~/Claude/Scope Intelligence). 15 vertical slices spec'd, MVP stage.
+  - `dnsdoctor` — Next.js 15 DNS toolkit (~/Claude/DNSChecker; product brand "DNSDoctor"). Free public tool v1; monitoring paid tier deferred. MVP stage.
+- **1 reserved slot**: `ai-native-cms` (folder exists at ~/Claude/AI Native CMS but empty; Hamza populating later)
+- **Global slash commands** installed at `~/.claude/commands/` (symlinks → `factory/commands/`):
+  - `/work-on <slug>`, `/portfolio-pulse`, `/brain-ask`, `/brain-ingest`
+  - All four updated to use absolute Hamzaish paths so they fire from any cwd
+- **Per-product `.claude/HAMZAISH.md`** written into all 11 active product code folders via `scripts/sync-product-refs.ts` (idempotent generator; auto-skips slot_reserved). Includes Muakkil, Scope Intelligence, DNSDoctor, copyright, linkedup, hamza-health, hamzaos, ai-growth-engine (Systems Agent), tasfort, ventbox (App Clone), one-dollar-factory ($1F&S).
+- **Portfolio snapshot expanded** to 14 products (8 MVP, 3 active idea, 3 reserved slots)
+- **Brain re-ingested**: 131 documents (was 119)
+- **Git repo**: `git init` + `.gitignore` (excludes brain.db, references/{gbrain,hermes-agent,openclaw}/, node_modules, build outputs, env files) + MIT LICENSE + initial commit. Pushed to `github.com/hamza-ali-shahjahan/hamzaish` (private). Existing empty placeholder repo reused — old description preserved per user discretion.
+- **`scripts/install-references.sh`** — re-clone the three reference repos after fresh checkout
+- **`scripts/sync-product-refs.ts`** — regenerate per-product HAMZAISH.md files
+
+**Why**
+- User asked to apply Hamzaish to all real products and create a repo. Real products only (no overreach into "Agents and Skills" or "Best Practices & Learnings" folders that look like internal assets — flagged for user review).
+- Global commands needed for the "call hamzaish from any product workspace" use case
+- Git repo: private for now per my own recommendation; flip to public after Muakkil's buildathon retro produces the headline story
+
+**Inventory after this pass**
+- 14 registered products (11 active, 3 slot-reserved)
+- 4 global slash commands working from any directory
+- 11 per-product HAMZAISH.md reference files
+- 131 documents in the brain
+- Git repo at `github.com/hamza-ali-shahjahan/hamzaish` (private)
+- 387 files / 20,175 LOC in the initial commit
+- References (gbrain/hermes-agent/openclaw) intentionally NOT committed (474MB — re-clone via `scripts/install-references.sh`)
+
+**Recommended next steps for going public**
+- Phase B: Muakkil dogfood → real retro evidence
+- Genericize product configs into an `examples/` walkthrough (currently personal paths baked in)
+- Write `AGENTS.md`, `INSTALL_FOR_AGENTS.md`, `llms.txt`, `CONTRIBUTING.md` (gbrain pattern)
+- Strip absolute `/Users/hamza/Claude/` paths from `factory/commands/` — make them relative or env-driven
+- Add eval harness in `meta/evals/` with canonical cases per skill
+- Flip repo to public
+
+**What to revisit**
+- "Agents and Skills" folder at ~/Claude/Agents and Skills — contains an OKR Orchestrator system. Internal asset, sub-product, or product candidate? User decision.
+- "Best Practices & Learnings" folder at ~/Claude/Best Practices & Learnings — empty. Migrate to brain/knowledge/ or delete?
+- "HTL" folder at ~/Claude/HTL — empty, last modified May 14. Delete?
+- Description on the GitHub repo is the old poetic placeholder ("Agent looking for other agent-forms to befriend...") — update via `gh repo edit hamzaish --description "..."` when ready
+
+---
+
 ## 2026-05-26 — v1.1 · Memory layer + entry-point wiring
 
 **What changed**
