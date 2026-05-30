@@ -1,6 +1,6 @@
 # Portfolio Snapshot
 
-**Last refreshed**: 2026-05-28 · Live state of all products in the factory.
+**Last refreshed**: 2026-05-30 · Live state of all products in the factory.
 
 Refresh by running `/portfolio-pulse` — regenerates this file from each product's `product.config.json` + `status.md`.
 
@@ -29,7 +29,7 @@ Muakkil is the factory's first proof-of-value. Lovable buildathon submission = b
 | one-dollar-factory | idea | active | Experimental playbook for generating $1-decision micro-products. |
 | ai-growth-engine | idea | active | Systems-agent-driven growth engine for SMB founders. |
 | tasfort | idea | active | (placeholder — needs one-liner refresh) |
-| **ai-native-cms** | idea | slot_reserved | TBD — folder reserved 2026-05-28; details coming. |
+| **ai-native-cms** | mvp | active · validation | OSS CLI that migrates WordPress sites to clean Astro + MDX codebases — wedge for an AI-native CMS. Shipped to npm as `wp-to-astro@0.6.1`. |
 | formpad | idea | slot_reserved | (slot reserved — needs validation before scaffolding) |
 | calculatrs | idea | slot_reserved | (slot reserved — needs validation before scaffolding) |
 
@@ -39,11 +39,11 @@ Stages: **idea** (validation phase) · **mvp** (building) · **launch** (shippin
 
 ## Stage distribution
 
-- **MVP**: 8 products (muakkil, scope-intelligence, dnsdoctor, ventbox, linkedup, copyright, hamza-health, hamzaos) — building
+- **MVP**: 9 products (muakkil, scope-intelligence, dnsdoctor, ventbox, linkedup, copyright, hamza-health, hamzaos, ai-native-cms) — building OR (for ai-native-cms) shipped + in validation sprint
 - **Idea (active)**: 3 (one-dollar-factory, ai-growth-engine, tasfort) — validating
-- **Idea (slot_reserved)**: 3 (ai-native-cms, formpad, calculatrs) — awaiting validation/details
+- **Idea (slot_reserved)**: 2 (formpad, calculatrs) — awaiting validation/details
 
-**Discipline check**: 8 products in MVP simultaneously is *a lot* for a solo operator. The factory was designed for **focused parallelism, not maximum parallelism**. Likely action at next `/portfolio-pulse`: confirm which 1-2 of the 8 MVPs are this quarter's bets (Muakkil this weekend is locked; Scope Intelligence has the most depth of work after that); the others go to "background validation" mode (don't ship until they earn it).
+**Discipline check**: 9 products in MVP simultaneously is *a lot* for a solo operator. The factory was designed for **focused parallelism, not maximum parallelism**. Likely action at next `/portfolio-pulse`: confirm which 1-2 of the 9 MVPs are this quarter's bets (Muakkil this weekend is locked; Scope Intelligence has the most depth of work after that; ai-native-cms is in validation sprint — no further build until 5 WP-refugee conversations land); the others go to "background validation" mode (don't ship until they earn it).
 
 ---
 
@@ -62,7 +62,7 @@ Populated by `/portfolio-pulse` on each invocation.
 - **one-dollar-factory** → Validation conversations before any code.
 - **ai-growth-engine** → Validation conversations before any code.
 - **tasfort** → Refresh one-liner; classify intent.
-- **ai-native-cms** → Awaiting Hamza's brief — populate the one-liner.
+- **ai-native-cms** → Record the 90-second screencast (Docker WP → migration → Astro site rendering — env already up at localhost:8080 + localhost:4321). Then post in r/selfhosted offering 5 free migrations in exchange for feedback. NO further build until validation sprint lands real-user signal. See `products/ai-native-cms/status.md`.
 - **formpad** → Validate or release slot.
 - **calculatrs** → Validate or release slot.
 

@@ -1,12 +1,13 @@
 {
   "slug": "ai-native-cms",
   "name": "AI Native CMS",
-  "one_liner": "TBD — folder reserved 2026-05-28; Hamza adding details soon.",
+  "one_liner": "Open-source CLI that migrates WordPress sites to clean Astro + MDX codebases — the wedge for an AI-native CMS where content lives as files an AI agent can edit cleanly.",
   "created": "2026-05-28",
-  "stage": "idea",
-  "status": "slot_reserved",
+  "stage": "mvp",
+  "status": "active",
+  "sprint": "validation",
   "code_path": "../ai-native-cms-code",
-  "aliases": ["ai-native cms", "ai native cms", "cms"],
+  "aliases": ["wp-to-astro", "wp to astro", "wordpress to astro", "wp2astro"],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,
@@ -18,9 +19,29 @@
     "ahrefs_target": null
   },
   "links": {
-    "github": null,
+    "github": "https://github.com/hamza-ali-shahjahan/wp-to-astro-cli",
+    "npm": "https://www.npmjs.com/package/wp-to-astro",
     "prod_url": null,
-    "staging_url": null
+    "staging_url": null,
+    "lovable_project": null
   },
-  "notes": "Onboarded into factory 2026-05-28 as a slot. Folder at ~/Claude/AI Native CMS/ exists but empty — Hamza populating later. Stage = idea. When details arrive: update one_liner, set initial scope, run /validate before any /scaffold."
+  "stack": {
+    "framework": "Node CLI (commander)",
+    "runtime": "TypeScript on Node ≥20.11",
+    "package_manager": "pnpm",
+    "ui": "n/a (CLI)",
+    "backend": "n/a (CLI — emits Astro projects for downstream Cloudflare Pages / Vercel hosting)",
+    "host": "npm registry (wp-to-astro@0.6.1)",
+    "ai": {
+      "orchestrator": null,
+      "cleanup": null,
+      "transcription": null,
+      "dispatch": null
+    },
+    "dependencies": "fast-xml-parser, @wordpress/block-serialization-default-parser, zod, yaml, sharp, simple-git, vitest",
+    "license": "Apache-2.0",
+    "architecture": "source-adapter (WXR | REST) → versioned Zod IR → emitter (Astro + MDX)"
+  },
+  "demo_pattern": "User runs `npx wp-to-astro@latest migrate <wxr-or-url> --out <dir>` → gets a clean Astro repo with content as MDX files → opens in Claude Code or Cursor → vibe-codes edits across all posts at once.",
+  "notes": "OSS CLI shipped to npm v0.6.1 (2026-05-30) and GitHub public. 6 passes built end-to-end in 2 sessions: WXR adapter → block mapping → image pipeline → REST adapter → SEO metadata → redirects + verify. v0.6.0 had a `slug` reserved-field bug surfaced by real-world test against Docker WP; v0.6.1 patched. v0.7 punch list: MDX-compat sanitization (br, comments, stray <), --permalink flag for WXR, non-Latin slug fallback, verify --build flag. Now in validation phase per Hamzaish discipline — must do 5 WP-refugee conversations before further build."
 }
