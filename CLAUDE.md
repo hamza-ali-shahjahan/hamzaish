@@ -146,6 +146,8 @@ Slug: `muakkil` · Stage: MVP · Sprint: buildathon-launch (this weekend)
 5. **Never recommend a GitHub repo or external tool without verifying it exists and is healthy** (last commit < 12 months, > 100 stars, or you've personally verified).
 6. **Playbook files are short** (300–800 words). Depth lives in linked sources, not inline essays.
 7. **Default tech stack lives in `stack/`.** Deviate only with a written reason in the product's `decisions/`.
+8. **Before destructive edits, state the plan.** Whole-file rewrites, large deletions, or schema changes get a one-paragraph "what I'm about to do" in the response BEFORE the edit. Pair with `/checkpoint <message>` if the user wants a named pre-edit save-point.
+9. **Before creating any new repo, check filesystem + existing remotes for the name.** See `brain/anti-patterns/accidental-public-repo.md`. The cost of asking is zero; the cost of an accidentally-public repo is reversible-but-embarrassing.
 8. **Never modify another product's code from this product's session.** Cross-product changes require explicit invitation.
 9. **Muakkil's working directory is off-limits** unless the user explicitly invites edits there. Cd into it for context, don't modify.
 
@@ -178,6 +180,16 @@ The brain is **markdown source of truth** + a **SQLite FTS5 derived index**. Use
 
 See `brain/README.md` for full details.
 
+## Auto-commit safety net
+
+This project has a **Stop hook** in `.claude/settings.json` that fires `scripts/auto-commit.sh` at the end of every Claude Code turn. If the working tree is dirty (and no rebase/merge/cherry-pick is in progress), it auto-commits as `wip(auto): YYYY-MM-DDTHH:MM:SS`. Never pushes — push is explicit.
+
+- **Squash before sharing**: `git rebase -i origin/main` then mark all `wip(auto):` commits as fixup/squash into the preceding real commit
+- **`/checkpoint <message>`** for manual named save-points — use this for milestones; let auto-commit handle the in-between
+- **Recovery**: every `wip(auto):` commit is a recoverable snapshot. `git log --oneline | grep "wip(auto):"` then `git show <sha>` or `git reset --hard <sha>` (destructive — be sure).
+
+The script is bulletproof against rebase/merge state, empty trees, and missing identity; it fails soft and never blocks Claude's response.
+
 ## Versioning
 
-Hamzaish tracks its own versions in `meta/changelog.md`. Current: **v1.1** (working memory layer, `/work-on` + `/brain-ask` + `/brain-ingest` + `/portfolio-pulse` commands wired, MVP agent paths fixed, retro template, `.claude/` symlinked to `factory/`).
+Hamzaish tracks its own versions in `meta/changelog.md`. Current: **v1.3** (ai-native-cms registered as full mvp/validation product; cross-product playbooks `output-validation-for-codegen-tools.md` + `oss-publishing-checklist.md`; `accidental-public-repo` anti-pattern; first canonical retro at `meta/retros/2026-05-30-wp-to-astro-shipping.md`; auto-commit Stop hook + `/checkpoint` command).

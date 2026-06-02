@@ -4,6 +4,47 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-05-31 — v1.3 · ai-native-cms registered + cross-product playbooks + auto-commit safety
+
+**What changed**
+
+- **`ai-native-cms` upgraded from `slot_reserved` → `mvp · active · validation`** — full registration following the discipline: `product.config.json`, `README.md`, `status.md` (with north-star + activation + retention + false-positive shape), `scope.md` (what it does AND deliberately doesn't), `decisions/README.md` with 2 ADRs (validation-before-build, OSS-first-defer-hosted). The underlying product `wp-to-astro@0.6.1` is live on npm + public GitHub.
+- **`brain/learnings/2026-05-30.md`** filed with 3 cross-product learnings from the wp-to-astro session:
+  1. Output validation for code-gen tools (the `astro check` lying / 138 green tests + broken output case)
+  2. OSS publishing gotchas (GitHub email privacy, npm `bin` path normalization, 2FA-with-security-key, `pnpm publish` quirk, can't-republish-same-version, post-publish-smoke is mandatory)
+  3. Validate-before-build — discipline violation admitted in writing
+- **Two playbooks promoted** to `factory/playbooks/launch-stage/` so the next product whose output is code OR that ships to a registry inherits the rules:
+  - `output-validation-for-codegen-tools.md`
+  - `oss-publishing-checklist.md`
+- **`brain/anti-patterns/accidental-public-repo.md`** captures the structural rule from the `agent-skills` incident — check filesystem + existing remotes before creating any new repo of a name that already means something
+- **`meta/retros/2026-05-30-wp-to-astro-shipping.md`** — canonical sprint retro from the template. The discipline-violation pattern + the post-publish reality check are the load-bearing surprises.
+- **`scripts/sync-product-refs.ts` re-run** — `.claude/HAMZAISH.md` now installed in `~/Claude/AI Native CMS/` (was previously skipped while ai-native-cms was slot_reserved)
+- **Auto-commit safety on this machine**:
+  - `scripts/auto-commit.sh` — checks for rebase/merge/cherry-pick state, only commits if working tree is actually dirty, tags commits as `wip(auto): YYYY-MM-DDTHH:MM:SS`
+  - `.claude/settings.json` — Stop hook wires the script to fire at end of every Claude turn (max 1 commit per turn)
+  - `factory/commands/checkpoint.md` — manual `/checkpoint <message>` for named save points
+  - CLAUDE.md amended with a "before destructive edits" discipline note
+- **Brain re-ingested** — 136 → 145 documents (new playbooks, retro, anti-pattern, ai-native-cms files, this changelog entry)
+
+**Why**
+- The wp-to-astro session shipped a real OSS product (npm + GitHub + 138 tests + real-world smoke) but also surfaced 3 high-signal cross-product patterns that would be lost if they stayed in the daily learnings file. Playbooks are where the factory makes them inheritable.
+- The `agent-skills` accidental-public-repo near-miss is structural, not a one-off — it belongs in anti-patterns where future Hamzaish reads it before creating any new repo.
+- The user has been moving between machines and rewriting history; auto-commit before every destructive edit (via Stop hook) means there's always a recoverable snapshot. Tier 1 is automatic; `/checkpoint` is manual for named milestones.
+
+**What worked**
+- The factory ate its own dog food. The discipline-violation rule fired AGAINST the build itself. ai-native-cms is now in validation sprint instead of "another half-built MVP." That's the rule paying its rent.
+- Real-world smoke testing twice (canonical test data + Docker live WP) caught the `slug` reserved-field bug that 138 unit tests missed. The playbook that came out of that — "run the output in a real consumer environment, not just lint it" — is the most important post-Phase-A learning.
+
+**What didn't / friction**
+- Captured in retro + anti-pattern entries.
+
+**What to revisit**
+- Muakkil's buildathon — the `products/muakkil/decisions/` folder is empty and `status.md` was last touched May 26. The buildathon either got displaced by wp-to-astro, or it happened on the Muakkil side and the session log didn't sync back to the factory. Either way, that's the next question to resolve.
+- The `agent-skills` repo is private again but exists separately at `github.com/hamza-ali-shahjahan/agent-skills` — either fold its content into Hamzaish or keep it as a separate-but-private cross-project skills lib. Decide before next public push.
+- Auto-commit hook generates `wip(auto):` commits — squash before pushing (the changelog's own commits stay clean because we explicitly write a real message; auto-commits cover the in-between work).
+
+---
+
 ## 2026-05-28 — v1.2 · Portfolio expansion + global commands + git repo
 
 **What changed**
