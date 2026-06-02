@@ -181,16 +181,45 @@ The brain is **markdown source of truth** + a **SQLite FTS5 derived index**. Use
 
 See `brain/README.md` for full details.
 
-## Auto-commit safety net
+## Auto-commit + auto-push safety net (global on this machine)
 
-This project has a **Stop hook** in `.claude/settings.json` that fires `scripts/auto-commit.sh` at the end of every Claude Code turn. If the working tree is dirty (and no rebase/merge/cherry-pick is in progress), it auto-commits as `wip(auto): YYYY-MM-DDTHH:MM:SS`. Never pushes — push is explicit.
+Hamzaish owns the "core" auto-save pattern. Two scripts in `scripts/` are invoked **globally** from `~/.claude/settings.json` — so they fire for **every git repo Claude Code works in on this machine**, not just Hamzaish.
 
-- **Squash before sharing**: `git rebase -i origin/main` then mark all `wip(auto):` commits as fixup/squash into the preceding real commit
-- **`/checkpoint <message>`** for manual named save-points — use this for milestones; let auto-commit handle the in-between
-- **Recovery**: every `wip(auto):` commit is a recoverable snapshot. `git log --oneline | grep "wip(auto):"` then `git show <sha>` or `git reset --hard <sha>` (destructive — be sure).
+| Hook | Script | When | What |
+|---|---|---|---|
+| `Stop` | `scripts/auto-commit.sh` | End of every Claude turn | If working tree is dirty: `git add -A` → `wip(auto): YYYY-MM-DDTHH:MM:SS` commit → `git push --force-with-lease` (if upstream exists) |
+| `SessionStart` | `scripts/auto-pull-rebase.sh` | When Claude Code starts in a repo | `git pull --rebase` from upstream (skip if dirty / mid-rebase / no upstream) |
 
-The script is bulletproof against rebase/merge state, empty trees, and missing identity; it fails soft and never blocks Claude's response.
+Both fail-soft — they never block Claude. Network errors, no upstream, detached HEAD, mid-rebase — all skip cleanly.
+
+### Per-repo opt-out markers
+
+Place in any repo's root to disable behavior just for that repo:
+
+| Marker file | Effect |
+|---|---|
+| `.no-auto-commit` | Full opt-out (no commit, no push, no auto-pull). Recommended for repos where commits must be explicit (e.g., Muakkil — Lovable round-trip). |
+| `.no-auto-push` | Commit locally, but don't push. Good for sensitive repos where local snapshots are fine but remote pushes aren't ready. |
+| `.no-auto-pull` | Commit + push, but don't auto-pull on session start. Rare; for repos where you manage your own rebase strategy. |
+
+These markers should be `.gitignore`'d in the target repo so they stay operator-local discipline rather than committed instructions.
+
+### Cross-machine rule
+
+When switching machines, **first thing**: `cd ~/Claude/<repo> && git pull --rebase`. The SessionStart hook does this automatically. If you forget and start editing immediately, `--force-with-lease` will block your push at end of turn — which is the right failure mode (loud, recoverable via `git pull --rebase`) instead of the wrong one (silent overwrite of the other machine's work).
+
+### Manual save-points
+
+`/checkpoint <message>` for milestones with real messages. Use this between auto-commits when you want a named pin in the log. Auto-commits handle the in-between work.
+
+### Recovery
+
+- Every `wip(auto):` commit is a recoverable snapshot
+- `git log --oneline | grep "wip(auto):"` to list them
+- `git show <sha>` to inspect
+- `git reset --hard <sha>` to roll back (destructive — be sure)
+- For history-cleanup before sharing: `git rebase -i origin/main` then mark wip(auto) commits as fixup/squash into the preceding real commit
 
 ## Versioning
 
-Hamzaish tracks its own versions in `meta/changelog.md`. Current: **v1.3** (ai-native-cms registered as full mvp/validation product; cross-product playbooks `output-validation-for-codegen-tools.md` + `oss-publishing-checklist.md`; `accidental-public-repo` anti-pattern; first canonical retro at `meta/retros/2026-05-30-wp-to-astro-shipping.md`; auto-commit Stop hook + `/checkpoint` command).
+Hamzaish tracks its own versions in `meta/changelog.md`. Current: **v1.4** — auto-commit-push system upgraded to global (works in every git repo on this machine via `~/.claude/settings.json` hooks), SessionStart auto-pull-rebase added, opt-out markers (`.no-auto-commit` / `.no-auto-push` / `.no-auto-pull`), Muakkil opted out for Lovable round-trip discipline.

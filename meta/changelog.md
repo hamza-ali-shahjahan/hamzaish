@@ -4,6 +4,46 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-06-02 — v1.4 · Global auto-commit-push + SessionStart auto-pull + opt-out markers
+
+**What changed**
+
+- **`scripts/auto-commit.sh` generalized** — now works in any git repo (discovers cwd's repo via `git rev-parse --show-toplevel`), not Hamzaish-specific. Added `git push --force-with-lease` after commit (was commit-only before). All checks fail-soft.
+- **`scripts/auto-pull-rebase.sh` (new)** — SessionStart companion. When Claude Code opens in any repo with an upstream and a clean tree, pulls + rebases so cross-machine workflows stay sane.
+- **Global hooks installed** in `~/.claude/settings.json` (preserves existing `theme` + `attribution`):
+  - Stop hook → `auto-commit.sh`
+  - SessionStart hook → `auto-pull-rebase.sh`
+- **Hamzaish-specific Stop hook removed** — `Hamzaish/.claude/settings.json` deleted. Global hook now handles Hamzaish too (and every other repo). No more duplicate firing.
+- **Three opt-out markers** documented:
+  - `.no-auto-commit` — full opt-out (no commit / no push / no auto-pull)
+  - `.no-auto-push` — local commits OK, no push
+  - `.no-auto-pull` — commit + push, but skip auto-pull on session start
+- **Muakkil opted out** via `.no-auto-commit` marker — Lovable round-trip discipline preserved. Many untracked pending-decision files (`CLAUDE.md`, `.claude/`, `docs/`) protected from `git add -A` clobber. Marker pattern `.no-auto-*` added to Muakkil's `.gitignore` so it stays operator-local.
+- **CLAUDE.md updated**: rewrote the "Auto-commit safety net" section to reflect global behavior, added cross-machine rule (SessionStart handles it now, but document the failure mode for awareness), version bumped to v1.4.
+
+**Why**
+
+User asked: "increase the frequency with which you commit to GitHub" + "add it to hamzaish as a core and also general for every session/product we build on this machine."
+
+Two things to do:
+1. **Push every commit, not just save locally.** Previous v1.3 system auto-committed but never pushed. Switching machines mid-session = lost work. v1.4 pushes every wip commit immediately. `--force-with-lease` for amend safety.
+2. **Make it global.** Previously only Hamzaish had the hook. Now every git repo on this machine has the same safety net, with per-repo opt-out for the edge cases (Lovable, etc.).
+
+**Design choices**
+
+- **`--force-with-lease`** over `--force`: safe push that fails loudly if remote has advanced. Right failure mode.
+- **Opt-out by marker file** instead of allowlist: lowest friction. New repos get safety by default; the few exceptions document themselves.
+- **Hamzaish owns the scripts** (canonical home in `scripts/`), global settings only points to them. So updates to the script logic are version-controlled in this repo, picked up automatically by every other Claude Code session.
+- **Muakkil = `.no-auto-commit`** (full opt-out), not `.no-auto-push`: because Muakkil has untracked pending-decision files. `git add -A` would commit them. Full opt-out preserves the user's explicit-commit discipline there.
+
+**What to revisit**
+
+- After ~1 week of usage: are `wip(auto)` commits actually getting squashed before pushes to public branches? If not, formalize a `/squash-wip` skill that runs `git rebase -i` and auto-marks all wip(auto) commits as fixups.
+- Other Lovable-style projects: do any other registered products have similar bidirectional-sync constraints? Audit on next `/portfolio-pulse`.
+- SessionStart hook on shared machines: if multiple users ever share this machine, the `git pull --rebase` might surface their commits unexpectedly. Single-user assumption is fine for now.
+
+---
+
 ## 2026-05-31 — v1.3 · ai-native-cms registered + cross-product playbooks + auto-commit safety
 
 **What changed**
