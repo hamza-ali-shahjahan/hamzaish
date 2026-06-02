@@ -146,10 +146,10 @@ Slug: `muakkil` · Stage: MVP · Sprint: buildathon-launch (this weekend)
 5. **Never recommend a GitHub repo or external tool without verifying it exists and is healthy** (last commit < 12 months, > 100 stars, or you've personally verified).
 6. **Playbook files are short** (300–800 words). Depth lives in linked sources, not inline essays.
 7. **Default tech stack lives in `stack/`.** Deviate only with a written reason in the product's `decisions/`.
-8. **Before destructive edits, state the plan.** Whole-file rewrites, large deletions, or schema changes get a one-paragraph "what I'm about to do" in the response BEFORE the edit. Pair with `/checkpoint <message>` if the user wants a named pre-edit save-point.
-9. **Before creating any new repo, check filesystem + existing remotes for the name.** See `brain/anti-patterns/accidental-public-repo.md`. The cost of asking is zero; the cost of an accidentally-public repo is reversible-but-embarrassing.
 8. **Never modify another product's code from this product's session.** Cross-product changes require explicit invitation.
 9. **Muakkil's working directory is off-limits** unless the user explicitly invites edits there. Cd into it for context, don't modify.
+10. **Before destructive edits, state the plan.** Whole-file rewrites, large deletions, or schema changes get a one-paragraph "what I'm about to do" in the response BEFORE the edit. Pair with `/checkpoint <message>` if the user wants a named pre-edit save-point.
+11. **Before creating any new repo, check filesystem + existing remotes for the name.** See `brain/anti-patterns/accidental-public-repo.md`. The cost of asking is zero; the cost of an accidentally-public repo is reversible-but-embarrassing.
 
 ## When the user wants speed
 
@@ -170,7 +170,8 @@ Permanent routing rule → add it here. Framework worth keeping → add to `fact
 | `/portfolio-pulse [hours]` | All-products snapshot — table, top 3 priorities, on-fire, don't-touch. Tunes to available hours. |
 | `/brain-ask "<query>"` | Search the brain — learnings, decisions, playbooks, product docs. Returns ranked citations. Supports `--product <slug>`, `--source <path>`. |
 | `/brain-ingest` | Refresh the brain's SQLite FTS5 index. Idempotent. Run after writes. |
-| `/hamzaish` (global alias of `/full-cycle`) | Run setup→spec→plan→test→build→review→ship with approval gates. |
+| `/hamzaish` | **Momentum router.** Default is *just build* (→ `/full-cycle` / `/auto`); strategy rails (scoring, niche, pricing, GTM) and stage-resume are opt-in side doors, never a toll. Skip available at every step. See `factory/commands/hamzaish.md` + `docs/the-momentum-router.md`. |
+| `/checkpoint <message>` | Manual named commit save-point. Use for milestones; auto-commit handles in-between work. |
 
 These live at `factory/commands/*.md` (canonical home); `.claude/commands/` symlinks there so Claude Code auto-discovers them.
 
