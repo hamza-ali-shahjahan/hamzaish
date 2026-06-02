@@ -15,6 +15,17 @@ Built on Anthropic's *Founder's Playbook: Building an AI-Native Startup* and inf
 
 All three live in `references/` as study material. Hamzaish itself stays Claude-Code-native and markdown-first.
 
+## Why it's structured this way
+
+The design in one breath — full rationale in [`docs/`](docs/):
+
+- **Default is momentum.** `/hamzaish` builds first; strategy (scoring, niche, pricing, GTM) is an opt-in side door, never a toll. → [Philosophy](docs/philosophy.md)
+- **Products hold metadata + learnings, never code.** Your code — the moat — stays in its own private repo; locations are wired via a git-ignored `code-paths.local.json`. So this repo is safe to back up and open to collaborators **without exposing anyone's secret sauce.** → [Architecture](docs/architecture.md#the-publicprivate-boundary--protecting-your-secret-sauce)
+- **Every product has the same skeleton.** Consistency is a *contract* — predictable for collaborators, mappable to a hosted UI. → [Architecture](docs/architecture.md#the-per-product-skeleton)
+- **The factory compounds.** Each product's `learnings.md` is promoted into guardrails in the agents, so the next build doesn't repeat the last one's mistakes. → [Architecture](docs/architecture.md#the-learnings--guardrails-loop)
+
+📖 **New here? Start with [`docs/`](docs/)** — it explains the *why*, not just the folders.
+
 ## Architecture
 
 ```
@@ -43,21 +54,7 @@ In order:
 
 ## Products in the portfolio
 
-See `products/*/product.config.json` for each manifest.
-
-| Product | Stage | Source folder |
-|---|---|---|
-| **muakkil** | mvp · buildathon-launch | `~/Claude/Muakkil` |
-| ventbox | varies | `~/Claude/Ventbox App Clone/` |
-| linkedup | varies | `~/Claude/linkedup/` |
-| copyright | varies | `~/Claude/CopyRight/` |
-| tasfort | varies | `~/Claude/TASFORT/` |
-| one-dollar-factory | varies | `~/Claude/$1F&S/` |
-| hamza-health | varies | `~/Claude/Hamza Health Tracker/` |
-| hamzaos | varies | `~/Claude/HamzaOS/` |
-| ai-growth-engine | varies | `~/Claude/Systems Agent/` |
-| formpad | new slot | scaffolded here |
-| calculatrs | new slot | scaffolded here |
+The live index is generated — see [`products/_portfolio.md`](products/_portfolio.md), and each product's manifest at `products/<slug>/product.config.json`. Product **code is not in this repo** — only metadata + learnings (see the [public/private boundary](docs/architecture.md#the-publicprivate-boundary--protecting-your-secret-sauce)). Local code locations live in the git-ignored `code-paths.local.json`.
 
 ## Key slash commands (carried forward)
 
@@ -71,7 +68,7 @@ See `products/*/product.config.json` for each manifest.
 | `/product-pulse <product>` | One product's metrics + today's recommended action |
 | `/portfolio-pulse` | All products, current stage, today's action each |
 | `/kill-or-keep` | Quarterly portfolio review — double-down vs sunset |
-| `/hamzaish` (alias `/full-cycle`) | Run the full setup→spec→plan→test→build→review→ship orchestration with approval gates |
+| `/hamzaish` | **Momentum router** — default is *just build* (→ `/full-cycle` / `/auto`); strategy rails and stage-resume are opt-in, skip anytime. See [docs](docs/the-momentum-router.md). |
 
 ## The discipline (don't violate)
 
