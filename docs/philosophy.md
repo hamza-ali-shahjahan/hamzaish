@@ -48,3 +48,8 @@ inside the relevant `factory/` agent (and logged in `meta/changelog.md`). The
 promise is concrete: *the mistake we made last time is encoded into the tool that
 runs next time, so you don't repeat it.* See
 [Architecture → the learnings loop](./architecture.md#the-learnings--guardrails-loop).
+
+This is the **learning flywheel** in Andrej Karpathy's sense — eval-driven
+iteration where each cycle's output (what worked, what broke) becomes the next
+cycle's input. Hamzaish applies it to *building products*, not just training
+models: ship → capture the lesson → harden the tool → ship faster and safer.

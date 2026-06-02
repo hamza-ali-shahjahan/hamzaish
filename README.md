@@ -4,6 +4,8 @@
 
 **Hamzaish isn't a strategy funnel with a build step at the end. It's a build accelerator that happens to have strategy rails you pull in when you want them. The default is momentum.** Type `/hamzaish`, and the default is to *build* — strategy is an opt-in side door, never a toll.
 
+And skipping strategy isn't laziness — it's often the right call: **build when it's cheap, fast, and reversible** (the thing you ship *is* the validation); **reach for the strategy rails when it's expensive, slow, or hard to undo**, or right before you spend real money on ads or sales. → [the philosophy](docs/philosophy.md)
+
 ## What this is
 
 A monorepo that operates like a 24/7 AI cofounder. It runs **multiple products in parallel**, each in its own folder, each onboarded into the same playbook stages (Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down). Every new product spins up with auth, DB, payments, email, analytics, error monitoring, and SEO defaults already wired. Every existing product gets surfaced through the same telemetry pane.
@@ -12,8 +14,9 @@ Built on Anthropic's *Founder's Playbook: Building an AI-Native Startup* and inf
 - **gbrain** (Garry Tan) — knowledge graph + hybrid retrieval
 - **hermes-agent** (Nous Research) — self-improving skills + memory loops
 - **openclaw** — multi-channel gateway
+- **Andrej Karpathy** — eval-driven development & the data/learning flywheel; the discipline behind the self-improving loop (`brain/learnings/` → guardrails, and [`factory/playbooks/ai-native-2026/eval-driven-development.md`](factory/playbooks/ai-native-2026/eval-driven-development.md))
 
-All three live in `references/` as study material. Hamzaish itself stays Claude-Code-native and markdown-first.
+The three repos above live in `references/` as study material; Karpathy's influence is a *thinking* pattern, not a codebase — it shows up in how the factory learns from every ship. Hamzaish itself stays Claude-Code-native and markdown-first.
 
 ## Why it's structured this way
 
