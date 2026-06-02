@@ -57,6 +57,17 @@ In order:
    - Ask the user what they want to do, or
    - Invoke `/portfolio-pulse` (Claude Code) or the equivalent in your tool to see today's recommended action across products
 
+## Products built with Hamzaish
+
+Curated proof list — products where Hamzaish's `/full-cycle` orchestration drove the build end-to-end, the brain captured cross-product learnings, and the factory's discipline either caught a violation (good) or got violated and we documented why (also good — the rules being escapable would be the failure mode).
+
+| Product | What it is | Stage | Public artifact |
+|---|---|---|---|
+| **[wp-to-astro](https://github.com/hamza-ali-shahjahan/wp-to-astro-cli)** | OSS CLI that migrates WordPress sites to clean Astro + MDX — wedge for an AI-native CMS. | Alpha v0.6.1 on [npm](https://www.npmjs.com/package/wp-to-astro), validation sprint underway | Six gated passes, 138 tests, public GitHub repo + npm package. Empty dir → npm in two sessions. The validation discipline was violated (built six passes without 5 user conversations) — that's now the catch-up sprint. The slug-schema bug shipped in v0.6.0 and got patched in v0.6.1 within an hour of the real-world smoke test catching it. Cross-product learnings filed in `brain/learnings/2026-05-30.md`. |
+| **Muakkil** | Mystical AI-agent platform — four spirit agents (Scribe, Seeker, Maker, Herald) collaborate on cross-agent charges via a ritual UX. | MVP, buildathon launch sprint | Lovable buildathon submission = beta launch; first 100 sign-ups become the beta cohort. The Scribe voice demo is the centerpiece. |
+
+_More as they ship. A product earns this list by shipping something users can touch (npm package, hosted app, deployable repo) — not by being in the portfolio._
+
 ## Products in the portfolio
 
 The live index is generated — see [`products/_portfolio.md`](products/_portfolio.md), and each product's manifest at `products/<slug>/product.config.json`. Product **code is not in this repo** — only metadata + learnings (see the [public/private boundary](docs/architecture.md#the-publicprivate-boundary--protecting-your-secret-sauce)). Local code locations live in the git-ignored `code-paths.local.json`.
