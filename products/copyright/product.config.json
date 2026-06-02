@@ -1,14 +1,37 @@
 {
   "slug": "copyright",
-  "name": "CopyRight",
-  "one_liner": "AI-assisted copyright + IP management for creators and small studios.",
-  "created": "2025-04-21",
+  "name": "IP Radar",
+  "one_liner": "US copyright + patent research and violations agent for AI builders, founders, and IP attorneys.",
+  "created": "2026-04-21",
   "stage": "mvp",
   "status": "active",
-  "code_path": null,
+  "sprint": "friends-test",
+  "code_path": "/Users/hamza/Claude/CopyRight",
   "aliases": [
-    "copyright app"
+    "CopyRight",
+    "ip-radar",
+    "copyright app",
+    "IP Radar"
   ],
+  "stack": {
+    "framework": "Next.js 16 (App Router)",
+    "runtime": "Node 24, Vercel serverless",
+    "package_manager": "pnpm",
+    "ui": "Tailwind v4 + shadcn/ui (base-nova), Geist Sans",
+    "backend": "Neon Postgres (HTTP serverless) + pgvector 1024-dim + HNSW index",
+    "host": "Vercel (hobby plan, auto-deploy from GitHub main)",
+    "ai": {
+      "orchestrator": "Vercel AI SDK v6 (streamText + generateObject)",
+      "models": "Claude Sonnet 4.6 (chat + clearance synthesis), Haiku 4.5 (fact extraction, digest summarise), Opus 4.7 (optional)",
+      "embeddings": "Voyage voyage-law-2 (1024-dim, legal-domain tuned)",
+      "patents": "Google Patents BigQuery (patents-public-data.patents.publications)"
+    },
+    "auth": "Clerk (test keys — swap to live before paid users)",
+    "email": "Resend (digest emails; sender domain not yet verified)",
+    "orm": "Drizzle ORM",
+    "key_dependencies": "ai, @ai-sdk/anthropic, @neondatabase/serverless, @google-cloud/bigquery, @clerk/nextjs, resend, react-markdown, zod, sonner"
+  },
+  "demo_pattern": "User signs in → asks a copyright or patent question in chat → every citation links to a real case or filing → or pastes a product description into clearance → gets a structured memo with risk level, patent overlap, fair-use analysis, and next steps in 60-120s.",
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,
@@ -20,9 +43,11 @@
     "ahrefs_target": null
   },
   "links": {
-    "github": null,
-    "prod_url": null,
-    "staging_url": null
+    "github": "https://github.com/hamza-ali-shahjahan/ip-radar",
+    "prod_url": "https://ip-radar-one.vercel.app",
+    "admin_url": "https://ip-radar-one.vercel.app/admin",
+    "staging_url": null,
+    "domain_shortlist": ["gauntlet.legal", "allrights.app", "allrights.legal", "crucible.legal", "ipradar.app"]
   },
-  "notes": "Onboarded 2026-05-19. Real codebase with .git + .env.local + .env.example present. Stage assessment pending — needs domain + naming check (CopyRight name could conflict)."
+  "notes": "Hamzaish-built proof product. Nine-step clearance DAG (extract_facts → parallel gather → claim_similarity + fair_use → synthesize → validate with one auto-correct retry). Citation contract validator rejects unknown IDs and bare Bluebook citations. Hit USPTO ID.me/SSN wall mid-build as a non-US user — pivoted to Google Patents BigQuery in same session (better architecture, no ID.me dependency, effectively free at prototype scale). GCP service-account key stored base64-encoded in Vercel envs after Vercel CLI multi-line stdin truncation bug. Personal-tier daily limits: 50 chat messages + 50 clearance memos per 24h rolling window. All-in cost tracking per clearance run (LLM + embeddings + BigQuery via AsyncLocalStorage). Admin dashboard at /admin (email-gated). Pending: domain pick, credential rotation (all burned in old chat transcripts), Clerk webhook for digest email delivery, pnpm db:migrate for migration 0001 (cost columns). Built in ~6 weeks of sessions 2026-04-21 to 2026-06-02."
 }
