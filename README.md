@@ -1,6 +1,6 @@
 # Hamzaish — The AI Cofounder & Startup Factory OS
 
-> A personal AI-native startup factory for one person. Brain + orchestrator. Long-running, learning, self-improving. Built to run a portfolio of products from ideation through scale — and to kill the ones that don't earn it.
+> A personal AI-native startup factory for builders. Brain + orchestrator. Long-running, learning, self-improving. Built especially for first-time builders to run a portfolio of products from ideation through scale — and to kill the ones that don't earn it. Being built by Hamza + his 4 muakkals × Claude × Codex × Lovable.
 
 **Hamzaish isn't a strategy funnel with a build step at the end. It's a build accelerator that happens to have strategy rails you pull in when you want them. The default is momentum.** Type `/hamzaish`, and the default is to *build* — strategy is an opt-in side door, never a toll.
 
