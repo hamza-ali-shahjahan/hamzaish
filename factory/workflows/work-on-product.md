@@ -28,7 +28,7 @@ The user should be able to make any request about the product immediately, and y
 
 2. **Refresh the brain index.** Files may have changed:
    ```
-   bun /Users/hamza/Claude/Hamzaish/brain/ingest.ts
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ingest.ts
    ```
 
 3. **Load the product manifest.** `Read products/<slug>/product.config.json`. Note: `stage`, `sprint`, `code_path`, `stack`, `analytics` IDs.
@@ -47,7 +47,7 @@ The user should be able to make any request about the product immediately, and y
 
 8. **Brain-ask for any open threads.** Run:
    ```
-   bun /Users/hamza/Claude/Hamzaish/brain/ask.ts --product <slug> --limit 6 "open decisions blockers"
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --product <slug> --limit 6 "open decisions blockers"
    ```
    Surface unresolved items.
 

@@ -8,7 +8,7 @@ The user invoked: `/checkpoint $ARGUMENTS`
 Run a Bash command to stage everything and create a clean commit with the user's message:
 
 ```
-cd /Users/hamza/Claude/Hamzaish && git add -A && git commit -m "checkpoint: $ARGUMENTS"
+cd ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish} && git add -A && git commit -m "checkpoint: $ARGUMENTS"
 ```
 
 Then report:

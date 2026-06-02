@@ -7,18 +7,18 @@ The user invoked: `/portfolio-pulse $ARGUMENTS`
 
 This command works from any cwd. All Hamzaish paths below are absolute.
 
-Run the portfolio-pulse skill (`/Users/hamza/Claude/Hamzaish/factory/skills/portfolio-pulse/SKILL.md`).
+Run the portfolio-pulse skill (`${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/skills/portfolio-pulse/SKILL.md`).
 
 Short version:
 1. Refresh the brain index so any recent edits to product configs/statuses are visible:
    ```
-   bun /Users/hamza/Claude/Hamzaish/brain/ingest.ts
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ingest.ts
    ```
-2. `Read /Users/hamza/Claude/Hamzaish/products/_portfolio.md` for the live snapshot baseline.
-3. List products from `/Users/hamza/Claude/Hamzaish/products/*/product.config.json`. Skip any with `status: "killed"`.
-4. For each product, read `/Users/hamza/Claude/Hamzaish/products/<slug>/product.config.json` and `/Users/hamza/Claude/Hamzaish/products/<slug>/status.md`. Note stage, sprint, "today's action."
-5. Invoke `/Users/hamza/Claude/Hamzaish/factory/agents/portfolio/portfolio-conductor/SKILL.md` for prioritization (read the agent prompt, follow its protocol).
-6. If telemetry is wired (PostHog/Sentry/Stripe IDs in config), invoke `/Users/hamza/Claude/Hamzaish/factory/agents/portfolio/telemetry-aggregator/SKILL.md`. If no telemetry IDs are set, skip metrics columns and note "no telemetry connected" for those products.
+2. `Read ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/_portfolio.md` for the live snapshot baseline.
+3. List products from `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/*/product.config.json`. Skip any with `status: "killed"`.
+4. For each product, read `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/<slug>/product.config.json` and `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/<slug>/status.md`. Note stage, sprint, "today's action."
+5. Invoke `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/agents/portfolio/portfolio-conductor/SKILL.md` for prioritization (read the agent prompt, follow its protocol).
+6. If telemetry is wired (PostHog/Sentry/Stripe IDs in config), invoke `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/agents/portfolio/telemetry-aggregator/SKILL.md`. If no telemetry IDs are set, skip metrics columns and note "no telemetry connected" for those products.
 7. Output the standardized format:
 
 ```
@@ -42,7 +42,7 @@ Focus on <product> today, specifically <task>, because <reason>.
 
 8. If `$ARGUMENTS` looks like a number of hours (`2`, `4h`, `8`), tune Top-3 to that budget.
 
-9. After producing the snapshot, **update `/Users/hamza/Claude/Hamzaish/products/_portfolio.md`** so the next caller starts from fresh state.
+9. After producing the snapshot, **update `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/_portfolio.md`** so the next caller starts from fresh state.
 
 ## Output discipline
 

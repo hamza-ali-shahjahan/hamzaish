@@ -24,19 +24,19 @@ Ranked markdown citations from the brain, each with:
 
 1. **Refresh the index if needed.** If files have changed since the last ingest (recent writes, new product registered, fresh learning), run:
    ```
-   bun /Users/hamza/Claude/Hamzaish/brain/ingest.ts
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ingest.ts
    ```
    It's idempotent and fast (~50ms).
 
 2. **Query.** Shell out to:
    ```
-   bun /Users/hamza/Claude/Hamzaish/brain/ask.ts "<query>"
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts "<query>"
    ```
    Or scoped:
    ```
-   bun /Users/hamza/Claude/Hamzaish/brain/ask.ts --product <slug> "<query>"
-   bun /Users/hamza/Claude/Hamzaish/brain/ask.ts --source brain/learnings "<query>"
-   bun /Users/hamza/Claude/Hamzaish/brain/ask.ts --limit 4 --json "<query>"
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --product <slug> "<query>"
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --source brain/learnings "<query>"
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --limit 4 --json "<query>"
    ```
 
 3. **Read the top hits.** The output gives you paths — use `Read` on the top 2–3 most relevant before answering.
@@ -67,7 +67,7 @@ User: "what surprised me during the v1.0 restructure?"
 
 You:
 ```
-bun /Users/hamza/Claude/Hamzaish/brain/ask.ts --source brain/learnings "what surprised"
+bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --source brain/learnings "what surprised"
 ```
 → Returns `brain/learnings/2026-05-26.md` as top hit.
 

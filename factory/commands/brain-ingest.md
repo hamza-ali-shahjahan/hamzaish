@@ -8,7 +8,7 @@ Refresh the brain's derived index from the markdown source of truth.
 Shell out (via `Bash`):
 
 ```
-bun /Users/hamza/Claude/Hamzaish/brain/ingest.ts $ARGUMENTS
+bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ingest.ts $ARGUMENTS
 ```
 
 Then report the output to the user: how many docs added / updated / deleted / skipped, total in db, and time taken.

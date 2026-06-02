@@ -181,6 +181,23 @@ The brain is **markdown source of truth** + a **SQLite FTS5 derived index**. Use
 
 See `brain/README.md` for full details.
 
+## Personal vs. shareable files — the `.local` / `.example` convention
+
+This repo is designed to be **safely forkable**. Anything personal to the operator (your identity, your local paths, your code-folder map) lives in `*.local.*` files that are gitignored. Templates with the same shape live alongside as `*.example.*` files that ARE committed.
+
+| File pattern | Tracked? | Purpose |
+|---|---|---|
+| `*.example.<ext>` | ✓ committed | The template anyone can copy + customize |
+| `*.local.<ext>` | ✗ gitignored | Your actual filled-in version, never leaves your machine |
+
+Examples in this repo:
+- `code-paths.example.json` (committed) ↔ `code-paths.local.json` (gitignored) — maps product slugs to absolute code paths on your machine
+- `brain/identity/operator.example.md` (committed) ↔ `brain/identity/operator.local.md` (gitignored) — operator's working style, stack defaults, communication preferences
+
+**Rule for future Claude sessions**: when adding a file that contains *personal* content (identity, machine paths, secrets-adjacent context), create it as `<name>.local.<ext>` AND ship a `<name>.example.<ext>` template next to it. Anything that's universally useful stays as a regular committed file.
+
+**Path portability rule**: never hardcode `/Users/<name>/Claude/Hamzaish/` in any committed file. Use `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}` in scripts and slash commands. The default works for anyone who clones to `~/Claude/Hamzaish`; the env var lets anyone override.
+
 ## Auto-commit + auto-push safety net (global on this machine)
 
 Hamzaish owns the "core" auto-save pattern. Two scripts in `scripts/` are invoked **globally** from `~/.claude/settings.json` — so they fire for **every git repo Claude Code works in on this machine**, not just Hamzaish.

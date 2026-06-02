@@ -45,3 +45,16 @@ bun-debug.log
 
 # Local-only product code-path map (machine-specific; never commit)
 code-paths.local.json
+
+# Local-only operator overrides — personal identity / preferences / context
+# Pattern: *.local.<ext> stays on disk but never reaches the repo.
+# Templates are committed as *.example.<ext> for forks to copy.
+brain/identity/*.local.md
+**/*.local.md
+**/*.local.json
+!**/*.example.local.md  # safety: don't accidentally ignore example files
+
+# Auto-commit/push opt-out markers (operator discipline; not source code)
+.no-auto-commit
+.no-auto-push
+.no-auto-pull
