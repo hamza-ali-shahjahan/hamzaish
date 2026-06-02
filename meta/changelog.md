@@ -4,6 +4,56 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-06-02 — v1.7 · Pre-launch hygiene: PDF removed, community flow live, tracker created
+
+**What changed**
+
+- **Removed `factory/playbooks/founders-playbook-source.pdf`** — Anthropic's
+  PDF, not redistributable. Distillation at
+  `factory/playbooks/ai-native-2026/founders-playbook-distilled.md` (~165
+  lines) keeps the value. One less question to carry into a public flip.
+- **`products/_community/` folder created** with a README explaining the
+  purpose, the skeleton, and what does/doesn't belong there. Empty for now;
+  populated by community PRs once the repo flips public.
+- **`docs/contributing.md` extended** with a new section "Add YOUR product as
+  a community example" — explains the fork → skeleton → proof-of-shipping →
+  PR → maintainer-verifies → merge flow. Covers both full-portfolio and
+  anonymized case-study submission patterns + what gets rejected.
+- **GitHub issue #2 opened** as the public-launch-readiness tracker. Lives
+  on the repo (history, notifications, native to workflow) but NOT in the
+  repo (won't accidentally ship as canonical content). Closes at v2.0.
+
+**Why**
+
+User flagged that v1.5 made Hamzaish *technically launchable* but not
+*worth launching* (no narrative). After agreeing on the 5 missing gates:
+
+- (1) Proof story — user is updating their portfolio products to credit
+  Hamzaish; Muakkil ships soon
+- (2) Eval harness — Phase D plan committed, build sprint queued
+- (3) First-30-min UX — sub-agent + fresh-clone + actual-stranger
+  sequence planned for v1.9
+- (4) Community contribution flow — set up TODAY (this entry)
+- (5) Pre-flip scrub — PDF removed TODAY; remaining items in the
+  tracker issue
+
+The tracker as a GitHub issue (not a repo file) was a user instinct —
+prevents the tracker from accidentally surviving the public flip as
+clutter. The issue auto-becomes public when the repo flips, which is
+fine — it'll be mostly checkboxes ticked at that point, and serves as
+a "here's the journey" artifact for the launch post.
+
+**What to revisit**
+
+- Eval harness build sprint — next major sprint after Muakkil's
+  buildathon retro
+- Sub-agent UX simulation — can do anytime; recommend immediately after
+  Phase D ships so we test against the eval-harness-equipped factory
+- Community PR format — wait for first PR to surface, then refine the
+  template if needed (don't over-design)
+
+---
+
 ## 2026-06-02 — v1.4 · Global auto-commit-push + SessionStart auto-pull + opt-out markers
 
 **What changed**

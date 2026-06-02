@@ -26,6 +26,59 @@ cp -r products/_template products/<slug>     # fill in the files
 Fill in: `product.config.json` (manifest), `README.md` (the wedge), `scope.md`
 (does / deliberately-doesn't), `status.md`, and start a `learnings.md`.
 
+## Add YOUR product as a community example
+
+Hamzaish is the maintainer's lived-in factory — the products at the top level of
+`products/` are real (Muakkil, Scope Intelligence, DNSDoctor, etc., each
+"built with Hamzaish"). The community-contributed examples live alongside them
+in `products/_community/<your-slug>/`.
+
+The point: someone evaluating Hamzaish should see **multiple real portfolios** —
+the maintainer's plus verified community ones — not fake `todo-app` examples.
+
+### How to submit
+
+1. **Fork the repo.**
+2. **Add `products/_community/<your-slug>/`** with the standard skeleton
+   (`product.config.json`, `README.md`, `scope.md`, `status.md`, `learnings.md`,
+   `decisions/`). Same shape as the maintainer's products — just one folder deeper.
+3. **Prove the product exists and shipped.** Link to one of:
+   - Live URL with the product running
+   - GitHub repo of the product source
+   - npm / PyPI / crates / RubyGems package
+   - Screenshot or short screencast (1-2 min)
+4. **Open a PR.** The maintainer reviews, verifies the product is real and shipped,
+   then merges with a `verified_by: maintainer` + `verified_at: YYYY-MM-DD`
+   field in your `product.config.json`.
+
+### Submission format choices
+
+You decide how much to share. Two patterns are common:
+
+- **Full portfolio entry** — same depth as the maintainer's products. Real config,
+  scope, status, decisions, learnings. Highest signal for other builders;
+  authentic. Choose if you're comfortable being public.
+- **Anonymized case study** — keep `product.config.json` minimal (slug, stage,
+  one-liner, links). Put the substance in a single `case-study.md` with
+  transferable lessons but no proprietary details. Choose if your product is
+  pre-launch or competitive-sensitive.
+
+Either works. PR description should say which you're submitting.
+
+### What gets rejected
+
+- "I'm planning to build X" — products in your head don't count. Ship first, then submit.
+- Products that don't actually use Hamzaish — the contribution is the factory in action, not
+  the factory as an unused badge.
+- Anything with secrets, credentials, or proprietary internals (those don't belong here
+  regardless — see the golden rule above).
+
+### Why this works
+
+The maintainer's verification is the trust signal. The community gets a real
+gallery of "factory-built products"; the maintainer gets concrete evidence of
+what builds well (and what doesn't). Both sides earn from the loop.
+
 ## Add a learning (the most valuable contribution)
 
 In `products/<slug>/learnings.md`, capture the **transferable lesson**, not the
