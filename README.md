@@ -16,7 +16,7 @@ Built on Anthropic's *Founder's Playbook: Building an AI-Native Startup* and inf
 - **openclaw** — multi-channel gateway
 - **Andrej Karpathy** — eval-driven development & the data/learning flywheel; the discipline behind the self-improving loop (`brain/learnings/` → guardrails, and [`factory/playbooks/ai-native-2026/eval-driven-development.md`](factory/playbooks/ai-native-2026/eval-driven-development.md))
 
-The three repos above live in `references/` as study material; Karpathy's influence is a *thinking* pattern, not a codebase — it shows up in how the factory learns from every ship. Hamzaish itself stays Claude-Code-native and markdown-first.
+The three repos above live in `references/` as study material; Karpathy's influence is a *thinking* pattern, not a codebase — it shows up in how the factory learns from every ship. Hamzaish itself is markdown-first and **primarily tuned for Claude Code** — slash commands, hooks, and the `/hamzaish` momentum router are wired for it. It also ships [`AGENTS.md`](AGENTS.md) at the root, so any coding agent that follows that convention (Codex, Cursor, Aider, Goose, Continue, …) inherits the same architecture, discipline, and brain context out-of-the-box. Tool-specific bindings (slash commands + hooks) for other agents aren't ported yet — PRs welcome when you fork.
 
 ## Why it's structured this way
 
@@ -43,17 +43,19 @@ dashboard/    — minimal telemetry pane (inert until Phase C)
 _archive/     — preserved old versions, never edited
 ```
 
-## How to start a fresh Claude Code session here
+## How to start a fresh session here
+
+Works in any coding-agent session (Claude Code is canonical; Codex, Cursor, Aider, Goose, Continue all read `AGENTS.md` and get the baseline). The discipline is the same — only the slash-command bindings differ across tools.
 
 In order:
 
-1. Read `CLAUDE.md` — the brain's operating instructions
-2. Read `MEMORY.md` — index of cross-product learnings
+1. Read `AGENTS.md` — universal tool-agnostic context
+2. Read your tool's specific routing file: `CLAUDE.md` (Claude Code) — others to be added as forks land
 3. Skim `brain/operating-principles.md` — the rules
 4. Read `products/_portfolio.md` — what's active right now
 5. Then either:
    - Ask the user what they want to do, or
-   - Invoke `/portfolio-pulse` to see today's recommended action across products
+   - Invoke `/portfolio-pulse` (Claude Code) or the equivalent in your tool to see today's recommended action across products
 
 ## Products in the portfolio
 
