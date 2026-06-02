@@ -1,0 +1,22 @@
+{
+  "slug": "TODO-slug",
+  "name": "TODO Name",
+  "one_liner": "TODO — one sentence: what it does, for whom.",
+  "created": "YYYY-MM-DD",
+  "stage": "idea",
+  "status": "slot_reserved",
+  "code_path": null,
+  "aliases": [],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": { "github": null, "prod_url": null, "staging_url": null },
+  "notes": "New product slot. Next: write one-liner + scope, validate, then scaffold."
+}

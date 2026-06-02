@@ -6,8 +6,13 @@
   "stage": "mvp",
   "status": "active",
   "sprint": "validation",
-  "code_path": "../ai-native-cms-code",
-  "aliases": ["wp-to-astro", "wp to astro", "wordpress to astro", "wp2astro"],
+  "code_path": null,
+  "aliases": [
+    "wp-to-astro",
+    "wp to astro",
+    "wordpress to astro",
+    "wp2astro"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

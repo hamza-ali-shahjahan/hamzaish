@@ -6,8 +6,12 @@
   "stage": "mvp",
   "status": "active",
   "sprint": "buildathon-launch",
-  "code_path": "../muakkil-code",
-  "aliases": ["muakkil app", "muakkal", "موكّل"],
+  "code_path": null,
+  "aliases": [
+    "muakkil app",
+    "muakkal",
+    "موكّل"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

@@ -42,3 +42,6 @@ coverage/
 # Bun
 bun-debug.log
 .bun-cache/
+
+# Local-only product code-path map (machine-specific; never commit)
+code-paths.local.json

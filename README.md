@@ -1,6 +1,10 @@
 # Hamzaish — The AI Cofounder & Startup Factory OS
 
-> A personal AI-native startup factory for one person. Brain + orchestrator. Long-running, learning, self-improving. Built to run a portfolio of products from ideation through scale — and to kill the ones that don't earn it.
+> A personal AI-native startup factory for builders. Brain + orchestrator. Long-running, learning, self-improving. Built especially for first-time builders to run a portfolio of products from ideation through scale — and to kill the ones that don't earn it. Being built by Hamza + his 4 muakkals × Claude × Codex × Lovable.
+
+**Hamzaish isn't a strategy funnel with a build step at the end. It's a build accelerator that happens to have strategy rails you pull in when you want them. The default is momentum.** Type `/hamzaish`, and the default is to *build* — strategy is an opt-in side door, never a toll.
+
+And skipping strategy isn't laziness — it's often the right call: **build when it's cheap, fast, and reversible** (the thing you ship *is* the validation); **reach for the strategy rails when it's expensive, slow, or hard to undo**, or right before you spend real money on ads or sales. → [the philosophy](docs/philosophy.md)
 
 ## What this is
 
@@ -10,15 +14,27 @@ Built on Anthropic's *Founder's Playbook: Building an AI-Native Startup* and inf
 - **gbrain** (Garry Tan) — knowledge graph + hybrid retrieval
 - **hermes-agent** (Nous Research) — self-improving skills + memory loops
 - **openclaw** — multi-channel gateway
+- **Andrej Karpathy** — eval-driven development & the data/learning flywheel; the discipline behind the self-improving loop (`brain/learnings/` → guardrails, and [`factory/playbooks/ai-native-2026/eval-driven-development.md`](factory/playbooks/ai-native-2026/eval-driven-development.md))
 
-All three live in `references/` as study material. Hamzaish itself stays Claude-Code-native and markdown-first.
+The three repos above live in `references/` as study material; Karpathy's influence is a *thinking* pattern, not a codebase — it shows up in how the factory learns from every ship. Hamzaish itself stays Claude-Code-native and markdown-first.
+
+## Why it's structured this way
+
+The design in one breath — full rationale in [`docs/`](docs/):
+
+- **Default is momentum.** `/hamzaish` builds first; strategy (scoring, niche, pricing, GTM) is an opt-in side door, never a toll. → [Philosophy](docs/philosophy.md)
+- **Products hold metadata + learnings, never code.** Your code — the moat — stays in its own private repo; locations are wired via a git-ignored `code-paths.local.json`. So this repo is safe to back up and open to collaborators **without exposing anyone's secret sauce.** → [Architecture](docs/architecture.md#the-publicprivate-boundary--protecting-your-secret-sauce)
+- **Every product has the same skeleton.** Consistency is a *contract* — predictable for collaborators, mappable to a hosted UI. → [Architecture](docs/architecture.md#the-per-product-skeleton)
+- **The factory compounds.** Each product's `learnings.md` is promoted into guardrails in the agents, so the next build doesn't repeat the last one's mistakes. → [Architecture](docs/architecture.md#the-learnings--guardrails-loop)
+
+📖 **New here? Start with [`docs/`](docs/)** — it explains the *why*, not just the folders.
 
 ## Architecture
 
 ```
 brain/        — identity, persona, principles, learnings, anti-patterns, decision log, ingested knowledge
 factory/      — agents (idea/, mvp/, launch/, scale/, portfolio/), skills, commands, workflows, playbooks
-products/     — one folder per product (with symlink to its code), config, status, decisions, analytics
+products/     — one folder per product: metadata + learnings only (config, scope, status, decisions, learnings). Code stays in its own private repo; locations wired via git-ignored code-paths.local.json
 meta/         — changelog, retros, evals, self-improvement loop
 references/   — gbrain, hermes-agent, openclaw — STUDY ONLY, never imported
 stack/        — default tech stack ADRs
@@ -41,21 +57,7 @@ In order:
 
 ## Products in the portfolio
 
-See `products/*/product.config.json` for each manifest.
-
-| Product | Stage | Source folder |
-|---|---|---|
-| **muakkil** | mvp · buildathon-launch | `~/Claude/Muakkil` |
-| ventbox | varies | `~/Claude/Ventbox App Clone/` |
-| linkedup | varies | `~/Claude/linkedup/` |
-| copyright | varies | `~/Claude/CopyRight/` |
-| tasfort | varies | `~/Claude/TASFORT/` |
-| one-dollar-factory | varies | `~/Claude/$1F&S/` |
-| hamza-health | varies | `~/Claude/Hamza Health Tracker/` |
-| hamzaos | varies | `~/Claude/HamzaOS/` |
-| ai-growth-engine | varies | `~/Claude/Systems Agent/` |
-| formpad | new slot | scaffolded here |
-| calculatrs | new slot | scaffolded here |
+The live index is generated — see [`products/_portfolio.md`](products/_portfolio.md), and each product's manifest at `products/<slug>/product.config.json`. Product **code is not in this repo** — only metadata + learnings (see the [public/private boundary](docs/architecture.md#the-publicprivate-boundary--protecting-your-secret-sauce)). Local code locations live in the git-ignored `code-paths.local.json`.
 
 ## Key slash commands (carried forward)
 
@@ -69,7 +71,7 @@ See `products/*/product.config.json` for each manifest.
 | `/product-pulse <product>` | One product's metrics + today's recommended action |
 | `/portfolio-pulse` | All products, current stage, today's action each |
 | `/kill-or-keep` | Quarterly portfolio review — double-down vs sunset |
-| `/hamzaish` (alias `/full-cycle`) | Run the full setup→spec→plan→test→build→review→ship orchestration with approval gates |
+| `/hamzaish` | **Momentum router** — default is *just build* (→ `/full-cycle` / `/auto`); strategy rails and stage-resume are opt-in, skip anytime. See [docs](docs/the-momentum-router.md). |
 
 ## The discipline (don't violate)
 

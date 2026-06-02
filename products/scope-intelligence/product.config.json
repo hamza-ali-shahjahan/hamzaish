@@ -6,8 +6,12 @@
   "stage": "mvp",
   "status": "active",
   "sprint": "vertical-slice-build",
-  "code_path": "../scope-intelligence-code",
-  "aliases": ["scope intelligence", "scope-intel", "scope"],
+  "code_path": null,
+  "aliases": [
+    "scope intelligence",
+    "scope-intel",
+    "scope"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,
@@ -35,7 +39,11 @@
     "rate_limiting": "Upstash Redis",
     "host": "Vercel"
   },
-  "integration_targets": ["ClickUp", "Asana", "Monday.com"],
+  "integration_targets": [
+    "ClickUp",
+    "Asana",
+    "Monday.com"
+  ],
   "icp": "Small agencies, 2-15 people",
   "notes": "Onboarded into factory 2026-05-26. Substantial codebase already exists. Full spec at docs/SPEC.md and docs/SPEC-README.md. 15 vertical slices. Stage = mvp because architecture + scope are locked but real user validation pending. Next.js 16 specifics: proxy.ts not middleware.ts, all params are Promise<>, server actions for auth'd mutations, Drizzle schema as source of truth."
 }

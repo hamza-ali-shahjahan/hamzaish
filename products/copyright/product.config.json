@@ -5,8 +5,10 @@
   "created": "2025-04-21",
   "stage": "mvp",
   "status": "active",
-  "code_path": "../copyright-code",
-  "aliases": ["copyright app"],
+  "code_path": null,
+  "aliases": [
+    "copyright app"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

@@ -5,8 +5,11 @@
   "created": "2025-04-26",
   "stage": "mvp",
   "status": "active",
-  "code_path": "../hamza-health-code",
-  "aliases": ["health tracker", "hamza health"],
+  "code_path": null,
+  "aliases": [
+    "health tracker",
+    "hamza health"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

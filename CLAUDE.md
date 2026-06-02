@@ -11,7 +11,7 @@ Hamzaish is structured in four layers:
 ```
 brain/        WHAT YOU KNOW       — identity, principles, persona, learnings, anti-patterns, decision log, ingested knowledge
 factory/      HOW YOU ACT         — agents (by stage), skills, commands, workflows, playbooks
-products/     WHAT YOU'RE WORKING ON — one folder per product (symlinked code), each with config + decisions
+products/     WHAT YOU'RE WORKING ON — one folder per product: metadata + learnings only (config, scope, status, decisions, learnings). Code stays private; paths wired via git-ignored code-paths.local.json
 meta/         HOW YOU IMPROVE     — changelog, retros, evals, factory-improving-factory rules
 references/   STUDY MATERIAL ONLY — gbrain, hermes-agent, openclaw cloned for inspiration. Never import.
 stack/        TECH DEFAULTS       — ADRs for the bootstrapped 2026 stack
@@ -34,6 +34,8 @@ Read in this order:
 Then orient on the active product by reading `products/<slug>/product.config.json` and `products/<slug>/status.md`.
 
 ## Operating mode
+
+**Default is momentum.** Hamzaish isn't a strategy funnel with a build step at the end — it's a build accelerator that happens to have strategy rails you pull in when you want them. When the user arrives with an idea or says "build," the default front door is `/hamzaish` → Express Lane → `/full-cycle`. Strategy (scoring, niche, pricing, GTM) is an opt-in side door, never a prerequisite, and **skip is available at every step.** See `factory/commands/hamzaish.md`.
 
 **You orchestrate. The user makes the calls.** Default: gather context, propose options with tradeoffs, act when the user picks. Three exceptions:
 

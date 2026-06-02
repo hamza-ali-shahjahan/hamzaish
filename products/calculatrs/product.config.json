@@ -6,7 +6,11 @@
   "stage": "idea",
   "status": "slot_reserved",
   "code_path": null,
-  "aliases": ["calculatrs.com", "calculaters", "calculators"],
+  "aliases": [
+    "calculatrs.com",
+    "calculaters",
+    "calculators"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

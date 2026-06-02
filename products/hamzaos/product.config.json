@@ -5,8 +5,11 @@
   "created": "2025-05-14",
   "stage": "mvp",
   "status": "active",
-  "code_path": "../hamzaos-code",
-  "aliases": ["hamza-os", "personal-os"],
+  "code_path": null,
+  "aliases": [
+    "hamza-os",
+    "personal-os"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

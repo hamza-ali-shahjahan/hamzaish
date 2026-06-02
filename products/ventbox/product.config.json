@@ -5,8 +5,11 @@
   "created": "2025-04-04",
   "stage": "mvp",
   "status": "active",
-  "code_path": "../ventbox-code",
-  "aliases": ["ventbox app", "vent box"],
+  "code_path": null,
+  "aliases": [
+    "ventbox app",
+    "vent box"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,
