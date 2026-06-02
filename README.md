@@ -2,6 +2,8 @@
 
 > A personal AI-native startup factory for one person. Brain + orchestrator. Long-running, learning, self-improving. Built to run a portfolio of products from ideation through scale — and to kill the ones that don't earn it.
 
+**Hamzaish isn't a strategy funnel with a build step at the end. It's a build accelerator that happens to have strategy rails you pull in when you want them. The default is momentum.** Type `/hamzaish`, and the default is to *build* — strategy is an opt-in side door, never a toll.
+
 ## What this is
 
 A monorepo that operates like a 24/7 AI cofounder. It runs **multiple products in parallel**, each in its own folder, each onboarded into the same playbook stages (Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down). Every new product spins up with auth, DB, payments, email, analytics, error monitoring, and SEO defaults already wired. Every existing product gets surfaced through the same telemetry pane.
@@ -18,7 +20,7 @@ All three live in `references/` as study material. Hamzaish itself stays Claude-
 ```
 brain/        — identity, persona, principles, learnings, anti-patterns, decision log, ingested knowledge
 factory/      — agents (idea/, mvp/, launch/, scale/, portfolio/), skills, commands, workflows, playbooks
-products/     — one folder per product (with symlink to its code), config, status, decisions, analytics
+products/     — one folder per product: metadata + learnings only (config, scope, status, decisions, learnings). Code stays in its own private repo; locations wired via git-ignored code-paths.local.json
 meta/         — changelog, retros, evals, self-improvement loop
 references/   — gbrain, hermes-agent, openclaw — STUDY ONLY, never imported
 stack/        — default tech stack ADRs

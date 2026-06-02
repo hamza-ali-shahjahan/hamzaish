@@ -6,7 +6,10 @@
   "stage": "idea",
   "status": "slot_reserved",
   "code_path": null,
-  "aliases": ["form-pad", "form pad"],
+  "aliases": [
+    "form-pad",
+    "form pad"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

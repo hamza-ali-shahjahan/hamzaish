@@ -5,8 +5,10 @@
   "created": "2025-04-07",
   "stage": "idea",
   "status": "active",
-  "code_path": "../tasfort-code",
-  "aliases": ["tas-fort"],
+  "code_path": null,
+  "aliases": [
+    "tas-fort"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

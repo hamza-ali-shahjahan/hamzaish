@@ -5,8 +5,13 @@
   "created": "2025-04-30",
   "stage": "idea",
   "status": "active",
-  "code_path": "../one-dollar-factory-code",
-  "aliases": ["$1F&S", "1F&S", "one-dollar-factory-and-studio", "dollar factory"],
+  "code_path": null,
+  "aliases": [
+    "$1F&S",
+    "1F&S",
+    "one-dollar-factory-and-studio",
+    "dollar factory"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

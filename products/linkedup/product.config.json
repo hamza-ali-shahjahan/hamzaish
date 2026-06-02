@@ -5,8 +5,11 @@
   "created": "2025-04-16",
   "stage": "mvp",
   "status": "active",
-  "code_path": "../linkedup-code",
-  "aliases": ["linkedup.io", "linked-up"],
+  "code_path": null,
+  "aliases": [
+    "linkedup.io",
+    "linked-up"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,

@@ -2,7 +2,11 @@
 // scripts/sync-product-refs.ts
 //
 // Writes a `.claude/HAMZAISH.md` reference file into each registered product's code folder.
-// Idempotent — safe to re-run. Skips slot_reserved products with no real code.
+// Idempotent — safe to re-run. Skips slot_reserved / killed products.
+//
+// Code locations are resolved from `code-paths.local.json` (git-ignored,
+// machine-specific — copy `code-paths.example.json` and fill in your paths).
+// No symlinks are committed to the repo.
 //
 // Usage:
 //   bun scripts/sync-product-refs.ts             # write/refresh refs
@@ -10,10 +14,11 @@
 //   bun scripts/sync-product-refs.ts --clean     # remove HAMZAISH.md files (un-install)
 
 import { readdir, readFile, writeFile, mkdir, unlink } from "node:fs/promises";
-import { join, dirname } from "node:path";
-import { existsSync, lstatSync } from "node:fs";
+import { join, dirname, resolve } from "node:path";
+import { existsSync } from "node:fs";
 
-const HAMZAISH_ROOT = "/Users/hamza/Claude/Hamzaish";
+// Repo root = parent of this script's directory. Portable — no hardcoded path.
+const HAMZAISH_ROOT = resolve(import.meta.dir, "..");
 const DRY = process.argv.includes("--dry-run");
 const CLEAN = process.argv.includes("--clean");
 
@@ -23,9 +28,25 @@ type ProductConfig = {
   one_liner: string;
   stage: string;
   status: string;
-  code_path: string;
+  code_path: string | null;
   aliases?: string[];
 };
+
+async function loadCodePaths(): Promise<Record<string, string>> {
+  const p = join(HAMZAISH_ROOT, "code-paths.local.json");
+  if (!existsSync(p)) {
+    console.warn(
+      "⚠ code-paths.local.json not found — copy code-paths.example.json to it and fill in your local code paths. Nothing to sync.",
+    );
+    return {};
+  }
+  try {
+    return JSON.parse(await readFile(p, "utf8"));
+  } catch (e) {
+    console.warn("⚠ code-paths.local.json is not valid JSON:", e);
+    return {};
+  }
+}
 
 function refContent(cfg: ProductConfig, codeAbsPath: string): string {
   return `# Hamzaish coordination
@@ -36,33 +57,35 @@ This product is registered in the **Hamzaish startup factory** at \`${HAMZAISH_R
 - **name**: ${cfg.name}
 - **stage**: \`${cfg.stage}\`
 - **status**: \`${cfg.status}\`
-- **factory entry**: \`${HAMZAISH_ROOT}/products/${cfg.slug}/\` (manifest, status, decisions, launch assets)
-- **code symlink**: \`${HAMZAISH_ROOT}/products/${cfg.slug}-code\` → this directory
+- **factory entry**: \`${HAMZAISH_ROOT}/products/${cfg.slug}/\` (manifest, scope, status, decisions, learnings)
+- **code (local)**: this directory — mapped from \`code-paths.local.json\` (never committed)
 
 ## Global slash commands available from anywhere
 
 | Command | What it does |
 |---|---|
-| \`/work-on ${cfg.slug}\` | Enter the canonical workspace flow — load config, status, decisions, stage playbook, this product's CLAUDE.md, surface open threads. |
+| \`/hamzaish\` | Momentum router. Default = **just build** (→ \`/full-cycle\` or \`/auto\`). Opt into strategy rails or resume a stage when you want them. |
+| \`/work-on ${cfg.slug}\` | Enter the canonical workspace flow — load config, scope, status, decisions, learnings, stage playbook, this product's CLAUDE.md. |
 | \`/portfolio-pulse [hours]\` | All products snapshot — Top 3, on-fire, don't-touch. Tunes to time budget. |
 | \`/brain-ask "<query>"\` | Query Hamzaish's brain across all products + learnings + playbooks. Add \`--product ${cfg.slug}\` to scope here. |
 | \`/brain-ingest\` | Refresh the brain index after writes. |
-| \`/hamzaish\` (alias of \`/full-cycle\`) | setup → spec → plan → test → build → review → ship with approval gates. |
 
 ## Hamzaish discipline (light touch — applies here too)
 
 - **Read the product's own \`CLAUDE.md\` first** (this folder).
 - **\`scope.md\`** — what this does AND what it deliberately doesn't.
 - **Append-only \`decisions/\` log** for non-trivial choices: date · decision · why · what would prove it wrong · revisit trigger.
+- **\`learnings.md\`** — capture the *transferable* lesson (what worked / what bit us / the fix). Never put keys, credentials, or proprietary internals here.
 - **Measurement framework before launch** — north star, activation criterion, retention targets, false-positive shape.
 - **Security review before any user touches it** — auth/session, data exposure, input validation, dependency CVEs.
 - **Don't modify another product's code from this product's session.**
 
 ## Where Hamzaish remembers things about this product
 
+- Scope: \`${HAMZAISH_ROOT}/products/${cfg.slug}/scope.md\`
 - Decisions: \`${HAMZAISH_ROOT}/products/${cfg.slug}/decisions/\`
 - Status (live): \`${HAMZAISH_ROOT}/products/${cfg.slug}/status.md\`
-- Launch assets (when applicable): \`${HAMZAISH_ROOT}/products/${cfg.slug}/launch/\`
+- Learnings: \`${HAMZAISH_ROOT}/products/${cfg.slug}/learnings.md\`
 - Cross-product learnings that reference this product: query with \`bun ${HAMZAISH_ROOT}/brain/ask.ts --product ${cfg.slug} "<query>"\`
 
 ## Regenerating this file
@@ -73,12 +96,15 @@ This file is auto-generated by \`${HAMZAISH_ROOT}/scripts/sync-product-refs.ts\`
 
 async function main() {
   const productsDir = join(HAMZAISH_ROOT, "products");
+  const codePaths = await loadCodePaths();
   const entries = await readdir(productsDir, { withFileTypes: true });
   const productSlugs = entries
-    .filter((e) => e.isDirectory() && !e.name.startsWith("_") && !e.name.endsWith("-code"))
+    .filter((e) => e.isDirectory() && !e.name.startsWith("_"))
     .map((e) => e.name);
 
-  let written = 0, skipped = 0, removed = 0;
+  let written = 0,
+    skipped = 0,
+    removed = 0;
   for (const slug of productSlugs) {
     const cfgPath = join(productsDir, slug, "product.config.json");
     if (!existsSync(cfgPath)) {
@@ -93,25 +119,13 @@ async function main() {
       continue;
     }
 
-    // Resolve the code symlink to get the absolute code path
-    const codeLink = join(productsDir, `${slug}-code`);
-    if (!existsSync(codeLink)) {
-      console.log(`  · ${slug}: symlink ${slug}-code missing, skip`);
+    // Resolve the code location from the local map (fallback: config.code_path).
+    const codeAbs = codePaths[slug] || cfg.code_path || "";
+    if (!codeAbs) {
+      console.log(`  · ${slug}: no entry in code-paths.local.json, skip`);
       skipped++;
       continue;
     }
-    let codeAbs: string;
-    try {
-      codeAbs = lstatSync(codeLink).isSymbolicLink()
-        ? await Bun.file(codeLink).name || codeLink
-        : codeLink;
-    } catch {
-      codeAbs = codeLink;
-    }
-    // Use a more reliable readlink
-    const real = await Bun.$`readlink ${codeLink}`.text();
-    codeAbs = real.trim() || codeLink;
-
     if (!existsSync(codeAbs)) {
       console.log(`  · ${slug}: code path ${codeAbs} doesn't exist, skip`);
       skipped++;
@@ -142,7 +156,6 @@ async function main() {
     }
 
     await mkdir(dirname(refPath), { recursive: true });
-    // Only rewrite if content changed
     let existing = "";
     if (existsSync(refPath)) {
       existing = await readFile(refPath, "utf8");
@@ -157,7 +170,9 @@ async function main() {
     written++;
   }
 
-  console.log(`\nDone. written=${written} skipped=${skipped} removed=${removed}${DRY ? " (dry-run)" : ""}`);
+  console.log(
+    `\nDone. written=${written} skipped=${skipped} removed=${removed}${DRY ? " (dry-run)" : ""}`,
+  );
 }
 
 main().catch((e) => {
