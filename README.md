@@ -15,6 +15,7 @@ Built on Anthropic's *Founder's Playbook: Building an AI-Native Startup* and inf
 - **hermes-agent** (Nous Research) — self-improving skills + memory loops
 - **openclaw** — multi-channel gateway
 - **Andrej Karpathy** — eval-driven development & the data/learning flywheel; the discipline behind the self-improving loop (`brain/learnings/` → guardrails, and [`factory/playbooks/ai-native-2026/eval-driven-development.md`](factory/playbooks/ai-native-2026/eval-driven-development.md))
+- **Addy Osmani** — agent skills; the spec → plan → build → test → review → simplify → ship discipline that shapes `/full-cycle` and the factory's skill set (process-over-prose, verification non-negotiable, scope discipline)
 
 The three repos above live in `references/` as study material; Karpathy's influence is a *thinking* pattern, not a codebase — it shows up in how the factory learns from every ship. Hamzaish itself is markdown-first and **primarily tuned for Claude Code** — slash commands, hooks, and the `/hamzaish` momentum router are wired for it. It also ships [`AGENTS.md`](AGENTS.md) at the root, so any coding agent that follows that convention (Codex, Cursor, Aider, Goose, Continue, …) inherits the same architecture, discipline, and brain context out-of-the-box. Tool-specific bindings (slash commands + hooks) for other agents aren't ported yet — PRs welcome when you fork.
 
