@@ -104,6 +104,14 @@ Every session that does real work appends to `brain/learnings/` and, where appli
 
 Free tiers and pay-per-query by default. Every recurring subscription needs a written ROI justification in the relevant product's `decisions/`. See `stack/analytics-stack.md` for the bootstrapped SEO stack (GSC + Ahrefs Webmaster + DataForSEO pay-per-query instead of $130/mo subscriptions).
 
+## License
+
+**AGPL-3.0** — see [`LICENSE`](LICENSE). Copyright © 2026 Hamza Ali.
+
+Plain-English version: you can use, study, modify, and self-host Hamzaish freely. **If you run a modified version as a network service, you must make your source available under AGPL too.** That keeps the factory open for solo builders while stopping anyone from quietly turning it into a closed commercial product.
+
+**Commercial license available.** If you want to build on Hamzaish *without* the AGPL's copyleft obligations (e.g. a closed-source commercial product or hosted service), a separate commercial license is available — contact the owner below. The copyright holder reserves the right to offer Hamzaish under other terms.
+
 ## Owner
 
 Hamza Ali — mail.hamza.ali@gmail.com

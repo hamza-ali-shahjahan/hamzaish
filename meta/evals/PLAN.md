@@ -1,8 +1,33 @@
-# Phase D — Eval Harness · Plan
+# Phase D — Eval Harness · Plan (= Movement 1, "Selection")
 
-**Status**: planned, not built. Approved as the next 10x bet (2026-06-02). Build sprint will start after Muakkil's buildathon retro closes Phase B.
+**Status**: planned, not built. Approved as the next 10x bet (2026-06-02). Build sprint starts after Muakkil's buildathon retro closes Phase B.
+
+**This is Movement 1 of the self-evolution arc** — see `meta/SELF-EVOLUTION.md` for the plain-language story and `brain/knowledge/2026-06-02-self-evolving-upgrade-brief.md` for the source brief. The eval harness IS "Selection": the honest, agent-blind judge that turns Hamzaish from improving-by-eyeball into improving-by-verdict.
 
 **Why this is 10x, restated**: Hamzaish has skills, agents, and a brain. None of them have an automated "did this actually work?" check. Today, "test pass" means "Claude said it worked" — which means agent regressions go undetected, skills drift, and we can't bet on which skills carry weight. The eval harness changes that. It's also the foundation for everything downstream: vector embeddings (Phase C) need an eval bench to prove they help; `/scaffold` (Phase E) needs evals to know if scaffolded products start from a sane state; the dashboard (Phase F) needs evals to measure agent quality over time.
+
+## Born inside Muakkil (the no-tradeoff sequencing)
+
+Don't build this as a separate project competing with shipping Muakkil. **Muakkil's buildathon already requires a 10-canonical-charge eval** for the orchestrator (`products/muakkil-code/docs/buildathon-plan.md` → "eval against 10 charges before submission"). That eval is **brick #1 of the harness.** Build it inside Muakkil, ship the product, then extract the reusable shape into `meta/evals/`. The first product pays for the judge; every future product inherits it. So "Muakkil first" and "Phase D first" are the same instruction.
+
+## Four ideas absorbed from the self-evolving brief
+
+The original plan (below) had deterministic checks + an LLM judge. The brief sharpens it with four upgrades that turn a test runner into a *selection mechanism*:
+
+1. **Four-outcome verdict, not pass/fail.** The runner classifies each case as one of:
+   - `PASS` — all must-pass gates green AND composite score ≥ `T_high` → keep, no human
+   - `FAIL_BUILDABLE` — a gate failed AND the criterion was clear → the output is wrong, fix it, no human
+   - `GAP` — the criterion couldn't even be written, or the spec was silent → flag + batch for human ratification, **never guess**
+   - `UNCERTAIN` — gates green but composite in the middle band (`T_low < score < T_high`) → the *only* outcome that pulls a human in real time
+   Even before adding gates, *just classifying instead of booleaning tells you WHY a case stopped.* `GAP` vs `UNCERTAIN` is the keystone: `UNCERTAIN` is waste (sharpen the test), `GAP` is signal (the spec needs you).
+
+2. **Agent-blind separation (hard rule).** The thing being evaluated must have **zero visibility/write-access** to the eval scripts, fixtures, and rubric. A skill cannot read its own eval case. The judge prompt is never shown to the builder. This is what makes a green light trustworthy — separation, not re-checking.
+
+3. **Executable-criterion-or-GAP at authoring time.** If you can't write a machine-checkable criterion for what a skill/case *should* produce, that's a `GAP` *now*, at plan time — not a surprise at run time. Forces "define done before you start" and moves ambiguity to where it's cheap.
+
+4. **The critic is a gate, not an oracle.** When an LLM judge is used, it must return *structured output against named criteria* (e.g. `criterion_2 (no_premature_code): FAIL — src/ created at idea stage`), fed the frozen criteria + relevant spec section. The critic can push a case to `UNCERTAIN`; it may **never auto-`PASS`**. "Looks good" reduces nothing.
+
+These four don't change the effort estimate much — they change what the runner *returns* (a structured verdict object) and enforce a wall between builder and judge.
 
 ## Design principles
 
@@ -137,3 +162,13 @@ meta/evals/
 ## Next step (when build sprint starts)
 
 Approval gate: I'll write the runner skeleton + 1 case end-to-end first, run it, share the report. If the shape feels right, expand to 9 cases. If the shape is wrong, fix it before scaling.
+
+## After Movement 1 lands — what comes next (not now)
+
+Once the blind judge is real and one product's loop runs green:
+
+- **Movement 2 (Heredity)** — add a `proposals/` queue: a `GAP` becomes a written proposal (not a guess), batch-ratified by the operator, then auto-promoted into a playbook/scenario. This automates the `brain/learnings/` → `factory/playbooks/` loop that's currently hand-carried. Pairs with making the frozen tier (`brain/operating-principles.md` = goals; verified `brain/knowledge/`) explicitly write-protected from agent loops.
+- **Movement 3 (Coordination)** — the shared verified-guardrail library across builders, grown from `products/_community/`. Premature until Movement 1 + 2 are solid.
+- **`/spec` upgrade** — teach `/spec` to emit *executable scenarios* alongside the spec, so the spec and the eval criteria are the same artifact. This is the bridge that makes specs the compounding asset.
+
+See `meta/SELF-EVOLUTION.md` for how these fit together.

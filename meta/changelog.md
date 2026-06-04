@@ -4,6 +4,60 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-06-02 — v1.9 · License changed MIT → AGPL-3.0 + dual-license path
+
+**What changed**
+
+- **`LICENSE` swapped MIT → AGPL-3.0** (canonical 661-line GNU text, fetched byte-exact from gnu.org — not retyped). GitHub will now detect the repo as AGPL-3.0.
+- **README `## License` section added** — plain-English AGPL explanation + the commercial-license offer (maintainer reserves the right to license under other terms).
+- **`docs/contributing.md` — "Licensing of contributions" section** — the inbound license grant: contributors license under AGPL AND grant the maintainer the right to relicense (incl. commercial). This is what keeps the dual-licensing model viable; without it, accepting outside PRs would lock the project out of commercial licensing. It's an inbound grant, not a copyright assignment — contributors keep their copyright.
+
+**Why**
+
+The operator asked whether the license protected future monetization. It didn't — **MIT explicitly permits anyone to take Hamzaish, build a closed commercial product or hosted service on it, and owe nothing** beyond keeping a copyright notice in a file. That's the exact "steal it and sell it" case the operator wanted to prevent.
+
+After laying out three options (MIT = max openness/zero protection; AGPL = open + chargeable; BSL = max protection / not-quite-open-source), the operator chose **AGPL** — the balanced middle:
+- Solo builders use it freely (the mission)
+- Competitors can't quietly turn it into a closed SaaS without either open-sourcing their fork OR buying a commercial license (the protection)
+- The maintainer's monetization door = free AGPL community + paid commercial licenses (open-core model)
+
+**No urgency was involved** — the repo is private, so today it's effectively all-rights-reserved regardless of the LICENSE file. The license only "activates" as a grant when the repo flips public. This change just ensures the flip happens on the right license.
+
+**What to revisit**
+
+- Before the public flip: confirm the commercial-license contact path (email is fine for v1; a real commercial-license template only needed once someone actually asks).
+- If significant outside code contributions start arriving, consider a lightweight signed CLA or DCO sign-off to make the inbound grant airtight. The contributing.md grant covers it for now.
+- Issue #2 (launch-readiness tracker): license item now resolved → AGPL-3.0.
+
+---
+
+## 2026-06-02 — v1.8 · Self-evolution arc captured (vision + plan, no build)
+
+**What changed** (planning only — no code, no structural change)
+
+- **`meta/SELF-EVOLUTION.md`** — the plain-language north-star story. The factory's journey from *improving-by-hand* → *improving-itself* → *many-builders-improving-together*, framed as three movements (Selection → Heredity → Coordination). Written to be re-readable and handed to other builders. This is the map above the build plans.
+- **`brain/knowledge/2026-06-02-self-evolving-upgrade-brief.md`** — the operator's external upgrade brief, captured + translated to Hamzaish's actual shape (not implemented verbatim). Searchable in the brain, credited to source.
+- **`meta/evals/PLAN.md` upgraded** — Phase D is now explicitly *Movement 1 (Selection)*. Absorbed four ideas from the brief: four-outcome verdict (PASS / FAIL_BUILDABLE / GAP / UNCERTAIN) instead of pass/fail; agent-blind separation (builder can't see its own eval); executable-criterion-or-GAP at authoring time; critic-as-gate-not-oracle. Added the "born inside Muakkil" sequencing (the orchestrator's 10-charge eval is brick #1 of the harness — no Muakkil-vs-Phase-D tradeoff).
+
+**Why**
+
+The operator brought a sharp external brief on self-evolving agentic systems. Rather than force-fit its directory religion or build it now, we (a) captured it, (b) translated its best 5 ideas to Hamzaish's broader shape, (c) wrote the vision story while the framework was fresh. The detailed eval-harness build waits until post-Muakkil; the *arc* is captured now because it guides every future decision.
+
+**The reframe that matters**: Hamzaish already self-evolves — variation (builds/learnings) ✅, heredity (`learnings` → `playbooks`, manual) ⚠️, selection (an honest judge) ❌. The whole journey reduces to one move: replace eyeball-selection with an agent-blind verdict. That verdict is Phase D, born inside Muakkil.
+
+**Key divergences from the brief** (documented in the knowledge doc)
+- The brief is codegen-loop-centric; Hamzaish also does strategy/validation/GTM where the gate is a human reading numbers. Mark which lanes auto-gate.
+- No full directory overhaul — layer concepts onto `brain/ factory/ products/ meta/`.
+- "Run Formpad unattended" → wrong target; first self-evolving product needs a rich scenario corpus (Muakkil post-ship, or Scope Intelligence's 15 slices).
+- `vkf` → renamed `frozen/` / goals are `brain/operating-principles.md` (de facto frozen tier).
+
+**What to revisit**
+- After Muakkil ships: extract its orchestrator eval into `meta/evals/` as the harness seed (Movement 1 build).
+- `/spec` upgrade to emit executable scenarios — the bridge that makes specs the compounding asset. Scope when Movement 1 is real.
+- Which lanes of the factory auto-gate vs stay human-judged — decide before Movement 2.
+
+---
+
 ## 2026-06-02 — v1.7 · Pre-launch hygiene: PDF removed, community flow live, tracker created
 
 **What changed**

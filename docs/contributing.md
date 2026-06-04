@@ -109,3 +109,16 @@ beyond one product, note it — it's a candidate to become a guardrail in a
 | Change how the factory acts (a skill/agent/command) | `factory/` |
 | Capture a cross-product principle or anti-pattern | `brain/` |
 | Note what changed in the factory itself | `meta/changelog.md` |
+
+## Licensing of contributions
+
+Hamzaish is **AGPL-3.0** (see [`LICENSE`](../LICENSE)). By submitting a contribution (a PR, a community product example, a learning, a playbook), you agree that:
+
+1. Your contribution is licensed to the project under **AGPL-3.0**, and
+2. You **also grant the maintainer the right to license your contribution under other terms**, including a commercial license.
+
+Point 2 keeps the project's dual-licensing model intact: the community gets everything under AGPL, and the maintainer can offer a commercial license to organizations that don't want AGPL's copyleft obligations. Without this grant, accepting outside contributions would lock the project out of commercial licensing — so it's a requirement for any merged PR.
+
+You retain copyright on your own contribution. This is an inbound license grant, not a copyright assignment — you're not signing your work away, just allowing it to be distributed under both AGPL and (potentially) commercial terms.
+
+If you're contributing only a **community product example or a learning** (the most common case), this still applies but is low-stakes — those are descriptions and lessons, not core factory code.
