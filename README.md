@@ -30,6 +30,23 @@ The design in one breath — full rationale in [`docs/`](docs/):
 
 📖 **New here? Start with [`docs/`](docs/)** — it explains the *why*, not just the folders.
 
+## Quickstart (≈2 minutes)
+
+The boring, scary setup is one command. You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code) (or any agent that reads `AGENTS.md`).
+
+```bash
+git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
+cd hamzaish
+bun run setup
+```
+
+`bun run setup` is idempotent and **never touches your data** — it only fills in what's missing:
+- creates `code-paths.local.json` + `brain/identity/operator.local.md` from templates (yours to edit; git-ignored)
+- wires the global slash commands (`/work-on`, `/portfolio-pulse`, `/brain-ask`, `/brain-ingest`) into `~/.claude/commands/`
+- builds the brain's search index
+
+Then: fill in `brain/identity/operator.local.md` (~2 min), open Claude Code in the folder, and run `/portfolio-pulse`. Zero runtime dependencies — no `bun install` needed.
+
 ## Architecture
 
 ```

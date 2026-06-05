@@ -1,0 +1,18 @@
+{
+  "name": "hamzaish",
+  "version": "1.10.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal AI-native startup factory OS — a brain + orchestrator for solo builders to run a portfolio of products from idea to scale.",
+  "license": "AGPL-3.0-or-later",
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "scripts": {
+    "setup": "bun scripts/setup.ts",
+    "ingest": "bun brain/ingest.ts",
+    "ask": "bun brain/ask.ts",
+    "sync-refs": "bun scripts/sync-product-refs.ts"
+  },
+  "_note": "Zero runtime dependencies — everything uses Bun + Node built-ins (bun:sqlite, node:fs, etc.). No `bun install` needed. Just `bun run setup`."
+}

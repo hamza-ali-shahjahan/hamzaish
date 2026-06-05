@@ -4,6 +4,34 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-06-04 — v1.10 · One-command setup (makes "set up for you" actually true)
+
+**What changed**
+
+- **`scripts/setup.ts`** — the onboarding script. `bun run setup` turns a fresh clone into a working factory: confirms Bun, creates `code-paths.local.json` + `brain/identity/operator.local.md` from templates (skip-if-exists), wires the 4 global slash commands into `~/.claude/commands/` (skip-if-already-linked), builds the brain index, prints next steps. Idempotent; **never overwrites existing `.local` files or existing command symlinks.**
+- **`package.json`** (new, minimal) — `bun run setup` / `ingest` / `ask` / `sync-refs` aliases. Zero runtime dependencies; no `bun install` needed.
+- **README `## Quickstart`** — clone → `bun run setup` → done, ≈2 min. Placed up top so it's the first thing a stranger sees.
+
+**Why**
+
+Reality-check on the landing page: the claim **"Everything, set up for you / no wrestling with tools or configs"** was *false for a first-time cloner* — they'd have had to install Bun, hand-copy two `.example`→`.local` files, symlink commands, run ingest, and learn the structure. The setup script collapses all of that to one command. That's the difference between "Hamza's personal thing" and "a thing a stranger can actually start with" — directly serves the democratize-it mission.
+
+**Tested on the maintainer's own machine** (the hard case): it correctly created the missing `code-paths.local.json`, **skipped** the existing `operator.local.md` and all 4 command symlinks (zero clobber of real data), and re-ingested. Proves idempotency + non-destructiveness in one run. (This is the output-validation-for-codegen-tools playbook applied to our own script — test the real run, not just the logic.)
+
+**Landing-page reality scorecard after this** (from the same session):
+- ① "Everything set up for you" — was ❌, now ✅ (one command)
+- ② "Momentum over research" — ✅ (momentum router, already shipped)
+- ③ "A builder's brain, shared" — 🟡 (you inherit accumulated lessons today; auto-getting-smarter is the self-evolution arc; cross-builder sharing is Movement 3)
+
+**On MCP** (operator asked): decided NOT to build an MCP server now. It doesn't solve onboarding — the hard part is the *corpus* (your products + learnings), not the *interface*. An MCP server connected to an empty Hamzaish is empty. MCP IS the right *eventual* cross-agent interface (one server > N tool-specific files for Codex/Cursor/etc.), but post-Muakkil. Captured for later.
+
+**What to revisit**
+- Optional interactive prompts in setup (ask name/email/stack and pre-fill operator.local.md) — deferred; v1 keeps it robust + non-interactive (testable). Add `--interactive` later if the manual edit step is friction in the stranger test.
+- The stranger UX test (gate #3) should run *through* `bun run setup` now — it's the real first-30-min path.
+- `npx hamzaish init` (vs `bun run setup`) needs the package published — a post-flip nicety.
+
+---
+
 ## 2026-06-02 — v1.9 · License changed MIT → AGPL-3.0 + dual-license path
 
 **What changed**
