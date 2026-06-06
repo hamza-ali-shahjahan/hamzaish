@@ -8,9 +8,23 @@ And skipping strategy isn't laziness — it's often the right call: **build when
 
 ## Start here — pick your path
 
-- **🌱 First time / just want to build** → see **[Quickstart](#quickstart-2-minutes)** below: clone, `bun run setup`, then `/work-on <product>`. The boring, scary setup is done — you start where it gets fun.
+- **🌱 First time / just want to build** → **[Quickstart](#quickstart-2-minutes)** (below), then **[your first product in 10 minutes](docs/your-first-product.md)**. The boring, scary setup is done — you start where it gets fun.
 - **🛠️ Want the internals** → **[Architecture](docs/architecture.md)** · **[Philosophy](docs/philosophy.md)** · **[Where it's heading](meta/SELF-EVOLUTION.md)**. Markdown-first, Claude-Code-native, with **[AGENTS.md](AGENTS.md)** for any other agent.
 - **🤝 Want to contribute / add your own product** → **[Contributing](docs/contributing.md)**: fork, add yours to `products/_community/`, open a PR.
+
+## Quickstart (≈2 minutes)
+
+You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code) (or any agent that reads `AGENTS.md`).
+
+```bash
+git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
+cd hamzaish
+bun run setup
+```
+
+`bun run setup` is idempotent and **never touches your data** — it creates `code-paths.local.json` + `brain/identity/operator.local.md` from templates (yours to edit; git-ignored), wires the global slash commands into `~/.claude/commands/`, and builds the brain's search index. Zero runtime dependencies — no `bun install` needed.
+
+**→ Then follow [Your first product in 10 minutes](docs/your-first-product.md)** — zero to a tracked, self-remembering product, hand-held.
 
 ## What this is
 
@@ -34,24 +48,7 @@ The design in one breath — full rationale in [`docs/`](docs/):
 - **Every product has the same skeleton.** Consistency is a *contract* — predictable for collaborators, mappable to a hosted UI. → [Architecture](docs/architecture.md#the-per-product-skeleton)
 - **The factory compounds.** Each product's `learnings.md` is promoted into guardrails in the agents, so the next build doesn't repeat the last one's mistakes. → [Architecture](docs/architecture.md#the-learnings--guardrails-loop)
 
-📖 **New here? Start with [`docs/`](docs/)** — it explains the *why*, not just the folders.
-
-## Quickstart (≈2 minutes)
-
-The boring, scary setup is one command. You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code) (or any agent that reads `AGENTS.md`).
-
-```bash
-git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
-cd hamzaish
-bun run setup
-```
-
-`bun run setup` is idempotent and **never touches your data** — it only fills in what's missing:
-- creates `code-paths.local.json` + `brain/identity/operator.local.md` from templates (yours to edit; git-ignored)
-- wires the global slash commands (`/work-on`, `/portfolio-pulse`, `/brain-ask`, `/brain-ingest`) into `~/.claude/commands/`
-- builds the brain's search index
-
-Then: fill in `brain/identity/operator.local.md` (~2 min), open Claude Code in the folder, and run `/portfolio-pulse`. Zero runtime dependencies — no `bun install` needed.
+📖 **Want the full "why"?** → [`docs/`](docs/) explains the reasoning, not just the folders.
 
 ## Architecture
 
@@ -141,4 +138,4 @@ Hamza Ali — mail.hamza.ali@gmail.com
 
 ## Version
 
-**v1.0** — Brain/Factory/Products/Meta layered architecture. Muakkil registered as the buildathon proof. References (gbrain/hermes-agent/openclaw) cloned. See `meta/changelog.md`.
+See [`meta/changelog.md`](meta/changelog.md) for the current version + full history (the factory tracks its own evolution there). It started at v1.0 — Brain/Factory/Products/Meta layered architecture.
