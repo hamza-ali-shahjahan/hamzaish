@@ -6,6 +6,12 @@
 
 And skipping strategy isn't laziness — it's often the right call: **build when it's cheap, fast, and reversible** (the thing you ship *is* the validation); **reach for the strategy rails when it's expensive, slow, or hard to undo**, or right before you spend real money on ads or sales. → [the philosophy](docs/philosophy.md)
 
+## Start here — pick your path
+
+- **🌱 First time / just want to build** → see **[Quickstart](#quickstart-2-minutes)** below: clone, `bun run setup`, then `/work-on <product>`. The boring, scary setup is done — you start where it gets fun.
+- **🛠️ Want the internals** → **[Architecture](docs/architecture.md)** · **[Philosophy](docs/philosophy.md)** · **[Where it's heading](meta/SELF-EVOLUTION.md)**. Markdown-first, Claude-Code-native, with **[AGENTS.md](AGENTS.md)** for any other agent.
+- **🤝 Want to contribute / add your own product** → **[Contributing](docs/contributing.md)**: fork, add yours to `products/_community/`, open a PR.
+
 ## What this is
 
 A monorepo that operates like a 24/7 AI cofounder. It runs **multiple products in parallel**, each in its own folder, each onboarded into the same playbook stages (Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down). Every new product spins up with auth, DB, payments, email, analytics, error monitoring, and SEO defaults already wired. Every existing product gets surfaced through the same telemetry pane.

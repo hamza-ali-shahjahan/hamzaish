@@ -1,15 +1,25 @@
 {
   "slug": "formpad",
   "name": "Formpad",
-  "one_liner": "TBD — slot reserved; needs one-liner + validation before scaffolding.",
-  "created": "2026-05-19",
-  "stage": "idea",
-  "status": "slot_reserved",
+  "one_liner": "Form builder for indie SaaS founders — auto-generates forms backed by Supabase. (The product is the form-flair repo.)",
+  "created": "2026-03-22",
+  "stage": "mvp",
+  "status": "active",
   "code_path": null,
   "aliases": [
     "form-pad",
-    "form pad"
+    "form pad",
+    "form-flair",
+    "formflair"
   ],
+  "stack": {
+    "framework": "Vite + React + TypeScript",
+    "ui": "shadcn/ui + Tailwind",
+    "backend": "Supabase",
+    "testing": "Vitest + Playwright",
+    "built_with": "Lovable",
+    "package_manager": "bun"
+  },
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,
@@ -21,9 +31,9 @@
     "ahrefs_target": null
   },
   "links": {
-    "github": null,
+    "github": "https://github.com/hamza-ali-shahjahan/form-flair",
     "prod_url": null,
     "staging_url": null
   },
-  "notes": "New product slot. Hamza mentioned this product as a planned one. Next step: write one-liner, run /validate, then /scaffold if validation passes."
+  "notes": "form-flair IS formpad (confirmed 2026-06-04). Pre-factory Lovable build (created 2026-03-22, last push 2026-04-03 — predates Hamzaish, so onboarded INTO the factory, not built with it). Dormant since April. Has real code (src/, supabase/) + Playwright/Vitest tests. Code lives locally at ~/Claude/form-flair (map it in code-paths.local.json). Next step when revived: /work-on formpad → assess state, write scope.md + status.md, decide validate vs continue-build."
 }
