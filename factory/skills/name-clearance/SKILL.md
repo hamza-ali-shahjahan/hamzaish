@@ -34,7 +34,13 @@ Trademark strength runs: **fanciful > arbitrary > suggestive > descriptive > gen
 Suggestive/descriptive names (Patently for patents, "IP Radar" for IP) are a **double trap** —
 legally weak *and* almost always already taken in-field. **Bias hard toward coined or
 arbitrary names.** In a crowded category (legal-tech, fintech, dev-tools) real dictionary
-words are essentially all taken; a coined word is often the only reliably-clearable option.
+words are *mostly* taken; a coined word is often the only reliably-clearable option.
+
+**But never *assume* a word is taken — check it.** A registered `.com` is NOT a dead name;
+many strong brands don't own their `.com`. What kills a name is a **same-industry collision**
+or a live trademark, not a parked domain. Keep dictionary words in play through the check;
+let the evidence (not a guess) eliminate them. (This skill is **phase 4** of the
+`name-product` pipeline — the clearance engine it calls.)
 
 ## Protocol
 
