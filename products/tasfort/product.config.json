@@ -1,9 +1,9 @@
 {
   "slug": "tasfort",
   "name": "TASFORT",
-  "one_liner": "TBD — needs one-liner refresh; placeholder onboarding.",
+  "one_liner": "\"There's a System for That\" — a searchable library of how 100+ remarkable people run their lives: 265+ methodologies across 11 life domains, matched to you by personality type.",
   "created": "2025-04-07",
-  "stage": "idea",
+  "stage": "launch",
   "status": "active",
   "code_path": null,
   "aliases": [
@@ -21,8 +21,8 @@
   },
   "links": {
     "github": null,
-    "prod_url": null,
+    "prod_url": "https://theresasystemforthat.xyz",
     "staging_url": null
   },
-  "notes": "Onboarded 2026-05-19. TASFORT folder exists at ~/Claude/TASFORT/ (with dashboard.html + discover.html + design-system.css) AND inside ~/Claude/$1F&S/TASFORT/. Reconcile which is canonical before further work. Stage and one-liner need user input."
+  "notes": "Onboarded 2026-05-19. LIVE at https://theresasystemforthat.xyz (verified 2026-06-07): consumer discovery product — personality assessment (MBTI/Enneagram/chronotype), filterable people+systems database, 'people who think like you' matching, routine-builder. Local source at ~/Claude/TASFORT/ AND ~/Claude/$1F&S/TASFORT/ — reconcile canonical. Listed in README 'Products built with Hamzaish'. Backfill analytics IDs."
 }

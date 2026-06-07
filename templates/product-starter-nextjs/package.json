@@ -53,5 +53,7 @@
     "typescript": "^5.5.0",
     "vitest": "^2.1.0"
   },
-  "packageManager": "pnpm@9.0.0"
+  "engines": {
+    "bun": ">=1.1.0"
+  }
 }

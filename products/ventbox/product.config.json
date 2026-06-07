@@ -1,9 +1,9 @@
 {
   "slug": "ventbox",
   "name": "Ventbox",
-  "one_liner": "An anonymous vent space — say what's on your mind, get sense of relief without identity exposure.",
+  "one_liner": "Architecturally-anonymous employee feedback platform — employees initiate unfiltered workplace feedback; HR sees AI-categorized sentiment without ever knowing who said what. Flat-rate, not per-seat.",
   "created": "2025-04-04",
-  "stage": "mvp",
+  "stage": "launch",
   "status": "active",
   "code_path": null,
   "aliases": [
@@ -22,8 +22,8 @@
   },
   "links": {
     "github": null,
-    "prod_url": null,
+    "prod_url": "https://ventbox.co",
     "staging_url": null
   },
-  "notes": "Onboarded into factory 2026-05-19. Codebase exists at ~/Claude/Ventbox App Clone/. Stage assessment pending — needs review of validation evidence + retention data."
+  "notes": "Onboarded into factory 2026-05-19. LIVE at https://ventbox.co (verified 2026-06-07) — pivoted from generic anonymous-vent to B2B HR/employee-feedback wedge: 60s setup, anonymous admin invites, company-domain restriction, AI sentiment analysis, pricing free->$49/mo flat-rate. Codebase at ~/Claude/Ventbox App Clone/. Listed in README 'Products built with Hamzaish'. Backfill analytics IDs + validation/retention evidence."
 }

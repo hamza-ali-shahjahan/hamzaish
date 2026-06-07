@@ -4,6 +4,24 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-06-07 — v1.14 · Starter→Bun, two live products on the proof list
+
+**What changed**
+
+- **Product-starter template converted to Bun** — resolves the v1.13 "what to revisit" item. `.github/workflows/ci.yml` (now `oven-sh/setup-bun` + `bun install --frozen-lockfile` + `bun run …` + `bunx playwright`), `playwright.config.ts` webServer (`bun run dev`), `package.json` (dropped `packageManager: pnpm`, added `engines.bun`), and `SETUP.md` Tests/CI docs all on Bun. Scaffolded products now match the documented Bun default end-to-end.
+- **Ventbox + TASFORT added to README "Products built with Hamzaish"** — both verified live via WebFetch (2026-06-07): [ventbox.co](https://ventbox.co) (anonymous employee-feedback platform, pricing free→$49/mo) and [theresasystemforthat.xyz](https://theresasystemforthat.xyz) (systems-of-remarkable-people discovery product). Their `product.config.json` files updated with real one-liners, `prod_url`, stage `idea/mvp`→`launch`, and verified notes.
+
+**Why**
+
+The v1.11 last-mile work shipped the template's test/CI scaffolding in pnpm while v1.13 made Bun the canonical default — leaving the scaffold inconsistent with the docs. Converted it (CI touched, so verified the YAML, not a blind sweep). Separately, the operator corrected the record: Ventbox and TASFORT aren't pre-ship — they're live, so they earn the proof list.
+
+**What to revisit**
+
+- CI uses `bun install --frozen-lockfile`, which needs a committed `bun.lockb`; a freshly-scaffolded product must `bun install` + commit the lockfile before its first green CI run.
+- Ventbox/TASFORT analytics IDs still null — backfill PostHog/GA/etc. so they surface in `/portfolio-pulse` telemetry.
+
+---
+
 ## 2026-06-07 — v1.13 · Stack reconciled to a single source of truth + "set up once" front door
 
 **What changed**

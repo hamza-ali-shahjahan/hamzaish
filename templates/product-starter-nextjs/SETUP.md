@@ -83,13 +83,15 @@ Visit http://localhost:3000 — landing page should render. `/pricing` should sh
 The starter ships a test harness so "testing" isn't left to you:
 
 ```bash
-pnpm test           # Vitest — unit + component (jsdom)
-pnpm test:watch     # Vitest in watch mode while you build
-pnpm test:coverage  # coverage report
-pnpm test:e2e       # Playwright — boots the real app, hits real routes
+bun run test           # Vitest — unit + component (jsdom)
+bun run test:watch     # Vitest in watch mode while you build
+bun run test:coverage  # coverage report
+bun run test:e2e       # Playwright — boots the real app, hits real routes
 ```
 
-Example tests live at `src/lib/utils.test.ts`, `src/__tests__/smoke.test.tsx`, and `e2e/smoke.spec.ts` — replace them with real coverage as you build. First e2e run needs the browser: `pnpm exec playwright install chromium`.
+> Use `bun run test`, not `bun test` — the latter is Bun's own runner; `bun run test` invokes the Vitest script.
+
+Example tests live at `src/lib/utils.test.ts`, `src/__tests__/smoke.test.tsx`, and `e2e/smoke.spec.ts` — replace them with real coverage as you build. First e2e run needs the browser: `bunx playwright install chromium`.
 
 **CI**: `.github/workflows/ci.yml` runs typecheck → lint → test → build → e2e on every push and PR, using throwaway placeholder env vars for the build (real secrets stay in Vercel). No setup needed beyond pushing to GitHub.
 

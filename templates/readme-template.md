@@ -13,8 +13,8 @@ Production URL: {{URL_OR_PENDING}}
 cd code
 cp .env.example .env.local
 # fill in env vars (see SETUP.md for the 11-step checklist)
-pnpm install
-pnpm dev
+bun install
+bun dev
 ```
 
 Visit http://localhost:3000.

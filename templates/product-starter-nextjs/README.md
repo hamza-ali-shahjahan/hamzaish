@@ -7,8 +7,8 @@
 ```bash
 cp .env.example .env.local
 # fill required vars (see SETUP.md)
-pnpm install
-pnpm dev
+bun install
+bun dev
 ```
 
 Visit http://localhost:3000.

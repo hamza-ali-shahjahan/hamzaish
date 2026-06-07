@@ -23,32 +23,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with: { version: 9 }
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm typecheck
-      - run: pnpm lint
-      - run: pnpm test
-      - run: pnpm build
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: latest }
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun run lint
+      - run: bun run test
+      - run: bun run build
 
   e2e:
     runs-on: ubuntu-latest
     needs: verify
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with: { version: 9 }
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test:e2e
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: latest }
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install --with-deps chromium
+      - run: bun run test:e2e
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
