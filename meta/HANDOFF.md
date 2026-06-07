@@ -5,7 +5,7 @@
 ---
 
 ```
-Continue building Hamzaish — my AI-native startup factory OS at ~/Claude/Hamzaish.
+Continue building Hamzaish — my AI Co-builder & Startup OS at ~/Claude/Hamzaish.
 
 ORIENT FIRST (read in this order, then summarize back what you understand):
 1. AGENTS.md + CLAUDE.md — operating instructions + hard rules

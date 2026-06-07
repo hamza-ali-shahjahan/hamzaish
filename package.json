@@ -3,7 +3,7 @@
   "version": "1.10.0",
   "private": true,
   "type": "module",
-  "description": "Personal AI-native startup factory OS — a brain + orchestrator for solo builders to run a portfolio of products from idea to scale.",
+  "description": "The AI Co-builder & Startup OS — a brain + orchestrator for builders to run a portfolio of products from idea to scale.",
   "license": "AGPL-3.0-or-later",
   "engines": {
     "bun": ">=1.0.0"

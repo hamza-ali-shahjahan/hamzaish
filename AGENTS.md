@@ -4,7 +4,7 @@
 
 ## What Hamzaish is
 
-A personal AI-native startup factory OS for one operator running a portfolio of products. Brain + orchestrator + per-product workspace + self-improvement loop. Built on Anthropic's *Founder's Playbook* (Idea → MVP → Launch → Scale) and informed by gbrain (knowledge graph), hermes-agent (self-improving skills), openclaw (multi-channel gateway).
+A personal AI Co-builder & Startup OS for one operator running a portfolio of products. Brain + orchestrator + per-product workspace + self-improvement loop. Built on Anthropic's *Founder's Playbook* (Idea → MVP → Launch → Scale) and informed by gbrain (knowledge graph), hermes-agent (self-improving skills), openclaw (multi-channel gateway).
 
 The repo is **metadata + learnings, not product code.** Product source repos live elsewhere on the operator's machine and are mapped via a gitignored `code-paths.local.json`.
 
