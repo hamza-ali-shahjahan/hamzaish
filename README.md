@@ -1,4 +1,4 @@
-# Hamzaish — The AI Cofounder & Startup Factory OS
+# Hamzaish — The AI Co-builder & Startup OS
 
 > A personal AI-native startup factory for builders. Brain + orchestrator. Long-running, learning, self-improving. Built especially for first-time builders to run a portfolio of products from ideation through scale — and to kill the ones that don't earn it. Being built by Hamza + his 4 muakkals × Claude × Codex × Lovable.
 
