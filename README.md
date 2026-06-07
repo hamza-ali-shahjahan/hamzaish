@@ -30,6 +30,19 @@ bun run setup
 
 A monorepo that operates like a 24/7 AI cofounder. It runs **multiple products in parallel**, each in its own folder, each onboarded into the same playbook stages (Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down). Every new product spins up with auth, DB, payments, email, analytics, error monitoring, and SEO defaults already wired. Every existing product gets surfaced through the same telemetry pane.
 
+## What you inherit on day one (the hard-won part)
+
+Most AI tools get you a *demo* fast — impressive in hours, then a long flat slog through the unglamorous last mile (design decisions, auth, payments, infra, testing, edge cases) before anything is actually shippable. Hamzaish front-loads that slog. The four things below aren't theory — they're **scar tissue from real ships and real mistakes**, distilled into guardrails so you start where they've already been paid for:
+
+- **🚫 A pre-launch security gate that BLOCKS.** 50+ concrete checks across auth, authz, data exposure, and secrets — each with a severity tier and a forced **BLOCK / CLEAR** verdict. Most prototype tools ship you straight to production with nothing here. ([`mvp-stage/security-checklist.md`](factory/playbooks/mvp-stage/security-checklist.md))
+- **🏛️ An architecture agent that forces the boring decisions** *before* you write code — written to ADR files so the "why" survives. The decisions that quietly sink prototypes (data model, auth model, the one must-be-true thing) get made on purpose. ([`mvp/architect`](factory/agents/mvp/architect/SKILL.md) + [`architecture-decisions.md`](factory/playbooks/mvp-stage/architecture-decisions.md))
+- **🔁 A self-improving loop that's real.** When a product ships and something breaks, the failure becomes a permanent playbook. The npm bin-path gotcha, GitHub email-privacy blocking the first push, codegen output that lints clean but fails downstream — all caught once, never again. The factory gets smarter every time it crosses the gap. ([`brain/learnings/`](brain/learnings/) → [`factory/playbooks/`](factory/playbooks/))
+- **⚙️ Sane tech defaults that handle the $0→$1K-MRR infra pain** so you don't reinvent it. Next.js + Supabase (auth, DB, RLS) + Stripe + Resend + Inngest + PostHog + Sentry, all wired and free-tier-first, with documented escape hatches. ([`stack/tech-stack.md`](stack/tech-stack.md))
+
+The honest boundary: this is a **0→PMF accelerator**, not a 0→production-ops framework — see [where it's heading](meta/SELF-EVOLUTION.md) for what's still thin (test scaffolding, CI/CD, production runbooks).
+
+## Built on, and informed by
+
 Built on Anthropic's *Founder's Playbook: Building an AI-Native Startup* and informed by the patterns of:
 - **gbrain** (Garry Tan) — knowledge graph + hybrid retrieval
 - **hermes-agent** (Nous Research) — self-improving skills + memory loops
