@@ -1,17 +1,20 @@
 {
   "slug": "copyright",
-  "name": "IP Radar",
-  "one_liner": "US copyright + patent research and violations agent for AI builders, founders, and IP attorneys.",
+  "name": "Patently",
+  "one_liner": "AI IP-clearance research for founders & product teams — \"Ship without blindsiding yourself on IP.\" Research chat, clearance memos, and watchlist digests over US case law, patents, and copyright registrations.",
   "created": "2026-04-21",
   "stage": "mvp",
   "status": "active",
-  "sprint": "friends-test",
+  "sprint": "private-beta",
   "code_path": "/Users/hamza/Claude/CopyRight",
   "aliases": [
-    "CopyRight",
+    "Patently",
+    "patently",
+    "patently.legal",
+    "IP Radar",
     "ip-radar",
-    "copyright app",
-    "IP Radar"
+    "CopyRight",
+    "copyright app"
   ],
   "stack": {
     "framework": "Next.js 16 (App Router)",
@@ -44,10 +47,11 @@
   },
   "links": {
     "github": "https://github.com/hamza-ali-shahjahan/ip-radar",
-    "prod_url": "https://ip-radar-one.vercel.app",
-    "admin_url": "https://ip-radar-one.vercel.app/admin",
+    "prod_url": "https://patently.legal",
+    "admin_url": "https://patently.legal/admin",
     "staging_url": null,
+    "domain_chosen": "patently.legal",
     "domain_shortlist": ["gauntlet.legal", "allrights.app", "allrights.legal", "crucible.legal", "ipradar.app"]
   },
-  "notes": "Hamzaish-built proof product. Nine-step clearance DAG (extract_facts → parallel gather → claim_similarity + fair_use → synthesize → validate with one auto-correct retry). Citation contract validator rejects unknown IDs and bare Bluebook citations. Hit USPTO ID.me/SSN wall mid-build as a non-US user — pivoted to Google Patents BigQuery in same session (better architecture, no ID.me dependency, effectively free at prototype scale). GCP service-account key stored base64-encoded in Vercel envs after Vercel CLI multi-line stdin truncation bug. Personal-tier daily limits: 50 chat messages + 50 clearance memos per 24h rolling window. All-in cost tracking per clearance run (LLM + embeddings + BigQuery via AsyncLocalStorage). Admin dashboard at /admin (email-gated). Pending: domain pick, credential rotation (all burned in old chat transcripts), Clerk webhook for digest email delivery, pnpm db:migrate for migration 0001 (cost columns). Built in ~6 weeks of sessions 2026-04-21 to 2026-06-02."
+  "notes": "Hamzaish-built proof product. Renamed IP Radar → Patently; LIVE in private beta at https://patently.legal (verified 2026-06-07, tagline \"Ship without blindsiding yourself on IP.\"). Nine-step clearance DAG (extract_facts → parallel gather → claim_similarity + fair_use → synthesize → validate with one auto-correct retry). Citation contract validator rejects unknown IDs and bare Bluebook citations. Hit USPTO ID.me/SSN wall mid-build as a non-US user — pivoted to Google Patents BigQuery in same session (better architecture, no ID.me dependency, effectively free at prototype scale). GCP service-account key stored base64-encoded in Vercel envs after Vercel CLI multi-line stdin truncation bug. Personal-tier daily limits: 50 chat messages + 50 clearance memos per 24h rolling window. All-in cost tracking per clearance run (LLM + embeddings + BigQuery via AsyncLocalStorage). Admin dashboard at /admin (email-gated). Pending: credential rotation (all burned in old chat transcripts), Clerk webhook for digest email delivery, pnpm db:migrate for migration 0001 (cost columns). Built in ~6 weeks of sessions 2026-04-21 to 2026-06-02. Domain picked (was open): patently.legal."
 }

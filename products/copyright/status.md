@@ -1,16 +1,16 @@
-# IP Radar (CopyRight) — Live Status
+# Patently (formerly IP Radar) — Live Status
 
-**Stage**: mvp (friends-test)
+**Stage**: mvp (private beta)
 **Status**: active
-**Prod**: https://ip-radar-one.vercel.app
+**Prod**: https://patently.legal
 **GitHub**: https://github.com/hamza-ali-shahjahan/ip-radar
 **Admin**: /admin (email-gated to hamza)
 
 ## North star this sprint
-5–10 friends test chat + clearance surfaces → collect feedback → pick domain → soft public launch.
+Private beta live on patently.legal → drive 5–10 target users through chat + clearance → collect feedback → lift fair-usage limits → public launch.
 
 ## Open immediately
-- [ ] Pick production domain (gauntlet.legal / allrights.app / crucible.legal / ipradar.app)
+- [x] Pick production domain → **patently.legal** (live)
 - [ ] Run `pnpm db:migrate` on prod Neon — applies migration 0001 (cost breakdown columns)
 - [ ] Rotate burned credentials (Clerk, Anthropic, Resend, CourtListener, Voyage, Neon)
 

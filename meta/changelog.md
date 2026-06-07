@@ -10,6 +10,8 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 - **Product-starter template converted to Bun** — resolves the v1.13 "what to revisit" item. `.github/workflows/ci.yml` (now `oven-sh/setup-bun` + `bun install --frozen-lockfile` + `bun run …` + `bunx playwright`), `playwright.config.ts` webServer (`bun run dev`), `package.json` (dropped `packageManager: pnpm`, added `engines.bun`), and `SETUP.md` Tests/CI docs all on Bun. Scaffolded products now match the documented Bun default end-to-end.
 - **Ventbox + TASFORT added to README "Products built with Hamzaish"** — both verified live via WebFetch (2026-06-07): [ventbox.co](https://ventbox.co) (anonymous employee-feedback platform, pricing free→$49/mo) and [theresasystemforthat.xyz](https://theresasystemforthat.xyz) (systems-of-remarkable-people discovery product). Their `product.config.json` files updated with real one-liners, `prod_url`, stage `idea/mvp`→`launch`, and verified notes.
+- **IP Radar → Patently** — renamed across README proof list + `products/copyright/` (config name/aliases/links, status.md). Verified live in private beta at [patently.legal](https://patently.legal) (tagline "Ship without blindsiding yourself on IP."); the previously-open "pick a domain" task is now resolved. `_portfolio.md` rows + stage counts hand-updated for all three live products (Ventbox, Patently, TASFORT now under a new "Launch (live)" group).
+- **`.no-auto-commit` marker added** (gitignored) — operator set "auto mode, but no commits without approval"; the marker disables this repo's global auto-commit/push Stop hook. Remove it to re-enable.
 
 **Why**
 

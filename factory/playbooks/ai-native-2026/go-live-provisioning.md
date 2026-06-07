@@ -61,6 +61,9 @@ A new factory skill (`factory/skills/go-live/`) that runs the pipeline for a sca
 ```
 /go-live <slug>
   0. preflight   — vault has required keys? product has code_path + a chosen name?
+  0.5 clearance  — name-clearance skill: same-industry collision + TM signal + domain.
+                   HARD GATE — a RED verdict blocks the buy. (The patently.legal miss:
+                   domain was free, the *name* collided with an 8yr-old patent platform.)
   1. domain      — registrar.domain_register(<name>) ; dns_record_set → Vercel
   2. repo        — gh repo create --private --source --push   (if not already)
   3. vercel      — project_create ; git_connect ; env_add (per-product keys from vault)
