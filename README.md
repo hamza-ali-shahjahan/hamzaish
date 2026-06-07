@@ -39,7 +39,7 @@ Most AI tools get you a *demo* fast — impressive in hours, then a long flat sl
 - **🔁 A self-improving loop that's real.** When a product ships and something breaks, the failure becomes a permanent playbook. The npm bin-path gotcha, GitHub email-privacy blocking the first push, codegen output that lints clean but fails downstream — all caught once, never again. The factory gets smarter every time it crosses the gap. ([`brain/learnings/`](brain/learnings/) → [`factory/playbooks/`](factory/playbooks/))
 - **⚙️ Sane tech defaults that handle the $0→$1K-MRR infra pain** so you don't reinvent it. Next.js + Supabase (auth, DB, RLS) + Stripe + Resend + Inngest + PostHog + Sentry, all wired and free-tier-first, with documented escape hatches. ([`stack/tech-stack.md`](stack/tech-stack.md))
 
-The honest boundary: this is a **0→PMF accelerator**, not a 0→production-ops framework — see [where it's heading](meta/SELF-EVOLUTION.md) for what's still thin (test scaffolding, CI/CD, production runbooks).
+The honest boundary: the four guardrails above are **proven scar tissue.** The last-mile layer that used to be missing — **test scaffolding, CI/CD, production-ops runbooks, and a validation gate** — is now baked in too, but as **research-baked defaults** (established best practice) that haven't yet been battle-tested inside the factory. We track exactly which is which in [the honest ledger](meta/RESEARCH-BAKED-PRACTICES.md), so you always know what's proven vs. what's promising. → [where it's heading](meta/SELF-EVOLUTION.md)
 
 ## Built on, and informed by
 
@@ -123,7 +123,7 @@ The live index is generated — see [`products/_portfolio.md`](products/_portfol
 
 ## The discipline (don't violate)
 
-1. **Don't build before you validate.** 5 conversations with target-profile users before production code.
+1. **Don't build before you validate.** 5 conversations with target-profile users before production code. Now enforced as a *speed bump*, not just a rule: `bun run check-validation <slug>` reads each product's `validation/` ledger — validate, or explicitly record the debt. Building unvalidated is allowed; building unvalidated **silently** is not (the wp-to-astro lesson, encoded).
 2. **Scope is the moat.** Every product has a `scope.md` saying what it does AND what it deliberately doesn't.
 3. **Persistent context.** Every product gets a `CLAUDE.md`; every decision goes in `decisions/`.
 4. **Measurement before launch.** Define north-star, activation, retention, false-positive shape before the first user.

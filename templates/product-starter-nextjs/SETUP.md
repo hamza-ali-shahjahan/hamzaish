@@ -73,10 +73,32 @@
 ```bash
 cp .env.example .env.local
 # fill in everything
-pnpm install
-pnpm dev
+bun install
+bun dev
 ```
 Visit http://localhost:3000 — landing page should render. `/pricing` should show tiers. `/waitlist` should accept emails. Sentry test error (curl `/api/test-error` if you build that route) should appear in Sentry within 60s.
+
+## Tests & CI (wired out of the box)
+
+The starter ships a test harness so "testing" isn't left to you:
+
+```bash
+pnpm test           # Vitest — unit + component (jsdom)
+pnpm test:watch     # Vitest in watch mode while you build
+pnpm test:coverage  # coverage report
+pnpm test:e2e       # Playwright — boots the real app, hits real routes
+```
+
+Example tests live at `src/lib/utils.test.ts`, `src/__tests__/smoke.test.tsx`, and `e2e/smoke.spec.ts` — replace them with real coverage as you build. First e2e run needs the browser: `pnpm exec playwright install chromium`.
+
+**CI**: `.github/workflows/ci.yml` runs typecheck → lint → test → build → e2e on every push and PR, using throwaway placeholder env vars for the build (real secrets stay in Vercel). No setup needed beyond pushing to GitHub.
+
+> Why both layers: a 100%-green unit suite can still ship a broken app. The e2e smoke is the cheap "run it in the real environment" gate — see `factory/playbooks/launch-stage/output-validation-for-codegen-tools.md`.
+
+## When you have paying customers — production ops
+Don't bolt these on during an incident. Read before your first real users:
+- `factory/playbooks/scale-stage/production-operations.md` — incident response, the DB-down runbook, backups/DR
+- `factory/playbooks/scale-stage/abuse-and-cost-controls.md` — rate limiting, abuse handling, LLM/API cost-runaway caps
 
 ## What's deferred
 - SOC 2 (start with Vanta/Drata when first enterprise asks)

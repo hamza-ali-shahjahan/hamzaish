@@ -10,11 +10,12 @@ Picked on three criteria: (1) **free tier covers $0 → $1K MRR**, (2) **one-sho
 
 | Layer | Choice | Free tier limit | Cost when paid | Why |
 |---|---|---|---|---|
-| **Framework** | Next.js 15 (App Router + RSC) | — | — | RSC, Vercel-native, every AI SaaS uses this, biggest LLM training corpus |
-| **UI** | Tailwind CSS + shadcn/ui | — | — | Copy-paste components, owns the code, no runtime dep |
+| **Framework** | Next.js 16 (App Router + RSC) | — | — | RSC, Vercel-native, every AI SaaS uses this, biggest LLM training corpus → Claude writes it best |
+| **Runtime / pkg manager** | Bun | — | — | One tool = runtime + package manager + test runner; runs TS with no build step; the factory itself runs on Bun. (Existing products on pnpm/npm are fine — migrate opportunistically, don't churn.) |
+| **UI** | Tailwind v4 + shadcn/ui | — | — | Copy-paste components, owns the code, no runtime dep. Unanimous across every product — the one true invariant. |
 | **Hosting** | Vercel | Hobby tier (100GB bandwidth/mo) | $20/mo Pro | Push-to-deploy from GitHub, edge functions, preview URLs per branch |
-| **Auth** | Supabase Auth | 50K MAU | $25/mo Pro | Magic link + OAuth + SSO; same project as DB |
-| **Database** | Supabase Postgres + RLS | 500MB DB, 1GB transfer | $25/mo | RLS for security, generated types, real-time, vectors (pgvector) built in |
+| **Auth** | Supabase Auth | 50K MAU | $25/mo Pro | Magic link + OAuth + SSO; same project as DB. → For multi-tenant B2B (orgs, SSO/SAML), swap to **Clerk** — the documented scale path (see below). |
+| **Database** | Supabase Postgres + RLS | 500MB DB, 1GB transfer | $25/mo | RLS for security, generated types, real-time, vectors (pgvector) built in. → At multi-tenant scale, swap to **Neon** (git-style branching, scale-to-zero) — see scale path. |
 | **File storage** | Supabase Storage | 1GB | included in Pro | Same project |
 | **Payments** | Stripe | — | 2.9%+30¢ per txn | Subscriptions, customer portal, webhook signing, tax (Stripe Tax add-on) |
 | **Email transactional** | Resend | 100/day, 3K/mo | $20/mo (50K) | React Email templates, deliverability, webhooks |
@@ -107,12 +108,23 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_APP_NAME=
 ```
 
-## When to deviate
+## The scale path (the #1 documented deviation)
 
-Switch to **Convex + Clerk** if: you need reactive backend with magical realtime and you're OK with a more opinionated, less portable stack. Document in `decisions/`.
+**Swap Supabase → Neon + Clerk when you hit multi-tenant B2B.** This isn't theoretical — it's what **IP Radar** and **Scope Intelligence** actually shipped. Take it when you need: separate customer orgs/teams, SSO/SAML, role-based access, or a DB branch per preview deploy.
 
-Switch to **Turso + WorkOS** if: you're going B2B-enterprise from day one, need SSO/SAML and audit logs Supabase doesn't have.
+- **Neon** — serverless Postgres that branches like git (isolated DB per preview), scales to zero, pgvector built in. Provisionable through the Vercel marketplace on one bill.
+- **Clerk** — multi-tenant orgs, prebuilt auth UI, B2B SSO/SAML, user-management dashboard.
 
-Switch to **Cloudflare Workers + D1** if: you need ultra-low cold-start and are building edge-first. Lose Supabase's pgvector / RLS ergonomics.
+Everything else (Next.js, Bun, Tailwind/shadcn, Stripe, Resend, Vercel, Claude) stays the same.
 
-Default = Next.js + Supabase + Stripe + Vercel. Don't deviate without a real reason.
+## Other deviations
+
+Switch to **Convex** if: you need a reactive backend with magical realtime and you're OK trading portability for velocity.
+
+Switch to **Astro + MDX** if: the product is content/SEO-first (blog, docs, marketing) with no real app layer — ships zero JS by default.
+
+Switch to **Cloudflare Workers + D1** if: you need ultra-low cold-start and are building edge-first / API-as-product. Lose Supabase's pgvector / RLS ergonomics.
+
+Switch payments to **Lemon Squeezy / Paddle** if: you're indie-consumer ($5–20/mo SKU) or selling where Stripe's tax support is weak — they're merchant-of-record (handle global tax for you).
+
+**Default = Next.js 16 + Bun + Supabase + Stripe + Resend + Vercel + Claude.** Don't deviate without a real reason, and log it in the product's `decisions/`.

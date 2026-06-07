@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.0",
@@ -31,15 +35,23 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^2.1.0",
     "autoprefixer": "^10.4.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.0.0",
+    "jsdom": "^25.0.0",
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
   },
   "packageManager": "pnpm@9.0.0"
 }

@@ -4,6 +4,46 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-06-07 — v1.13 · Stack reconciled to a single source of truth + "set up once" front door
+
+**What changed**
+
+- **`stack/README.md`** (new) — the missing front door: *"Your stack & accounts — set up once."* Lists the sign-up-once accounts (reused across every product), and — the part that was missing — **what each service unlocks *beyond the obvious*** (Vercel = provisioning marketplace + v0, PostHog = 5 tools in one, Neon = git-style DB branching, etc.). Plus a noob-friendly "what is Bun / a package manager / runs-TS" explainer. Wires to `setup.ts` + `SETUP.md`.
+- **`stack/tech-stack.md`** — bumped Next.js 15→16; added **Bun** as the canonical runtime/pkg-manager row; documented the **Neon + Clerk** multi-tenant-B2B scale path as the #1 deviation (proven on IP Radar + Scope Intelligence); refreshed the "default =" line.
+- **`stack/stack-selection.md`** + **`stack/analytics-stack.md`** + **`templates/.../SETUP.md`** — pnpm → Bun in the canonical-default references.
+- **`brain/identity/operator.local.md`** — reconciled stack defaults to what actually ships: TanStack Start → Next.js 16 (TanStack noted as the Lovable-driven deviation), Cloudflare Workers → Vercel (CF noted as edge-first deviation). Bun/Supabase/Resend kept (already matched).
+
+**Why**
+
+Operator asked whether the factory documents the stack + the one-time account setup a new user needs. It did — but auditing surfaced **drift across three sources**: the documented default (Supabase/Next 15/pnpm), what products actually ship (IP Radar = Neon/Clerk/Next 16; both serious SaaS use Clerk), and the operator-identity file (TanStack/Bun/Cloudflare). **Neon — a service in active production use — wasn't documented anywhere.** Reconciled to one canonical default chosen by *revealed preference* (what ships) + the "set up once, beginner-friendly" goal: **Next.js 16 · Bun · Tailwind v4/shadcn · Supabase · Stripe · Resend · Vercel · Claude**, with **Neon + Clerk** as the documented scale path. Bun over pnpm chosen deliberately (operator preference + the factory's own runtime + one-tool simplicity); Next.js over the operator's stated TanStack preference (revealed preference + Vercel-native + biggest LLM corpus → Claude writes it best).
+
+**What to revisit**
+
+- **The product-starter template is still pnpm-wired end-to-end** (`package.json` packageManager, `.github/workflows/ci.yml`, `playwright.config.ts`, vitest, README). The docs now say Bun; the scaffold still emits pnpm. Convert the template to Bun as a focused follow-up (touches CI — needs verification, not a blind sweep) so scaffolded products match the documented default.
+- If the operator later decides TanStack/Bun/Cloudflare *is* a real forward conviction (not stale preference), flip the default and mark current Next.js/Vercel products as the deviations instead.
+
+---
+
+## 2026-06-07 — v1.11 · Closing the last-mile gap (tests, CI, prod-ops, validation enforcement)
+
+**What changed**
+
+- **Test scaffolding in the starter** — `templates/product-starter-nextjs/` now ships Vitest (unit + component, jsdom) and Playwright (e2e smoke), with example tests (`src/lib/utils.test.ts`, `src/__tests__/smoke.test.tsx`, `e2e/smoke.spec.ts`), `vitest.config.ts`, `vitest.setup.ts`, `playwright.config.ts`, new `test*` scripts + devDeps, and `.gitignore` entries. The "testing" milestone is no longer left to the user.
+- **CI/CD template** — `.github/workflows/ci.yml`: typecheck → lint → test → build → e2e on every push/PR, with throwaway placeholder env for the build (real secrets stay in Vercel). Replaces the all-manual deploy story.
+- **Production-ops playbooks** — `factory/playbooks/scale-stage/production-operations.md` (severity ladder, incident loop, DB-down runbook, backup/DR) and `abuse-and-cost-controls.md` (rate limiting, bot defense, LLM/scan-billed cost caps, kill switch). Routed in `CLAUDE.md` + `SETUP.md`.
+- **Validation enforcement** — convention → speed bump. New `scripts/check-validation.ts` + `bun run check-validation <slug>`, a per-product `validation/` ledger (`products/_template/validation/README.md`), wired into `/scaffold` and `/hamzaish` guardrails. Building unvalidated is allowed; building unvalidated *silently* is not.
+- **`meta/RESEARCH-BAKED-PRACTICES.md`** (new) — the honest ledger separating *proven scar tissue* from *research-baked* (best-practice-but-unproven-here) guardrails. README's "What you inherit" boundary now points to it.
+- **README** — discipline rule #1 now cites the enforcement; the honest-boundary line reflects the filled gaps as research-baked.
+
+**Why**
+
+A gap audit (prompted by the "impressive prototype vs. real product" curve) found Hamzaish strong at 0→MVP but thin on the unglamorous last mile: no test harness in the starter, no production-ops layer, no CI, and "validate before build" enforced only by convention (and self-violated on wp-to-astro). These changes close those gaps — honestly labelled as research-baked until a real ship proves each one.
+
+**What to revisit**
+
+- The CI placeholder env / pnpm version may need per-product tuning — first real push will tell.
+- Every row in `RESEARCH-BAKED-PRACTICES.md` graduates (or gets corrected) on first real-world contact. Move graduated rows + update playbook provenance when that happens.
+
 ## 2026-06-04 — v1.10 · One-command setup (makes "set up for you" actually true)
 
 **What changed**

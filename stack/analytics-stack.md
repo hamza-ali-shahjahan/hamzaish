@@ -93,7 +93,7 @@ Stored at `products/<name>/SETUP.md`, the scaffold writes:
 8. [ ] Verify domain in Google Search Console → paste meta tag content
 9. [ ] Verify domain in Ahrefs Webmaster Tools → no env var, just confirm verified
 10. [ ] (optional) Create DataForSEO account + $50 deposit → paste login/password
-11. [ ] pnpm install && pnpm dev
+11. [ ] bun install && bun dev
 ```
 
 Each step links directly to the signup/setup URL. Setup time for a fresh product: ~25 minutes if you have nothing, ~5 minutes for the 10th product because you reuse Supabase/Stripe/Resend/Sentry/PostHog accounts and just add new projects.

@@ -43,9 +43,17 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - A new product is its OWN repo. Register it here with
      `cp -r products/_template products/<slug>` and add the slug → local path to
      `code-paths.local.json`. **Never paste product code into this repo.**
+   - **Validation speed bump.** Before production code on a NEW product, run
+     `bun run check-validation <slug>`. It's a bump, not a wall: either 5 target-user
+     conversations are logged in `products/<slug>/validation/README.md`, or you flip the
+     ledger to `debt-accepted` and write down *why you're building first*. Building
+     unvalidated is fine — building unvalidated **silently** is the thing we no longer do
+     (the wp-to-astro lesson, encoded).
    - Next.js 16+: use `proxy.ts`, not `middleware.ts`.
    - Set a noreply git email before the first commit (avoids push rejection).
    - Build locally before any deploy.
+   - The starter ships tests + CI (`pnpm test`, `pnpm test:e2e`,
+     `.github/workflows/ci.yml`). Don't strip them — extend them.
 
 ## ② Strategy Lane — opt-in, lite-by-default
 

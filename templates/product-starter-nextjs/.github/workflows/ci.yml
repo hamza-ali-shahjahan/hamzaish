@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same ref so the queue doesn't pile up.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Throwaway CI placeholders. src/lib/env.ts (zod) requires these four at build time.
+# Real values live in Vercel project settings — NEVER commit real secrets here.
+env:
+  NEXT_PUBLIC_APP_NAME: ci
+  NEXT_PUBLIC_APP_URL: http://localhost:3000
+  NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-anon-key-placeholder
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

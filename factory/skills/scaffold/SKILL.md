@@ -25,6 +25,8 @@ Creates a complete starting point for a new product:
    ├── README.md
    ├── decisions/
    │   └── 0001-scaffold.md
+   ├── validation/
+   │   └── README.md (the validation ledger — gates `bun run check-validation`)
    ├── interviews/
    │   └── README.md
    ├── launch/
@@ -92,7 +94,7 @@ Creates a complete starting point for a new product:
 1. Parse `<slug>` and `<one-liner>` from the user's invocation.
 2. Validate slug: lowercase, hyphens only, no spaces. If invalid, ask for correction.
 3. Validate uniqueness: error if `products/<slug>/` exists.
-4. **VALIDATION GATE**: Unless the user said "skip validation" or explicitly the user already has validation evidence (cite the source: e.g. `products/<slug>/validation/snapshot.md` from a prior `/validate` run), ask: "I don't see validation evidence for this product. Are you sure you want to scaffold before validating? (yes / run /validate first)"
+4. **VALIDATION GATE**: Seed `products/<slug>/validation/README.md` from `products/_template/validation/README.md`, then run `bun run check-validation <slug>`. If it exits non-zero (state `unvalidated`), tell the user: "No validation evidence for this product. Run `/validate <slug>` first, or — if you're choosing to build first — I'll set the ledger to `debt-accepted` and record why." Building first is allowed; building first **silently** is not. Only proceed once the ledger reflects reality (`validated`, `in-progress`, or `debt-accepted`).
 5. If user proceeds: create folder structure, copy template, do the substitutions.
 6. Generate the doc skeletons by reading the templates and filling from the one-liner.
 7. Print the SETUP.md checklist as the final message so the user knows the manual steps remaining.

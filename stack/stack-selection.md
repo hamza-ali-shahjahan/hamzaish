@@ -19,7 +19,7 @@ The default stack (see `tech-stack.md`) covers ~85% of new products. Use this de
 
 - **Frontend framework family**: React (via Next.js, Astro, or Expo). No Vue/Svelte/Solid in this factory; consistency across 10 products matters more than picking the perfect framework for product N.
 - **Language**: TypeScript everywhere. Strict mode on.
-- **Package manager**: pnpm. Not npm. Not yarn.
+- **Runtime / package manager**: Bun (runtime + pkg manager + test runner in one; the factory runs on it). Existing products on pnpm/npm are fine — migrate opportunistically.
 - **AI primary**: Claude (Anthropic). Other models only as fallbacks or for specific workloads.
 - **Hosting**: Vercel or Cloudflare Workers. Not AWS / GCP / DigitalOcean directly — not worth the ops time at this stage.
 

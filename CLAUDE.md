@@ -102,6 +102,8 @@ When work needs a framework, read these BEFORE acting:
 | 100 → 1000 | `factory/playbooks/scale-stage/100-to-1000-customers.md` |
 | Growth loops | `factory/playbooks/scale-stage/growth-loops-reforge.md` |
 | Moat | `factory/playbooks/scale-stage/moat-building.md` |
+| Production ops / incident response / DB-down / backup-DR | `factory/playbooks/scale-stage/production-operations.md` |
+| Rate limiting / abuse / cost-runaway caps | `factory/playbooks/scale-stage/abuse-and-cost-controls.md` |
 
 ## Self-improvement loop — non-negotiable
 
