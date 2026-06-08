@@ -1,0 +1,25 @@
+# gitleaks config — {{PRODUCT_NAME}}
+# Extends the built-in ruleset (API keys, tokens, private keys, etc.) and adds
+# allowlists for this repo's known-safe placeholders. Used by both the CI
+# workflow (.github/workflows/secret-scan.yml) and the pre-commit hook
+# (.githooks/pre-commit). Docs: https://github.com/gitleaks/gitleaks
+
+# Pull in gitleaks' default rules, then layer our overrides on top.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Known-safe placeholders and template files — not real secrets."
+paths = [
+  '''\.env\.example$''',          # committed template: names only, no values
+  '''\.gitleaks\.toml$''',        # this config
+  '''(^|/)README\.md$''',
+  '''(^|/)SETUP\.md$''',
+]
+# Placeholder / example values that look secret-shaped but are intentional.
+regexes = [
+  '''ci-anon-key-placeholder''',
+  '''example\.supabase\.co''',
+  '''\{\{[A-Z_]+\}\}''',          # {{PLACEHOLDER}} tokens from scaffolding
+  '''(?i)your[-_]?(api[-_]?)?key[-_]?here''',
+]

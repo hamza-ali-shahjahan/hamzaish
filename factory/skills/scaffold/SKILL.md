@@ -43,6 +43,13 @@ Creates a complete starting point for a new product:
    - `src/app/layout.tsx` (default metadata)
    - `next.config.mjs` (if needed)
    - `README.md`
+   - `.gitleaks.toml`, `SETUP.md` ({{PRODUCT_NAME}} / {{PRODUCT_SLUG}} placeholders)
+
+   The starter is **secure-by-default** — the copy already brings `.gitignore`
+   (`.env*` ignored, `!.env.example` tracked), the committed `.env.example`
+   placeholder, the `secret-scan.yml` gitleaks workflow, `.gitleaks.toml`, and the
+   `.githooks/pre-commit` hook. See "Secure-by-default" below for the scaffold-time
+   steps the template can't carry on its own.
 
 3. **product.config.json** — the dashboard registry entry:
    ```json
@@ -97,8 +104,35 @@ Creates a complete starting point for a new product:
 4. **VALIDATION GATE**: Seed `products/<slug>/validation/README.md` from `products/_template/validation/README.md`, then run `bun run check-validation <slug>`. If it exits non-zero (state `unvalidated`), tell the user: "No validation evidence for this product. Run `/validate <slug>` first, or — if you're choosing to build first — I'll set the ledger to `debt-accepted` and record why." Building first is allowed; building first **silently** is not. Only proceed once the ledger reflects reality (`validated`, `in-progress`, or `debt-accepted`).
 5. If user proceeds: create folder structure, copy template, do the substitutions.
 6. Generate the doc skeletons by reading the templates and filling from the one-liner.
-7. Print the SETUP.md checklist as the final message so the user knows the manual steps remaining.
-8. Print "next: run `pnpm install && pnpm dev` in products/<slug>/code/ — landing page should boot at localhost:3000".
+7. **Apply the secure-by-default steps** (section below).
+8. Print the SETUP.md checklist as the final message so the user knows the manual steps remaining.
+9. Print "next: run `pnpm install && pnpm dev` in products/<slug>/code/ — landing page should boot at localhost:3000".
+
+## Secure-by-default
+
+Every scaffolded product ships secure from commit zero. Most of this rides in via
+the template copy; a few steps must run at scaffold time.
+
+- **Secrets gitignored** — verify the copied `.gitignore` ignores `.env`, `.env.*`,
+  `*.env.local` and re-includes `!.env.example`. Only the placeholder
+  `.env.example` is tracked; real secrets go in `.env.local` (local) or Vercel
+  project settings (prod), never the repo.
+- **Secret-scan CI included** — `.github/workflows/secret-scan.yml` (gitleaks,
+  pinned action, `permissions: contents: read`) + `.gitleaks.toml` come with the
+  template. Confirm they landed in `products/<slug>/code/`.
+- **`.no-auto-push` marker** — create it at scaffold time so wip auto-commits stay
+  local until `/ship`: `touch products/<slug>/code/.no-auto-push`. (It's gitignored
+  by design — operator-local discipline — so the template can't carry it across a
+  fresh clone; the scaffold step must add it.)
+- **Production-branch deploy** — note in the product's `SETUP.md` / decision log:
+  Vercel **Production Branch must be set to `production`** (Project → Settings →
+  Git). Deploys happen only via `/ship` (promote reviewed commits to `production`).
+  `main`/working-branch pushes should be Preview, not Production.
+- **RLS-on reminder** — surface it: every Supabase table holding user data needs
+  `enable row level security` + a policy in `supabase/migrations/`. The starter
+  migration is the place to set the habit; flag it in the final message.
+- Tell the user they can run `/security-check <slug>` any time to audit all of the
+  above, and that `/ship` runs it as a gate before every deploy.
 
 ## Edge cases
 - If `templates/product-starter-nextjs/` doesn't exist yet, scaffold the doc files only and tell the user to wait for the starter (Phase C of this build pass).

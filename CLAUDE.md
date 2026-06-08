@@ -176,6 +176,8 @@ Permanent routing rule → add it here. Framework worth keeping → add to `fact
 | `/brain-ingest` | Refresh the brain's SQLite FTS5 index. Idempotent. Run after writes. |
 | `/hamzaish` | **Momentum router.** Default is *just build* (→ `/full-cycle` / `/auto`); strategy rails (scoring, niche, pricing, GTM) and stage-resume are opt-in side doors, never a toll. Skip available at every step. See `factory/commands/hamzaish.md` + `docs/the-momentum-router.md`. |
 | `/checkpoint <message>` | Manual named commit save-point. Use for milestones; auto-commit handles in-between work. |
+| `/security-check <slug>` | Fast security baseline audit of a product — tracked secrets, unpinned/vulnerable GitHub Actions (incl. `claude-code-action < v1.0.94`), workflow permission scope, untrusted-input triggers, RLS reminder → pass/fail verdict. See `docs/security.md`. |
+| `/ship <slug> [sha]` | The single deploy action — gates on `/security-check`, then promotes reviewed commit(s) from the working branch to the product's `production` branch and pushes. wip(auto) snapshots stay on the working branch, never reach production. |
 
 These live at `factory/commands/*.md` (canonical home); `.claude/commands/` symlinks there so Claude Code auto-discovers them.
 

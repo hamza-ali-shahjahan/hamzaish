@@ -1,7 +1,15 @@
+# =========================================================
+# Secrets — NEVER commit. Real values live in a secret
+# manager / platform env (Vercel project settings), not here.
+# Only .env.example (placeholders) is tracked. See README.md.
+# =========================================================
+.env
+.env.*
+*.env.local
+!.env.example
+
 node_modules
 .next
-.env*
-!.env.example
 .vercel
 .DS_Store
 *.log
@@ -11,3 +19,10 @@ coverage
 test-results
 playwright-report
 playwright/.cache
+
+# Auto-commit/push opt-out markers — operator-local discipline, never committed.
+# /scaffold drops a .no-auto-push here so wip snapshots stay off the remote
+# until you /ship. See docs/security.md (production-branch deploy model).
+.no-auto-commit
+.no-auto-push
+.no-auto-pull
