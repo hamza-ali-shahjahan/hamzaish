@@ -210,10 +210,12 @@ Hamzaish owns the "core" auto-save pattern. Two scripts in `scripts/` are invoke
 
 | Hook | Script | When | What |
 |---|---|---|---|
-| `Stop` | `scripts/auto-commit.sh` | End of every Claude turn | If working tree is dirty: `git add -A` → `wip(auto): YYYY-MM-DDTHH:MM:SS` commit → `git push --force-with-lease` (if upstream exists) |
+| `Stop` | `scripts/auto-commit.sh` | End of every Claude turn | If working tree is dirty: `git add -A` → `wip(auto): YYYY-MM-DDTHH:MM:SS` **local** commit. **Push is opt-in:** only if a `.auto-push` marker exists (and no `.no-auto-push`), an `origin` remote exists, **and a secret scan of the to-be-pushed commits passes** — then `git push --force-with-lease`. Default is local restore-points only; nothing leaves the machine. |
 | `SessionStart` | `scripts/auto-pull-rebase.sh` | When Claude Code starts in a repo | `git pull --rebase` from upstream (skip if dirty / mid-rebase / no upstream) |
 
 Both fail-soft — they never block Claude. Network errors, no upstream, detached HEAD, mid-rebase — all skip cleanly.
+
+**Why push is opt-in:** auto-pushing every turn is an exfiltration path — a buggy or prompt-injected agent could ship your work or secrets off-machine automatically. So the default is **local commits only**. You opt a repo into auto-push by creating `.auto-push` in its root, and even then `auto-commit.sh` runs a **secret scan first** (gitleaks if installed, else a built-in key-pattern grep over just the commits being pushed) and **aborts the push if it finds a likely secret** — the local commit still stands.
 
 ### Per-repo opt-out markers
 
@@ -221,15 +223,16 @@ Place in any repo's root to disable behavior just for that repo:
 
 | Marker file | Effect |
 |---|---|
+| `.auto-push` | **Opt IN to auto-push.** Without it, the Stop hook commits locally but never pushes (the safe default). With it, pushes happen — but only after a clean secret scan, and `.no-auto-push` still overrides it. |
 | `.no-auto-commit` | Full opt-out (no commit, no push, no auto-pull). Recommended for repos where commits must be explicit (e.g., Muakkil — Lovable round-trip). |
-| `.no-auto-push` | Commit locally, but don't push. Good for sensitive repos where local snapshots are fine but remote pushes aren't ready. |
-| `.no-auto-pull` | Commit + push, but don't auto-pull on session start. Rare; for repos where you manage your own rebase strategy. |
+| `.no-auto-push` | Never push, even if `.auto-push` is present (extra hard guard). Redundant under the new opt-in default, but kept so an explicit "do not push this repo" marker keeps working. |
+| `.no-auto-pull` | Commit (+ push if opted in), but don't auto-pull on session start. Rare; for repos where you manage your own rebase strategy. |
 
 These markers should be `.gitignore`'d in the target repo so they stay operator-local discipline rather than committed instructions.
 
 ### Cross-machine rule
 
-When switching machines, **first thing**: `cd ~/Claude/<repo> && git pull --rebase`. The SessionStart hook does this automatically. If you forget and start editing immediately, `--force-with-lease` will block your push at end of turn — which is the right failure mode (loud, recoverable via `git pull --rebase`) instead of the wrong one (silent overwrite of the other machine's work).
+When switching machines, **first thing**: `cd ~/Claude/<repo> && git pull --rebase`. The SessionStart hook does this automatically. On `.auto-push`-opted-in repos, if you forget and start editing immediately, `--force-with-lease` will block your push at end of turn — which is the right failure mode (loud, recoverable via `git pull --rebase`) instead of the wrong one (silent overwrite of the other machine's work). Repos left on the default (no `.auto-push`) never push automatically, so there's nothing to clash — you push by hand when ready.
 
 ### Manual save-points
 

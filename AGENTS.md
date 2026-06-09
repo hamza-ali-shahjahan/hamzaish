@@ -79,7 +79,14 @@ When adding a new file with personal content: create it as `.local.<ext>` AND sh
 
 ## Auto-commit safety net (on the operator's machine, not in the repo)
 
-The operator may have configured Claude-Code-specific hooks (`~/.claude/settings.json`) that auto-commit at end of every turn and auto-pull at session start, with opt-out markers per repo (`.no-auto-commit` / `.no-auto-push` / `.no-auto-pull`). See `CLAUDE.md` if you're Claude Code. If you're a different agent, your equivalent hook system can mirror the pattern — or rely on explicit operator commits.
+The operator may have configured Claude-Code-specific hooks (`~/.claude/settings.json`) that auto-commit at end of every turn and auto-pull at session start. The posture is **safe-by-default**:
+
+- **Local restore-point commits by default.** End of every turn, a dirty tree becomes a `wip(auto):` commit on the current branch. That's it — nothing is pushed.
+- **Auto-push is opt-in** via a `.auto-push` marker in the repo root. Without it, work never leaves the machine automatically.
+- **Secrets are scanned before any push.** Even on an opted-in repo, the hook scans the to-be-pushed commits (gitleaks if present, else a key-pattern grep) and aborts the push if it finds a likely secret — the local commit still stands.
+- **Markers** (`.gitignore`'d, operator-local): `.auto-push` (opt in to push), `.no-auto-push` (never push, hard guard), `.no-auto-commit` (full opt-out), `.no-auto-pull` (skip session-start rebase).
+
+See `CLAUDE.md` if you're Claude Code. If you're a different agent, your equivalent hook system can mirror the pattern — or rely on explicit operator commits.
 
 ## Tool-specific files
 
