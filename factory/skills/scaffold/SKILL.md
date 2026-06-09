@@ -44,12 +44,14 @@ Creates a complete starting point for a new product:
    - `next.config.mjs` (if needed)
    - `README.md`
    - `.gitleaks.toml`, `SETUP.md` ({{PRODUCT_NAME}} / {{PRODUCT_SLUG}} placeholders)
+   - `.devcontainer/devcontainer.json` ({{PRODUCT_NAME}} placeholder)
 
    The starter is **secure-by-default** — the copy already brings `.gitignore`
    (`.env*` ignored, `!.env.example` tracked), the committed `.env.example`
-   placeholder, the `secret-scan.yml` gitleaks workflow, `.gitleaks.toml`, and the
-   `.githooks/pre-commit` hook. See "Secure-by-default" below for the scaffold-time
-   steps the template can't carry on its own.
+   placeholder, the `secret-scan.yml` gitleaks workflow, `.gitleaks.toml`, the
+   `.githooks/pre-commit` hook, and a `.devcontainer/` (Node + Bun) so builds run
+   in an isolated container instead of on the bare host. See "Secure-by-default"
+   below for the scaffold-time steps the template can't carry on its own.
 
 3. **product.config.json** — the dashboard registry entry:
    ```json
@@ -106,7 +108,7 @@ Creates a complete starting point for a new product:
 6. Generate the doc skeletons by reading the templates and filling from the one-liner.
 7. **Apply the secure-by-default steps** (section below).
 8. Print the SETUP.md checklist as the final message so the user knows the manual steps remaining.
-9. Print "next: run `pnpm install && pnpm dev` in products/<slug>/code/ — landing page should boot at localhost:3000".
+9. Print "next: **open `products/<slug>/code/` in its devcontainer** — VS Code → 'Reopen in Container' (or `devcontainer up`). The container installs deps and runs the dev server in isolation; the landing page boots at localhost:3000 (port-forwarded out of the container). Building on the bare host instead is at your own risk."
 
 ## Secure-by-default
 
@@ -120,6 +122,12 @@ the template copy; a few steps must run at scaffold time.
 - **Secret-scan CI included** — `.github/workflows/secret-scan.yml` (gitleaks,
   pinned action, `permissions: contents: read`) + `.gitleaks.toml` come with the
   template. Confirm they landed in `products/<slug>/code/`.
+- **Devcontainer ships in the template** — `.devcontainer/devcontainer.json` +
+  `Dockerfile` (Node + Bun, non-root, workspace-only mount, no host secret/SSH
+  passthrough) ride in via the copy. Confirm they landed, and **tell the user to
+  open the product in the container** ("Reopen in Container" in VS Code, or
+  `devcontainer up`) so the agent and all build/install commands run isolated from
+  the host. Running on the bare host is at the operator's own risk.
 - **`.no-auto-push` marker** — create it at scaffold time so wip auto-commits stay
   local until `/ship`: `touch products/<slug>/code/.no-auto-push`. (It's gitignored
   by design — operator-local discipline — so the template can't carry it across a

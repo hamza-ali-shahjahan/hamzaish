@@ -13,6 +13,10 @@ bun dev
 
 Visit http://localhost:3000.
 
+> **Builds run in the devcontainer for isolation.** This product ships a
+> `.devcontainer/` (Node + Bun); open it with "Reopen in Container" so installs
+> and dev/build commands run inside an isolated box, not on your bare host.
+
 ## Stack
 Next.js 15 · Supabase · Stripe · Resend · PostHog · Plausible · GA4 · Sentry · Inngest · Anthropic
 

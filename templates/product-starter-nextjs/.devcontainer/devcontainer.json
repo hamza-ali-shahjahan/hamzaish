@@ -1,0 +1,43 @@
+{
+  // Hamzaish product devcontainer — the agent (and your build) runs INSIDE this
+  // isolated box, not on your bare host. Only the workspace is mounted; no host
+  // SSH keys, no host env, no host secret directories are passed through.
+  //
+  // Use it: VS Code → "Reopen in Container" (Dev Containers extension), or
+  //   `devcontainer up --workspace-folder .` with the devcontainers CLI.
+  // See ../docs/security.md (§3 "Run agent-generated code in a disposable sandbox").
+  "name": "{{PRODUCT_NAME}} (devcontainer)",
+  "build": { "dockerfile": "Dockerfile" },
+
+  // Run as the non-root 'node' user the image ships — the agent never runs as root.
+  "remoteUser": "node",
+
+  // Mount ONLY the workspace. This list is intentionally empty: do NOT add binds
+  // for ~/.ssh, ~/.aws, ~/.gnupg, ~/.config, or any host secret path. The whole
+  // point of the container is that a buggy or prompt-injected agent can't reach
+  // your machine. (The workspace itself is mounted by the dev-container runtime.)
+  "mounts": [],
+
+  // No host secret/SSH passthrough and no telemetry by default.
+  "containerEnv": {
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+
+  // Install dependencies inside the container, not on the host.
+  "postCreateCommand": "bun install",
+
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "Next.js dev server", "onAutoForward": "notify" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  }
+}
