@@ -111,7 +111,7 @@ Tool-specific files **extend** this file — they should never contradict the ru
 - Philosophy: [`docs/philosophy.md`](docs/philosophy.md)
 - Full architecture: [`docs/architecture.md`](docs/architecture.md)
 - The `/hamzaish` momentum router (Claude Code): [`docs/the-momentum-router.md`](docs/the-momentum-router.md)
-- Contributing (when this repo goes public): [`docs/contributing.md`](docs/contributing.md)
+- Contributing: [`docs/contributing.md`](docs/contributing.md) — the repo is public and open-source under AGPL-3.0; fork, add your product, open a PR
 - Changelog: [`meta/changelog.md`](meta/changelog.md)
 
 ## Owner

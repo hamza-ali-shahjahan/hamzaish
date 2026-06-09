@@ -73,7 +73,7 @@ Populated by `/portfolio-pulse` on each invocation.
 
 ## Inventory note
 
-Hamzaish itself (the factory) is in active development. See `meta/changelog.md` — currently at **v1.1**. Next milestone: Muakkil's buildathon retro will drive Phase B (test coverage of the factory's load-bearing skills) and Phase C decisions (full memory layer evolution).
+Hamzaish itself (the factory) is **open-sourced and public under AGPL-3.0** (see [`../LICENSE`](../LICENSE)) and in active development. See `meta/changelog.md` for the current version and full history. Ongoing: deeper test coverage of the factory's load-bearing skills and the full memory-layer evolution.
 
 ## How to refresh this file
 
