@@ -48,6 +48,17 @@ Each arrow is a discrete action with a home in this repo:
 | A retro of a sprint/buildathon | `meta/retros/` | Time-stamped reflection |
 | Something Hamzaish changed about itself | `meta/changelog.md` | Append-only version log |
 
+## The scored, self-evolving pass (`/learn-loop`)
+
+The loop above captures *everything*. To stop the capture pile from becoming write-only, a **scored promotion pass** decides what actually becomes a guardrail. At a **major-cycle boundary** — a product crosses a stage gate, ships, or is killed; a sprint had notable friction or a notable win; or the factory itself changed — run **`/learn-loop`**:
+
+1. Gather the cycle's candidate learnings (new `brain/learnings/` entries + the latest retro).
+2. Score each on five axes — **Speed ×2, Build-quality ×2, Recurrence, Generalizability, Confidence → composite /35**.
+3. **Promote at most the top ~3 that clear ≥24/35** into a load-bearing home (skill/agent guardrail, playbook step, anti-pattern, or routing rule). Everything else stays logged as history.
+4. Each promotion records a **predicted gain** + a **feedback-check date**.
+
+Full definition — triggers, axes, threshold, entry format — in **[`meta/learning-loop-rubric.md`](learning-loop-rubric.md)**. This is the forcing function on top of the "where each learning lives" table above: the table says *where*, the rubric says *whether it's worth promoting at all*.
+
 ## End-of-session checklist
 
 If the session did real work, before ending:
@@ -66,6 +77,7 @@ If the session did real work, before ending:
 - Which playbooks are out of date (last edit > 6 months ago AND irrelevant to recent work)?
 - Which anti-patterns no longer apply (we learned the real shape)?
 - Which products in the portfolio should be sunset based on traction?
+- **Which promoted learnings actually delivered?** For each `[SCORED] … Status: PROMOTED` entry in `brain/learnings/` whose feedback-check date has passed: did it deliver its predicted speed/quality gain? Mark `VALIDATED` if yes; **sunset the guardrail** (mark `SUNSET`, with why) if it added friction without paying for it. This is how `/learn-loop` promotions get pruned — see `meta/learning-loop-rubric.md` §4.
 
 The factory has the same scope discipline as a product. Bloat in `factory/` slows every session.
 

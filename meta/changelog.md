@@ -4,6 +4,45 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-06-09 — v1.16 · Hardened global hooks + impact-scored learning loop
+
+**What changed**
+
+- **Global hooks hardened (root-cause fix for session hangs).** `scripts/auto-commit.sh` (Stop) and `scripts/auto-pull-rebase.sh` (SessionStart) now: (1) wrap every blocking git op in a portable `run_with_timeout` shim — `gtimeout`/`timeout` if present, else a pure-bash watchdog — at commit ≤10s, push/pull ≤20s; (2) **fail open** — any timeout/error prints one stderr line and `exit 0`, so a hung network call can never wedge a turn; (3) **scope to Hamzaish-managed repos** via a new `is_hamzaish_managed` gate (the Hamzaish repo itself / a path registered in `code-paths.local.json` / a `.hamzaish-managed` marker), so the hooks no longer fire in every unrelated repo on the machine. Opt-in push + secret scan preserved. New committed `.hamzaish-managed` marker self-identifies the repo + documents the marker. Both scripts pass `bash -n`. Docs updated in `CLAUDE.md` §"Auto-commit + auto-push safety net" and `AGENTS.md`.
+- **Impact-scored, self-evolving learning loop added.** New rubric `meta/learning-loop-rubric.md` (major-cycle triggers; 5 axes — Speed ×2, Build-quality ×2, Recurrence, Generalizability, Confidence → composite /35; promote top ~3 at ≥24/35; promotion targets; `/kill-or-keep` feedback step; scored-entry format). New `/learn-loop` command (`factory/commands/learn-loop.md`) runs the pass at a major-cycle boundary. Wired into the README "Self-improvement loop" section and `meta/factory-improving-factory.md` (new scored-pass section + quarterly feedback bullet).
+- **`/learn-loop` (seed cycle — factory-change trigger): scored 1 candidate, promoted 1** (→ `brain/anti-patterns/unbounded-git-in-global-hooks.md` + the hardened hook scripts). Seeded scored entry: `brain/learnings/2026-06-09-hook-hang.md` (Composite 33/35, PROMOTED).
+
+**Why**
+
+Unbounded git/network ops in the always-on global hooks caused repeated multi-minute session hangs during a heavy build session — a convenience safety-net was wedging the work, in repos it didn't even manage. Fixing it at the source (timeouts + fail-open + scope) removes the failure class. Separately, the existing learning loop captured everything but had no forcing function for *what to promote*; the scored loop turns "we wrote it down" into "the factory got measurably harder to break," and `/kill-or-keep` now prunes promotions that didn't pay off so the guardrail set can't ossify.
+
+**What to revisit**
+
+- 2026-09 `/kill-or-keep`: re-check the seeded hook-hang promotion (no recurrence? scope gate not suppressing wanted commits?) → VALIDATED or revisit limits/scope rule. Generally, run the feedback pass on all PROMOTED entries whose feedback-check date has passed.
+- Tune the timeout limits (10s/20s) if real remotes need more headroom; tune the ≥24/35 threshold once a few cycles of data exist.
+- `CLAUDE.md`'s footer version line still reads v1.4 (stale vs. this changelog); fold into a future docs pass.
+
+---
+
+## 2026-06-07 — v1.15 · Honest-copy principle (#13) added to the don't-violate list
+
+**What changed**
+
+- **New operating principle #13 — "Honest copy — we never claim what isn't true"** in [`brain/operating-principles.md`](../brain/operating-principles.md). All outward-facing copy (landing pages, OG/social cards, ads, emails, in-app text) must be true and verifiable the moment it ships: no invented stats, no "full/every" coverage we don't have, no implied-but-unbuilt capabilities. Aspiration is allowed only when labelled ("coming soon", "in beta"). Includes a ship-gate (link the source of truth or cut the claim) and the originating catch.
+- **README "The discipline (don't violate)" gains item #6** mirroring the principle, plus a one-line statement of the build ethos (ethical, high-standard, passion/energy; under-claim and over-deliver) so anyone visiting the repo sees the bar.
+- **Patently OG card corrected** — `products/copyright-code/src/app/_og/render.tsx` footer changed from "9M+ opinions · full patent record · 22M+ registrations" (data not live; "full" overstated) to "Research · Clearance · Daily digests" (what the product genuinely does).
+
+**Why**
+
+The operator caught the Patently OG card asserting dataset counts and "full patent record" before that data was live — a present-tense claim a user could disprove. Trust is the entire moat for a decision-support tool; an inflated claim poisons every true one. We already keep an honest ledger internally (proven vs. research-baked); this extends the same standard to outward copy and encodes the catch as a rule the next session can't miss.
+
+**What to revisit**
+
+- The Patently homepage (`products/copyright-code/src/app/page.tsx`) still shows "9M+ / 1976→ / 22M+" framed as dataset coverage with source attribution. If that data isn't actually ingested/live, those need the same treatment (label as coverage of the *source* datasets, or cut). Flagged to operator.
+- Consider a lightweight `bun run check-copy` lint that flags un-cited numerals/"full|every|all" in marketing components, the way `check-validation` enforces principle #1.
+
+---
+
 ## 2026-06-07 — v1.14 · Starter→Bun, two live products on the proof list
 
 **What changed**

@@ -148,7 +148,11 @@ The live index is generated — see [`products/_portfolio.md`](products/_portfol
 
 ## Self-improvement loop
 
-Every session that does real work appends to `brain/learnings/` and, where applicable, updates `factory/playbooks/` or `brain/anti-patterns/`. Sprint completions get a retro in `meta/retros/`. Quarterly, `/kill-or-keep` runs on Hamzaish itself — which skills/agents earn their keep, which get sunset.
+Every session that does real work appends to `brain/learnings/` and, where applicable, updates `factory/playbooks/` or `brain/anti-patterns/`. Sprint completions get a retro in `meta/retros/`.
+
+On top of that always-on capture sits a **scored, self-evolving promotion pass.** At a **major-cycle boundary** — a product crosses a stage gate, ships, or is killed; a sprint had notable friction or a notable win; or the factory itself changed — `/learn-loop` scores the cycle's candidate learnings on five axes (Speed ×2, Build-quality ×2, Recurrence, Generalizability, Confidence → composite /35) and **promotes only the top few that clear the bar** into load-bearing guardrails (a skill/agent rule, a playbook step, or an anti-pattern). Below-threshold learnings stay as history. The rubric is `meta/learning-loop-rubric.md`.
+
+Quarterly, `/kill-or-keep` runs on Hamzaish itself — which skills/agents earn their keep, which get sunset — and **closes the loop** by re-checking each promoted learning: did it deliver its predicted speed/quality gain? If yes, it's validated; if not, the guardrail is sunset so the factory doesn't ossify.
 
 ## Bootstrap budget posture
 
