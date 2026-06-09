@@ -5,6 +5,8 @@ description: Run a full validation pass on an idea — sharpening, devil's advoc
 
 # /validate
 
+An opt-in rail, not a gate. Use `/validate` when a bet is expensive, slow, or hard to undo — paid acquisition, a big build, a pivot. For cheap, reversible ideas, just build; the ship is the validation.
+
 Usage: `/validate <idea or product name>`
 
 ## What this does

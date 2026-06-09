@@ -114,7 +114,7 @@ The live index is generated — see [`products/_portfolio.md`](products/_portfol
 | Command | What it does |
 |---|---|
 | `/ideate` | Generates ideas grounded in your existing patterns |
-| `/validate <idea>` | Customer discovery + market sizing + devil's advocate |
+| `/validate <idea>` | Opt-in validation rail — pull in before expensive or irreversible bets. Customer discovery + market sizing + devil's advocate. |
 | `/scaffold "<name>" "<one-liner>"` | One-shot a new product (folders + Next.js starter + product.config + CLAUDE.md) |
 | `/keyword-research <topic-or-domain>` | Clustered brief from GSC + Ahrefs Webmaster + DataForSEO |
 | `/launch-plan <product>` | PH/HN/X assets + cold outreach + content calendar |
@@ -125,11 +125,14 @@ The live index is generated — see [`products/_portfolio.md`](products/_portfol
 
 ## The discipline (don't violate)
 
-1. **Don't build before you validate.** 5 conversations with target-profile users before production code. Now enforced as a *speed bump*, not just a rule: `bun run check-validation <slug>` reads each product's `validation/` ledger — validate, or explicitly record the debt. Building unvalidated is allowed; building unvalidated **silently** is not (the wp-to-astro lesson, encoded).
+1. **Build is the default — validate before irreversible bets, not before every line of code.** Shipping something cheap, fast, and reversible *is* validation — the thing you ship is the test. Reach for real customer conversations (aim for ~5 with target-profile users) before the expensive, slow, or hard-to-undo moves: paid ads, a sales push, or a big build you can't walk back. Validation is a rail you pull in, not a toll you pay. The one hard rule: don't skip it *silently* — `bun run check-validation <slug>` makes you either validate or explicitly record the debt (the wp-to-astro lesson, encoded).
 2. **Scope is the moat.** Every product has a `scope.md` saying what it does AND what it deliberately doesn't.
 3. **Persistent context.** Every product gets a `CLAUDE.md`; every decision goes in `decisions/`.
 4. **Measurement before launch.** Define north-star, activation, retention, false-positive shape before the first user.
 5. **The factory is a product.** Eat the dog food. If Hamzaish can't ship product #1 (Muakkil) through, fix Hamzaish before adding more.
+6. **Honest copy — we never claim what isn't true.** Every outward-facing word (landing pages, OG/social cards, ads, emails, in-app text) is true and verifiable the moment it ships: no invented stats, no "full/every" coverage we don't have, no implied capabilities that aren't live. Aspiration is fine when it's *labelled* ("coming soon", "in beta") — never in the present tense. Trust is the whole moat; one claim a user can disprove poisons every true thing you've said. ([principle #13](brain/operating-principles.md))
+
+> We build ethically, to a high standard, with passion and energy — and we'd rather under-claim and over-deliver than the reverse. If you're reading this repo, that's the bar, and it isn't negotiable.
 
 ## Self-improvement loop
 
