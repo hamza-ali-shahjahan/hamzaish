@@ -1,0 +1,12 @@
+# This repo is Hamzaish-managed.
+#
+# This marker opts a git repo INTO the global Hamzaish hooks
+# (scripts/auto-commit.sh Stop hook + scripts/auto-pull-rebase.sh SessionStart
+# hook, wired in ~/.claude/settings.json). The hooks act only on repos that are
+# Hamzaish-managed; any repo without this marker (and not the Hamzaish repo
+# itself, and not registered in code-paths.local.json) is left untouched.
+#
+# Drop an empty file named `.hamzaish-managed` in any other repo's root to bring
+# it into scope. In product code repos, .gitignore it so it stays operator-local.
+# (Here it's committed: it doubles as the canonical example + self-identification
+# of the Hamzaish repo.)

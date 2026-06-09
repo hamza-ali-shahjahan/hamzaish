@@ -206,14 +206,28 @@ Examples in this repo:
 
 ## Auto-commit + auto-push safety net (global on this machine)
 
-Hamzaish owns the "core" auto-save pattern. Two scripts in `scripts/` are invoked **globally** from `~/.claude/settings.json` — so they fire for **every git repo Claude Code works in on this machine**, not just Hamzaish.
+Hamzaish owns the "core" auto-save pattern. Two scripts in `scripts/` are invoked **globally** from `~/.claude/settings.json` — so they're *triggered* on **every git repo Claude Code works in on this machine**. But they only *act* on **Hamzaish-managed repos** (see scoping below); in any other repo they `exit 0` immediately and do nothing. They are also **timeout-bounded and fail-open**: every blocking git op (commit, push, pull) runs under a hard wall-clock limit, and any timeout or error prints one stderr warning and exits 0 — a hung network call can never wedge or hang a turn.
 
 | Hook | Script | When | What |
 |---|---|---|---|
 | `Stop` | `scripts/auto-commit.sh` | End of every Claude turn | If working tree is dirty: `git add -A` → `wip(auto): YYYY-MM-DDTHH:MM:SS` **local** commit. **Push is opt-in:** only if a `.auto-push` marker exists (and no `.no-auto-push`), an `origin` remote exists, **and a secret scan of the to-be-pushed commits passes** — then `git push --force-with-lease`. Default is local restore-points only; nothing leaves the machine. |
 | `SessionStart` | `scripts/auto-pull-rebase.sh` | When Claude Code starts in a repo | `git pull --rebase` from upstream (skip if dirty / mid-rebase / no upstream) |
 
-Both fail-soft — they never block Claude. Network errors, no upstream, detached HEAD, mid-rebase — all skip cleanly.
+Both fail-soft — they never block Claude. Network errors, no upstream, detached HEAD, mid-rebase, **timeouts** — all skip cleanly.
+
+### Scoping: Hamzaish-managed repos only
+
+The hooks are global but act narrowly. A repo is **Hamzaish-managed** — and the hooks act on it — if **any** of these hold (checked cheaply, first thing):
+
+1. **It IS the Hamzaish repo itself** — its canonical path equals `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}` (symlink- and case-resolved). The repo ships a committed `.hamzaish-managed` marker as belt-and-suspenders self-identification.
+2. **Its path is registered in `code-paths.local.json`** — i.e. it's one of the operator's product code repos wired into Hamzaish.
+3. **It contains a `.hamzaish-managed` marker file** in its root — drop an empty file by that name in any repo to opt it in (and `.gitignore` it so it stays operator-local).
+
+Any repo that matches none of these → the hook exits 0 immediately and does nothing. This is the root-cause fix for the "hooks fire and commit/pull in every unrelated repo on the machine" problem.
+
+### Timeout-bounded + fail-open
+
+macOS has no `timeout` binary, so each script defines a portable `run_with_timeout` shim (uses `gtimeout`/`timeout` if installed, else a pure-bash watchdog that backgrounds the op and kills it after N seconds). Limits: **commit ≤ 10s, push ≤ 20s, pull ≤ 20s**. On timeout or error the script prints one concise stderr warning and `exit 0` — the local commit (if made) is always kept; nothing is ever left wedged.
 
 **Why push is opt-in:** auto-pushing every turn is an exfiltration path — a buggy or prompt-injected agent could ship your work or secrets off-machine automatically. So the default is **local commits only**. You opt a repo into auto-push by creating `.auto-push` in its root, and even then `auto-commit.sh` runs a **secret scan first** (gitleaks if installed, else a built-in key-pattern grep over just the commits being pushed) and **aborts the push if it finds a likely secret** — the local commit still stands.
 
@@ -223,6 +237,7 @@ Place in any repo's root to disable behavior just for that repo:
 
 | Marker file | Effect |
 |---|---|
+| `.hamzaish-managed` | **Opt this repo INTO the hooks' scope.** Required for repos that aren't the Hamzaish repo itself and aren't registered in `code-paths.local.json`. Without it (and without one of the other two scope conditions), the hooks do nothing in this repo. `.gitignore` it in product repos. |
 | `.auto-push` | **Opt IN to auto-push.** Without it, the Stop hook commits locally but never pushes (the safe default). With it, pushes happen — but only after a clean secret scan, and `.no-auto-push` still overrides it. |
 | `.no-auto-commit` | Full opt-out (no commit, no push, no auto-pull). Recommended for repos where commits must be explicit (e.g., Muakkil — Lovable round-trip). |
 | `.no-auto-push` | Never push, even if `.auto-push` is present (extra hard guard). Redundant under the new opt-in default, but kept so an explicit "do not push this repo" marker keeps working. |

@@ -81,10 +81,12 @@ When adding a new file with personal content: create it as `.local.<ext>` AND sh
 
 The operator may have configured Claude-Code-specific hooks (`~/.claude/settings.json`) that auto-commit at end of every turn and auto-pull at session start. The posture is **safe-by-default**:
 
+- **Scoped to Hamzaish-managed repos.** Though wired globally, the hooks only act on a repo if it's the Hamzaish repo itself, its path is registered in `code-paths.local.json`, or it carries a `.hamzaish-managed` marker file. Every other repo on the machine is left completely untouched (the hook exits immediately).
+- **Timeout-bounded + fail-open.** Every blocking git op (commit ≤10s, push/pull ≤20s) runs under a hard wall-clock limit via a portable timeout shim; any timeout or error logs one stderr line and exits 0. A hung network call can never wedge or hang a turn.
 - **Local restore-point commits by default.** End of every turn, a dirty tree becomes a `wip(auto):` commit on the current branch. That's it — nothing is pushed.
 - **Auto-push is opt-in** via a `.auto-push` marker in the repo root. Without it, work never leaves the machine automatically.
 - **Secrets are scanned before any push.** Even on an opted-in repo, the hook scans the to-be-pushed commits (gitleaks if present, else a key-pattern grep) and aborts the push if it finds a likely secret — the local commit still stands.
-- **Markers** (`.gitignore`'d, operator-local): `.auto-push` (opt in to push), `.no-auto-push` (never push, hard guard), `.no-auto-commit` (full opt-out), `.no-auto-pull` (skip session-start rebase).
+- **Markers** (`.gitignore`'d, operator-local): `.hamzaish-managed` (opt a repo into the hooks' scope), `.auto-push` (opt in to push), `.no-auto-push` (never push, hard guard), `.no-auto-commit` (full opt-out), `.no-auto-pull` (skip session-start rebase).
 
 See `CLAUDE.md` if you're Claude Code. If you're a different agent, your equivalent hook system can mirror the pattern — or rely on explicit operator commits.
 
