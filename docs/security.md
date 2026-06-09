@@ -82,8 +82,15 @@ environment**, not on your machine or a host with credentials. A prompt-injected
 buggy agent that runs on the host can read your `~/.ssh`, env vars, and every other
 repo.
 
-- **Docker / VS Code devcontainer** — the default. The agent works inside a
-  container with only the repo mounted and only the env it needs; blow it away after.
+- **Docker / VS Code devcontainer** — the default, and now **partly enforced
+  rather than merely advised**: the Next.js starter ships a `.devcontainer/`
+  (`devcontainer.json` + `Dockerfile`, Node + Bun, non-root user, **workspace-only
+  mount, no host SSH/secret passthrough**), and `/scaffold` copies it into every
+  new product and tells the operator to "Reopen in Container." So a freshly
+  scaffolded product comes with the isolated box already wired — the agent works
+  inside it with only the repo mounted; blow it away after. (Opening the product
+  in the container is still the operator's action; running on the bare host
+  instead is at their own risk.)
 - **E2B (or equivalent ephemeral cloud sandbox)** — for running untrusted or
   generated code remotely with nothing of yours attached.
 - Scope what the sandbox can reach: no host network to internal services, no real
@@ -131,9 +138,15 @@ saving work.
   `production` and pushes. That push is the deploy.
 - **Auto-commit `wip(auto):` snapshots stay on the working branch and never reach
   `production`.** They're recoverable save-points (see the auto-commit hook in the
-  root `CLAUDE.md`), folded into a real commit before they're promoted. Each
-  scaffolded product carries a `.no-auto-push` marker so wip snapshots stay local
-  until you `/ship`.
+  root `CLAUDE.md`), folded into a real commit before they're promoted.
+- **Auto-push is opt-in (exfiltration posture).** The auto-commit hook makes
+  **local restore-point commits by default and does not push.** A repo only
+  pushes automatically if the operator drops a `.auto-push` marker in its root —
+  and even then the hook **secret-scans the to-be-pushed commits** (gitleaks if
+  installed, else a built-in key-pattern grep) and **aborts the push if a likely
+  secret is found**. The default means your work and secrets don't leave the
+  machine automatically; you push (or `/ship`) deliberately. (`.no-auto-push`
+  remains as an extra hard guard.)
 - `production` is fast-forward-only — never force-pushed or rewound. A divergence
   is a stop-and-resolve, not an override.
 

@@ -26,6 +26,18 @@ bun run setup
 
 **→ Then follow [Your first product in 10 minutes](docs/your-first-product.md)** — zero to a tracked, self-remembering product, hand-held.
 
+## Is this safe to run?
+
+Short answer: **yes, with the normal caution you'd give any agent tool — and we've engineered the defaults to keep the blast radius small.** In plain language:
+
+- **🧰 Products scaffold with a devcontainer.** Every product `/scaffold` creates ships a `.devcontainer/` (Node + Bun). When you "Reopen in Container," the agent and your build commands run inside an **isolated container with only the workspace mounted** — not your bare host, not your `~/.ssh`, not your other repos. ([the why](docs/security.md#3-run-agent-generated-code-in-a-disposable-sandbox--never-on-the-host))
+- **🚫 Auto-push is opt-in.** The auto-commit safety net makes **local restore-point commits only** by default. Your work and your secrets **don't leave your machine** unless you explicitly opt a repo in (a `.auto-push` marker) — and even then, the to-be-pushed commits are **secret-scanned first** and the push aborts if anything looks like a key.
+- **🔍 Scaffolded products are secure-by-default.** Secrets are gitignored (only `.env.example` placeholders are tracked), a gitleaks secret-scan + a least-privilege, pinned-action CI ship with every new product, and Supabase RLS is the documented habit from commit zero. ([baseline](docs/security.md))
+- **🔐 Claude Code's permission prompts still apply.** Nothing here bypasses them — file writes, commands, and network actions still go through your agent's normal approval flow.
+- **⚠️ Running outside the devcontainer is at your own risk.** The isolation only protects you when you actually open the product in its container. Run an agent directly on your host and the host is the blast radius — that's a choice you're making, not a default we ship.
+
+The honest boundary: these defaults shrink the blast radius; they don't make any agent tool risk-free. Read [`docs/security.md`](docs/security.md) for the full threat model and what's enforced vs. advised.
+
 ## What this is
 
 A monorepo that operates like a 24/7 AI cofounder. It runs **multiple products in parallel**, each in its own folder, each onboarded into the same playbook stages (Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down). Every new product spins up with auth, DB, payments, email, analytics, error monitoring, and SEO defaults already wired. Every existing product gets surfaced through the same telemetry pane.
