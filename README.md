@@ -1,18 +1,19 @@
-# Hamzaish — The AI Co-builder & Startup OS
+<div align="center">
 
-> A personal AI-native startup factory for builders. Brain + orchestrator. Long-running, learning, self-improving. Built especially for first-time builders to run a portfolio of products from ideation through scale — and to kill the ones that don't earn it. Being built by Hamza + his 4 muakkals × Claude × Codex × Lovable.
+# 🏭 Hamzaish
 
-**Hamzaish isn't a strategy funnel with a build step at the end. It's a build accelerator that happens to have strategy rails you pull in when you want them. The default is momentum.** Type `/hamzaish`, and the default is to *build* — strategy is an opt-in side door, never a toll.
+**Your AI co-builder & startup OS — ship products, not just code.**
 
-And skipping strategy isn't laziness — it's often the right call: **build when it's cheap, fast, and reversible** (the thing you ship *is* the validation); **reach for the strategy rails when it's expensive, slow, or hard to undo**, or right before you spend real money on ads or sales. → [the philosophy](docs/philosophy.md)
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
+[![Built with Claude Code](https://img.shields.io/badge/Built%20with-Claude%20Code-d97757.svg)](https://claude.ai/code)
+[![Open source](https://img.shields.io/badge/Open-source-brightgreen.svg)](#license)
+[![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](#is-this-safe-to-run)
 
-## Start here — pick your path
+</div>
 
-- **🌱 First time / just want to build** → **[Quickstart](#quickstart-2-minutes)** (below), then **[your first product in 10 minutes](docs/your-first-product.md)**. The boring, scary setup is done — you start where it gets fun.
-- **🛠️ Want the internals** → **[Architecture](docs/architecture.md)** · **[Philosophy](docs/philosophy.md)** · **[Where it's heading](meta/SELF-EVOLUTION.md)**. Markdown-first, Claude-Code-native, with **[AGENTS.md](AGENTS.md)** for any other agent.
-- **🤝 Want to contribute / add your own product** → **[Contributing](docs/contributing.md)**: fork, add yours to `products/_community/`, open a PR.
+> A personal, AI-native factory for builders — especially first-timers. It isn't a strategy funnel with a build step bolted on the end; it's a build accelerator that happens to have strategy rails you pull in when you want them. Type `/hamzaish` and the default is to **build** — strategy is an opt-in side door, never a toll.
 
-## Quickstart (≈2 minutes)
+### Quickstart (≈2 min)
 
 You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code) (or any agent that reads `AGENTS.md`).
 
@@ -24,23 +25,29 @@ bun run setup
 
 `bun run setup` is idempotent and **never touches your data** — it creates `code-paths.local.json` + `brain/identity/operator.local.md` from templates (yours to edit; git-ignored), wires the global slash commands into `~/.claude/commands/`, and builds the brain's search index. Zero runtime dependencies — no `bun install` needed.
 
-**→ Then follow [Your first product in 10 minutes](docs/your-first-product.md)** — zero to a tracked, self-remembering product, hand-held.
+**→ Then follow [Your first product in 10 minutes](docs/your-first-product.md)** — zero to a tracked, self-remembering product, hand-held. The boring, scary setup is done; you start where it gets fun.
 
-## Is this safe to run?
+## What you get
 
-Short answer: **yes, with the normal caution you'd give any agent tool — and we've engineered the defaults to keep the blast radius small.** In plain language:
+- **🚀 Momentum by default** — `/hamzaish` builds first. Strategy (scoring, niche, pricing, GTM) is an opt-in side door, never a toll — because building when it's cheap, fast, and reversible *is* the validation.
+- **🧠 A brain that compounds** — every ship's learnings get promoted from `brain/learnings/` into load-bearing guardrails in the agents, so the next build doesn't repeat the last one's mistakes.
+- **🔒 Secure by default** — products scaffold with a devcontainer, auto-push is opt-in and secret-scanned before it leaves your machine, and every new repo ships a gitleaks scan + least-privilege, pinned-action CI.
+- **🏛️ One playbook, many products** — every product runs the same stages (Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down) with auth, DB, payments, email, analytics, and error monitoring wired from commit zero.
+- **🔁 A self-evolving learning loop** — `/learn-loop` impact-scores candidate learnings on five axes and promotes only the top few that clear the bar into real guardrails, then re-checks quarterly whether each one actually paid off.
 
-- **🧰 Products scaffold with a devcontainer.** Every product `/scaffold` creates ships a `.devcontainer/` (Node + Bun). When you "Reopen in Container," the agent and your build commands run inside an **isolated container with only the workspace mounted** — not your bare host, not your `~/.ssh`, not your other repos. ([the why](docs/security.md#3-run-agent-generated-code-in-a-disposable-sandbox--never-on-the-host))
-- **🚫 Auto-push is opt-in.** The auto-commit safety net makes **local restore-point commits only** by default. Your work and your secrets **don't leave your machine** unless you explicitly opt a repo in (a `.auto-push` marker) — and even then, the to-be-pushed commits are **secret-scanned first** and the push aborts if anything looks like a key.
-- **🔍 Scaffolded products are secure-by-default.** Secrets are gitignored (only `.env.example` placeholders are tracked), a gitleaks secret-scan + a least-privilege, pinned-action CI ship with every new product, and Supabase RLS is the documented habit from commit zero. ([baseline](docs/security.md))
-- **🔐 Claude Code's permission prompts still apply.** Nothing here bypasses them — file writes, commands, and network actions still go through your agent's normal approval flow.
-- **⚠️ Running outside the devcontainer is at your own risk.** The isolation only protects you when you actually open the product in its container. Run an agent directly on your host and the host is the blast radius — that's a choice you're making, not a default we ship.
+## Start here — pick your path
 
-The honest boundary: these defaults shrink the blast radius; they don't make any agent tool risk-free. Read [`docs/security.md`](docs/security.md) for the full threat model and what's enforced vs. advised.
+- **🌱 First time / just want to build** → the **[Quickstart](#quickstart-2-min)** above, then **[your first product in 10 minutes](docs/your-first-product.md)**.
+- **🛠️ Want the internals** → **[Architecture](docs/architecture.md)** · **[Philosophy](docs/philosophy.md)** · **[Where it's heading](meta/SELF-EVOLUTION.md)**. Markdown-first, Claude-Code-native, with **[AGENTS.md](AGENTS.md)** for any other agent.
+- **🤝 Want to contribute / add your own product** → **[Contributing](docs/contributing.md)**: fork, add yours to `products/_community/`, open a PR.
+
+---
 
 ## What this is
 
 A monorepo that operates like a 24/7 AI cofounder. It runs **multiple products in parallel**, each in its own folder, each onboarded into the same playbook stages (Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down). Every new product spins up with auth, DB, payments, email, analytics, error monitoring, and SEO defaults already wired. Every existing product gets surfaced through the same telemetry pane.
+
+Being built by Hamza + his 4 muakkals × Claude × Codex × Lovable. **Hamzaish isn't a strategy funnel with a build step at the end — it's a build accelerator that happens to have strategy rails you pull in when you want them. The default is momentum.** And skipping strategy isn't laziness — it's often the right call: **build when it's cheap, fast, and reversible** (the thing you ship *is* the validation); **reach for the strategy rails when it's expensive, slow, or hard to undo**, or right before you spend real money on ads or sales. → [the philosophy](docs/philosophy.md)
 
 ## What you inherit on day one (the hard-won part)
 
@@ -153,6 +160,18 @@ Every session that does real work appends to `brain/learnings/` and, where appli
 On top of that always-on capture sits a **scored, self-evolving promotion pass.** At a **major-cycle boundary** — a product crosses a stage gate, ships, or is killed; a sprint had notable friction or a notable win; or the factory itself changed — `/learn-loop` scores the cycle's candidate learnings on five axes (Speed ×2, Build-quality ×2, Recurrence, Generalizability, Confidence → composite /35) and **promotes only the top few that clear the bar** into load-bearing guardrails (a skill/agent rule, a playbook step, or an anti-pattern). Below-threshold learnings stay as history. The rubric is `meta/learning-loop-rubric.md`.
 
 Quarterly, `/kill-or-keep` runs on Hamzaish itself — which skills/agents earn their keep, which get sunset — and **closes the loop** by re-checking each promoted learning: did it deliver its predicted speed/quality gain? If yes, it's validated; if not, the guardrail is sunset so the factory doesn't ossify.
+
+## Is this safe to run?
+
+Short answer: **yes, with the normal caution you'd give any agent tool — and we've engineered the defaults to keep the blast radius small.** In plain language:
+
+- **🧰 Products scaffold with a devcontainer.** Every product `/scaffold` creates ships a `.devcontainer/` (Node + Bun). When you "Reopen in Container," the agent and your build commands run inside an **isolated container with only the workspace mounted** — not your bare host, not your `~/.ssh`, not your other repos. ([the why](docs/security.md#3-run-agent-generated-code-in-a-disposable-sandbox--never-on-the-host))
+- **🚫 Auto-push is opt-in.** The auto-commit safety net makes **local restore-point commits only** by default. Your work and your secrets **don't leave your machine** unless you explicitly opt a repo in (a `.auto-push` marker) — and even then, the to-be-pushed commits are **secret-scanned first** and the push aborts if anything looks like a key.
+- **🔍 Scaffolded products are secure-by-default.** Secrets are gitignored (only `.env.example` placeholders are tracked), a gitleaks secret-scan + a least-privilege, pinned-action CI ship with every new product, and Supabase RLS is the documented habit from commit zero. ([baseline](docs/security.md))
+- **🔐 Claude Code's permission prompts still apply.** Nothing here bypasses them — file writes, commands, and network actions still go through your agent's normal approval flow.
+- **⚠️ Running outside the devcontainer is at your own risk.** The isolation only protects you when you actually open the product in its container. Run an agent directly on your host and the host is the blast radius — that's a choice you're making, not a default we ship.
+
+The honest boundary: these defaults shrink the blast radius; they don't make any agent tool risk-free. Read [`docs/security.md`](docs/security.md) for the full threat model and what's enforced vs. advised.
 
 ## Bootstrap budget posture
 
