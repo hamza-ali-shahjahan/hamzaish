@@ -2,7 +2,7 @@
 
 # 🏭 Hamzaish
 
-**Your AI co-builder & startup OS — ship products, not just code.**
+**Your AI co-builder & startup OS — ship products first, strategize later.**
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 [![Built with Claude Code](https://img.shields.io/badge/Built%20with-Claude%20Code-d97757.svg)](https://claude.ai/code)
