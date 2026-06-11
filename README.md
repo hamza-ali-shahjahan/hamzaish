@@ -2,7 +2,9 @@
 
 # 🏭 Hamzaish
 
-**Type an idea into Claude Code. Get a scaffolded, security-gated, shipped product — and a factory that remembers every lesson for the next one.**
+**Your Claude Code setup that doesn't stop at code.**
+
+Got an idea? Get a scaffolded, security-gated, shipped product — and a factory that remembers every lesson for your next build.
 
 [![Open source](https://img.shields.io/badge/Open-source-brightgreen.svg)](#license)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
