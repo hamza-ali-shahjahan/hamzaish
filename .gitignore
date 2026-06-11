@@ -58,3 +58,6 @@ brain/identity/*.local.md
 .no-auto-commit
 .no-auto-push
 .no-auto-pull
+
+# Operator-local research (competitive/strategy docs — never committed)
+meta/research/

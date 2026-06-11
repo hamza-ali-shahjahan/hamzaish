@@ -91,6 +91,26 @@ step(3, "Operator identity (your working style + stack defaults — never commit
   }
 }
 
+// Step 3b — active-product sprint state (yours, never committed) ------------
+step(4, "Active-sprint state (which product the factory orients on — never committed)");
+{
+  const dst = join(ROOT, "products", "_active.local.md");
+  const src = join(ROOT, "products", "_active.example.md");
+  if (existsSync(dst)) {
+    skip("products/_active.local.md already exists — leaving your sprint state untouched.");
+    skipped++;
+  } else if (existsSync(src)) {
+    await copyFile(src, dst);
+    ok("Created products/_active.local.md from the template. Fill it in when you start your first sprint (or delete it — empty is honest).");
+    created++;
+  } else {
+    skip("No _active.example.md template found — skipping (sessions fall back to /portfolio-pulse).");
+    skipped++;
+  }
+  console.log(c.dim("     The committed products/ folders are the maintainer's showcase — proof the factory ships."));
+  console.log(c.dim("     YOUR portfolio starts empty and fills via /scaffold. /portfolio-pulse keeps the two separate."));
+}
+
 // Step 4 — global slash commands -------------------------------------------
 step(4, "Global slash commands (so /work-on, /brain-ask, etc. work from any folder)");
 {
