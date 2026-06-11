@@ -1,6 +1,6 @@
 <div align="center">
 
-# Hamzaish 🏭
+# 🏭 Hamzaish
 
 **Your Claude Code setup that doesn't stop at code.**
 
