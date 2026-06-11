@@ -52,6 +52,10 @@ Safety: scaffolded products run agent-generated code inside a devcontainer, secr
 - **Sane infra defaults** — Next.js + Supabase + Stripe + Resend + PostHog + Sentry, free-tier-first, pre-wired in every scaffold. ([the stack, and the accounts you set up once →](stack/README.md))
 - **Portfolio discipline** — `/portfolio-pulse` across everything you run; quarterly kill-or-double-down so zombie projects don't eat your year.
 
+## Go deeper
+
+[Your first product in 10 minutes](docs/your-first-product.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
+
 ## How it's different
 
 | | gstack / BMAD / SuperClaude | AutoGPT / MetaGPT / crewAI | **Hamzaish** |
@@ -60,20 +64,6 @@ Safety: scaffolded products run agent-generated code inside a devcontainer, secr
 | After "code is done" | you're on your own | you're on your own | **launch, sell, scale, kill rails** |
 | Memory across projects | per-session | per-run | **persistent brain + learnings loop** |
 | Form | config + tools | Python framework | **markdown-first method, forkable** |
-
-## Products built with Hamzaish
-
-Curated proof list — products where the factory's `/full-cycle` orchestration drove the build, the brain captured cross-product learnings, and the discipline either caught a violation (good) or got violated and we documented why (also good — escapable rules would be the failure mode).
-
-| Product | What it is | Stage | Public artifact |
-|---|---|---|---|
-| **[Ventbox](https://ventbox.co)** | Architecturally-anonymous employee feedback platform — employees give unfiltered feedback; HR sees AI-categorized sentiment without ever knowing who said what. Flat-rate, not per-seat. | Live at [ventbox.co](https://ventbox.co) | Shipped, hosted product: 60-second setup, anonymous admin invites, company-domain restriction, AI sentiment analysis, pricing free→$49/mo. |
-| **[Patently](https://patently.legal)** | AI IP-clearance research for founders — *"Ship without blindsiding yourself on IP."* Research chat + clearance memos over 9M+ US court opinions, USPTO patents since 1976, and 22M copyright registrations. | Live in private beta ([GitHub](https://github.com/hamza-ali-shahjahan/ip-radar)) | Next.js 16 + Neon/pgvector + Claude tool-calling. Nine-step clearance DAG with a citation contract validator (no hallucinated cases). Hit an ID.me wall on the USPTO API mid-build → pivoted to Google Patents BigQuery in the same session. ~6 weeks of sessions. |
-| **[wp-to-astro](https://github.com/hamza-ali-shahjahan/wp-to-astro-cli)** | OSS CLI migrating WordPress sites to clean Astro + MDX — wedge for an AI-native CMS. | Alpha v0.6.1 on [npm](https://www.npmjs.com/package/wp-to-astro) | Six gated passes, 138 tests, empty dir → npm in two sessions. The validation discipline was violated (built before 5 user conversations) — documented, now the catch-up sprint. A slug-schema bug shipped in v0.6.0, caught by a real-world smoke test, patched in v0.6.1 within the hour. |
-| **[TASFORT](https://theresasystemforthat.xyz)** | "There's a System for That" — how 100+ remarkable people actually run their lives: 265+ methodologies across 11 domains, matched to you by personality type. | Live at [theresasystemforthat.xyz](https://theresasystemforthat.xyz) | Personality assessment, filterable people + systems database, "people who think like you" matching, routine-builder. |
-| **Muakkil** | Mystical AI-agent platform — four spirit agents collaborate on cross-agent charges via a ritual UX. | MVP, buildathon sprint | Lovable buildathon submission = beta launch; the Scribe voice demo is the centerpiece. |
-
-_More as they ship. A product earns this list by shipping something users can touch — not by being in the portfolio. Eleven more in earlier stages, tracked with the same honesty in [products/](products/)._
 
 ## Architecture
 
@@ -122,9 +112,19 @@ Budget posture: free tiers and pay-per-query by default; every subscription need
 
 Anthropic's *Founder's Playbook*, with patterns studied from gbrain (knowledge graph), hermes-agent (self-improving skills), openclaw (multi-channel gateway), Karpathy's eval-driven flywheel, and Addy Osmani's spec→ship discipline. Study material lives in `references/`, never imported.
 
-## Go deeper
+## Products built with Hamzaish
 
-[Your first product in 10 minutes](docs/your-first-product.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
+Curated proof list — products where the factory's `/full-cycle` orchestration drove the build, the brain captured cross-product learnings, and the discipline either caught a violation (good) or got violated and we documented why (also good — escapable rules would be the failure mode).
+
+| Product | What it is | Stage | Public artifact |
+|---|---|---|---|
+| **[Ventbox](https://ventbox.co)** | Architecturally-anonymous employee feedback platform — employees give unfiltered feedback; HR sees AI-categorized sentiment without ever knowing who said what. Flat-rate, not per-seat. | Live at [ventbox.co](https://ventbox.co) | Shipped, hosted product: 60-second setup, anonymous admin invites, company-domain restriction, AI sentiment analysis, pricing free→$49/mo. |
+| **[Patently](https://patently.legal)** | AI IP-clearance research for founders — *"Ship without blindsiding yourself on IP."* Research chat + clearance memos over 9M+ US court opinions, USPTO patents since 1976, and 22M copyright registrations. | Live in private beta ([GitHub](https://github.com/hamza-ali-shahjahan/ip-radar)) | Next.js 16 + Neon/pgvector + Claude tool-calling. Nine-step clearance DAG with a citation contract validator (no hallucinated cases). Hit an ID.me wall on the USPTO API mid-build → pivoted to Google Patents BigQuery in the same session. ~6 weeks of sessions. |
+| **[wp-to-astro](https://github.com/hamza-ali-shahjahan/wp-to-astro-cli)** | OSS CLI migrating WordPress sites to clean Astro + MDX — wedge for an AI-native CMS. | Alpha v0.6.1 on [npm](https://www.npmjs.com/package/wp-to-astro) | Six gated passes, 138 tests, empty dir → npm in two sessions. The validation discipline was violated (built before 5 user conversations) — documented, now the catch-up sprint. A slug-schema bug shipped in v0.6.0, caught by a real-world smoke test, patched in v0.6.1 within the hour. |
+| **[TASFORT](https://theresasystemforthat.xyz)** | "There's a System for That" — how 100+ remarkable people actually run their lives: 265+ methodologies across 11 domains, matched to you by personality type. | Live at [theresasystemforthat.xyz](https://theresasystemforthat.xyz) | Personality assessment, filterable people + systems database, "people who think like you" matching, routine-builder. |
+| **Muakkil** | Mystical AI-agent platform — four spirit agents collaborate on cross-agent charges via a ritual UX. | MVP, buildathon sprint | Lovable buildathon submission = beta launch; the Scribe voice demo is the centerpiece. |
+
+_More as they ship. A product earns this list by shipping something users can touch — not by being in the portfolio. Eleven more in earlier stages, tracked with the same honesty in [products/](products/)._
 
 ## License
 
