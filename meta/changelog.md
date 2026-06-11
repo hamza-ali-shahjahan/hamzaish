@@ -4,6 +4,28 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 ---
 
+## 2026-06-11 — v1.17 · The depth, surfaced — practices ledger + inventory README
+
+**What changed**
+
+- **README rearchitected around "What's inside"** — the hero now leads with the real counts (128 practices · 32 agents · 22 skills & commands · 39 playbooks, bold, centered), and a new inventory spine catalogs every agent (5 stage tables), every skill/command, and every playbook by name with links. "How it's different" moved after the inventory (comparison after evidence). The products table moved out of the README to `products/SHOWCASE.md` — the page sells the value inside the repo, not the maintainer's portfolio. Counts are computed from the filesystem (the inflated "80+ checks" claim was corrected to the verified 59).
+
+- **`BEST-PRACTICES.md`** (new, repo root) — 128 practices for *shipping products* with Claude Code, distilled from all 39 playbooks + 3 incident-backed anti-patterns + the learnings corpus. Every line: one-sentence tip · honest badge (✅ 26 proven by real ships/incidents · 🟡 3 partial · ⏳ 99 research-baked) · exact source · link to the deep file. Anti-patterns lead ("each one cost us something real"); sections follow the lifecycle (Ideate → MVP → AI-native → Launch → Sell/Scale → Founder's wisdom → Factory ops); closes with the honesty system that enforces the badges.
+- **README** — practices-ledger line added under the hero proof line.
+- **`factory/commands/learn-loop.md`** — promotion step now also adds the promoted practice's one-liner to the ledger (keeps it living, not a snapshot).
+- **`brain/anti-patterns/README.md`** — new anti-patterns also get a ledger one-liner; stale "none yet" seed list replaced with the 3 real entries.
+
+**Why**
+
+Studying shanraisshan/claude-code-best-practice (57k★ in 7.5 months) showed the mechanics of *felt* depth: scroll density, per-tip attribution, implemented-or-not markers. Hamzaish had the substance (39 sourced playbooks, dated incidents, a stricter honesty system) but zero surface — cloners never open the folders. The ledger is that surface, in the unclaimed lane ("shipping products" vs Shayan's "using Claude Code" — credited and linked, not competed with). Counts computed honestly; 5 cross-folder duplicate tips deduped; nothing marked proven without a named ship or dated incident.
+
+**What to revisit**
+
+- The ledger is hand-curated v1; if drift appears between it and the playbooks, build the regeneration script the page's footer implies.
+- When ⏳ practices graduate via /kill-or-keep, re-badge them here (the learn-loop step covers new promotions; graduations are manual until scripted).
+
+---
+
 ## 2026-06-09 — v1.16 · Hardened global hooks + impact-scored learning loop
 
 **What changed**
