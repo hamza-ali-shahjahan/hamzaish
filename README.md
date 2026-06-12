@@ -2,7 +2,7 @@
 
 # 🏭 Hamzaish
 
-**Your Claude Code setup that doesn't stop at code.**
+**Get into your Builder Mode with a Claude Code setup that does more than just code.**
 
 Got an idea? Get a scaffolded, security-gated, shipped product — and a factory that remembers every lesson for your next build.
 
@@ -23,8 +23,10 @@ Every count real · every item linked · every claim marked ✅ proven / 🟡 pa
 
 ---
 
-## Why this exists
+## Why this exists - Builder Mode
+I've made it my mission to simplifying the builder spirit as a momentum-first, strategy second mode. I think of it as Builder Mode. So millions start leveraging ai to build better, build faster, and build more.
 
+Why though?
 Claude Code setups like gstack and BMAD make you faster at **building**. Then you're on your own: the security review, the launch, pricing, first customers, knowing when to kill. Most solo projects don't die in the build — they die in everything after it.
 
 Hamzaish is the Claude Code setup that **doesn't stop at code**. It runs the whole lifecycle — **Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down** — with stage-specific agents, playbooks distilled from real ships, and a brain that carries every lesson into your next product. ([The full philosophy →](docs/philosophy.md))
