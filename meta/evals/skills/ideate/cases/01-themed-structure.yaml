@@ -1,0 +1,63 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: themed-ideation-structure
+skill: ideate
+description: >
+  The idea-generator protocol, given a theme, must produce 5 ideas in its
+  contract format (all per-idea fields present) and end with one direct
+  recommendation. Deterministic floor: counted structure. Judge gate: the
+  ideas are distinct and anchored, not vacuum brainstorming. Format verified
+  against live output 2026-06-13 (8 ideas, all fields, "If I had to pick one"
+  recommendation); count constrained to 5 here for run-time discipline.
+invoke:
+  cmd:
+    - claude
+    - -p
+    - >-
+      Read factory/agents/idea/idea-generator/SKILL.md and execute its
+      protocol exactly. The protocol's one clarifying question is already
+      answered: constraint/theme = AI-powered tools for solo founders and
+      indie hackers. Produce exactly 5 ideas. You are running headless: never
+      ask questions, never wait for input. Output only the final markdown
+      deliverable (the ranked idea list + the one direct recommendation) to
+      stdout. Do not create or modify any files.
+    - --model
+    - sonnet
+    - --allowedTools
+    - Read Glob Grep
+    - --max-turns
+    - "30"
+  timeout_ms: 480000
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_count_min
+    regex: '^## Idea'
+    min: 5
+  - type: stdout_count_min
+    regex: '\*\*One-liner:\*\*'
+    min: 5
+  - type: stdout_count_min
+    regex: '\*\*Who feels the pain:\*\*'
+    min: 5
+  - type: stdout_count_min
+    regex: '\*\*Validation move:\*\*'
+    min: 5
+  - type: stdout_matches
+    regex: 'If I had to pick one'
+  - type: llm_judge
+    criteria:
+      - id: distinct_ideas
+        requirement: >-
+          The ideas are genuinely distinct problems for distinct user
+          moments — not five thin variants of the same product.
+      - id: anchored_not_vacuum
+        requirement: >-
+          Each idea is anchored in a stated trend, pain, or existing-portfolio
+          pattern (a "why now" or equivalent reasoning) — none is free-floating
+          brainstorming with no grounding.
+      - id: on_theme
+        requirement: >-
+          Every idea plausibly serves the given theme (AI-powered tools for
+          solo founders / indie hackers) rather than drifting to enterprise
+          or consumer verticals.

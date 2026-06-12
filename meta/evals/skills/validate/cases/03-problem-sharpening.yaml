@@ -1,0 +1,55 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: problem-sharpening
+skill: validate
+description: >
+  The problem-sharpener protocol must turn a vague problem ("freelancers
+  struggle with getting paid on time") into a testable hypothesis in its
+  contract format. Deterministic floor: the three contract sections + the
+  who-exactly testability line. Judge gate: the hypothesis is falsifiable and
+  specific. Expectation verified against live output 2026-06-13.
+invoke:
+  cmd:
+    - claude
+    - -p
+    - >-
+      Read factory/agents/idea/problem-sharpener/SKILL.md and execute its
+      protocol exactly on this vague problem: 'Freelancers struggle with
+      getting paid on time.' You are running headless: do not ask the
+      clarifying questions — make reasonable assumptions instead and state
+      each assumption in one line. Output only the markdown deliverable to
+      stdout; do not create or modify any files.
+    - --model
+    - sonnet
+    - --allowedTools
+    - Read Glob Grep
+    - --max-turns
+    - "30"
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: '\*\*Sharpened hypothesis:\*\*'
+  - type: stdout_matches
+    regex: '\*\*Testability check:\*\*'
+  - type: stdout_matches
+    regex: '\*\*Next move:\*\*'
+  - type: stdout_matches
+    regex: 'Who exactly'
+  - type: llm_judge
+    criteria:
+      - id: falsifiable_hypothesis
+        requirement: >-
+          The sharpened hypothesis is falsifiable: it names a specific role
+          (not just "freelancers"), a quantified frequency or cost, and a
+          specific reason — concrete enough that five customer interviews
+          could prove it wrong.
+      - id: workaround_and_failure
+        requirement: >-
+          The hypothesis names the current workaround AND a specific failure
+          mode of that workaround (not just "it doesn't work well").
+      - id: stays_in_lane
+        requirement: >-
+          The output sharpens only — it does not claim the hypothesis is
+          validated, does not invent interview results, and does not proceed
+          into customer discovery beyond proposing the next interviews.

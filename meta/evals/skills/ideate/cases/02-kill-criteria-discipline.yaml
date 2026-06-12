@@ -1,0 +1,53 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: kill-criteria-discipline
+skill: ideate
+description: >
+  Open (unthemed) ideation must keep the protocol's discipline: every idea
+  carries a kill criterion and a plausibility estimate, and nothing is
+  romanticized (the protocol forbids >$1B-TAM moonshots and ideas without a
+  way to die). Deterministic floor: counted fields. Judge gate: kill criteria
+  are specific, plausibility reasoning honest.
+invoke:
+  cmd:
+    - claude
+    - -p
+    - >-
+      Read factory/agents/idea/idea-generator/SKILL.md and execute its
+      protocol exactly. The protocol's one clarifying question is already
+      answered: fully open — no vertical, audience, or theme constraint.
+      Produce exactly 5 ideas. You are running headless: never ask questions,
+      never wait for input. Output only the final markdown deliverable to
+      stdout. Do not create or modify any files.
+    - --model
+    - sonnet
+    - --allowedTools
+    - Read Glob Grep
+    - --max-turns
+    - "30"
+  timeout_ms: 480000
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_count_min
+    regex: '^## Idea'
+    min: 5
+  - type: stdout_count_min
+    regex: '\*\*Kill criteria:\*\*'
+    min: 5
+  - type: stdout_count_min
+    regex: 'plausibility:\*\*'
+    min: 5
+  - type: llm_judge
+    criteria:
+      - id: specific_kill_criteria
+        requirement: >-
+          The kill criteria are specific and measurable (a named signal,
+          threshold, or disconfirming observation) — not generic filler like
+          "if nobody wants it".
+      - id: no_romanticizing
+        requirement: >-
+          The ideas target small, winnable markets consistent with a
+          $100K-ARR unit goal; none is pitched as a billion-dollar moonshot,
+          and plausibility estimates include honest one-line reasoning rather
+          than uniform hype.

@@ -1,0 +1,52 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: portfolio-grounding
+skill: ideate
+description: >
+  The protocol's step 1 is reading products/*/product.config.json — the
+  "Why this fits Hamza" lines must reflect the operator's REAL portfolio, not
+  invented history. Theme chosen near an existing product (legal/IP SaaS,
+  adjacent to Patently) to make grounding checkable. Deterministic floor:
+  counted fields. Judge gate: fit-rationales reference actual portfolio
+  patterns.
+invoke:
+  cmd:
+    - claude
+    - -p
+    - >-
+      Read factory/agents/idea/idea-generator/SKILL.md and execute its
+      protocol exactly. The protocol's one clarifying question is already
+      answered: constraint/theme = legal- or IP-adjacent SaaS for small
+      teams. Produce exactly 5 ideas. You are running headless: never ask
+      questions, never wait for input. Output only the final markdown
+      deliverable to stdout. Do not create or modify any files.
+    - --model
+    - sonnet
+    - --allowedTools
+    - Read Glob Grep
+    - --max-turns
+    - "30"
+  timeout_ms: 480000
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_count_min
+    regex: '^## Idea'
+    min: 5
+  - type: stdout_count_min
+    regex: '\*\*Why this fits Hamza:\*\*'
+    min: 5
+  - type: llm_judge
+    criteria:
+      - id: grounded_in_real_portfolio
+        requirement: >-
+          The "Why this fits Hamza" rationales reference concrete, plausibly
+          real portfolio products or patterns (e.g. an IP/patent product, a
+          scope-intelligence product, AI-agent infrastructure) — they read as
+          grounded in a portfolio that was actually read, not generic
+          flattery like "fits your skills" with no named pattern.
+      - id: no_invented_history
+        requirement: >-
+          No rationale asserts portfolio facts that are obviously fabricated
+          (e.g. claiming successful exits, large teams, or enterprise
+          customers that a solo-operator indie portfolio would not have).

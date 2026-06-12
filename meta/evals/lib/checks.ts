@@ -12,14 +12,16 @@ export type CheckSpec =
   | { type: "exit_code"; equals: number }
   | { type: "json_parse" }
   | { type: "top_n_contains"; n: number; any_of: string[] }
-  | { type: "stdout_matches"; regex: string };
+  | { type: "stdout_matches"; regex: string }
+  | { type: "stdout_count_min"; regex: string; min: number }
+  | { type: "llm_judge"; criteria: { id: string; requirement: string }[]; model?: string };
 
 export type CaseSpec = {
   name: string;
   skill: string;
   description?: string;
   invoke: { cmd: string[]; timeout_ms?: number };
-  preflight?: { must_exist?: string[] };
+  preflight?: { must_exist?: string[]; commands?: string[] };
   checks: CheckSpec[];
 };
 
@@ -38,7 +40,7 @@ export type Verdict = {
   duration_ms: number;
 };
 
-const KNOWN_CHECKS = new Set(["exit_code", "json_parse", "top_n_contains", "stdout_matches"]);
+const KNOWN_CHECKS = new Set(["exit_code", "json_parse", "top_n_contains", "stdout_matches", "stdout_count_min", "llm_judge"]);
 
 /** Executable-criterion-or-GAP, applied at load time: if a case's criteria
  *  aren't machine-checkable as written, that's a GAP now — not a surprise later. */
@@ -55,7 +57,20 @@ export function validateCase(c: any): string | null {
     if (ch.type === "top_n_contains" && (!Array.isArray(ch.any_of) || ch.any_of.length === 0 || typeof ch.n !== "number"))
       return "top_n_contains needs n:<number> and any_of:[paths]";
     if (ch.type === "stdout_matches" && typeof ch.regex !== "string") return "stdout_matches needs regex:<string>";
+    if (ch.type === "stdout_count_min" && (typeof ch.regex !== "string" || typeof ch.min !== "number"))
+      return "stdout_count_min needs regex:<string> and min:<number>";
+    if (ch.type === "llm_judge") {
+      if (!Array.isArray(ch.criteria) || ch.criteria.length === 0)
+        return "llm_judge needs a non-empty criteria array";
+      for (const cr of ch.criteria)
+        if (typeof cr?.id !== "string" || typeof cr?.requirement !== "string")
+          return "every llm_judge criterion needs id:<string> and requirement:<string>";
+    }
   }
+  // The judge is a gate, never the only criterion: a case judged but never
+  // deterministically checked has no executable floor — that's a GAP.
+  if (c.checks.every((ch: any) => ch.type === "llm_judge"))
+    return "llm_judge cannot be the only check — at least one deterministic criterion required";
   return null;
 }
 
@@ -129,14 +144,20 @@ export function runChecks(
           detail: inv.stdout.slice(0, 80).replace(/\n/g, " "),
         });
         break;
+      case "stdout_count_min": {
+        const count = (inv.stdout.match(new RegExp(spec.regex, "gm")) ?? []).length;
+        results.push({
+          check: `stdout has ≥${spec.min} matches of /${spec.regex}/`,
+          ok: count >= spec.min,
+          detail: `got ${count}`,
+        });
+        break;
+      }
+      case "llm_judge":
+        // Not deterministic — run.ts invokes the judge (lib/judge.ts) AFTER all
+        // deterministic checks pass. Gate, never oracle: it can only demote.
+        break;
     }
   }
   return results;
-}
-
-/** SEAM ONLY — the LLM judge. Not implemented in brick #1. When implemented it
- *  must return structured per-criterion results and may classify a case as
- *  UNCERTAIN; it must never produce PASS on its own. */
-export function llmJudge(): { outcome: "UNCERTAIN"; reason: string } {
-  return { outcome: "UNCERTAIN", reason: "LLM judge not implemented (seam only — see PLAN.md)" };
 }

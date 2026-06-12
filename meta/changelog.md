@@ -6,6 +6,30 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-13 — v1.21 · Movement 1, brick #2: the judge seam filled — 9 cases, LLM judge live
+
+**What changed**
+
+- **The LLM judge is real** — `meta/evals/lib/judge.ts`. Transport: `claude -p --model haiku` (zero deps, no API key, rides the subscription; missing binary → SKIP). Per-criterion structured verdicts (`PASS`/`FAIL`/`UNSURE` + evidence); **gate-not-oracle enforced by the return type** — no judge value can turn a failing case green. Runs only after every deterministic check passes; any criterion FAIL → `FAIL_BUILDABLE` naming the criterion; UNSURE or judge-unreachable → `UNCERTAIN`. A case whose only check is `llm_judge` is rejected as `GAP` at load time — the judge gates a deterministic floor, never replaces one.
+- **9 cases, 3 skills** — the PLAN.md seed target. New: `meta/evals/skills/ideate/cases/` (×3: themed structure+distinctness, kill-criteria discipline, portfolio grounding) and `meta/evals/skills/validate/cases/` (×3: weak-validation fixture with planted gaps must be flagged; strong-validation fixture must be engaged honestly, not reflexively killed; problem-sharpener falsifiability). Every expectation verified against live `claude -p` output before authoring (honest-green floor).
+- **Runner upgrades** (`run.ts` + `lib/checks.ts`): new check types `llm_judge` + `stdout_count_min`; `preflight.commands` (missing binary → SKIP); `--no-llm` flag (LLM cases → SKIP — the fast, free gate); concurrency 3; LLM cases get one retry on a non-PASS first attempt; default LLM-case timeout 240s.
+- **Regression rule refined**: only `FAIL_BUILDABLE` blocks (exit 1). A baseline-PASS case going `UNCERTAIN`/`GAP`/`SKIP` is a **floor warning** — printed loudly, exit 0. LLM cases are nondeterministic; a judge hiccup must never read as a regression.
+- **Real catch during the build**: running cases concurrently exposed `brain/ask.ts` dying with `database is locked` under parallel readers — fixed at the root with `PRAGMA busy_timeout` (readonly readers now wait out transient locks instead of erroring). Parallel sessions hitting the brain simultaneously would have tripped this eventually anyway.
+- **Operating principle #13 restored** — "Honest copy — we never claim what isn't true" was recorded in the v1.15 changelog and referenced by the public PR template, but the principle was missing from `brain/operating-principles.md` on every ref (the edit never landed; likely lost between main's rewrites and the v1.19 port). Reconstructed verbatim from the v1.15 entry, operator-approved.
+
+**Why**
+
+This is the second brick of Movement 1 (`meta/SELF-EVOLUTION.md` — Selection): brick #1 proved the harness shape on deterministic retrieval; brick #2 extends the honest judge to the skills that *generate* (ideate, validate), which no deterministic check can grade alone. The judge had to stay a gate — "looks good" reduces nothing; only named criteria with evidence do. The #13 restoration is the honesty system applied to itself: a public template pointed contributors at a principle that didn't exist.
+
+**What to revisit**
+
+- Judge stability over time: if floor warnings from judge `UNSURE` verdicts recur on the same criterion, the criterion is too vague — sharpen it (that's the "waste" loop from SELF-EVOLUTION.md, driving UNCERTAIN to zero).
+- Wall time: full 9-case run target < 5 min (PLAN.md trigger). If ideate-case generation grows past it, lower SUT `--max-turns` or trim to 2 ideate cases.
+- The headless runtime (`claude -p` loop calling the harness and routing by verdict) is the next arc — the harness now returns everything it needs.
+- Changelog-claims-vs-file-reality: the lost #13 means a changelog entry is not proof the edit survives. Spot-check claimed file changes when auditing history (added to learnings).
+
+---
+
 ## 2026-06-13 — v1.20 · Movement 1, brick #1: the eval harness exists (Selection is seeded)
 
 **What changed**

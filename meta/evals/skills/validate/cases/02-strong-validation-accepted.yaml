@@ -1,0 +1,69 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: strong-validation-accepted
+skill: validate
+description: >
+  Given a fixture idea with genuinely strong evidence (11 target-profile
+  interviews, LOIs, a paying concierge pilot with zero churn, a regulatory
+  forcing function), the devils-advocate protocol must engage with that
+  evidence honestly rather than manufacture objections — the inverse of the
+  weak-validation case. Deterministic floor: contract sections + forced
+  verdict. Judge gate: evidence acknowledged, verdict not a reflexive kill.
+invoke:
+  cmd:
+    - claude
+    - -p
+    - >-
+      Read factory/agents/idea/devils-advocate/SKILL.md and execute its
+      protocol exactly on the idea below. You are running headless: never ask
+      questions; no web access is available — rely on your own knowledge of
+      failed analogs. Output only the markdown deliverable to stdout; do not
+      create or modify any files.
+
+      IDEA TO STRESS-TEST:
+      Name: SiteAudit Pro — automated accessibility-compliance monitoring for
+      EU digital agencies (European Accessibility Act enforcement).
+      Validation evidence so far: 11 interviews with agency owners (the
+      target profile); 7 of them described currently paying a consultant
+      EUR 800-2,000 per quarter for manual audits; 3 signed letters of
+      intent at EUR 99/month; a concierge MVP (manual audits delivered as if
+      automated) ran for 6 weeks with 5 paying pilot customers at EUR 49/month
+      and zero churn; EAA enforcement began June 2025 and fines are being
+      issued. Planned next step: build the automated scanner to replace the
+      concierge backend.
+    - --model
+    - sonnet
+    - --allowedTools
+    - Read Glob Grep
+    - --max-turns
+    - "30"
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: '^## The kill case'
+  - type: stdout_matches
+    regex: '^## Hidden assumptions'
+  - type: stdout_matches
+    regex: '^## Verdict'
+  - type: stdout_matches
+    regex: 'KILL|PIVOT|PROCEED'
+  - type: llm_judge
+    criteria:
+      - id: engages_with_evidence
+        requirement: >-
+          The analysis explicitly acknowledges the strong evidence provided
+          (paying concierge pilots, LOIs, target-profile interviews, the
+          regulatory driver) rather than ignoring it or pretending no
+          validation exists.
+      - id: no_manufactured_objections
+        requirement: >-
+          The objections raised are genuine structural risks (e.g.
+          incumbents, regulatory change, automation parity with manual
+          audits) — not fabricated claims that contradict the stated
+          evidence (e.g. asserting no one has paid when paying pilots exist).
+      - id: proportionate_verdict
+        requirement: >-
+          The verdict is PROCEED (with eyes open) — or, if PIVOT/KILL, it is
+          justified by a specific structural argument that outweighs the
+          paying-customer evidence, not by reflexive pessimism.

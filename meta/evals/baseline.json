@@ -1,5 +1,11 @@
 {
   "brain-ask/eval-harness-fact-retrieval": "PASS",
   "brain-ask/agent-blind-fact-retrieval": "PASS",
-  "brain-ask/headless-runtime-fact-retrieval": "PASS"
+  "brain-ask/headless-runtime-fact-retrieval": "PASS",
+  "ideate/themed-ideation-structure": "PASS",
+  "ideate/kill-criteria-discipline": "PASS",
+  "ideate/portfolio-grounding": "PASS",
+  "validate/weak-validation-flagged": "PASS",
+  "validate/strong-validation-accepted": "PASS",
+  "validate/problem-sharpening": "PASS"
 }

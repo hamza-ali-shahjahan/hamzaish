@@ -1,6 +1,6 @@
 # Phase D — Eval Harness · Plan (= Movement 1, "Selection")
 
-**Status**: planned, not built. Approved as the next 10x bet (2026-06-02). Build sprint starts after Muakkil's buildathon retro closes Phase B.
+**Status**: built and live — brick #1 (runner + deterministic checks + 3 brain-ask cases, 2026-06-13) and brick #2 (LLM judge via `claude -p` + 9 cases across brain-ask/ideate/validate, 2026-06-13). Approved as the next 10x bet 2026-06-02. This document is now the design rationale; current behavior is documented in [`README.md`](README.md).
 
 **This is Movement 1 of the self-evolution arc** — see `meta/SELF-EVOLUTION.md` for the plain-language story and `brain/knowledge/2026-06-02-self-evolving-upgrade-brief.md` for the source brief. The eval harness IS "Selection": the honest, agent-blind judge that turns Hamzaish from improving-by-eyeball into improving-by-verdict.
 

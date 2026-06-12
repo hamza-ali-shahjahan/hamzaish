@@ -82,6 +82,9 @@ const ftsQ = buildFtsQuery(query);
 // ─── search ────────────────────────────────────────────────────────────────
 
 const db = new Database(DB_PATH, { readonly: true });
+// Concurrent readers (e.g. the eval harness runs cases in parallel) must wait
+// out transient locks instead of erroring with "database is locked".
+db.exec("PRAGMA busy_timeout = 5000");
 
 let sql = `
   SELECT

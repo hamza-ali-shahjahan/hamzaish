@@ -92,3 +92,11 @@ Every non-trivial decision: append a paragraph to the relevant `decisions/` fold
 ```
 
 This is how a future Claude (or future Hamza) understands what we did and why, without context-stitching.
+
+## 13. Honest copy — we never claim what isn't true
+
+All outward-facing copy — landing pages, OG/social cards, ads, emails, in-app text, READMEs — must be true and verifiable the moment it ships. No invented stats. No "full" or "every" coverage we don't have. No implied-but-unbuilt capabilities. Aspiration is allowed only when labelled ("coming soon," "in beta").
+
+Ship-gate: for any numeric or coverage claim, link the source of truth or cut the claim.
+
+Origin: the Patently OG card asserted "9M+ opinions · full patent record · 22M+ registrations" before that data was live (caught 2026-06-07). Trust is the entire moat for a decision-support tool; one inflated claim poisons every true one.

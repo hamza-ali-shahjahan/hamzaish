@@ -1,0 +1,71 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: weak-validation-flagged
+skill: validate
+description: >
+  Given a fixture idea whose "validation" is all vanity signals (waitlist,
+  followers, would-probably-use survey; zero conversations, zero payment asks,
+  a planned $40K spend), the devils-advocate protocol must flag the planted
+  gaps. Deterministic floor: the six contract sections + a forced verdict.
+  Judge gate: the gaps are actually called out. Verified live 2026-06-13.
+invoke:
+  cmd:
+    - claude
+    - -p
+    - >-
+      Read factory/agents/idea/devils-advocate/SKILL.md and execute its
+      protocol exactly on the idea below. You are running headless: never ask
+      questions; no web access is available — rely on your own knowledge of
+      failed analogs. Output only the markdown deliverable to stdout; do not
+      create or modify any files.
+
+      IDEA TO STRESS-TEST:
+      Name: InboxZeroCoach — an AI email coach for busy executives that
+      auto-drafts replies in their voice.
+      Validation evidence so far: 4,200 waitlist signups from one viral
+      LinkedIn post; 312 new Twitter followers in a week; a survey where 89%
+      of respondents said they would probably use it. Zero customer
+      interviews conducted. No one has been asked to pay anything. Planned
+      next step: spend $40K on paid ads and hire a contract sales rep.
+    - --model
+    - sonnet
+    - --allowedTools
+    - Read Glob Grep
+    - --max-turns
+    - "30"
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: '^## The kill case'
+  - type: stdout_matches
+    regex: '^## Hidden assumptions'
+  - type: stdout_matches
+    regex: '^## Disconfirming evidence'
+  - type: stdout_matches
+    regex: '^## Failed analogs'
+  - type: stdout_matches
+    regex: '^## Verdict'
+  - type: stdout_matches
+    regex: 'KILL|PIVOT|PROCEED'
+  - type: llm_judge
+    criteria:
+      - id: flags_vanity_metrics
+        requirement: >-
+          The analysis explicitly identifies the waitlist signups, follower
+          counts, and/or "would probably use" survey as weak or vanity
+          signals rather than real validation.
+      - id: flags_missing_conversations
+        requirement: >-
+          The analysis explicitly flags that no customer interviews have been
+          conducted and/or that no one has been asked to pay — the absence of
+          any real commitment signal.
+      - id: flags_premature_spend
+        requirement: >-
+          The analysis warns against the planned $40K paid-ads spend (or the
+          sales hire) before stronger evidence exists.
+      - id: real_failed_analogs
+        requirement: >-
+          The failed-analogs section cites at least one real, verifiable
+          prior product or company (not invented names) relevant to email
+          tools or AI assistants.
