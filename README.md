@@ -2,9 +2,7 @@
 
 # 🏭 Hamzaish
 
-**Get into your Builder Mode with a Claude Code setup that does more than just code.**
-
-Got an idea? Get a scaffolded, security-gated, shipped product — and a factory that remembers every lesson for your next build.
+**Get into your Builder Mode with a Claude Code setup that does more than just code, learns from every build and remembers every lesson.**
 
 [![Open source](https://img.shields.io/badge/Open-source-brightgreen.svg)](#license)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
