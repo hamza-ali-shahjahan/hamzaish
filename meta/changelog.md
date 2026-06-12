@@ -2,7 +2,24 @@
 
 Append-only. Newest first. Each entry: date · version · summary · what changed · why · what to revisit.
 
+At a major-cycle boundary, the entries accumulated here since the last tag are published as a GitHub Release via **`/release`** (`factory/commands/release.md`) — this log is the source of truth those notes are assembled from.
+
 ---
+
+## 2026-06-12 — v1.18 · First public release (v1.0.0) + `/release` factory step
+
+**What changed**
+
+- **Cut the flagship [v1.0.0 GitHub Release](https://github.com/hamza-ali-shahjahan/hamzaish/releases/tag/v1.0.0)** — the first *public* release, AGPL-3.0, marked latest. Annotated tag at `main`'s public HEAD; notes assembled from this changelog + the README (momentum-first build, compounding brain, secure-by-default, the impact-scored learning loop; the five live products built through the factory).
+- **New `/release` command** (`factory/commands/release.md`) — the public-release step of the factory cycle. At a major-cycle boundary it picks the next semver tag, assembles structured notes from this changelog, tags `origin/main`'s public HEAD, and creates a GitHub Release marked `--latest`. Documented in `meta/factory-improving-factory.md` (new "Publishing the cut" section + checklist item) and this header.
+
+**Why**
+
+The factory had an internal compounding loop (`/learn-loop`) but no external surface for what each cycle shipped. `/release` is the other half of a major-cycle boundary: `/learn-loop` promotes what the cycle *taught*; `/release` publishes what the cycle *shipped* — both fire on the same triggers, neither every session.
+
+**What to revisit**
+
+- When `/release` runs next, confirm the bump heuristic (factory-behavior → minor, fixes/docs → patch) matches how the changelog actually reads; adjust the command if a cycle's scope is consistently mis-sized.
 
 ## 2026-06-11 — v1.17 · The depth, surfaced — practices ledger + inventory README
 

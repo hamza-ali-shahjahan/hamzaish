@@ -59,6 +59,10 @@ The loop above captures *everything*. To stop the capture pile from becoming wri
 
 Full definition — triggers, axes, threshold, entry format — in **[`meta/learning-loop-rubric.md`](learning-loop-rubric.md)**. This is the forcing function on top of the "where each learning lives" table above: the table says *where*, the rubric says *whether it's worth promoting at all*.
 
+## Publishing the cut (`/release`)
+
+`/learn-loop` makes the cycle compound *internally*; **`/release`** publishes what the cycle shipped *externally*. It runs at the **same major-cycle boundary** (the triggers above) and turns the accumulated `meta/changelog.md` entries since the last tag into a polished GitHub Release: pick the next semver tag, assemble structured notes from the changelog, tag `origin/main`'s public HEAD (never a feature branch), and mark it `--latest`. Run `/learn-loop` first so the changelog is current, then `/release` to cut it. Definition: **[`factory/commands/release.md`](../factory/commands/release.md)**. Not every boundary warrants a tag — only those that change what a stranger gets.
+
 ## End-of-session checklist
 
 If the session did real work, before ending:
@@ -67,7 +71,7 @@ If the session did real work, before ending:
 - [ ] Did I re-derive anything? → it goes in `factory/playbooks/` or `factory/skills/`
 - [ ] Did I get corrected? → check whether it belongs in `brain/anti-patterns/`, `CLAUDE.md`, or `brain/identity/`
 - [ ] Did a product move stages, ship, or fail? → write a `meta/retros/` entry
-- [ ] Did I change Hamzaish itself? → append to `meta/changelog.md`
+- [ ] Did I change Hamzaish itself? → append to `meta/changelog.md` (and at a major-cycle boundary worth surfacing publicly, cut a tag with `/release`)
 
 ## Quarterly: kill-or-keep on Hamzaish itself
 
