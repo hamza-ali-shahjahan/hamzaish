@@ -61,3 +61,6 @@ brain/identity/*.local.md
 
 # Operator-local research (competitive/strategy docs — never committed)
 meta/research/
+
+# Eval run reports — derived, regenerable verdicts (the committed contract is baseline.json)
+meta/evals/runs/

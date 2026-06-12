@@ -1,0 +1,19 @@
+# AGENT-BLIND: brain/ask.ts must never read this file.
+name: headless-runtime-fact-retrieval
+skill: brain-ask
+description: >
+  The interactive-vs-headless knowledge note must rank #1-3 for its own
+  distinctive vocabulary. Verified #1 by a wide margin (bm25 -32.9) against
+  the live brain at authoring time (2026-06-13).
+invoke:
+  cmd: ["bun", "brain/ask.ts", "--json", "--limit", "5", "interactive vs headless self-evolving runtime claude -p"]
+  timeout_ms: 15000
+preflight:
+  must_exist: ["brain/brain.db"]
+checks:
+  - type: exit_code
+    equals: 0
+  - type: json_parse
+  - type: top_n_contains
+    n: 3
+    any_of: ["brain/knowledge/2026-06-04-interactive-vs-headless-self-evolving.md"]

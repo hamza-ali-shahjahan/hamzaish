@@ -49,10 +49,16 @@ const INGEST_RULES: IngestRule[] = [
   // Products — handled specially so we can scope by slug
 ];
 
-// Folders we never traverse into
+// Folders we never traverse into (matched by name, any depth)
 const SKIP_DIRS = new Set([
   "_archive", "references", "node_modules", ".git", ".next", "dist", ".wrangler", ".turbo", "build"
 ]);
+
+// Paths we never traverse into (matched by repo-relative prefix).
+// AGENT-BLIND RULE: the judged system must never retrieve its own eval
+// fixtures, rubrics, or verdicts via /brain-ask. Selection trusts separation,
+// not re-checking (meta/SELF-EVOLUTION.md, meta/evals/README.md).
+const SKIP_PATHS = ["meta/evals/skills", "meta/evals/runs"];
 
 // ─── DB setup ──────────────────────────────────────────────────────────────
 
@@ -102,7 +108,9 @@ async function* walk(dir: string, recurse: boolean): AsyncGenerator<string> {
       if (!recurse) continue;
       if (SKIP_DIRS.has(e.name)) continue;
       if (e.name.startsWith(".")) continue;
-      yield* walk(relative(HAMZAISH_ROOT, full), recurse);
+      const rel = relative(HAMZAISH_ROOT, full);
+      if (SKIP_PATHS.some((p) => rel === p || rel.startsWith(p + "/"))) continue;
+      yield* walk(rel, recurse);
     } else if (e.isFile()) {
       yield relative(HAMZAISH_ROOT, full);
     }

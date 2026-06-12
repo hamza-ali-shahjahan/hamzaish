@@ -6,6 +6,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-13 — v1.20 · Movement 1, brick #1: the eval harness exists (Selection is seeded)
+
+**What changed**
+
+- **`meta/evals/run.ts` + `lib/checks.ts`** — the agent-blind eval runner (zero deps; native `Bun.YAML`). Each case gets a **four-outcome verdict**: PASS / FAIL_BUILDABLE / GAP / UNCERTAIN (+ SKIP for missing environment). Executable-criterion-or-GAP enforced at load time; the LLM judge is a stubbed seam with the gate-not-oracle contract documented. `bun run eval`.
+- **Regression floor** — `meta/evals/baseline.json` (committed) records the PASS set; a previously-passing case that stops passing exits 1. New failures explain, regressions block. Run reports land in `meta/evals/runs/` (gitignored — derived state).
+- **First 3 cases**: `/brain-ask` known-fact retrieval, each expectation verified against the live brain before authoring (honest-green floor). All verdict paths self-tested by forcing them: wrong expectation → FAIL_BUILDABLE, no criteria → GAP, missing env → SKIP, sabotaged baseline case → exit 1.
+- **Blindness enforced in code** — `brain/ingest.ts` gains path-prefix SKIP_PATHS excluding `meta/evals/skills` + `meta/evals/runs` from the brain index: the judged system cannot retrieve its own fixtures, rubrics, or verdicts. The first audit caught a real leak (an already-indexed eval rubric) — purged.
+- **Two real catches on day one**: the rubric leak, and the harness flagging its own new README as a retrieval regression (the README displaced PLAN.md in BM25 rankings for the verdict query) — criterion refined, lesson recorded in `brain/learnings/2026-06-13.md`.
+
+**Why**
+
+This is Movement 1 of `meta/SELF-EVOLUTION.md` — Selection, the missing third ingredient. Until now "it worked" meant *the builder said it worked*. The maturity ladder now reads: variation ✅ · heredity ✅ (scored via /learn-loop) · **selection ✅ (seeded)**. Approved as the next 10× bet 2026-06-02; built as the de-risking slice from `meta/evals/PLAN.md`'s gate.
+
+**What to revisit**
+
+- Scale to ~9 cases (`/ideate`, `/validate` per PLAN) — requires filling the LLM-judge seam (judge model, rubric format, cost ceiling). Judge must remain a gate, never an oracle.
+- Retrieval criteria over a living corpus must expect fact migration — when a red floor means "the corpus improved," widen `any_of` deliberately, never reflexively.
+- The headless runtime (`claude -p` loop calling `harness.run()`) is the arc after the 9 cases.
+
+---
+
 ## 2026-06-13 — v1.20 · Community-standards pass — GitHub community profile at 100%
 
 **What changed**

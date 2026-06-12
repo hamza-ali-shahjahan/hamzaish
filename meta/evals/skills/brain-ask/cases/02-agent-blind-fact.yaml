@@ -1,0 +1,19 @@
+# AGENT-BLIND: brain/ask.ts must never read this file.
+name: agent-blind-fact-retrieval
+skill: brain-ask
+description: >
+  The selection-arc fact ("agent-blind separation, frozen judge") must rank
+  its source docs top 3. Either PLAN.md or SELF-EVOLUTION.md is a correct
+  hit. Verified #1 + #2 against the live brain at authoring time (2026-06-13).
+invoke:
+  cmd: ["bun", "brain/ask.ts", "--json", "--limit", "5", "agent-blind separation judge frozen"]
+  timeout_ms: 15000
+preflight:
+  must_exist: ["brain/brain.db"]
+checks:
+  - type: exit_code
+    equals: 0
+  - type: json_parse
+  - type: top_n_contains
+    n: 3
+    any_of: ["meta/evals/PLAN.md", "meta/SELF-EVOLUTION.md"]

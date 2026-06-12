@@ -1,0 +1,21 @@
+# AGENT-BLIND: brain/ask.ts must never read this file. cases/ is excluded
+# from the brain index (brain/ingest.ts SKIP_DIRS).
+name: eval-harness-fact-retrieval
+skill: brain-ask
+description: >
+  A distinctive eval-harness fact ("four-outcome verdict, FAIL_BUILDABLE")
+  must surface a source doc in the top 3 (PLAN.md or the evals README — the
+  fact lives in both since 2026-06-13, when the README itself displaced PLAN.md
+  at rank 1 and the harness caught it as its first real regression).
+invoke:
+  cmd: ["bun", "brain/ask.ts", "--json", "--limit", "5", "four-outcome verdict FAIL_BUILDABLE eval harness"]
+  timeout_ms: 15000
+preflight:
+  must_exist: ["brain/brain.db"]
+checks:
+  - type: exit_code
+    equals: 0
+  - type: json_parse
+  - type: top_n_contains
+    n: 3
+    any_of: ["meta/evals/PLAN.md", "meta/evals/README.md"]
