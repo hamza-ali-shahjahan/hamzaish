@@ -2,7 +2,7 @@
 
 # 🏭 Hamzaish
 
-**Get into your Builder Mode with a Claude Code setup that does more than just code, learns from every build and remembers every lesson.**
+**Unlock your Builder Mode with a Claude Code setup that does more than just code, learns from every build and remembers every lesson.**
 
 [![Open source](https://img.shields.io/badge/Open-source-brightgreen.svg)](#license)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
@@ -21,7 +21,7 @@ Every count real · every item linked · every claim marked ✅ proven / 🟡 pa
 
 ---
 
-## Why this exists - To Enable Builder Mode
+## Welcome to Builder Mode
 I've made it my mission to simplify the builder spirit as a momentum-first, strategy second mode. The Builder Mode. 
 The idea is to enable millions to start leveraging AI to build better, build faster, and build more. To build aggressively with instinct, validate iteratively, and scale with strategy. 
 
