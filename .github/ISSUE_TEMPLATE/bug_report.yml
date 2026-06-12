@@ -1,0 +1,38 @@
+name: 🐛 Bug report
+description: Something in the factory broke or behaved wrong
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you run, and what went wrong?
+      placeholder: "Ran /hamzaish ... and ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Hamzaish version or commit
+      placeholder: "v1.0.0, or the short commit SHA"
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "macOS 15 · Bun 1.2 · Claude Code 2.x"
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Pre-flight
+      options:
+        - label: I searched existing issues first
+          required: true
+        - label: Nothing I pasted above contains secrets, API keys, or private data
+          required: true
