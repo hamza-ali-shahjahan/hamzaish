@@ -68,7 +68,10 @@ A new factory skill (`factory/skills/go-live/`) that runs the pipeline for a sca
   2. repo        — gh repo create --private --source --push   (if not already)
   3. vercel      — project_create ; git_connect ; env_add (per-product keys from vault)
   4. database    — neon.project_create ; push DATABASE_URL(_UNPOOLED) to Vercel envs
-  5. auth        — clerk.app_create ; push keys ; webhook_endpoint_create → /api/webhooks/clerk
+  5. auth        — clerk **PRODUCTION instance** (NOT dev): custom-domain CNAMEs, your
+                   own social OAuth, pk_live/sk_live → Production env only, webhook secret.
+                   Full checklist + gotchas: → auth-go-live.md. NEVER launch on a dev
+                   instance (100-user cap, "Development mode" watermark, shared OAuth).
   6. email       — resend.domain_add ; dns_record_set the SPF/DKIM/DMARC ; poll verify
   7. deploy      — vercel deploy --prod ; poll until buildSha matches HEAD
   8. EVAL        — run the go-live eval harness (below) ; emit a scorecard
@@ -93,7 +96,8 @@ Every stage is idempotent and resumable (re-running skips completed stages — s
 | A4 | Build is current | `/api/health.buildSha` | equals local HEAD short-sha |
 | A5 | Auth gate works | `POST /api/<authed-route>` no session | 401 (not 500, not 200) |
 | A6 | DB reachable | health `db` probe | ok |
-| A7 | Auth signup works | create a throwaway user via Clerk test mode | user created |
+| A7 | Auth is PRODUCTION (not dev) | `curl -s /sign-in \| grep -oE 'pk_(live\|test)_…'` | ships **`pk_live_`** + custom frontend-API domain; NO "Development mode" banner |
+| A7b | Auth signup works | create a throwaway user | created in the production instance |
 | A8 | Email verified | resend domain status | "verified" (or flagged pending w/ ETA) |
 | A9 | Cron gated | `GET /api/cron/*` no secret | 401 |
 | A10 | No secret leakage | scan deployed env for values in client bundle | none |

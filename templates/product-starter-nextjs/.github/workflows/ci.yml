@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
 
+# Least privilege: CI only reads the repo and uploads artifacts. Nothing here
+# needs write access to contents, so cap the token at read.
+permissions:
+  contents: read
+
 # Cancel superseded runs on the same ref so the queue doesn't pile up.
 concurrency:
   group: ci-${{ github.ref }}

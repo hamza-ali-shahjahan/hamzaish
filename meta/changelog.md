@@ -6,6 +6,23 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-13 — v1.19 · web-launch plugin landed on main + stale branch retired
+
+**What changed**
+
+- **The web-launch plugin ported from `feat/web-launch-plugin` to main** — `factory/plugins/web-launch/` (verification-gated launch system: `/web-launch` command, `web-launch` + `launch-gotchas` + `pseo-at-scale` skills, the 411-line launch workbook template), with the skills/command symlinks and `.claude-plugin/marketplace.json` exposure. Plus its decision record (`brain/decision-log/2026-06-09-plugins-vs-operating-skills.md`).
+- **Patently launch artifacts** — `products/copyright/launch/launch-checklist.md` (the stamped public-launch checklist from the web-launch dry-run), `competitors.md`, and three decision entries.
+- **Momentum-first wording synced** where main had lagged: `brain/operating-principles.md` §1, `AGENTS.md` rule 2, `scripts/check-validation.ts`, `products/_template/validation/README.md`.
+- **Template hardening from the branch**: CI `permissions: contents: read` (least privilege) and SHA-pinned third-party actions in `secret-scan.yml`. Plus the Clerk-production-instance hardening in `go-live-provisioning.md`.
+- **README inventory updated honestly**: 22 → 27 skills & commands (16 skills + 11 commands); `/web-launch`, `/release`, `launch-gotchas`, `pseo-at-scale` rows added.
+- **`feat/web-launch-plugin` retired** after the port — it was a diverged duplicate lineage of main; everything of value now lives on main.
+
+**Why**
+
+The branch held ~820 lines of real, additive work (the launch system) stranded on a stale lineage that generated merge-conflict risk and "Create PR" noise. Porting the additive files directly — instead of merging — captured all the value with zero conflicts, and updating the README counts in the same commit keeps the "every count real" promise intact.
+
+---
+
 ## 2026-06-12 — v1.18 · First public release (v1.0.0) + `/release` factory step
 
 **What changed**

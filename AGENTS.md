@@ -38,7 +38,7 @@ Read in this order:
 ## Operating discipline (hard rules — tool-agnostic)
 
 1. **Never claim PMF from launch-week numbers.** Sean Ellis ≥40% over 2 weeks + retention pattern. Otherwise "early traction."
-2. **Don't scaffold a new product before validation.** 5 conversations with target-profile users before production code, unless operator explicitly says skip.
+2. **Build is the default — validate before irreversible bets, not before every scaffold.** Cheap, fast, reversible builds are their own validation (the ship is the test). Before expensive or hard-to-undo moves (paid ads, a sales push, a big build) aim for ~5 target-profile conversations. The one hard rule: don't skip it *silently* — `bun run check-validation <slug>` makes you either validate or explicitly record the debt.
 3. **Every product change goes into that product's `decisions/`** as an append-only paragraph (date · decision · why · what would prove it wrong · revisit trigger).
 4. **Never commit secrets.** `product.config.json` references env var *names*, not values.
 5. **Never recommend a GitHub repo or external tool without verifying it's healthy** (last commit < 12 months, > 100 stars, or you've personally verified).

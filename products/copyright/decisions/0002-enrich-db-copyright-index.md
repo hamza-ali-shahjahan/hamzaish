@@ -1,0 +1,12 @@
+# 0002 — Enrich the DB: build copyright index, broaden case-law, flag patents
+
+- **Date**: 2026-06-07
+- **Decision**: Built a local copyright index and broadened case-law coverage so beta users get real value; documented why patents couldn't be expanded.
+  - **Copyright (new pipeline):** added `copyright_index` table (+ tsv trigger, GIN index, halfvec embeddings), `searchCopyrightHybrid` query, `scripts/ingest/copyright_seed.ts`, `config/copyright_seed_queries.yml`, and an `ingest:copyright` script. Seeded **1,250 records** (1,172 registrations + 78 recordations), all titled + embedded. Wired `search_copyright_registrations` to be local-first (semantic, free) with live-PRS fallback.
+  - **Fixed a pre-existing bug** in `copyright_prs.ts` `normaliseHit`: it only read the registration schema, so recordation hits (and the date field on registrations) came back empty. Now maps both schemas (`title_concatenated`/`primary_titles_list`, `display_names.organizations`, `representative_date`). This also fixes the live tool.
+  - **Case law:** the existing 55-query set was fully harvested (re-running moved 776→778 — CourtListener's ~20/page cap, query overlap, and free-tier 429s are the ceiling). Added 20 orthogonal queries (trade secret, OSS licensing, claim construction, API copyright, work-for-hire, termination, music licensing, etc.), 55→75, and kicked off a harvest.
+  - **Patents:** NOT expanded — `pvSearchPatents` runs on Google Patents **BigQuery**, which needs `GCP_SERVICE_ACCOUNT_KEY` (missing). Both patent ingest paths are blocked without it.
+  - Restored an honest copyright line on the homepage coverage section (source description, no counts) now that the data exists.
+- **Why**: Operator asked to bring the DB closer to reality so beta users drive more value, after the false-stats finding (see [0001](0001-pull-unverified-coverage-stats.md)). Copyright was the biggest gap (no table at all) and was keyless/buildable; patents were already at 33k.
+- **What would prove it wrong**: If beta users don't actually use copyright/case-law search, the ingestion cost (Voyage embeddings) wasn't worth it — measure tool-invocation rates per source.
+- **Revisit trigger**: (1) Add `GCP_SERVICE_ACCOUNT_KEY` to unblock patent expansion. (2) If CourtListener coverage matters, upgrade the API tier or use the bulk data download — free-tier rate limits cap case-law growth. (3) Once any index is big enough to quote a number that stays true, swap the homepage prose for a live, query-backed count (per 0001).

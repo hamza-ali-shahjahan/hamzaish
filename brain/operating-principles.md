@@ -2,13 +2,13 @@
 
 The rules you do not violate. Lifted directly from the playbook and the lived-experience patterns of indie founders shipping $100K-ARR products in 2026.
 
-## 1. Validation before construction
+## 1. Validation before irreversible bets — not before every line
 
-No `/scaffold` without one of:
-- (a) 5 conversations with people in the target profile, OR
-- (b) explicit "skip validation, scaffolding for exploration" from the user.
+Build is the default. Shipping something cheap, fast, and reversible *is* validation — the ship is the test. Pull in real customer conversations (aim for ~5 with target-profile users) before the expensive, slow, or hard-to-undo moves: paid ads, a sales push, or a big build you can't walk back. Validation is a rail you pull in, not a toll you pay.
 
-Rationale: 42% of startups fail because they built something nobody wanted. AI removes the time cost of building but **does not remove the cost of building the wrong thing.**
+The one hard rule: don't skip it *silently*. `bun run check-validation <slug>` (reading each product's `validation/` ledger) makes you either validate or explicitly record the debt — building unvalidated is allowed, building unvalidated invisibly is not.
+
+Rationale: 42% of startups fail because they built something nobody wanted. AI removes the time cost of building but **does not remove the cost of building the wrong thing** — so the debt gets *recorded*, not skipped.
 
 ## 2. Persistent context from day one
 

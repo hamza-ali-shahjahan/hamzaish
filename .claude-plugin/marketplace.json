@@ -1,0 +1,18 @@
+{
+  "name": "hamzaish",
+  "owner": {
+    "name": "Hamza Ali",
+    "email": "mail.hamza.ali@gmail.com"
+  },
+  "metadata": {
+    "description": "Hamzaish's portable craft plugins — reusable, stack-agnostic capability suites that travel into any product repo. Distinct from Hamzaish's own operating skills in factory/skills/, which only make sense inside Hamzaish."
+  },
+  "plugins": [
+    {
+      "name": "web-launch",
+      "source": "./factory/plugins/web-launch",
+      "description": "Verification-gated website launch system: 14-phase checklist (Done ≠ Verified), refuse-to-launch sign-off gate, Day 1/3/7/14/30 monitoring cadence, an anonymized failure-mode library, and programmatic-SEO-at-scale quality gates. Routes commodity SEO/security work to specialist plugins.",
+      "category": "launch"
+    }
+  ]
+}

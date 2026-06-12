@@ -9,7 +9,7 @@
 [![Works with Claude Code](https://img.shields.io/badge/works_with-Claude_Code-d97757.svg)](https://claude.ai/code)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
-**[📚 128 practices](BEST-PRACTICES.md) · [🤖 32 agents](#-the-agents-32) · [🛠️ 22 skills & commands](#%EF%B8%8F-the-skills--commands-22) · [📖 39 playbooks](#-the-playbooks-39)**
+**[📚 128 practices](BEST-PRACTICES.md) · [🤖 32 agents](#-the-agents-32) · [🛠️ 27 skills & commands](#%EF%B8%8F-the-skills--commands-27) · [📖 39 playbooks](#-the-playbooks-39)**
 
 Every count real · every item linked · every claim marked ✅ proven / 🟡 partial / ⏳ research-baked → [What's inside](#whats-inside)
 
@@ -134,9 +134,9 @@ One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is
 | [kill-or-double-down](factory/agents/portfolio/kill-or-double-down/SKILL.md) | Quarterly hard calls: kill, maintain, or double down — forced verdicts |
 | [_orchestrator](factory/agents/_orchestrator/SKILL.md) | The routing brain that picks the right agent for the request |
 
-## 🛠️ The skills & commands (22)
+## 🛠️ The skills & commands (27)
 
-13 skills + 9 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder.
+16 skills + 11 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder.
 
 | Invoke | What it does |
 |---|---|
@@ -149,6 +149,10 @@ One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is
 | `/product-pulse` | One product: metrics, stage, blockers, the #1 action today |
 | `/kill-or-keep` | Quarterly review with forced verdicts for every product |
 | `/launch-plan` | Full launch playbook: PH, HN, X, LinkedIn, email warm-up, outreach, pricing, brand assets |
+| `/web-launch` | Verification-gated website launch: per-project workbook, refuse-to-launch sign-off gate, post-launch monitoring |
+| *(skill)* `launch-gotchas` | Library of real launch failure modes — indexation, redirects, analytics undercounting — with the fix for each |
+| *(skill)* `pseo-at-scale` | Programmatic-SEO discipline for 100s–10,000s of templated pages: thin-content prevention, indexation ramp |
+| `/release` | Cut a polished GitHub Release from the changelog at a major-cycle boundary |
 | `/keyword-research` | Clustered keyword brief from GSC + Ahrefs Webmaster + DataForSEO |
 | `/seo-aeo-bootstrap` | Ship the SEO + AEO foundation: llms.txt, AI-bot robots.txt, JSON-LD, sitemap, meta block |
 | `/name-product` | End-to-end naming pipeline: brief → competitors → generate → clear → select → lock |

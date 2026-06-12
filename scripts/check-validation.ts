@@ -44,7 +44,7 @@ if (PASS.has(state)) {
 }
 
 console.error(`✗ ${slug}: validation state = ${state} (${evidence}/5 evidence blocks).`);
-console.error('  Rule: 5 conversations with target-profile users before production code.');
+console.error('  Momentum-first: build cheap & reversible freely; before expensive/irreversible bets, aim for ~5 target-profile conversations.');
 console.error('  Building anyway is fine — but record it, don\'t skip it silently:');
 console.error(`    edit products/${slug}/validation/README.md → State: \`debt-accepted\` + fill the Validation debt block.`);
 process.exit(1);

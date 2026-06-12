@@ -1,8 +1,8 @@
 # Validation Ledger — TODO Name
 
-The "don't build before you validate" rule, made checkable. `scripts/check-validation.ts <slug>` reads the **State** line below.
+The momentum-first validation rail, made checkable. `scripts/check-validation.ts <slug>` reads the **State** line below.
 
-**The rule**: 5 conversations with target-profile users before production code.
+**The rail**: before expensive or irreversible bets, aim for ~5 conversations with target-profile users. Cheap, fast, reversible builds are their own validation — the ship is the test.
 **The escape hatch**: building first is allowed (momentum is the default) — but it must be *recorded as debt here*, never happen silently. This is the wp-to-astro lesson encoded: the violation is visible, not invisible.
 
 ## Status
