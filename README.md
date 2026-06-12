@@ -22,8 +22,12 @@ Every count real · every item linked · every claim marked ✅ proven / 🟡 pa
 ---
 
 ## Welcome to Builder Mode
-I've made it my mission to simplify the builder spirit as a momentum-first, strategy second mode. The Builder Mode. 
-The idea is to enable millions to start leveraging AI to build better, build faster, and build more. To build aggressively with instinct, validate iteratively, and scale with strategy. 
+
+[![Builder Mode — momentum first, strategy second](docs/assets/builder-mode.png)](docs/builder-mode.md)
+
+I've made it my mission to simplify the builder spirit as a momentum-first, strategy-second mode. **The Builder Mode.** The idea is to enable millions to start leveraging AI to build better, build faster, and build more — to build aggressively with instinct, validate iteratively, and scale with strategy.
+
+**→ [Read the full mission: Builder Mode](docs/builder-mode.md)**
 
 Why though?
 Claude Code setups like gstack and BMAD make you faster at **building**. Then you're on your own: the security review, the launch, pricing, first customers, knowing when to kill. Most solo projects don't die in the build — they die in everything after it.
