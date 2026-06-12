@@ -25,14 +25,15 @@ Every count real · every item linked · every claim marked ✅ proven / 🟡 pa
 
 [![Builder Mode — momentum first, strategy second](docs/assets/builder-mode.png)](docs/builder-mode.md)
 
-I've made it my mission to simplify the builder spirit as a momentum-first, strategy-second mode. **The Builder Mode.** The idea is to enable millions to start leveraging AI to build better, build faster, and build more — to build aggressively with instinct, validate iteratively, and scale with strategy.
+Every builder knows the moment: it's 11pm, you have an idea, and your hands are itching to build. Then the "right way" kicks in — business plans, market sizing, twenty validation interviews — and by the time the strategy funnel is done with you, the spark is dead. **Strategy-first kills more builders than bad ideas ever did.**
 
-**→ [Read the full mission: Builder Mode](docs/builder-mode.md)**
+That advice was written for a world where building was expensive. That world is gone. With AI, building is cheap, fast, and reversible — **the thing you ship *is* the test.**
 
-Why though?
-Claude Code setups like gstack and BMAD make you faster at **building**. Then you're on your own: the security review, the launch, pricing, first customers, knowing when to kill. Most solo projects don't die in the build — they die in everything after it.
+So I've made it my mission to simplify the builder spirit into a momentum-first, strategy-second mode: **Builder Mode.** The idea is to enable millions to start leveraging AI to build better, build faster, and build more — to build aggressively with instinct, validate iteratively, and scale with strategy.
 
-Hamzaish is the Claude Code setup that **doesn't stop at code**. It runs the whole lifecycle — **Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down** — with stage-specific agents, playbooks distilled from real ships, and a brain that carries every lesson into your next product. ([The full philosophy →](docs/philosophy.md))
+But most solo projects don't die in the build — they die in everything after it: the security review, the launch, pricing, first customers, knowing when to kill. Hamzaish is Builder Mode as a working system — the Claude Code setup that **doesn't stop at code**. It runs the whole lifecycle — **Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down** — with stage-specific agents, playbooks distilled from real ships, and a brain that carries every lesson into your next product.
+
+**→ [Read the full mission: Builder Mode](docs/builder-mode.md)** and **[The full philosophy →](docs/philosophy.md)**
 
 ## Quickstart — first win in 5 minutes
 
