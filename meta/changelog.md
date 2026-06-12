@@ -6,7 +6,22 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
-## 2026-06-13 — v1.19 · web-launch plugin landed on main + stale branch retired
+## 2026-06-13 — v1.20 · Community-standards pass — GitHub community profile at 100%
+
+**What changed**
+
+- **Code of conduct** — `CODE_OF_CONDUCT.md` (Contributor Covenant v2.1, contact: maintainer email) via GitHub's built-in flow.
+- **Issue templates** — `.github/ISSUE_TEMPLATE/`: `bug_report.yml` + `feature_request.yml` (modern YAML issue forms — required fields, no-secrets pre-flight checkbox, lifecycle-stage dropdown) and `config.yml` (blank issues allowed; security reports routed to private vulnerability reporting, never public issues).
+- **Pull request template** — `.github/pull_request_template.md`: what-&-why plus a four-line checklist encoding the factory's own discipline (honest copy per operating principle #13, no secrets in the diff, README/ledger counts still match the filesystem, changelog entry for factory-behavior changes).
+
+**Why**
+
+GitHub's Insights → Community Standards checklist showed three gaps after the v1.0.0 public release. A public, forkable repo gets judged on its community profile before its content; the templates also pre-structure incoming reports (repro info up front, secrets warned about, security reports kept private) so triage starts higher-signal. All eight checks now green. Committed by the operator via the GitHub web UI.
+
+**What to revisit**
+
+- If low-quality blank issues appear, flip `blank_issues_enabled` to `false` so the forms are the only door.
+- When contribution volume warrants it, add a `CONTRIBUTING.md` section on using the issue forms + PR checklist.
 
 **What changed**
 
