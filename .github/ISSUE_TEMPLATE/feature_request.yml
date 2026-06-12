@@ -1,0 +1,30 @@
+name: 💡 Feature request
+description: Propose a new agent, skill, command, playbook, or improvement
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the friction first — the factory promotes fixes for real, recurring problems.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What would you add or change? Where would it live (agent / skill / command / playbook)?
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Lifecycle stage it belongs to
+      options:
+        - Idea
+        - MVP
+        - Launch
+        - Scale
+        - Portfolio
+        - Factory itself (meta)
