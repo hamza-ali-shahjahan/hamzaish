@@ -6,6 +6,31 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-14 — v1.26 · 🪄 One command from a bare machine to a running factory
+
+> ## 🪄 `curl … | sh` → Bun installed, Hamzaish cloned, factory ready
+> **The other half of the 100×: getting *to* the zero-config first run is now one line.**
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
+```
+
+**What changed**
+
+- **`install.sh`** (new, repo root) — a POSIX-`sh` bootstrap: checks git, **installs Bun if it's missing** (official bun.sh installer), clones Hamzaish (or fast-forwards an existing clone), runs `bun run setup`, checks for Claude Code, and prints the first command (`/builder-mode …`). Idempotent and safe to re-run; `HAMZAISH_DIR` overrides the target. Parses clean under `sh -n`.
+- **README quickstart leads with the one-liner**; the manual `git clone` path is preserved in a `<details>` fold. The installer is linked inline ("read it first") — security-conscious users can inspect before piping.
+
+**Why**
+
+v1.25 made the *first run* zero-config; a newcomer still had to install Bun, install Claude Code, clone, and run setup by hand — 4 steps with bounce points. Now it's one paste from a bare machine. Combined with local-first, the path from "saw the repo" to "a product running on my screen" is a single command plus `/builder-mode`. Claude Code is *checked, not auto-installed* (its install varies by platform; honest guidance beats a guess).
+
+**What to revisit**
+
+- `curl … | sh` is the standard install pattern but inherently asks for trust — the inline "read it first" link + the script's own header mitigate it. Consider an alias `hamzaish.com/install` → this raw URL (cleaner to share; lives in the landing-page repo, not here).
+- The script can't auto-install Claude Code reliably; if a common platform path emerges, add an opt-in prompt.
+
+---
+
 ## 2026-06-14 — v1.25 · ⚡️ Builder Mode is now 100× FASTER to start 🚀
 
 > # ⚡️ ZERO → RUNNING PRODUCT IN ~60 SECONDS ⚡️

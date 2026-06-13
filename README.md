@@ -37,6 +37,14 @@ But most solo projects don't die in the build — they die in everything after i
 
 ## Quickstart — first win in 5 minutes
 
+**One command** (installs Bun if missing, clones, sets up — [read it first](install.sh)):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
+```
+
+<details><summary>…or set it up by hand</summary>
+
 You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code).
 
 ```bash
@@ -44,6 +52,7 @@ git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
 cd hamzaish
 bun run setup        # idempotent — creates YOUR factory, never touches existing data
 ```
+</details>
 
 Then open Claude Code and type:
 
