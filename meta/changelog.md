@@ -6,6 +6,24 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-13 — v1.22 · The Mission: Builder Mode (the front-door story)
+
+**What changed**
+
+- **`docs/builder-mode.md`** (new) — the mission piece: why strategy-first kills builders, the flipped calculus (building is now cheap, fast, reversible — the ship is the test), Builder Mode defined (build aggressively with instinct, validate iteratively, scale with strategy), what it looks like as a working system, and the invitation. Doubles as the operator's LinkedIn article.
+- **`docs/assets/builder-mode.png`** (new) — the Builder Mode cover art (16:9, optimized 2.3MB→521KB), used in both the article and the README.
+- **README "Welcome to Builder Mode" rewritten as one mission arc** — the 11pm moment → the flip → the mission (operator's words verbatim) → the system. The dangling "Why though?" and the in-section competitor comparison removed (that contrast lives in the "How it's different" table). Cover art embedded, clickable into the full mission.
+
+**Why**
+
+The operator's hand-written mission deserved more than a paragraph squeezed between badges and the quickstart. The mission now has a home (the article), a face (the cover), and a coherent front-door summary — and the README finally tells one story top to bottom instead of three stitched ones.
+
+**What to revisit**
+
+- **Version-number collisions from parallel sessions**: today's log has two v1.20 entries (eval harness + community-standards) and originally two v1.21s (the LLM judge kept v1.21; this entry bumped to v1.22 on rebase). `/release` assembles notes from these headings — de-duplicate the numbering, or switch to date-only headings, before cutting the next release.
+
+---
+
 ## 2026-06-13 — v1.21 · Movement 1, brick #2: the judge seam filled — 9 cases, LLM judge live
 
 **What changed**
