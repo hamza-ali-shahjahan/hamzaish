@@ -51,7 +51,7 @@ Then open Claude Code and type:
 /builder-mode a tip calculator for freelancers
 ```
 
-Watch it scaffold the product, propose the architecture, and start building — with the security gate and launch rails already waiting downstream. ([The 10-minute guided version →](docs/your-first-product.md))
+Watch it scaffold a **local-first product that runs in 60 seconds — zero accounts, zero config.** Add your stack (Stripe, Resend, Supabase…) only when you want it, and ship when you're ready. ([The 10-minute guided version →](docs/your-first-product.md))
 
 Safety: scaffolded products run agent-generated code inside a devcontainer, secrets are gitignored from commit zero, and nothing auto-pushes off your machine. ([Full threat model →](docs/security.md))
 

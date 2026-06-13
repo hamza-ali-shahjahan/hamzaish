@@ -6,23 +6,35 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
-## 2026-06-14 — v1.25 · Local-first scaffold — the starter runs with zero accounts
+## 2026-06-14 — v1.25 · ⚡️ Builder Mode is now 100× FASTER to start 🚀
 
-**What changed**
+> # ⚡️ ZERO → RUNNING PRODUCT IN ~60 SECONDS ⚡️
+> ## 🏭 No accounts. No config. No signups. Just build.
+>
+> **Local-first by default.** `/builder-mode <idea>` → `bun dev` → a real, running product on your screen — *before* you create a single account. 🎉
 
-- **The starter boots with zero env vars.** `templates/product-starter-nextjs/src/lib/env.ts`: `NEXT_PUBLIC_APP_NAME`/`APP_URL` get sane defaults; Supabase URL + anon key become optional; the schema no longer throws on *missing* vars (only on malformed ones). New exported `LOCAL_MODE` flag — true when Supabase isn't configured.
-- **A local dev stub** (`src/lib/supabase/stub.ts`) implements the surface the starter uses (`auth.getUser/getSession/signOut`, `from().insert/select`). In `LOCAL_MODE`, `client.ts`/`server.ts` return the stub, `middleware.ts` passes through, and `/login` shows a "local mode — you're a dev user → dashboard" note instead of a dead magic-link form. `bun dev` now renders landing, pricing, dashboard, settings, and accepts waitlist input — **no accounts, no signups**.
-- **Docs reframed to local-first**: `.env.example` ("you need NONE of these to start"), `SETUP.md` (now the *go-live* checklist, not a prerequisite), and the `/scaffold` skill (prints the zero-config promise; SETUP surfaced as "when you're ready to ship").
+This is the biggest first-run speed jump yet: the starter now boots **completely local**. You build first and wire your stack (Stripe, Resend, Supabase…) only when *you* decide to.
 
-**Why**
+### 🏎️ What changed — and how it speeds up your first run
 
-"First win in 5 minutes" was aspirational — the old starter *threw* without Supabase keys, so a newcomer hit "go make 6 accounts" before seeing anything run. Local-first by default **is** Builder Mode: the ship is the test; build first, wire infra when you actually need it. This is the highest-leverage fix for the visitors→stars conversion gap. The moment Supabase is configured, the real client takes over and the stub is never imported.
+- **🟢 Boots with ZERO env vars.** `src/lib/env.ts` defaults the app vars and makes Supabase optional, so the app no longer needs a database connection just to run. → **Impact:** a brand-new builder goes straight from clone to a running app — the account-setup detour is gone from the critical path.
+- **🧩 A local dev stub** (`src/lib/supabase/stub.ts`) stands in for Supabase in local mode — `auth.getUser`, `from().insert`, etc. Landing, pricing, dashboard, settings all render; `/login` greets you as a local dev user; the waitlist accepts input. → **Impact:** every page *works* on the first `bun dev`, so you're building features in minute one instead of provisioning services.
+- **📋 Accounts moved off the starting line.** `SETUP.md` is now the **go-live checklist** (wire it when you ship), `.env.example` says "you need NONE of these to start," and `/scaffold` prints the zero-config promise. → **Impact:** the ~25-min account setup becomes a *later, opt-in* step — not step zero.
+
+### 🧭 Why
+
+Builder Mode is **momentum-first**: the fastest possible first run is local. Build now, add capability the moment you need it, ship when you're ready. Previously the starter expected a Supabase connection to run — instant if your tools are already set up (it's why a seasoned builder gets a win in ~5 minutes), but a first-timer had to provision accounts before that first `bun dev`. Now **everyone** gets the instant local first run, and reaches for the stack on their own schedule. The second a builder adds Supabase, the real client takes over automatically — the stub is never touched.
+
+### ⏱️ First-run, before vs after
+
+- **Before:** install → clone → setup → *create Supabase (+ friends), fill env* → run
+- **After:** install → clone → setup → **run.** ✅ (accounts become a later, opt-in step)
 
 **What to revisit**
 
-- Runtime-verify on a real `/scaffold` (`bun install && bun dev` with empty env) — the template can't be booted in-repo (placeholders + no node_modules); the next scaffold is the live test.
-- `LOCAL_MODE` persistence is no-op (stub logs, doesn't store). A real SQLite/JSON local store for the waitlist is a nice next touch but deliberately omitted — products customize the data layer anyway.
-- Next: **#1** (one-command bootstrap installer) so getting *to* the zero-config first run is also one line.
+- Runtime-verify on a real `/scaffold` (`bun install && bun dev`, empty env) — the template can't be booted in-repo (placeholders + no node_modules); the next scaffold is the live test.
+- `LOCAL_MODE` persistence is a no-op (stub logs, doesn't store). A real SQLite/JSON local store for the waitlist is a nice next touch, deliberately omitted — products customize the data layer anyway.
+- Next: **#1** (one-command bootstrap installer) so getting *to* the zero-config first run is also one line — the rest of the 100×.
 
 ---
 
