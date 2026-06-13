@@ -48,7 +48,7 @@ bun run setup        # idempotent — creates YOUR factory, never touches existi
 Then open Claude Code and type:
 
 ```
-/hamzaish a tip calculator for freelancers
+/builder-mode a tip calculator for freelancers
 ```
 
 Watch it scaffold the product, propose the architecture, and start building — with the security gate and launch rails already waiting downstream. ([The 10-minute guided version →](docs/your-first-product.md))
@@ -145,7 +145,7 @@ One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is
 
 | Invoke | What it does |
 |---|---|
-| `/hamzaish` | **The momentum router** — default is *just build*; strategy rails are opt-in, skip anytime |
+| `/builder-mode` | **The front door** — enter Builder Mode: default is *just build*; strategy rails are opt-in, skip anytime. (Alias: `/hamzaish` — same engine.) |
 | `/scaffold` | One-shot a new product: folders, starter, config, CLAUDE.md, scope, PRD skeleton |
 | `/validate` | Full validation pass: sharpening, devil's advocate, market sizing, competitor map, discovery plan |
 | `/ideate` | Generate ideas grounded in your portfolio patterns + current trends |

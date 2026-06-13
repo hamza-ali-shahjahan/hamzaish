@@ -6,6 +6,23 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-13 — v1.23 · `/builder-mode` — the front door now enacts the mission
+
+**What changed**
+
+- **New command `/builder-mode`** — `factory/commands/builder-mode.md` is a symlink to `hamzaish.md` (the repo's own alias idiom, same as the web-launch plugin). Both names load the identical momentum router; `.claude/commands/` is a symlink to `factory/commands/`, so it auto-discovers. Zero drift, zero duplicate logic.
+- **Docs lead with `/builder-mode`, keep `/hamzaish` working**: README quickstart (`/builder-mode a tip calculator…`), README commands table, `docs/the-momentum-router.md` (retitled, alias noted), `docs/builder-mode.md` closing CTA (`Type /builder-mode <your idea>`), and the CLAUDE.md command row. The ~33 internal `/hamzaish` references are left intact — they still resolve.
+
+**Why**
+
+The entry point should *enact* the mission, not just sit next to it. A new user's literal first action is now `/builder-mode <idea>` — they enter Builder Mode by typing it. Aliased rather than renamed: `/hamzaish` carries the brand namespace and is referenced everywhere; the alias captures the full narrative win at near-zero blast radius.
+
+**What to revisit**
+
+- Committed symlinks materialize as text files on Windows checkouts (no symlink support) — same caveat that already applies to the web-launch plugin symlinks. Fine for the Bun/macOS-first audience; revisit if a Windows contributor hits it.
+
+---
+
 ## 2026-06-13 — v1.22 · The Mission: Builder Mode (the front-door story)
 
 **What changed**

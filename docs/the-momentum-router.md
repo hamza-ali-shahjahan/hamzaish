@@ -1,6 +1,8 @@
-# The `/hamzaish` momentum router
+# The `/builder-mode` momentum router
 
-`/hamzaish` is the front door. Its whole job is to get you building fast while
+> Invoke it as **`/builder-mode`** (the on-brand front door) or **`/hamzaish`** — same command, same engine (`builder-mode.md` is a symlink to `hamzaish.md`). Lead with `/builder-mode`; `/hamzaish` is the original alias and keeps working everywhere.
+
+`/builder-mode` is the front door. Its whole job is to get you building fast while
 keeping every strategy tool one keystroke away — never in the way. It's defined
 in [`factory/commands/hamzaish.md`](../factory/commands/hamzaish.md); the
 "default is momentum" philosophy is also wired into `CLAUDE.md` so it's the

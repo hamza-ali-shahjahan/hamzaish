@@ -56,4 +56,4 @@ You don't need permission. You need momentum, a memory, and honesty about what's
 
 The whole system is open source: **github.com/hamza-ali-shahjahan/hamzaish**
 
-Clone it. Type your idea. Get into your Builder Mode.
+Clone it. Type `/builder-mode <your idea>`. Get into your Builder Mode.
