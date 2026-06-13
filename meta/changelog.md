@@ -6,6 +6,29 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-13 — v1.24 · Movement 1, brick #3: the headless runtime (generate → harness → route)
+
+**What changed**
+
+- **`factory/runtime/`** — the headless runtime: a program that calls Claude as a subroutine, runs the harness's verdict on the output, and **routes on that verdict without a human in the loop**. This is the runtime `meta/SELF-EVOLUTION.md` reaches for and `brain/knowledge/2026-06-04-interactive-vs-headless-self-evolving.md` describes ("the loop has to live in a script that calls Claude").
+  - **`loop.ts`** — `runTask()`: the generate → verdict → route loop with a four-way router (PASS → keep · FAIL_BUILDABLE → feed the failed criteria back and regenerate ≤ `maxAttempts` · GAP → write a proposal stub, never guess · UNCERTAIN → escalate). It is a **composer**: it imports `runInvocation`, `runChecks` (`meta/evals/lib/checks.ts`) and `llmJudge` (`meta/evals/lib/judge.ts`) as a library — no primitive reimplemented, `run.ts` untouched. Generate + judge are injectable seams so every route is force-testable.
+  - **`loop.test.ts`** — 9 force-tests driving every route with fakes (no Claude calls): PASS, FAIL_BUILDABLE→regen→PASS, give-up-after-maxAttempts, judge-demotes-green (gate-not-oracle), judge-UNSURE→UNCERTAIN, judge-unavailable→UNCERTAIN, GAP→proposal, generator-fail→UNCERTAIN, no-judge-path.
+  - **`run-task.ts`** — hand-runnable CLI carrying the `/ideate` demo task; prints the trace. **`proposals/`** — the Movement 2 inbox (GAP proposals land here; generated files gitignored, README tracked). **`README.md`** — the bench-vs-loop distinction, the routing table, why the runtime is *not* agent-blind, the named OUT list.
+- **Live evidence**: 1 demonstration run + a **5-sample reliability pass** — 5/5 final PASS, all via attempt-1 FAIL_BUILDABLE → fed-back criterion → attempt-2 PASS (regen recovered 5/5), mean 5.2 min/run. The feedback loop genuinely bites and recovers; zero flakes, judge never spuriously blocked.
+
+**Why**
+
+Selection (the judge) was something a *human* invokes against frozen fixtures. The runtime is the surface where the verdict drives the next move on its own — the bridge from "Closed" to "Self-cranking" on the rung ladder. The load-bearing design call: the runtime is the **opposite** of the eval bench. The bench is agent-blind (the SUT must never see its test); the runtime *deliberately feeds the criteria back* to steer regeneration, because here the criteria **are the spec** (the `/spec`-with-executable-scenarios idea). So it lives in `factory/` (HOW YOU ACT), not `meta/evals/` — the wall between bench and loop stays clean.
+
+**What to revisit**
+
+- The 5/5 sample proves recovery on **one** failure mode (a well-specified deterministic criterion) on **one** skill. It does *not* yet prove **live judge discrimination** (the judge ran 5/5 but never on output it should reject), nor **GAP/UNCERTAIN live** (force-tested with fakes only). Next sampling pass: a deliberately judge-failing task + a live GAP trigger.
+- Generalize beyond `/ideate` to arbitrary skills/specs once the shape is confirmed in use.
+- The GAP → proposal path is a **stub** (writes a proposal, stops); auto-promotion into a guardrail is **Movement 2**, which stays last by design. `proposals/` is its inbox.
+- Transport is `claude -p`; swap to the Agent SDK when streaming / richer tool-use is needed — no change to `runTask`'s shape.
+
+---
+
 ## 2026-06-13 — v1.23 · `/builder-mode` — the front door now enacts the mission
 
 **What changed**
