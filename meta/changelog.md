@@ -6,7 +6,23 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
-## 2026-06-14 — v1.26 · 🪄 One command from a bare machine to a running factory
+## 2026-06-14 — v1.27 · `/go-live` — the 25-min account setup becomes a guided, resumable flow
+
+**What changed**
+
+- **New `/go-live <slug>`** — command (`factory/commands/go-live.md`) + skill (`factory/skills/go-live/SKILL.md`). Walks production-stack provisioning **service by service**: explains each, opens the signup deep-link, asks for the key, **validates its format** (Supabase JWT, `sk_/whsec_/pk_`, `re_`, `phc_`, Sentry DSN, …) before writing it to `.env.local`, and **marks it in a resumable ledger** (`.hamzaish-go-live.json`, gitignored) so you can stop and pick up later. Automates the post-signup steps (Vercel `env add`, `gh secret set`, Cloudflare DNS) with confirmation. Ends by handing off to `/security-check` → `/ship`.
+- **It composes, doesn't duplicate**: `/builder-mode` (build local) → `/go-live` (wire stack) → `/security-check` (gate) → `/ship` (deploy) → `/web-launch` (verify). `/go-live` provisions; `/ship` still owns deploy.
+- **Honest-copy unlock**: now that `/go-live` exists, the README quickstart, `SETUP.md`, and CLAUDE.md name it. `SETUP.md` stays as the manual fallback/reference; `/go-live` is the walked path.
+- **Counts updated honestly**: 27 → **29 skills & commands** (17 skills + 12 commands) — recomputed from the filesystem (aliases like `/builder-mode` not double-counted).
+
+**Why**
+
+v1.25 made the *first run* zero-account; v1.26 made *getting there* one command. The remaining friction was the other end — the 25-min, 11-service manual `SETUP.md` when you finally go to production. `/go-live` turns that static checklist into a walked, validated, resumable flow, and finally lets Builder Mode's "ship when you're ready" point at a real command (held back until now per the honest-copy rule — naming a command that didn't exist was off-limits).
+
+**What to revisit**
+
+- It's a markdown skill (the session executes it), not a binary — provisioning quality depends on the session following the catalog. First real `/go-live` on a product is the live test; tighten the catalog/regexes from what that surfaces.
+- Account *creation* stays manual (can't be automated); the speed win is in guidance + validation + post-signup CLI + resume. Measure the real before/after on the next product to confirm the ~25→~8 min estimate.
 
 > ## 🪄 `curl … | sh` → Bun installed, Hamzaish cloned, factory ready
 > **The other half of the 100×: getting *to* the zero-config first run is now one line.**

@@ -9,7 +9,7 @@
 [![Works with Claude Code](https://img.shields.io/badge/works_with-Claude_Code-d97757.svg)](https://claude.ai/code)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
-**[📚 128 practices](BEST-PRACTICES.md) · [🤖 32 agents](#-the-agents-32) · [🛠️ 27 skills & commands](#%EF%B8%8F-the-skills--commands-27) · [📖 39 playbooks](#-the-playbooks-39)**
+**[📚 128 practices](BEST-PRACTICES.md) · [🤖 32 agents](#-the-agents-32) · [🛠️ 29 skills & commands](#%EF%B8%8F-the-skills--commands-29) · [📖 39 playbooks](#-the-playbooks-39)**
 
 Every count real · every item linked · every claim marked ✅ proven / 🟡 partial / ⏳ research-baked → [What's inside](#whats-inside)
 
@@ -60,7 +60,7 @@ Then open Claude Code and type:
 /builder-mode a tip calculator for freelancers
 ```
 
-Watch it scaffold a **local-first product that runs in 60 seconds — zero accounts, zero config.** Add your stack (Stripe, Resend, Supabase…) only when you want it, and ship when you're ready. ([The 10-minute guided version →](docs/your-first-product.md))
+Watch it scaffold a **local-first product that runs in 60 seconds — zero accounts, zero config.** Add your stack (Stripe, Resend, Supabase…) only when you want it with **`/go-live`**, and ship when you're ready. ([The 10-minute guided version →](docs/your-first-product.md))
 
 Safety: scaffolded products run agent-generated code inside a devcontainer, secrets are gitignored from commit zero, and nothing auto-pushes off your machine. ([Full threat model →](docs/security.md))
 
@@ -148,9 +148,9 @@ One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is
 | [kill-or-double-down](factory/agents/portfolio/kill-or-double-down/SKILL.md) | Quarterly hard calls: kill, maintain, or double down — forced verdicts |
 | [_orchestrator](factory/agents/_orchestrator/SKILL.md) | The routing brain that picks the right agent for the request |
 
-## 🛠️ The skills & commands (27)
+## 🛠️ The skills & commands (29)
 
-16 skills + 11 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder.
+17 skills + 12 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder.
 
 | Invoke | What it does |
 |---|---|
@@ -172,6 +172,7 @@ One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is
 | `/name-product` | End-to-end naming pipeline: brief → competitors → generate → clear → select → lock |
 | `/name-clearance` | Clear a name BEFORE buying the domain: collision, trademark signal, availability |
 | `/competitor-research` | Map the competitive landscape; persists per-product so it compounds |
+| `/go-live` | Guided, stateful stack provisioning — deep-links, key validation, `.env.local` writes, resumable; then hands to `/security-check` → `/ship` |
 | `/security-check` | Fast security baseline: tracked secrets, vulnerable Actions, workflow permissions |
 | `/ship` | The single deploy action — gates on `/security-check`, promotes reviewed commits to production |
 | `/checkpoint` | Named save-point commit between auto-commits |

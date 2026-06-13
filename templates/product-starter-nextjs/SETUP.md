@@ -4,6 +4,8 @@
 
 11-step go-live onboarding. Estimated time: 25 min for the first product, 5 min for subsequent (reusing accounts).
 
+> **Prefer it walked + resumable?** Run **`/go-live <slug>`** instead of doing this by hand — it deep-links each signup, validates each key's format, writes `.env.local` for you, tracks state so you can stop and resume, and hands off to `/security-check` → `/ship`. This checklist is the manual fallback / reference.
+
 ## 1. Supabase (auth + DB)
 - Go to https://supabase.com/dashboard → New project
 - Project name: `{{PRODUCT_SLUG}}`
