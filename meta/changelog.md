@@ -87,7 +87,7 @@ This is Movement 1 of `meta/SELF-EVOLUTION.md` — Selection, the missing third 
 
 ---
 
-## 2026-06-13 — v1.20 · Community-standards pass — GitHub community profile at 100%
+## 2026-06-13 — v1.19 · Community-standards pass — GitHub community profile at 100%
 
 **What changed**
 
