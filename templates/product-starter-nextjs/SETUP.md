@@ -1,6 +1,8 @@
 # Setup — {{PRODUCT_NAME}}
 
-11-step onboarding. Estimated time: 25 min for first product, 5 min for subsequent (reusing accounts).
+> **You don't need any of this to start.** Your product already runs locally with zero config — `bun install && bun dev`, open http://localhost:3000, and build. This checklist is for **going live**: wiring the real stack (auth, DB, payments, email, analytics) when you're ready to ship. Add services one at a time, only as you need them.
+
+11-step go-live onboarding. Estimated time: 25 min for the first product, 5 min for subsequent (reusing accounts).
 
 ## 1. Supabase (auth + DB)
 - Go to https://supabase.com/dashboard → New project

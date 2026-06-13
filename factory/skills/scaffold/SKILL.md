@@ -107,8 +107,8 @@ Creates a complete starting point for a new product:
 5. If user proceeds: create folder structure, copy template, do the substitutions.
 6. Generate the doc skeletons by reading the templates and filling from the one-liner.
 7. **Apply the secure-by-default steps** (section below).
-8. Print the SETUP.md checklist as the final message so the user knows the manual steps remaining.
-9. Print "next: **open `products/<slug>/code/` in its devcontainer** — VS Code → 'Reopen in Container' (or `devcontainer up`). The container installs deps and runs the dev server in isolation; the landing page boots at localhost:3000 (port-forwarded out of the container). Building on the bare host instead is at your own risk."
+8. Print the **local-first promise**: the scaffold runs with ZERO config — no accounts, no env vars. `bun install && bun dev` boots it in local mode (dev-auth stub, SQLite-ready, integrations off). SETUP.md is the *go-live* checklist for later, not a prerequisite — surface it as "when you're ready to ship," never as "do this first."
+9. Print "next: **open `products/<slug>/code/` in its devcontainer** — VS Code → 'Reopen in Container' (or `devcontainer up`). The container installs deps and runs the dev server in isolation; the landing page boots at localhost:3000 (port-forwarded out of the container) **with zero accounts** — build first, wire your stack when you deploy. Building on the bare host instead is at your own risk."
 
 ## Secure-by-default
 

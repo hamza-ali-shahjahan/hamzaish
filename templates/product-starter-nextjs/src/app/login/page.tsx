@@ -1,10 +1,28 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { LOCAL_MODE } from '@/lib/env';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'sent' | 'error'>('idle');
+
+  // Local-first: with no auth provider wired, you're already "signed in".
+  if (LOCAL_MODE) {
+    return (
+      <main className="container mx-auto max-w-md px-4 py-24 text-center">
+        <h1 className="text-3xl font-bold">Local mode</h1>
+        <p className="text-muted-foreground mt-2">
+          No auth provider configured yet — you&apos;re running as a dev user.
+        </p>
+        <Link href="/dashboard" className="mt-8 inline-block rounded-md bg-primary text-primary-foreground px-4 py-3 font-medium">
+          Go to your dashboard →
+        </Link>
+        <p className="text-xs text-muted-foreground mt-6">Wire Supabase (or Clerk) when you&apos;re ready for real sign-in.</p>
+      </main>
+    );
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

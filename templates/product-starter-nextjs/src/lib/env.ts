@@ -4,13 +4,14 @@ const required = (name: string) => z.string().min(1, `${name} is required`);
 const optional = z.string().optional();
 
 const envSchema = z.object({
-  // App
-  NEXT_PUBLIC_APP_NAME: required('NEXT_PUBLIC_APP_NAME'),
-  NEXT_PUBLIC_APP_URL: z.string().url(),
+  // App — sane defaults so `bun dev` runs with zero config
+  NEXT_PUBLIC_APP_NAME: z.string().min(1).default('My Product'),
+  NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
 
-  // Supabase
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: required('NEXT_PUBLIC_SUPABASE_ANON_KEY'),
+  // Supabase — OPTIONAL. Local-first by default: with no Supabase configured the
+  // app runs in LOCAL_MODE (dev-auth stub, no external calls). Wire it when you deploy.
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: optional,
   SUPABASE_SERVICE_ROLE_KEY: optional,
 
   // Stripe — optional during setup, required to take payments
@@ -46,8 +47,18 @@ const envSchema = z.object({
 
 const parsed = envSchema.safeParse(process.env);
 if (!parsed.success) {
+  // Only fires on *malformed* values (e.g. a non-URL APP_URL) — never on missing
+  // ones, since everything optional/defaulted. Zero env still boots.
   console.error('❌ Invalid env:', parsed.error.flatten().fieldErrors);
   throw new Error('Invalid environment variables — see .env.example');
 }
 
 export const env = parsed.data;
+
+/**
+ * LOCAL_MODE — the Builder Mode default. True when Supabase isn't configured:
+ * the app runs entirely local (dev-auth stub, no external calls, no signups) so
+ * `bun dev` works in 60 seconds. Add your stack when you want it; ship when ready.
+ */
+export const LOCAL_MODE =
+  !env.NEXT_PUBLIC_SUPABASE_URL || !env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

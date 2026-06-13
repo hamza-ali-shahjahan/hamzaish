@@ -6,6 +6,26 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-14 — v1.25 · Local-first scaffold — the starter runs with zero accounts
+
+**What changed**
+
+- **The starter boots with zero env vars.** `templates/product-starter-nextjs/src/lib/env.ts`: `NEXT_PUBLIC_APP_NAME`/`APP_URL` get sane defaults; Supabase URL + anon key become optional; the schema no longer throws on *missing* vars (only on malformed ones). New exported `LOCAL_MODE` flag — true when Supabase isn't configured.
+- **A local dev stub** (`src/lib/supabase/stub.ts`) implements the surface the starter uses (`auth.getUser/getSession/signOut`, `from().insert/select`). In `LOCAL_MODE`, `client.ts`/`server.ts` return the stub, `middleware.ts` passes through, and `/login` shows a "local mode — you're a dev user → dashboard" note instead of a dead magic-link form. `bun dev` now renders landing, pricing, dashboard, settings, and accepts waitlist input — **no accounts, no signups**.
+- **Docs reframed to local-first**: `.env.example` ("you need NONE of these to start"), `SETUP.md` (now the *go-live* checklist, not a prerequisite), and the `/scaffold` skill (prints the zero-config promise; SETUP surfaced as "when you're ready to ship").
+
+**Why**
+
+"First win in 5 minutes" was aspirational — the old starter *threw* without Supabase keys, so a newcomer hit "go make 6 accounts" before seeing anything run. Local-first by default **is** Builder Mode: the ship is the test; build first, wire infra when you actually need it. This is the highest-leverage fix for the visitors→stars conversion gap. The moment Supabase is configured, the real client takes over and the stub is never imported.
+
+**What to revisit**
+
+- Runtime-verify on a real `/scaffold` (`bun install && bun dev` with empty env) — the template can't be booted in-repo (placeholders + no node_modules); the next scaffold is the live test.
+- `LOCAL_MODE` persistence is no-op (stub logs, doesn't store). A real SQLite/JSON local store for the waitlist is a nice next touch but deliberately omitted — products customize the data layer anyway.
+- Next: **#1** (one-command bootstrap installer) so getting *to* the zero-config first run is also one line.
+
+---
+
 ## 2026-06-13 — v1.24 · Movement 1, brick #3: the headless runtime (generate → harness → route)
 
 **What changed**
