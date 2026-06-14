@@ -17,7 +17,7 @@ _Coordination ledger — see [meta/parallel-sessions-protocol.md](../../meta/par
 - **Dogfooded (2026-06-14):** full coder + reasoning stack in use on an M5 Pro / 24 GB — `qwen2.5-coder:14b` (~25.7 tok/s) and `deepseek-r1:14b` (~27.5 tok/s), both with 8k context variants, OpenAI-compatible API verified. Ollama runs persistently via `brew services`.
 
 ## Open immediately
-- Real (non-CI) Windows run on an NVIDIA GPU box to confirm the `.ps1` GPU-aware path beyond dry-run.
+- Real (non-CI) Windows+NVIDIA run to confirm GPU **offload during inference**. _(2026-06-14: the GPU detection + VRAM→tier **logic is verified** — ran the real `.ps1` under PowerShell with a simulated `nvidia-smi`, correct at every band: 8→7b, 12→14b, 23→32b, 47→70b, sub-6 GB → RAM. Only the real-hardware acceleration step remains; **deferred** until a box is available. Step-by-step procedure committed at repo `docs/verify-windows-gpu.md`.)_
 - Decide whether the download-hardening learnings graduate to a factory playbook via `/learn-loop`.
 
 ## Distribution / next
