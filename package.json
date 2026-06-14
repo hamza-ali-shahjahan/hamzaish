@@ -17,7 +17,8 @@
     "eval": "bun meta/evals/run.ts",
     "check-changelog": "bun scripts/check-changelog.ts",
     "credits": "bun scripts/credits.ts",
-    "hero": "bun scripts/hero.ts"
+    "hero": "bun scripts/hero.ts",
+    "check-assets": "bun scripts/check-assets.ts"
   },
   "_note": "Zero runtime dependencies — everything uses Bun + Node built-ins (bun:sqlite, node:fs, etc.). No `bun install` needed. Just `bun run setup`."
 }
