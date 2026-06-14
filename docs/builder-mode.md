@@ -40,11 +40,15 @@ I didn't want this to stay a philosophy post, so I built it as an open-source sy
 
 You type an idea. You get a scaffolded, security-gated product — and then the part most AI tools skip: the launch rails, the pricing playbooks, the first-100-customers grind, the quarterly kill-or-double-down review. The full life of a product, not just its birth.
 
-Two things make it Builder Mode rather than another boilerplate:
+Three things make it Builder Mode, not just another boilerplate:
 
 **It remembers.** Every build's lessons get captured, scored, and promoted into guardrails the next build inherits. The npm publish that passed 138 tests and still broke in production. The auth that worked in dev and capped at 100 users in prod. Caught once, never again. Your second product starts smarter than your first.
 
 **It's honest.** Every practice in the repo carries a badge: ✅ proven by a real ship or a dated incident, or ⏳ research-baked until it survives contact with reality. No practice gets marked "proven" by opinion. Momentum without honesty is just gambling — the honesty system is what makes moving fast safe.
+
+**It proves it.** This is the line between Builder Mode and vibe coding. Vibe coding can make a prototype *feel* like a product — the demo runs, the screen looks shipped. Builder Mode is building in the missing half: a separate, blind judge that checks whether the thing actually *does what it claims* — so the builder isn't just grading its own homework. It's early (today the judge covers a handful of skills, not yet every build), but the direction is fixed: "looks done" should never quietly pass for "done."
+
+**Builder Mode isn't vibe coding; it's the discipline that turns the prototype into the product — and the judge that proves it.**
 
 Four products have shipped through it so far — live, public, checkable. Not case studies. Receipts.
 
