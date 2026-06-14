@@ -7,6 +7,7 @@ _Capture the transferable lesson only — never keys, credentials, or proprietar
 - **Auto-detect beats a menu.** Never ask the user something the machine already knows (`uname`, `/proc/meminfo`, `sysctl`). One command, zero questions, with a `--platform` override only as the escape hatch.
 - **Design for resume from day one.** Ollama keeps partial blobs, so an interrupted multi-GB pull continues. Once that's true, retry-on-failure is safe and is the single biggest robustness win.
 - **One scriptable backbone (Ollama) is what made a CLI possible** — a GUI runtime (LM Studio) can't be driven headlessly. See `decisions/0001-ollama-as-runtime.md`.
+- **A minimal-code system prompt is the highest-leverage upgrade for a *small* local model.** Baking a "write the least code" directive (adapted from ponytail, MIT) into a coder variant cut output **~45%** on the same prompt — which locally means fewer tokens, faster responses, and more context headroom. The weaker the model, the more a tight constraint helps. Shipped as `--lean` in v1.2.0.
 
 ## What we would do differently (pitfalls)
 
