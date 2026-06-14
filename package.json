@@ -15,7 +15,8 @@
     "sync-refs": "bun scripts/sync-product-refs.ts",
     "check-validation": "bun scripts/check-validation.ts",
     "eval": "bun meta/evals/run.ts",
-    "check-changelog": "bun scripts/check-changelog.ts"
+    "check-changelog": "bun scripts/check-changelog.ts",
+    "credits": "bun scripts/credits.ts"
   },
   "_note": "Zero runtime dependencies — everything uses Bun + Node built-ins (bun:sqlite, node:fs, etc.). No `bun install` needed. Just `bun run setup`."
 }

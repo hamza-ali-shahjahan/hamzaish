@@ -194,6 +194,21 @@ Short (300–800 words), sourced, stage-gated. The [practices ledger](BEST-PRACT
 | **🧭 Founder's wisdom (4)** | [$100K ARR Tactics](factory/playbooks/founders-wisdom/100k-arr-tactics.md) · [Gary Tan / YC era advice](factory/playbooks/founders-wisdom/gary-tan-yc-advice.md) · [Paul Graham essays](factory/playbooks/founders-wisdom/paul-graham-essays.md) · [Solopreneur Stack 2026](factory/playbooks/founders-wisdom/solopreneur-stack.md) |
 | **🤖 AI-native (6)** | [Eval-Driven Development](factory/playbooks/ai-native-2026/eval-driven-development.md) · [Founder's Playbook distilled](factory/playbooks/ai-native-2026/founders-playbook-distilled.md) · [Auth Go-Live](factory/playbooks/ai-native-2026/auth-go-live.md) · [Go-Live Provisioning](factory/playbooks/ai-native-2026/go-live-provisioning.md) · [MCP Servers per Product](factory/playbooks/ai-native-2026/mcp-servers.md) · [Hermes & Fallback Models](factory/playbooks/ai-native-2026/hermes-and-fallback-models.md) |
 
+---
+
+<div align="center">
+
+### 💛 Built on a thousand generosities
+
+[![Hamzaish — the credits roll](docs/assets/hamzaish-credits.gif)](ACKNOWLEDGMENTS.md)
+
+*We stand on giants, and we're loud about it.*
+**[Read the full credits →](ACKNOWLEDGMENTS.md)**
+
+</div>
+
+---
+
 ## How it's different
 
 Now that you've seen what's inside — the side-by-side:
@@ -237,7 +252,9 @@ Budget posture: free tiers and pay-per-query by default; every subscription need
 
 ## Built on, and informed by
 
-Anthropic's *Founder's Playbook*, with patterns studied from gbrain (knowledge graph), hermes-agent (self-improving skills), openclaw (multi-channel gateway), Karpathy's eval-driven flywheel, and Addy Osmani's spec→ship discipline. Study material lives in `references/`, never imported.
+The backbone is hard-won venture experience — the Business-SWAT roles, opportunities, and mentors that came with years at **[Disrupt.com](https://disrupt.com)**, taking things from zero to one before AI made building cheap. On that foundation, the patterns studied and credited — Addy Osmani's spec→ship discipline, Karpathy's eval-driven flywheel, gbrain (knowledge graph), Anthropic's *Founder's Playbook* (lifecycle framing), hermes-agent (self-improving skills), openclaw (multi-channel gateway), and ponytail (multi-agent portability) — sharpened that instinct and 10×'d the AI and agentic-building learning on top of it. Study material lives in `references/`, never imported.
+
+→ **[The full credits, and the roll](ACKNOWLEDGMENTS.md)**
 
 ## License
 
