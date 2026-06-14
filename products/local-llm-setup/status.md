@@ -8,11 +8,10 @@
 
 ## Where it is
 - **Shipped:** public repo + releases through **v1.1.0** (native Windows port + GPU-aware sizing + first-timer safeguards).
-- **CI:** ShellCheck + real `ubuntu-latest` and Windows dry-run smoke tests — all green.
-- **Dogfooded (2026-06-14):** on an M5 Pro / 24 GB — `qwen2.5-coder:14b` running at **~25.7 tok/s**, 8k context variant built, OpenAI-compatible API verified. `deepseek-r1:14b` (reasoning) pulling to complete the coder+reasoning setup.
+- **CI:** ShellCheck + real `ubuntu-latest` and `windows-latest` dry-run smoke tests — all green.
+- **Dogfooded (2026-06-14):** full coder + reasoning stack in use on an M5 Pro / 24 GB — `qwen2.5-coder:14b` (~25.7 tok/s) and `deepseek-r1:14b` (~27.5 tok/s), both with 8k context variants, OpenAI-compatible API verified. Ollama runs persistently via `brew services`.
 
 ## Open immediately
-- Finish the `deepseek-r1:14b` reasoning model pull; re-verify both models end-to-end.
 - Real (non-CI) Windows run on an NVIDIA GPU box to confirm the `.ps1` GPU-aware path beyond dry-run.
 - Decide whether the download-hardening learnings graduate to a factory playbook via `/learn-loop`.
 
