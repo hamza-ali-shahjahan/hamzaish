@@ -44,6 +44,10 @@ cp -r _template products/<slug>          # then fill in the files
 Then run `/portfolio-pulse` to refresh [`_portfolio.md`](./_portfolio.md), the
 generated index of all products.
 
+## Working on a product (especially in parallel)
+
+Before editing, sync and claim your slice — **`git pull --rebase`, then update the `status.md` "Active sessions" lock**. Running more than one session on the same product? Follow [`../meta/parallel-sessions-protocol.md`](../meta/parallel-sessions-protocol.md): one git worktree + branch per session, partitioned scope, integrate to `main` via PR + CI. The one rule: **pull-before-act, branch-per-session.**
+
 ## Learnings → guardrails
 
 Per-product `learnings.md` is rolled up by
