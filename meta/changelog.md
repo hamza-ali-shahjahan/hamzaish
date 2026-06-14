@@ -4,6 +4,8 @@ Append-only. Newest first. Each entry: date · version · summary · what change
 
 At a major-cycle boundary, the entries accumulated here since the last tag are published as a GitHub Release via **`/release`** (`factory/commands/release.md`) — this log is the source of truth those notes are assembled from.
 
+> **Numbering note (2026-06-14).** Parallel build sessions left the version numbers non-contiguous, and that's fine — **entries are the source of truth; the numbers are advisory labels, not a guaranteed sequence.** `/release` reads entry headings in order and does not require contiguity. Specifics, for the record: some small commits (v1.5, v1.6, v1.12) were folded into a neighbouring entry rather than getting their own block; a few entries (v1.13–v1.16, v1.18, v1.22, v1.23) were committed via the GitHub web UI with non-`vX.Y` messages, so they appear here but not in `git log` version subjects; the duplicate-number collisions from 2026-06-13 (two v1.20s, two v1.21s) were de-duped in commit `4039f09`; and the v1.26 entry below had its header dropped in a rebase (rendering it as part of v1.27) — restored here from commit `6e06696`. Do **not** renumber historical entries: the numbers are mirrored in commit messages and the `v1.0.0` release tag, and renumbering would desync them.
+
 ---
 
 ## 2026-06-14 — v1.27 · `/go-live` — the 25-min account setup becomes a guided, resumable flow
@@ -23,6 +25,10 @@ v1.25 made the *first run* zero-account; v1.26 made *getting there* one command.
 
 - It's a markdown skill (the session executes it), not a binary — provisioning quality depends on the session following the catalog. First real `/go-live` on a product is the live test; tighten the catalog/regexes from what that surfaces.
 - Account *creation* stays manual (can't be automated); the speed win is in guidance + validation + post-signup CLI + resume. Measure the real before/after on the next product to confirm the ~25→~8 min estimate.
+
+---
+
+## 2026-06-14 — v1.26 · 🪄 One command from a bare machine to a running factory
 
 > ## 🪄 `curl … | sh` → Bun installed, Hamzaish cloned, factory ready
 > **The other half of the 100×: getting *to* the zero-config first run is now one line.**
