@@ -3,6 +3,11 @@
 **Stage**: launch
 **Status**: live — public OSS, v1.2.0, dogfooded
 
+## Active sessions
+_Coordination ledger — see [meta/parallel-sessions-protocol.md](../../meta/parallel-sessions-protocol.md). Read this first; update on claim/finish._
+
+- **2026-06-14 — consolidated to a single owner.** One session now holds the repo + dogfood machine + brain; **no parallel work in flight.** The parallel "ponytail" session shipped **v1.2.0** (PR #1) and is **closed / handed off**. Long-running jobs (model downloads) are complete. Resume the branch-per-session + PR-to-main discipline only if a second session is genuinely needed.
+
 ## North star this sprint
 > A first-timer on any of the three OSes runs one command and ends up chatting with a local model, with zero decisions required.
 
