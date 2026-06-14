@@ -95,10 +95,13 @@ See `CLAUDE.md` if you're Claude Code. If you're a different agent, your equival
 | Agent | File | Status |
 |---|---|---|
 | Claude Code | [`CLAUDE.md`](CLAUDE.md) | ✓ canonical; routing tables, slash commands, hook config |
-| Codex (OpenAI CLI) | `CODEX.md` | not yet — add when the operator actively uses it |
-| Cursor | `.cursorrules` | not yet — add when the operator actively uses it |
+| Codex (OpenAI CLI) | [`CODEX.md`](CODEX.md) | ✓ thin adapter — Codex reads `AGENTS.md` natively; this adds Codex notes |
+| Cursor | [`.cursor/rules/hamzaish.mdc`](.cursor/rules/hamzaish.mdc) | ✓ always-on rule pointing at `AGENTS.md` |
+| Windsurf | [`.windsurf/rules/hamzaish.md`](.windsurf/rules/hamzaish.md) | ✓ always-on rule pointing at `AGENTS.md` |
 | Aider | `CONVENTIONS.md` | not yet — add when the operator actively uses it |
 | Other | — | use this file (`AGENTS.md`) as your full context; mirror the discipline above |
+
+The three adapters above are **thin by design**: each is a few lines telling its agent to read `AGENTS.md` (the single source of truth), plus an honest note that the slash-command UX is Claude-Code-specific and how to get the same result elsewhere (read the matching `factory/commands/*.md` or `factory/agents/**/SKILL.md` and execute it). Edit the rules here; the adapters just point.
 
 Tool-specific files **extend** this file — they should never contradict the rules here. If a rule changes, change it here first, then update the tool-specific files.
 

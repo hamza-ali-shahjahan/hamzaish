@@ -15,7 +15,11 @@ Every count real · every item linked · every claim marked ✅ proven / 🟡 pa
 
 </div>
 
-<!-- HERO DEMO GIF lands here: 90s, idea → scaffold → security gate BLOCK→CLEAR → portfolio-pulse. docs/assets/demo.gif -->
+<p align="center">
+  <img src="docs/assets/hamzaish-hero.gif" alt="Hamzaish in motion — the agent-blind judge and the honesty guard running live" width="820">
+</p>
+
+<!-- v1 "factory in motion" demo (real command output, reproducible via scripts/hero.tape). Replace with the live idea→scaffold→ship TUI recording when ready. -->
 
 *Shipped through it so far: 4 live products and an npm package → [the showcase](products/SHOWCASE.md).*
 
