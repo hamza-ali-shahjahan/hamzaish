@@ -53,8 +53,6 @@ should be, before that name.
 
 - **The 4 muakkals** — the hands behind the wall Hamza's tearing down, paired
   with Lovable & Claude. ([the note →](https://hamzaish.com))
-- _Every advisor, friend, and early believer who shaped this — your place in
-  lights is reserved. (Hamza, send names + a one-line gift for each.)_
 - And, quietly, last — that's me, **[Hamza Ali](https://github.com/hamza-ali-shahjahan)**.
   If this factory has a spine, it isn't a playbook — it's the reps: years in
   **Business-SWAT roles at [Disrupt.com](https://disrupt.com)**, and the
