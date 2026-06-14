@@ -241,9 +241,11 @@ Anthropic's *Founder's Playbook*, with patterns studied from gbrain (knowledge g
 
 ## License
 
+**TL;DR — free for builders. Don't take it closed-source and sell it. Commercial license on request.**
+
 **AGPL-3.0** — see [`LICENSE`](LICENSE). Copyright © 2026 Hamza Ali.
 
-Plain English: use, study, modify, and self-host freely. If you run a *modified* version as a network service, your source must be AGPL too — the factory stays open for solo builders; nobody quietly turns it into a closed product. **Commercial license available** for closed-source use — contact below.
+In plain English: use, study, modify, and self-host freely. If you run a *modified* version as a network service, your source must be AGPL too — the factory stays open for solo builders; nobody quietly turns it into a closed product. **Commercial license available** for closed-source use — contact below.
 
 ---
 
