@@ -1,7 +1,7 @@
 # Regenerate the hero demo:  vhs scripts/hero.tape
-# Then optimize:  gifsicle -O3 --lossy=80 --colors 110 docs/assets/hamzaish-hero.gif -o /tmp/o.gif && mv /tmp/o.gif docs/assets/hamzaish-hero.gif
+# Then optimize:  gifsicle -O3 --lossy=80 --colors 110 docs/assets/hamzaish-hero-card.gif -o /tmp/o.gif && mv /tmp/o.gif docs/assets/hamzaish-hero-card.gif
 # Branded welcome card (bun run hero) + a real eval run. Replace with a live idea->scaffold->ship TUI recording when ready.
-Output "docs/assets/hamzaish-hero.gif"
+Output "docs/assets/hamzaish-hero-card.gif"
 Set FontSize 18
 Set Width 1100
 Set Height 600

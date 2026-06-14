@@ -16,7 +16,7 @@ Every count real · every item linked · every claim marked ✅ proven / 🟡 pa
 </div>
 
 <p align="center">
-  <img src="docs/assets/hamzaish-hero.gif" alt="Hamzaish in motion — the agent-blind judge and the honesty guard running live" width="820">
+  <img src="docs/assets/hamzaish-hero-card.gif" alt="Hamzaish — puts you in Builder Mode, with a live eval run as proof" width="820">
 </p>
 
 <!-- v1 "factory in motion" demo (real command output, reproducible via scripts/hero.tape). Replace with the live idea→scaffold→ship TUI recording when ready. -->
