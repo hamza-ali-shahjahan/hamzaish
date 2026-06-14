@@ -4,6 +4,8 @@
 
 Quality over volume. A cycle that promotes **one** learning that durably removes a class of failure beats a cycle that files ten notes nobody acts on.
 
+> **Before scoring, check eligibility.** A candidate must first clear the [Admission Policy](admission-policy.md): our own products/learnings are eligible only once **dogfooded** (we ran it and it worked for us — shipping a repo isn't enough); community contributions only once **verified-shipped + evidence-backed**. This rubric decides what to *promote*; the policy decides what's even *eligible*.
+
 ---
 
 ## 1. Major-cycle triggers — when the loop runs

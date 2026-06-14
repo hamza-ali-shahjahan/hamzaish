@@ -34,6 +34,8 @@ products/<slug>/
 
 ## Add a product
 
+> **Dogfood first.** A product earns a folder here only once we've **actually used it for its real job and it worked for us** — not when its repo merely ships. Until then, keep notes in `brain/learnings/`. See the [Admission Policy](../meta/admission-policy.md) (Gate 1). Community products follow Gate 2 in [`_community/`](./_community/README.md).
+
 ```bash
 cp -r _template products/<slug>          # then fill in the files
 # add the slug → local code path to ../code-paths.local.json (git-ignored)
