@@ -26,5 +26,5 @@
     "prod_url": null,
     "staging_url": null
   },
-  "notes": "Public OSS CLI (MIT), at v1.2.0 — macOS + Linux + Windows, GPU-aware sizing, optional --lean 'ponytail' minimal-code coder variant. Dogfooded 2026-06-14 on an M5 Pro / 24 GB: qwen2.5-coder:14b running at ~25.7 tok/s, OpenAI-compatible API verified. Registered here per the Admission Policy only after a real working local LLM was in use, not just because the repo shipped."
+  "notes": "Public OSS CLI (MIT), at v1.3.0 — macOS + Linux + Windows, GPU-aware sizing, optional --lean 'ponytail' coder, and --chat (bundled browser chat) + --editor (Continue setup) for zero-to-useful in one command. Dogfooded 2026-06-14 on an M5 Pro / 24 GB: qwen2.5-coder:14b ~25.7 tok/s, browser chat + Continue-in-Cursor both verified live. Registered here per the Admission Policy only after a real working local LLM was in use, not just because the repo shipped."
 }
