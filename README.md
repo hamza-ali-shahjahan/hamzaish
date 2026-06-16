@@ -2,11 +2,11 @@
 
 # 🏭 Hamzaish
 
-**Unlock your Builder Mode with a Claude Code setup that does more than just code, learns from every build and remembers every lesson.**
+**Unlock your Builder Mode** — a setup that doesn't stop at code: it learns from every build and remembers every lesson. Works with **Claude Code, Cursor, Codex & Windsurf**.
 
 [![Open source](https://img.shields.io/badge/Open-source-brightgreen.svg)](#license)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
-[![Works with Claude Code](https://img.shields.io/badge/works_with-Claude_Code-d97757.svg)](https://claude.ai/code)
+[![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
 **[📚 128 practices](BEST-PRACTICES.md) · [🤖 32 agents](#-the-agents-32) · [🛠️ 29 skills & commands](#%EF%B8%8F-the-skills--commands-29) · [📖 39 playbooks](#-the-playbooks-39)**
