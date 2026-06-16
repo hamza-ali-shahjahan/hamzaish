@@ -1,6 +1,6 @@
 # Shipping products with Claude Code — the practices ledger
 
-**128 practices · 26 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
+**130 practices · 28 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
 
 Most best-practice lists tell you how to *use* Claude Code. This one is about what comes after: taking a product from idea → MVP → launch → sell → scale with Claude Code as your cofounder — and not dying in the unglamorous parts.
 
@@ -17,6 +17,8 @@ The deep dives live in [`factory/playbooks/`](factory/playbooks/) (39 playbooks)
 - **Never create a new repo without checking the filesystem and existing remotes first.** 2026-05-30: 'publish hamzaish' was misread and a new PUBLIC agent-skills repo went live while Hamzaish already existed as a private repo. — ✅ *proven* · *Incident 2026-05-30 (agent-skills public repo; meta/retros/2026-05-30-wp-to-astro-shipping.md)* · [the incident](brain/anti-patterns/accidental-public-repo.md)
 - **Never append inline # comments to a piped curl-to-bash one-liner.** Paxel, 2026-06-04: trailing comments mis-parsed on paste and SIGPIPE'd the script twice; identical comment-free lines ran clean. — ✅ *proven* · *Paxel incident, 2026-06-04* · [the incident](brain/anti-patterns/inline-comments-in-piped-bash.md)
 - **Never wire unbounded git or network ops into a global Claude Code hook.** 2026-06-09: global auto-commit/auto-pull hooks blocked on git with no timeout or scope gate, hanging turns for minutes in every repo. — ✅ *proven* · *Incident 2026-06-09 (hook-hang; brain/learnings/2026-06-09-hook-hang.md, Composite 33/35, PROMOTED)* · [the incident](brain/anti-patterns/unbounded-git-in-global-hooks.md)
+- **Never trust a dedup/upsert ingest's "rows inserted" log — count net-new rows.** 2026-06-16 (Patently Legal): CourtListener v4 search ignores `page=N` (it's cursor-paginated), so every page re-returned the same 20 results; `onConflictDoNothing` dropped them silently and the corpus sat frozen at 1,054 while logs scrolled "healthy" — misdiagnosed as a rate-limit for hours. Smoke-test that pages return distinct keys; pair idempotent writes with a net-new metric. — ✅ *proven* · *Incident 2026-06-16 (brain/learnings/2026-06-16.md)* · [the incident](brain/anti-patterns/silent-dedup-masks-broken-pagination.md)
+- **Never put a pay-per-byte external scan (BigQuery/Athena) on a synchronous user path.** 2026-06-16 (Patently Legal): per-run `claim_similarity` scanned Google Patents BigQuery `claims_localized` (~370 GB/scan) per patent → **~$10.77 per clearance**. Pre-compute once into a local pgvector index, serve cosine locally → ~$0.10. A request that can trigger a metered scan is an unbounded bill. — ✅ *proven* · *Incident 2026-06-16 (brain/learnings/2026-06-16.md)*
 
 ## 💡 Ideate & validate
 
