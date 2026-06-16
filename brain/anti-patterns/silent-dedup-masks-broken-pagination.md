@@ -28,3 +28,7 @@ Cost: hours of misdiagnosis, wasted embedding spend, and — had it not been cau
 4. **When two failures co-occur, isolate before tuning.** A stuck count + visible 429s is not proof the 429s are the cause. Cheapest discriminating experiment first (here: compare two pages' IDs), not the most familiar fix (throttle tuning).
 
 The cost of the two-page distinctness check: 30 seconds. The cost of skipping it: a frozen corpus that ships.
+
+## Resolution (2026-06-17)
+
+The cursor-following fix held: the corpus unfroze and grew off the 1,054 ceiling. But scaling it surfaced the *next* wall — CourtListener's API is capped at 125 requests/day (token-global), so even correct pagination couldn't bulk-seed in reasonable time. We pivoted to CourtListener's **S3 bulk-data dumps** (no rate limit) via a dockets→clusters join and reached **25,000+ opinions overnight** (50,000+ patents + 25,000+ court opinions now live on patently.legal). Full arc in [`learnings/2026-06-17.md`](../learnings/2026-06-17.md). Takeaway pairing: this anti-pattern (verify pages are distinct) + "for bulk corpus, use the bulk dump, not the rate-limited API."
