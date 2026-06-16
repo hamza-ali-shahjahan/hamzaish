@@ -18,7 +18,7 @@ Visit http://localhost:3000.
 > and dev/build commands run inside an isolated box, not on your bare host.
 
 ## Stack
-Next.js 15 · Supabase · Stripe · Resend · PostHog · Plausible · GA4 · Sentry · Inngest · Anthropic
+Next.js 15 · Supabase · Stripe · Resend · PostHog · Plausible · GA4 · Sentry · Anthropic
 
 See `../CLAUDE.md` for the architectural context and the build session protocol.
 

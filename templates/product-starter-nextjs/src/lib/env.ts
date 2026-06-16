@@ -40,9 +40,6 @@ const envSchema = z.object({
   ANTHROPIC_API_KEY: optional,
   OPENROUTER_API_KEY: optional,
 
-  // Background
-  INNGEST_SIGNING_KEY: optional,
-  INNGEST_EVENT_KEY: optional,
 });
 
 const parsed = envSchema.safeParse(process.env);
