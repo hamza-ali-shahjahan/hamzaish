@@ -1,0 +1,52 @@
+name: CI
+
+# The factory's own guards, run on every push to main and every PR — so the
+# things that have bitten us before can't ship again:
+#   • check-changelog — a dropped changelog header (a shipped feature undocumented)
+#   • check-assets     — a broken local image/link reference (a blank hero)
+#   • eval --no-llm    — the agent-blind judge's deterministic cases
+#   • check-starter    — a fresh scaffold that won't `bun install` (the dead-dep class)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege: every check here only READS the repo. No write scope is needed,
+# so the token is capped at contents:read (matches the starter's own workflows).
+permissions:
+  contents: read
+
+# Cancel superseded runs on the same ref so the queue doesn't pile up.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  guards:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinning policy (same as the starter's secret-scan.yml): GitHub-official
+      # actions/* use a major tag; third-party actions are pinned to a full commit
+      # SHA (a moving tag can be repointed at malicious code). Bump deliberately,
+      # reading the changelog, then update the SHA.
+      - uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: latest
+
+      - name: Changelog guard — every shipped version has an entry
+        run: bun run check-changelog
+
+      - name: Asset guard — no broken local image/link references
+        run: bun run check-assets
+
+      - name: Eval harness — deterministic, agent-blind cases (no LLM)
+        run: |
+          bun run ingest
+          bun run eval --no-llm
+
+      - name: Starter guard — a brand-new scaffold actually installs
+        run: bun run check-starter

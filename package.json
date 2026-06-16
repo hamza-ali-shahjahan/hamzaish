@@ -18,7 +18,8 @@
     "check-changelog": "bun scripts/check-changelog.ts",
     "credits": "bun scripts/credits.ts",
     "hero": "bun scripts/hero.ts",
-    "check-assets": "bun scripts/check-assets.ts"
+    "check-assets": "bun scripts/check-assets.ts",
+    "check-starter": "bun scripts/check-starter.ts"
   },
   "_note": "Zero runtime dependencies — everything uses Bun + Node built-ins (bun:sqlite, node:fs, etc.). No `bun install` needed. Just `bun run setup`."
 }
