@@ -150,6 +150,18 @@ saving work.
 - `production` is fast-forward-only — never force-pushed or rewound. A divergence
   is a stop-and-resolve, not an override.
 
+## 7. Hardening tools we port from the field (ingested)
+
+Studied via our [repo syllabus](LEARN-FROM-REPOS.md) (security batch, entries E1–E6) and queued into `/security-check`. We port the *practice*, not the code; each is a *candidate* until proven on a product pre-launch (see [`meta/evals/factory-change-gate.md`](../meta/evals/factory-change-gate.md)).
+
+- **gitleaks** (already in use) — regex/entropy secret scanning in CI + the push gate. Baseline; keep. — https://github.com/gitleaks/gitleaks
+- **trufflehog** — *verified* secret detection (confirms a key is live), cutting gitleaks' false positives. Adopt where a finding needs triage before it blocks. — https://github.com/trufflesecurity/trufflehog
+- **semgrep** — policy-as-code SAST with shareable rule packs; candidate for a small `/security-check` rule set targeting our stack's footguns (Next.js, Supabase). — https://github.com/semgrep/semgrep
+- **harden-runner (step-security)** — runtime egress control + tamper detection for GitHub Actions, *beyond* the SHA-pinning in §1. Pin AND constrain network. — https://github.com/step-security/harden-runner
+- **OWASP CheatSheetSeries** — map each `/security-check` item to a named cheat sheet so the audit is defensible, not ad-hoc. — https://github.com/OWASP/CheatSheetSeries
+
+Credits live in [`ACKNOWLEDGMENTS.md`](../ACKNOWLEDGMENTS.md) / [`docs/LEARN-FROM-REPOS.md`](LEARN-FROM-REPOS.md).
+
 ---
 
 ## What this baseline is NOT
