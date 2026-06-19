@@ -2,7 +2,9 @@
 
 # 🏭 Hamzaish
 
-**Unlock your Builder Mode** — a setup that doesn't stop at code: it learns from every build and remembers every lesson. Works with **Claude Code, Cursor, Codex & Windsurf**.
+**An open-source Claude Code setup that builds, launches, and learns — across the whole product lifecycle.**
+
+*Unlock your Builder Mode* — a setup that doesn't stop at code: it learns from every build and remembers every lesson. On a mission to democratize Builder Mode for every builder. Works with **Claude Code, Cursor, Codex & Windsurf**.
 
 [![Open source](https://img.shields.io/badge/Open-source-brightgreen.svg)](#license)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
