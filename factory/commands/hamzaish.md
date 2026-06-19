@@ -39,6 +39,9 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - non-trivial → `/full-cycle` (spec → plan → test → build → review → ship, gated)
    - fully autonomous → `/auto`
    - tiny change → `/build`
+   - a measurable objective ("make it good enough that X") → **`/write-a-goal`** first to
+     forge a measurable, *reachable* goal — it pins the exact metric and feasibility-checks
+     the target so you don't chase a vague or impossible number — then `/goal` to pursue it.
 3. **Standing guardrails** (distilled from `products/*/learnings.md` + `meta/`):
    - A new product is its OWN repo. Register it here with
      `cp -r products/_template products/<slug>` and add the slug → local path to
