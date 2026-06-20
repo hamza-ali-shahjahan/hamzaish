@@ -38,7 +38,11 @@ if (existsSync(docsDir)) {
 const isExternal = (t: string) =>
   /^(https?:)?\/\//.test(t) || t.startsWith("#") || t.startsWith("mailto:") || t.startsWith("data:") || t.startsWith("<");
 
-function refsIn(text: string): string[] {
+function refsIn(raw: string): string[] {
+  // Strip fenced code blocks + inline code spans first — href/src/links inside
+  // documentation EXAMPLES (an SEO doc showing `<link href="/llms.txt">`, a
+  // template line) are not real links and must not be flagged as broken.
+  const text = raw.replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, "");
   const out = new Set<string>();
   // Markdown ![alt](target) and [text](target) — target up to space/paren/quote
   for (const m of text.matchAll(/\]\(\s*([^)\s]+)/g)) out.add(m[1]);

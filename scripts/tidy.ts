@@ -43,6 +43,8 @@ function scanLinks(repo: string): Finding[] {
   for (const f of files) {
     let txt: string;
     try { txt = readFileSync(join(repo, f), "utf8"); } catch { continue; }
+    // strip code blocks + inline code spans — href/src/links inside doc EXAMPLES aren't real links
+    txt = txt.replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, "");
     const refs = new Set<string>();
     for (const m of txt.matchAll(/\]\(\s*([^)\s]+)/g)) refs.add(m[1]);
     for (const m of txt.matchAll(/(?:src|href)\s*=\s*"([^"]+)"/g)) refs.add(m[1]);

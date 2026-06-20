@@ -1,6 +1,6 @@
 # Release cadence as a content engine — and incumbent-anchored positioning
 
-Source-of-truth playbook for the two discoverability levers our [road-to-stars research](../../../meta/research/2026-06-11-road-to-stars.md) found in *every* 30k–200k self-hosted winner. Ported from how immich, AppFlowy, and Plane actually grew — not theory.
+Source-of-truth playbook for the two discoverability levers that recur in *every* 30k–200k self-hosted winner. Ported from how immich, AppFlowy, and Plane actually grew — not theory.
 
 > **Principle:** A repo's stars are won by *repeated visible motion + instantly-graspable positioning*, not by one launch. Distribution dominates; cadence compounds it.
 

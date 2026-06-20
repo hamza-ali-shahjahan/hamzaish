@@ -55,7 +55,7 @@ Markdown file at site root. Standard proposed by Jeremy Howard (answer.ai). Form
 - bullet list
 
 ## Pages
-- [/](url): description
+- `[/](url): description`
 
 ## Common questions
 **Q:** ...

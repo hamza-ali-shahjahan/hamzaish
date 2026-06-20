@@ -69,4 +69,4 @@
 
 End-to-end smoke: open muakkil.app in fresh browser → Google sign-in → "Speak your charge" → say "Research the top 3 AI meeting note apps and email me a summary" → email arrives within 60s. Plus mobile Safari smoke (graceful text-input degrade).
 
-Full checklist at [`muakkil-code/docs/buildathon-plan.md`](../muakkil-code/docs/buildathon-plan.md) §Verification.
+Full checklist at `muakkil-code/docs/buildathon-plan.md` §Verification.

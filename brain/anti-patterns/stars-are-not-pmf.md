@@ -12,7 +12,7 @@ A repo's star count (or an HN front page, a launch-day traffic spike, a viral tw
 
 ## Why we don't do it
 
-The data is unambiguous (our [road-to-stars research](../../meta/research/2026-06-11-road-to-stars.md), live GitHub API):
+The data is unambiguous (live GitHub API):
 
 - **maybe-finance: 54,000 stars, product dead by mid-2025.** Stars measured attention, not fit. The clearest single counterexample in the whole cohort.
 - An HN front page converts ~1.4 stars/upvote with a ~24h half-life; HN score explains only ~8% of long-run star variance. A launch spike is a *pulse*, not traction.

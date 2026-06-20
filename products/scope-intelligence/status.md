@@ -48,4 +48,4 @@ Ship the 15 vertical slices in `docs/SPEC.md` to a usable v1, then onboard 5 sma
 - [ ] At least 5 paying agencies on the system
 - [ ] Recovery-loop revenue proves the value prop
 
-Full conventions at [`../scope-intelligence-code/CLAUDE.md`](../scope-intelligence-code/CLAUDE.md).
+Full conventions at `../scope-intelligence-code/CLAUDE.md`.

@@ -71,7 +71,7 @@ Before committing the target, pressure-test it against what the architecture can
 - **A vibe with no number:** *"make it feel premium."* Either find a measurable proxy or
   admit it's a taste call, not a goal.
 
-> Companion: [`meta/learning-loop-rubric.md`](../../meta/learning-loop-rubric.md) (scoring what to
-> promote) and [`meta/always-recommend.md`](../../meta/always-recommend.md) (lead with the
+> Companion: [`meta/learning-loop-rubric.md`](../../../meta/learning-loop-rubric.md) (scoring what to
+> promote) and [`meta/always-recommend.md`](../../../meta/always-recommend.md) (lead with the
 > recommendation — including when proposing a reachable target). `/goal` *pursues* a goal;
 > `/write-a-goal` *forges* one worth pursuing.
