@@ -8,11 +8,12 @@
 //   bun scripts/tidy.ts <path>           # scan a specific repo
 //   bun scripts/tidy.ts --all <dir>      # scan every git repo under <dir>, one aggregate table
 //   bun scripts/tidy.ts --links          # drill into one category (also --secrets --files --deps)
+//   bun scripts/tidy.ts --fix <path>     # PLAN the de-links (dry run); add --apply to write them
 //   bun scripts/tidy.ts --json           # machine-readable
 //
 // Four kinds of rot:  🔗 links · 🔑 secrets · 🗑 dead files · 📦 deps
 // The summary shows the EXTENT per category first; details + fixes are opt-in.
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve, extname, basename } from "node:path";
 
 // ── args ───────────────────────────────────────────────────────────────────
@@ -163,8 +164,52 @@ function summarize(name: string, findings: Finding[]) {
 }
 
 // ── main ─────────────────────────────────────────────────────────────────────
+// ── --fix: confirmed cleanup. PLAN (dry run) by default; --apply writes. ─────
+// Deliberately narrow + safe: it only DE-LINKS broken/gitignored markdown text
+// links ( [text](bad) → text ). Secrets, deps, images/HTML links, and file
+// deletions are NEVER auto-applied — their fix is human judgement (rotate a key,
+// pick the right package), not a line edit — so they're listed as manual. One
+// repo at a time: survey many with --all, then fix each deliberately.
 if (flag("--fix")) {
-  console.log("--fix is the confirmed-cleanup mode (shows each change before applying). Not wired in this build yet — report-first is live; fixing lands next. Run without --fix to see the rot.");
+  const apply = flag("--apply");
+  const repo = resolve(target);
+  if (!isRepo(repo)) { console.error(`✗ not a git repo: ${repo}`); process.exit(2); }
+  const findings = await scanRepo(repo);
+
+  const refsByFile = new Map<string, string[]>();
+  const manual: string[] = [];
+  const GUIDE: Record<string, string> = {
+    secrets: "🔑 review; if real, rotate the key + purge from history (a line-delete won't undo a leak)",
+    files: "🗑 delete only if truly unused — `git rm <file>`",
+    deps: "📦 fix or replace the package in package.json",
+  };
+  for (const f of findings) {
+    if (f.kind === "links") {
+      if (!refsByFile.has(f.file)) refsByFile.set(f.file, []);
+      refsByFile.get(f.file)!.push(f.detail.split(" → ")[0]);
+    } else manual.push(`  ${f.file}  ·  ${f.detail}\n      → ${GUIDE[f.kind]}`);
+  }
+
+  const planned: string[] = [];
+  const changed = new Map<string, string>();
+  for (const [file, refs] of refsByFile) {
+    let txt = readFileSync(join(repo, file), "utf8");
+    let touched = false;
+    for (const ref of refs) {
+      const esc = ref.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const re = new RegExp(`(?<!!)\\[([^\\]]*)\\]\\(\\s*${esc}[^)]*\\)`, "g"); // [text](ref…) NOT an image
+      if (re.test(txt)) { txt = txt.replace(re, "$1"); planned.push(`  ${file}  ·  de-link  ${ref}  (keep the text)`); touched = true; }
+      else manual.push(`  ${file}  ·  ${ref}\n      → 🔗 image / HTML / complex link — fix by hand`);
+    }
+    if (touched) changed.set(file, txt);
+  }
+
+  console.log(`\n🔧  tidy --fix${apply ? " --apply" : "  (dry run — nothing written)"} — ${basename(repo)}\n`);
+  console.log(planned.length ? `  Will de-link ${planned.length} broken link(s):\n${planned.join("\n")}` : "  No auto-fixable links.");
+  if (manual.length) console.log(`\n  Manual — needs judgement, not auto-fixed:\n${manual.join("\n")}`);
+  if (!apply) { console.log(`\n  Dry run. Re-run with --apply to make the de-links above. (Survey many first: --all <dir>.)\n`); process.exit(0); }
+  for (const [file, txt] of changed) writeFileSync(join(repo, file), txt);
+  console.log(`\n  ✓ applied ${planned.length} de-link(s) across ${changed.size} file(s). Review with \`git diff\`, then commit.\n`);
   process.exit(0);
 }
 

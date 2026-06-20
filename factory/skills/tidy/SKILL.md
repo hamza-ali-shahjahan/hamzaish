@@ -38,10 +38,14 @@ never get a wall of output:
 2. **Recommend.** Call out which categories matter and why (a broken link is a reader's
    404; a flagged secret needs rotating; an unresolvable dep breaks every install).
 3. **Ask.** Let the operator pick what to clean. Never assume.
-4. **Fix with confirmation.** Show each proposed change before applying it. `--fix` is
-   opt-in and per-change — `/tidy` **never silently rewrites a repo**, least of all one it
-   has never seen. For unfamiliar repos (the 100+ pre-Hamzaish case), report-only is the
-   default and the safe posture.
+4. **Fix with confirmation — plan, then apply.** `bun run tidy --fix <repo>` prints the
+   exact change plan (which broken links get de-linked) **without writing anything**;
+   re-run with `--apply` to make those edits. So you always *see each change first*.
+   Auto-fix is narrow on purpose: it only **de-links** broken/gitignored text links
+   (`[text](bad)` → `text`). Secrets, deps, images/HTML links, and file deletions are
+   **never** auto-applied — they're listed as manual with guidance (rotate a key, pick the
+   right package), because their fix is judgement, not a line-edit. Survey many with
+   `--all`, then `--fix` one repo at a time.
 
 ## Discipline
 
