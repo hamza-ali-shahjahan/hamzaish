@@ -1,8 +1,8 @@
 # OSS Publishing Checklist (npm / PyPI / crates / GitHub)
 
-Six concrete gotchas paid for once by the wp-to-astro launch. Read this **before** any product enters publish-to-registry phase.
+Seven concrete gotchas, paid for by the wp-to-astro and rotscan launches. Read this **before** any product enters publish-to-registry phase.
 
-## The six gotchas
+## The seven gotchas
 
 ### 1. GitHub email privacy blocks first push
 
@@ -81,8 +81,17 @@ npm install <pkg>
 
 If you skip this, you'll ship a patch within the hour when reality intervenes. (We did. v0.6.0 → v0.6.1.)
 
+### 7. The name 404s as "available" but `npm publish` rejects it (too similar)
+
+**Symptom**: `npm view <name>` 404s (looks free) and name-clearance passed — then `npm publish` returns `E403 Forbidden — Package name too similar to existing package '<other>'; try renaming to '@you/<name>'`.
+
+**Why**: a 404 means *unregistered*, not *publishable*. npm runs a typosquat/similarity guard **only at publish time** — and `npm publish --dry-run` does NOT run it. (rotscan, 2026-06-21: `rotscan` 404'd as free but was blocked as too close to the existing `rot-scan`.)
+
+**Fix**: publish under your **scope** — `@you/<name>` (e.g. `@hamzaish/rotscan`) — which bypasses the similarity check and keeps your brand + CLI command unchanged (only the install address gains the scope). Add `"publishConfig": { "access": "public" }` so scoped publishes default to public. Catch it earlier: during name-clearance, search the registry for **near-names** (hyphenated, plural, char-swaps), not just the exact name — see the `name-clearance` skill, step 6.
+
 ## Pre-publish checklist
 
+- [ ] Name clears npm **similarity** (not just exact-404), or is scoped `@you/name` — npm rejects look-alikes at publish time (see `name-clearance` step 6)
 - [ ] `bun scripts/check-npm-bin.ts <pkg-dir>` passes (no leading-`./` bin, target exists, shebang present)
 - [ ] `npm publish --dry-run` output read line-by-line; no `invalid and removed` / `auto-corrected` lines (`npm pack` won't show these)
 - [ ] Auth method decided: token (CI) or web-auth (manual). Tested.

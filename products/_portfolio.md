@@ -14,7 +14,7 @@ Muakkil is the factory's first proof-of-value. Lovable buildathon submission = b
 
 ---
 
-## All products (14)
+## All products (15)
 
 | Product | Stage | Status | One-liner |
 |---|---|---|---|
@@ -30,6 +30,7 @@ Muakkil is the factory's first proof-of-value. Lovable buildathon submission = b
 | ai-growth-engine | idea | active | Systems-agent-driven growth engine for SMB founders. |
 | **tasfort** | launch | active · live | "There's a System for That" — routines & systems of 100+ remarkable people, matched by personality type. [theresasystemforthat.xyz](https://theresasystemforthat.xyz) |
 | **ai-native-cms** | mvp | active · validation | OSS CLI that migrates WordPress sites to clean Astro + MDX codebases — wedge for an AI-native CMS. Shipped to npm as `wp-to-astro@0.6.1`. |
+| **rotscan** | launch | active · live · npm | OSS CLI that finds & clears repo rot (links · secrets · dead files · deps) across one repo or 100 at once. Spun out of Hamzaish. [npm](https://www.npmjs.com/package/@hamzaish/rotscan) · [repo](https://github.com/hamza-ali-shahjahan/rotscan) |
 | formpad | idea | slot_reserved | (slot reserved — needs validation before scaffolding) |
 | calculatrs | idea | slot_reserved | (slot reserved — needs validation before scaffolding) |
 
@@ -39,7 +40,7 @@ Stages: **idea** (validation phase) · **mvp** (building) · **launch** (shippin
 
 ## Stage distribution
 
-- **Launch (live)**: 3 (ventbox → ventbox.co, copyright/Patently → patently.legal [private beta], tasfort → theresasystemforthat.xyz) — shipped, public
+- **Launch (live)**: 4 (ventbox → ventbox.co, copyright/Patently → patently.legal [private beta], tasfort → theresasystemforthat.xyz, rotscan → npm `@hamzaish/rotscan`) — shipped, public
 - **MVP**: 7 products (muakkil, scope-intelligence, dnsdoctor, linkedup, hamza-health, hamzaos, ai-native-cms) — building OR (for ai-native-cms) shipped + in validation sprint
 - **Idea (active)**: 2 (one-dollar-factory, ai-growth-engine) — validating
 - **Idea (slot_reserved)**: 2 (formpad, calculatrs) — awaiting validation/details
@@ -65,6 +66,7 @@ Populated by `/portfolio-pulse` on each invocation.
 - **one-dollar-factory** → Validation conversations before any code.
 - **ai-growth-engine** → Validation conversations before any code.
 - **tasfort** → LIVE at theresasystemforthat.xyz. Reconcile the canonical source folder (~/Claude/TASFORT vs ~/Claude/$1F&S/TASFORT); backfill analytics; assess traction.
+- **rotscan** → LIVE on npm (`@hamzaish/rotscan`) + public MIT repo. Watch Discussions/issues for first-run reports; node-native distribution is the next build when a non-Bun user wants it. See `products/rotscan/status.md`.
 - **ai-native-cms** → Record the 90-second screencast (Docker WP → migration → Astro site rendering — env already up at localhost:8080 + localhost:4321). Then post in r/selfhosted offering 5 free migrations in exchange for feedback. NO further build until validation sprint lands real-user signal. See `products/ai-native-cms/status.md`.
 - **formpad** → Validate or release slot.
 - **calculatrs** → Validate or release slot.

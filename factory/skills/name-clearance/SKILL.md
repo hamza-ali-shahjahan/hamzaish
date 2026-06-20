@@ -71,10 +71,22 @@ Run cheap → expensive, fail fast. Stop at the first RED.
    `.com` is ideal; `.ai`/`.app`/`.legal`/`.io` are acceptable. The WHOIS verdict is a signal —
    confirm finalists at a registrar.
 
-6. **Linguistic / social sanity.** Unfortunate meanings in other languages, hard to spell/say,
+6. **Package-registry clearance (npm / PyPI / crates — for anything you'll publish).**
+   A 404 on the *exact* name means it's unregistered — **NOT** that you can publish it. Registries
+   run a **similarity / typosquat guard at publish time** that rejects names too close to an
+   existing package. (rotscan, 2026-06-21: the exact name 404'd as "available," then `npm publish`
+   returned `E403 — too similar to existing 'rot-scan'`.) So:
+   - Search the registry for **near-names**, not just the exact one — hyphenated/un-hyphenated,
+     singular/plural, common char-swaps (`npm search <name>`, or browse npmjs.com / pypi.org).
+   - If a close look-alike exists, expect rejection — plan to **scope it** (`@you/name`, npm's own
+     suggested fix) or pick a more distinctive name up front.
+   - `npm publish --dry-run` does **not** run the similarity check; only a real publish does.
+     Scoping (`@you/name`) sidesteps it entirely.
+
+7. **Linguistic / social sanity.** Unfortunate meanings in other languages, hard to spell/say,
    handle availability (X / GitHub / LinkedIn).
 
-7. **Verdict & recommendation.** Summarize each candidate as 🟢/🟡/🔴 with the evidence (links).
+8. **Verdict & recommendation.** Summarize each candidate as 🟢/🟡/🔴 with the evidence (links).
    Recommend the strongest GREEN. For any finalist, state plainly: **get a paid attorney
    knockout before committing** — this skill de-risks, it is not legal advice.
 

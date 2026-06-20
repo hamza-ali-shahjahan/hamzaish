@@ -1,0 +1,51 @@
+{
+  "slug": "rotscan",
+  "name": "rotscan",
+  "one_liner": "Open-source CLI that finds & clears repo rot — broken/wrong-case/gitignored links, committed secrets, dead files, and npm-unresolvable deps — across one repo or a hundred at once. Report-first; never edits without --apply.",
+  "created": "2026-06-20",
+  "stage": "launch",
+  "status": "active",
+  "sprint": "post-launch — gather first-user feedback",
+  "code_path": null,
+  "aliases": [
+    "@hamzaish/rotscan",
+    "repo rot scanner",
+    "rotscan cli"
+  ],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": "https://github.com/hamza-ali-shahjahan/rotscan",
+    "npm": "https://www.npmjs.com/package/@hamzaish/rotscan",
+    "prod_url": null,
+    "staging_url": null,
+    "lovable_project": null
+  },
+  "stack": {
+    "framework": "Bun CLI (single-file, zero-dependency)",
+    "runtime": "TypeScript on Bun ≥1.0 (Node-native distribution on roadmap)",
+    "package_manager": "Bun",
+    "ui": "n/a (CLI — summary-first terminal report)",
+    "backend": "n/a (reads git-tracked files locally; npm registry for dep checks)",
+    "host": "npm registry (@hamzaish/rotscan@0.1.0)",
+    "ai": {
+      "orchestrator": null,
+      "cleanup": null,
+      "transcription": null,
+      "dispatch": null
+    },
+    "dependencies": "none (zero-dependency)",
+    "license": "MIT",
+    "architecture": "four scanners (links · secrets · dead-files · deps) over `git ls-files` → summary-first report → opt-in `--fix` de-linking (plan-then-`--apply`)"
+  },
+  "demo_pattern": "User runs `bunx @hamzaish/rotscan --all ~/code` → ranked table of every repo's rot → drills into the worst with `rotscan <repo>` → `rotscan --fix` plans the cleanup; `--apply` writes it.",
+  "notes": "Spun out of Hamzaish during a tidy-up: a CI guard that caught a broken link grew into a repo-wide cleanup stage (`/tidy`), then a standalone tool. Published to npm 2026-06-21 as @hamzaish/rotscan@0.1.0 — scoped because npm's similarity guard rejected the unscoped 'rotscan' as too close to the existing 'rot-scan' package (a 404 on the exact name does NOT mean publishable). Public MIT repo with a hero + three step demo GIFs and a reproducible demo/ harness; scans its own repo clean. v0.1 secrets scanner is review-grade pattern matching; node-native distribution + deeper scanners on roadmap. The Hamzaish-side capability still lives as the `/tidy` skill — rotscan is the spun-out, everyone-can-use form."
+}
