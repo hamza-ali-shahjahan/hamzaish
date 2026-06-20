@@ -53,13 +53,11 @@ should be, before that name.
 
 - **The 4 muakkals** — the hands behind the wall Hamza's tearing down, paired
   with Lovable & Claude. ([the note →](https://hamzaish.com))
-- And, quietly, last — that's me, **[Hamza Ali](https://github.com/hamza-ali-shahjahan)**.
-  If this factory has a spine, it isn't a playbook — it's the reps: years in
-  **Business-SWAT roles at [Disrupt.com](https://disrupt.com)**, and the
-  opportunities and mentors I gained there — taking things from zero to one long
-  before AI made it cheap. Hamzaish just encodes that instinct; the shoulders
-  above sharpened it and 10×'d my learning in AI and agentic building. I owe
-  them my gratitude — and the commitment to pass it on.
+- And, last — me, **[Hamza Ali](https://github.com/hamza-ali-shahjahan)**. Hamzaish
+  encodes an instinct built from the years in **Business-SWAT roles at
+  [Disrupt.com](https://disrupt.com)**, and the mentors I gained there; the
+  shoulders above elevated and sharpened it. The credit belongs to them and a
+  thousand more generosities of the open-source spirit that 10×'d my learning.
 
 ---
 

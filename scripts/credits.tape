@@ -8,6 +8,8 @@ Set Theme "Catppuccin Mocha"
 Set Padding 30
 Set TypingSpeed 45ms
 Hide
+Type 'export PATH="$HOME/.bun/bin:$PATH"'
+Enter
 Type "clear" Enter
 Show
 Sleep 500ms
