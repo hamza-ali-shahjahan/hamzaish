@@ -1,7 +1,7 @@
 # local-llm-setup — Live Status
 
 **Stage**: launch
-**Status**: live — public OSS, v1.3.0, dogfooded
+**Status**: live — public OSS, **v1.12.0**, dogfooded
 
 ## Active sessions
 _Coordination ledger — see [meta/parallel-sessions-protocol.md](../../meta/parallel-sessions-protocol.md). Read this first; update on claim/finish._
@@ -12,6 +12,7 @@ _Coordination ledger — see [meta/parallel-sessions-protocol.md](../../meta/par
 > A first-timer on any of the three OSes runs one command and ends up chatting with a local model, with zero decisions required.
 
 ## Where it is
+- **Through v1.12.0 (current):** the `--chat` builder grew into a real agent — ⚡ Auto model routing, plan-first specs, self-repair, **website cloning** (inspect the real palette/fonts/sections/motion → rebuild → **structural fidelity score** → iterate-to-target), **real-image + dark/light-theme matching**, and `screenshot` / `gitsync` tools. **v1.12.0 = 🎯 Goal Mode** — forge a measurable goal → user **agrees** → pursue (build→score→iterate to target) → honest ceiling verdict → log to `goal_runs.jsonl`. All baked byte-identical into both installers (`tools/bake.py`), CI green (Linux + Windows + ShellCheck), with an offline test suite (`tests/`). _(The detail below is historical, through v1.3.0.)_
 - **Shipped:** public repo + releases through **v1.3.0** (native Windows port + GPU-aware sizing + first-timer safeguards; v1.1.1 = size-encoded variant names + `--uninstall` `:latest` fix; v1.2.0 = optional `--lean` "ponytail" coder; **v1.3.0 = `--chat` browser chat + `--editor` Continue setup — "zero to *useful* in one command"**). CI green on ShellCheck + real Linux + real Windows.
 - **`--chat` / `--editor` design:** the chat is a bundled HTML page served from `localhost`. Key dogfooded insight — **Ollama 0.30.x allows any `localhost` origin by default** (it echoes `Access-Control-Allow-Origin` back), but blocks `file://`. So a *served* page works with **no Docker and no insecure `OLLAMA_ORIGINS=*`** (the model stays unreachable from arbitrary websites). Editor = Continue in VS Code/Cursor (`code --install-extension`) + a generated `~/.continue/config.yaml`.
 - **Dogfooded (2026-06-14):** full coder + reasoning stack on an M5 Pro / 24 GB — `qwen2.5-coder:14b` (~25.7 tok/s), `deepseek-r1:14b` (~27.5 tok/s), 8k variants, OpenAI API verified. The browser chat (replies ~38 tok/s) and Continue-in-Cursor were both built and verified on this machine before shipping. Ollama runs persistently via `brew services`.
