@@ -23,11 +23,23 @@ git rebase --root --exec 'git commit --amend --reset-author --no-edit'
 
 ### 2. npm silently strips `bin` paths with leading `./`
 
-**Symptom**: Published package has no CLI binary. `npx <package>` errors `command not found`. Only signal is a one-line warning in `npm publish` output.
+**Symptom**: Published package has no CLI binary. `npx <package>`/`bunx <package>` errors. Only signal is a one-line warning (`bin[x] script name … was invalid and removed`) you'll scroll past in `npm publish` output.
 
-**Fix**: In `package.json` use `"bin": { "name": "bin/file.mjs" }` NOT `"./bin/file.mjs"`.
+**It's the `./`, not the extension** (measured, not guessed):
 
-**Discipline**: Always run `npm pack --dry-run` and **read every line of output**. There are silent edits beyond this one.
+| bin target | result | | bin target | result |
+|---|---|---|---|---|
+| `./x.ts` | ❌ stripped | | `x.ts` | ✅ survives |
+| `./x` | ❌ stripped | | `x` | ✅ survives |
+| `./x.mjs` | ❌ stripped | | `x.mjs` | ✅ survives |
+
+**Fix**: In `package.json` use `"bin": { "name": "bin/file" }` — any target with **no leading `./`**. (`"bin/file.mjs"` ✓, `"./bin/file.mjs"` ✗.)
+
+**`npm pack` does NOT catch this — `npm publish --dry-run` does.** `npm pack` keeps the bin in the tarball silently; the strip only happens at publish-normalize time. So the verification command for *this* class is `npm publish --dry-run`, not `npm pack --dry-run`.
+
+**Bun/TS note (a separate constraint, not the strip cause)**: a raw `.ts` bin only runs under `bun`; `npx`/node can't execute it. For a bun-only tool that's fine; for node reach, point `bin` at an extensionless launcher that runs the `.ts`.
+
+**Discipline**: Run the guard before publish — `bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/scripts/check-npm-bin.ts <package-dir>` — then `npm publish --dry-run` and **read every line**. There are silent edits beyond this one.
 
 ### 3. 2FA with hardware security key (no TOTP) blocks publish
 
@@ -71,8 +83,8 @@ If you skip this, you'll ship a patch within the hour when reality intervenes. (
 
 ## Pre-publish checklist
 
-- [ ] `package.json` `bin` paths have no leading `./`
-- [ ] `npm pack --dry-run` output read line-by-line; no surprises
+- [ ] `bun scripts/check-npm-bin.ts <pkg-dir>` passes (no leading-`./` bin, target exists, shebang present)
+- [ ] `npm publish --dry-run` output read line-by-line; no `invalid and removed` / `auto-corrected` lines (`npm pack` won't show these)
 - [ ] Auth method decided: token (CI) or web-auth (manual). Tested.
 - [ ] Version number is one you've never used (bump even if last publish was unpublished)
 - [ ] LICENSE file present and matches package.json `license` field
