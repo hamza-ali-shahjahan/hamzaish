@@ -11,7 +11,7 @@
 - ➕ — an added, widely-known exemplar included to round the syllabus to 200. Lighter-but-useful notes.
 
 **Integrity notes**
-- Star counts attributed to "our 2026-06-11 pull" come from [`meta/research/2026-06-11-road-to-stars.md`](../meta/research/2026-06-11-road-to-stars.md) and [`2026-06-11-agpl-vs-mit-stars.md`](../meta/research/2026-06-11-agpl-vs-mit-stars.md). They were API-verified *on that date* — treat as historical, re-verify before quoting publicly (CLAUDE.md hard rule #5).
+- Star counts are point-in-time snapshots (API-verified 2026-06-11) — treat them as historical and re-verify before quoting publicly (CLAUDE.md hard rule #5).
 - A few repos from the star-cohort research carry handles/figures I could **not** independently re-confirm from general knowledge (e.g. some of the very-high-star "Claude-Code-native generation" entries). These are tagged **⚠ verify** — present per our research, owner/URL to be confirmed before any public citation. Where I was unsure of a fact about a repo, I flagged it rather than inventing one.
 
 ## Categories (jump table)
@@ -39,7 +39,7 @@
 
 ## 1. Agent frameworks & autonomous agents
 
-The 2023 generation that defined "autonomous agent," plus the orchestration libraries that out-lasted the hype. Our [road-to-stars research](../meta/research/2026-06-11-road-to-stars.md) studied this cohort closely: it shows both the ceiling (stars ≠ PMF — see maybe-finance) and the playbook (jaw-dropping demo + hype-wave timing).
+The 2023 generation that defined "autonomous agent," plus the orchestration libraries that out-lasted the hype.
 
 ### 1.1 AutoGPT 📚
 - **Hamzaish learns:** The category-defining "give it a goal, watch it loop" demo. Study how a *single mesmerizing demo* (not features) drove ~185k stars in our pull — and how the project later struggled to convert that into a durable product. This is the cautionary mirror for Hamzaish's "watch an agent ship a product" pitch: lead with the demo GIF, but don't mistake the spike for PMF (hard rule #1).
@@ -1342,5 +1342,5 @@ Our analytics stack runs ~$0/mo across 10 products (`stack/analytics-stack.md`).
 - **Star counts** quoted in prose are historical (2026-06-11 pull) — re-verify before publishing.
 - Three repos (#31 gbrain, #32 hermes-agent, #33 openclaw) are **cloned locally** in `references/` for study; the rest are studied remotely. We port ideas, never import code.
 
-*Compiled 2026-06-18. Provenance: 📚 entries trace to `meta/research/2026-06-11-road-to-stars.md`, `2026-06-11-agpl-vs-mit-stars.md`, `ACKNOWLEDGMENTS.md`, `references/README.md`, `stack/repos.md`, and the `stack/` ADRs. ➕ entries are widely-known exemplars added to complete the syllabus.*
+*Compiled 2026-06-18. Provenance: 📚 entries trace to `ACKNOWLEDGMENTS.md`, `references/README.md`, `stack/repos.md`, and the `stack/` ADRs. ➕ entries are widely-known exemplars added to complete the syllabus.*
 

@@ -42,7 +42,7 @@ These are where the leverage is highest and the risk lowest. Roughly in order:
 
 ## A. Packaging & discoverability — fix the funnel
 
-> Our [road-to-stars research](../meta/research/2026-06-11-road-to-stars.md) diagnosed the gap: distribution works (79 unique cloners/14 days), conversion doesn't (1 star, 0 forks). Every repo here attacks that gap.
+> Every repo in this section was picked for one reason: what it can teach the factory about packaging and discoverability — then learn it, test it, ingest it.
 
 ### A1. immich 📚 — `P0`
 - **Learn:** *Compounding-community* growth: a release roughly every 7 days became a content engine; it flopped on HN 7+ times yet hit 22k+ stars via cadence + Discord/Reddit. Cadence beats one-shot launches.
