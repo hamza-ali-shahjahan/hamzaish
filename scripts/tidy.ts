@@ -34,6 +34,18 @@ const tracked = (repo: string, glob?: string) => git(repo, ["ls-files", ...(glob
 const isExternal = (t: string) =>
   /^(https?:)?\/\//.test(t) || t.startsWith("#") || t.startsWith("mailto:") || t.startsWith("data:") || t.startsWith("<") || t.includes("{{") || t.includes("${") || t.includes("$(");
 
+// Case-sensitive existence — macOS passes the wrong case, Linux CI 404s. Catch it here.
+function exactExists(repo: string, rel: string): boolean {
+  let cur = repo;
+  for (const part of rel.split("/").filter((p) => p && p !== ".")) {
+    let entries: string[];
+    try { entries = readdirSync(cur); } catch { return false; }
+    if (!entries.includes(part)) return false;
+    cur = join(cur, part);
+  }
+  return true;
+}
+
 type Finding = { kind: string; file: string; detail: string };
 
 // ── scanner: 🔗 links (broken file, or resolves only to a gitignored target) ──
@@ -53,8 +65,10 @@ function scanLinks(repo: string): Finding[] {
       if (isExternal(ref)) continue;
       ref = ref.replace(/[?#].*$/, "");
       const tgt = ref.startsWith("/") ? join(repo, ref.slice(1)) : resolve(join(repo, dirname(f)), ref);
-      if (!existsSync(tgt)) out.push({ kind: "links", file: f, detail: `${ref} → missing` });
-      else existing.push({ file: f, ref, rel: relative(repo, tgt) });
+      if (!existsSync(tgt)) { out.push({ kind: "links", file: f, detail: `${ref} → missing` }); continue; }
+      const rel = relative(repo, tgt);
+      if (!exactExists(repo, rel)) out.push({ kind: "links", file: f, detail: `${ref} → case mismatch (fails on Linux/CI)` });
+      else existing.push({ file: f, ref, rel });
     }
   }
   if (existing.length) {

@@ -51,7 +51,21 @@ function refsIn(raw: string): string[] {
   return [...out].filter((t) => !isExternal(t)).map((t) => t.replace(/[?#].*$/, "")); // strip ?query / #frag
 }
 
-// ── check each reference resolves to a real file (and isn't gitignored) ─────
+// Case-sensitive existence: every path segment must match the on-disk case. macOS
+// is case-insensitive, so existsSync passes for the WRONG case; Linux CI then 404s.
+// Catch that mismatch here, locally, instead of only in CI.
+function exactExists(rel: string): boolean {
+  let cur = root;
+  for (const part of rel.split("/").filter((p) => p && p !== ".")) {
+    let entries: string[];
+    try { entries = readdirSync(cur); } catch { return false; }
+    if (!entries.includes(part)) return false;
+    cur = join(cur, part);
+  }
+  return true;
+}
+
+// ── check each ref resolves to a real file (right case, not gitignored) ──────
 const broken: { doc: string; ref: string; why: string }[] = [];
 const existing: { doc: string; ref: string; rel: string }[] = [];
 let checked = 0;
@@ -62,8 +76,10 @@ for (const doc of docs) {
   for (const ref of refsIn(readFileSync(abs, "utf8"))) {
     checked++;
     const target = resolve(base, ref); // resolve relative to the doc's own dir (how GitHub renders it)
-    if (!existsSync(target)) broken.push({ doc, ref, why: "file does not exist" });
-    else existing.push({ doc, ref, rel: relative(root, target) });
+    if (!existsSync(target)) { broken.push({ doc, ref, why: "file does not exist" }); continue; }
+    const rel = relative(root, target);
+    if (!exactExists(rel)) broken.push({ doc, ref, why: "case mismatch — fails on case-sensitive Linux/CI" });
+    else existing.push({ doc, ref, rel });
   }
 }
 
