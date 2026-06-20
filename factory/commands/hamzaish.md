@@ -57,6 +57,12 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - Build locally before any deploy.
    - The starter ships tests + CI (`pnpm test`, `pnpm test:e2e`,
      `.github/workflows/ci.yml`). Don't strip them — extend them.
+   - **Tidy at milestones.** At a launch, before `/ship`, or at the end of a sprint, offer
+     a `/tidy` pass: it scans the product — or every repo at once (`bun run tidy --all <dir>`)
+     — for rot (broken/gitignored/wrong-case links, committed secrets, dead files,
+     npm-unresolvable deps), shows the *extent first*, then cleans with confirmation
+     (`--fix` plans the de-links, `--apply` writes them). Report-first, never silent. It's the
+     cleanup *stage*, distinct from the per-push guards (`check-assets`, `check-changelog`).
 
 ## ② Strategy Lane — opt-in, lite-by-default
 
