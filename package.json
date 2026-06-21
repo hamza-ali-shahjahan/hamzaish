@@ -13,6 +13,7 @@
     "ingest": "bun brain/ingest.ts",
     "ask": "bun brain/ask.ts",
     "sync-refs": "bun scripts/sync-product-refs.ts",
+    "autonomy": "bun scripts/autonomy-loop.ts",
     "check-validation": "bun scripts/check-validation.ts",
     "eval": "bun meta/evals/run.ts",
     "check-changelog": "bun scripts/check-changelog.ts",
