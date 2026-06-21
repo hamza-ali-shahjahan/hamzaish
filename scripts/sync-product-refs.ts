@@ -229,7 +229,15 @@ async function main() {
     // Guarantee the product repo ignores the local-only files before we write
     // any, so an auto-commit hook can never stage START-HERE.local.md / .goal/.
     if (!CLEAN) {
-      const added = await ensureIgnored(codeAbs, ["*.local.md", ".goal/"]);
+      const added = await ensureIgnored(codeAbs, [
+        "*.local.md",
+        ".goal/",
+        ".autonomy-ok",
+        "STOP",
+        ".no-auto-commit",
+        ".no-auto-push",
+        ".no-auto-pull",
+      ]);
       if (added.length) {
         console.log(
           `  ${DRY ? "→ would add to" : "✎"} .gitignore (${slug}): ${added.join(", ")}`,

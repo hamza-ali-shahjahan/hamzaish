@@ -38,6 +38,10 @@ const maxSessions = Number(arg("max-sessions", "6"));
 const runsPerSession = Number(arg("runs-per-session", "4"));
 const model = arg("model", "sonnet")!;
 const maxTurns = Number(arg("max-turns", "60"));
+// Headless Claude needs a permission mode to use tools unattended. acceptEdits
+// auto-accepts file edits; a fully unattended run that also needs Bash/git will
+// want `bypassPermissions`. Operator chooses consciously — it's the risk knob.
+const permissionMode = arg("permission-mode", "acceptEdits")!;
 const DRY = flag("dry-run");
 
 function die(msg: string): never {
@@ -108,12 +112,16 @@ async function runSession(sessionNum: number): Promise<number> {
     model,
     "--max-turns",
     String(maxTurns),
+    "--permission-mode",
+    permissionMode,
   ];
 
   if (DRY) {
     console.log(`\n--- session ${sessionNum} (dry-run) ---`);
     console.log(`cwd: ${repo}`);
-    console.log(`cmd: claude -p <prompt> --model ${model} --max-turns ${maxTurns}`);
+    console.log(
+      `cmd: claude -p <prompt> --model ${model} --max-turns ${maxTurns} --permission-mode ${permissionMode}`,
+    );
     console.log(`prompt:\n${prompt}`);
     return 0;
   }

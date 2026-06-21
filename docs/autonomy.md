@@ -46,8 +46,23 @@ bun run autonomy --repo "/path/to/product" --slug ship-onboarding \
 # 3. Real (watched) run:
 bun run autonomy --repo "/path/to/product" --slug ship-onboarding \
   --goal "Onboarding flow scores >=9/10 on the rubric in CLAUDE.md" \
-  --max-sessions 6 --runs-per-session 4 --model sonnet
+  --max-sessions 6 --runs-per-session 4 --model sonnet \
+  --permission-mode acceptEdits
 ```
+
+### The permission knob (read this)
+
+Headless Claude can't touch files without a permission mode. This is the real
+risk dial — pick it consciously:
+
+- `acceptEdits` (default) — auto-accepts **file edits**; other tools (Bash, git)
+  still prompt, so a run needing them may stall. Good for a first watched run.
+- `bypassPermissions` — fully unattended (edits **and** Bash/git run without
+  prompts). Only after you've watched a run and trust the goal + guardrails.
+
+The loop already forbids irreversible/outward actions in the prompt and keeps
+work on a branch, but `bypassPermissions` removes the per-action safety net — so
+treat it like handing over the keys.
 
 ### Flags
 
@@ -60,6 +75,7 @@ bun run autonomy --repo "/path/to/product" --slug ship-onboarding \
 | `--runs-per-session` | `4` | `/goal` scored runs per session (keep small so a session exits before its context fills). |
 | `--model` | `sonnet` | Model for each headless session. |
 | `--max-turns` | `60` | Per-session turn cap (belt-and-suspenders). |
+| `--permission-mode` | `acceptEdits` | Forwarded to `claude`. `acceptEdits` for watched runs; `bypassPermissions` for fully unattended (see above). |
 | `--dry-run` | off | Print the plan; launch nothing. |
 
 ## Stopping & resuming
