@@ -173,6 +173,7 @@ Permanent routing rule → add it here. Framework worth keeping → add to `fact
 | `/go-live <slug>` | Guided, stateful provisioning of a product's production stack — deep-links each signup, validates key formats, writes `.env.local`, tracks a resumable ledger, automates after signup (Vercel/gh/Cloudflare), then hands off to `/security-check` → `/ship`. The walked version of `SETUP.md`. See `factory/skills/go-live/SKILL.md`. |
 | `/security-check <slug>` | Fast security baseline audit of a product — tracked secrets, unpinned/vulnerable GitHub Actions (incl. `claude-code-action < v1.0.94`), workflow permission scope, untrusted-input triggers, RLS reminder → pass/fail verdict. See `docs/security.md`. |
 | `/ship <slug> [sha]` | The single deploy action — gates on `/security-check`, then promotes reviewed commit(s) from the working branch to the product's `production` branch and pushes. wip(auto) snapshots stay on the working branch, never reach production. |
+| `/pr [description]` | One-command **repo** ship — branch → commit → PR → wait for CI → squash-merge → sync, narrated in plain English (the safe GitHub flow behind one step). For changes to *this* repo; distinct from `/ship` (product production deploy). Requires branch protection on `main`. See `docs/repo-ship-flow.md`. |
 
 These live at `factory/commands/*.md` (canonical home); `.claude/commands/` symlinks there so Claude Code auto-discovers them.
 
