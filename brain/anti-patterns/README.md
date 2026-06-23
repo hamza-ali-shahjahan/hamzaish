@@ -39,3 +39,4 @@ Every new anti-pattern gets a one-liner in the root `BEST-PRACTICES.md` under "N
 - `accidental-public-repo.md` — creating a public repo when a private one exists (2026-05-30)
 - `inline-comments-in-piped-bash.md` — comments appended to piped bash one-liners (2026-06-04)
 - `unbounded-git-in-global-hooks.md` — global git hooks without timeout/fail-open/scope (2026-06-09)
+- `product-code-inside-factory-repo.md` — product code under `products/<slug>/code/` instead of its own sibling repo (2026-06-23)

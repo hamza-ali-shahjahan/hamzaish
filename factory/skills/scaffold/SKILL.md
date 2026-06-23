@@ -33,10 +33,24 @@ Creates a complete starting point for a new product:
    │   └── README.md
    ├── analytics/
    │   └── README.md
-   └── code/ → symlink or new Next.js app (see step 2)
+   └── (NO code/ here — see step 2: product code lives in its OWN sibling repo)
    ```
 
-2. **Next.js starter** — copies `templates/product-starter-nextjs/` to `products/<slug>/code/` with the name, slug, and one-liner substituted into:
+   **Layout rule (hard):** `products/<slug>/` in Hamzaish is **metadata only**
+   (markdown + `product.config.json` + the folders above). A product's actual code
+   lives in its **own repo outside Hamzaish**, registered in gitignored
+   `code-paths.local.json`. Never create `products/<slug>/code/` (or `src/`, `app/`,
+   `dist/`…) with real source — Hamzaish is always public and nothing excludes it from
+   commits. `bun run check-product-layout` enforces this; see
+   `brain/anti-patterns/product-code-inside-factory-repo.md`.
+
+2. **Code repo — a SIBLING repo, NOT inside Hamzaish.** Create the product's code in
+   its own directory outside this repo (e.g. `~/Claude/<Name>`), `git init` it there
+   (no remote yet if held local → add a `.no-auto-push` marker), then register it:
+   add `"<slug>": "/abs/path/to/<Name>"` to `code-paths.local.json` (gitignored) and
+   keep `code_path: null` in `product.config.json` (path-portability rule). For a web
+   product, seed that sibling repo from `templates/product-starter-nextjs/` with the
+   name, slug, and one-liner substituted into:
    - `package.json` (name)
    - `.env.example` (NEXT_PUBLIC_APP_NAME)
    - `src/app/(marketing)/page.tsx` (hero copy)
@@ -62,7 +76,7 @@ Creates a complete starting point for a new product:
      "created": "<ISO date>",
      "stage": "idea",
      "status": "scaffolded",
-     "code_path": "products/<slug>/code",
+     "code_path": null,
      "aliases": [],
      "analytics": {
        "stripe_account_id": null,
@@ -108,7 +122,7 @@ Creates a complete starting point for a new product:
 6. Generate the doc skeletons by reading the templates and filling from the one-liner.
 7. **Apply the secure-by-default steps** (section below).
 8. Print the **local-first promise**: the scaffold runs with ZERO config — no accounts, no env vars. `bun install && bun dev` boots it in local mode (dev-auth stub, SQLite-ready, integrations off). SETUP.md is the *go-live* checklist for later, not a prerequisite — surface it as "when you're ready to ship," never as "do this first."
-9. Print "next: **open `products/<slug>/code/` in its devcontainer** — VS Code → 'Reopen in Container' (or `devcontainer up`). The container installs deps and runs the dev server in isolation; the landing page boots at localhost:3000 (port-forwarded out of the container) **with zero accounts** — build first, wire your stack when you deploy. Building on the bare host instead is at your own risk."
+9. Print "next: **open the product's code repo (the path you registered in `code-paths.local.json`) in its devcontainer** — VS Code → 'Reopen in Container' (or `devcontainer up`). The container installs deps and runs the dev server in isolation; the landing page boots at localhost:3000 (port-forwarded out of the container) **with zero accounts** — build first, wire your stack when you deploy. Building on the bare host instead is at your own risk."
 
 ## Secure-by-default
 
@@ -121,7 +135,7 @@ the template copy; a few steps must run at scaffold time.
   project settings (prod), never the repo.
 - **Secret-scan CI included** — `.github/workflows/secret-scan.yml` (gitleaks,
   pinned action, `permissions: contents: read`) + `.gitleaks.toml` come with the
-  template. Confirm they landed in `products/<slug>/code/`.
+  template. Confirm they landed in the product's code repo.
 - **Devcontainer ships in the template** — `.devcontainer/devcontainer.json` +
   `Dockerfile` (Node + Bun, non-root, workspace-only mount, no host secret/SSH
   passthrough) ride in via the copy. Confirm they landed, and **tell the user to
@@ -129,7 +143,7 @@ the template copy; a few steps must run at scaffold time.
   `devcontainer up`) so the agent and all build/install commands run isolated from
   the host. Running on the bare host is at the operator's own risk.
 - **`.no-auto-push` marker** — create it at scaffold time so wip auto-commits stay
-  local until `/ship`: `touch products/<slug>/code/.no-auto-push`. (It's gitignored
+  local until `/ship`: `touch <code-repo>/.no-auto-push` (in the sibling code repo). (It's gitignored
   by design — operator-local discipline — so the template can't carry it across a
   fresh clone; the scaffold step must add it.)
 - **Production-branch deploy** — note in the product's `SETUP.md` / decision log:

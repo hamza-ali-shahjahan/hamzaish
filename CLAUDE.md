@@ -148,6 +148,7 @@ The operator's active product + sprint state lives in **`products/_active.local.
 9. **Muakkil's working directory is off-limits** unless the user explicitly invites edits there. Cd into it for context, don't modify.
 10. **Before destructive edits, state the plan.** Whole-file rewrites, large deletions, or schema changes get a one-paragraph "what I'm about to do" in the response BEFORE the edit. Pair with `/checkpoint <message>` if the user wants a named pre-edit save-point.
 11. **Before creating any new repo, check filesystem + existing remotes for the name.** See `brain/anti-patterns/accidental-public-repo.md`. The cost of asking is zero; the cost of an accidentally-public repo is reversible-but-embarrassing.
+12. **A product's CODE never lives inside this repo.** `products/<slug>/` is metadata only (markdown + `product.config.json` + the standard subfolders); the code goes in its own sibling repo, registered in gitignored `code-paths.local.json` with `code_path: null` in the config. Hamzaish is always public and nothing gitignores `products/*/code`. Enforced by `bun run check-product-layout` (CI). See `brain/anti-patterns/product-code-inside-factory-repo.md`.
 
 ## When the user wants speed
 

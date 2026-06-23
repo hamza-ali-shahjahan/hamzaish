@@ -6,6 +6,7 @@ name: CI
 #   • check-assets     — a broken local image/link reference (a blank hero)
 #   • eval --no-llm    — the agent-blind judge's deterministic cases
 #   • check-starter    — a fresh scaffold that won't `bun install` (the dead-dep class)
+#   • check-product-layout — a product's CODE committed inside this public repo (2026-06-23)
 
 on:
   push:
@@ -50,3 +51,6 @@ jobs:
 
       - name: Starter guard — a brand-new scaffold actually installs
         run: bun run check-starter
+
+      - name: Layout guard — no product code committed inside this public repo
+        run: bun run check-product-layout
