@@ -99,4 +99,12 @@ All outward-facing copy — landing pages, OG/social cards, ads, emails, in-app 
 
 Ship-gate: for any numeric or coverage claim, link the source of truth or cut the claim.
 
+## 14. Branch-first — never commit straight to main
+
+Never commit or push directly to a product's `main`. Always: **branch → commit → push → open a PR → wait for human review → merge only on an explicit go.** Pause at the PR; do not self-merge.
+
+When more than one session/agent may touch a repo, give each its **own git worktree** (own folder + branch) so two sessions physically cannot edit the same working tree. The shared working tree — and even shared dogfood/source files that live *outside* git — is the real collision surface, sharper than git history itself. Before starting: `git fetch` and branch off the latest `origin/main`; bake/commit only your own region, never the whole tree blind.
+
+Rationale / origin: with multiple concurrent Claude sessions on one product, direct-to-main plus a shared working tree cause **silent clashes** — one session's uncommitted WIP (a half-built feature, a modified installer or dogfood file) gets swept into another's commit, or a live build breaks. (Set 2026-06-22 after the local-llm-setup UI work caught a parallel session's uncommitted Visual-RAG WIP sitting in the shared tree + shared dogfood `agent-server.py`; isolating the release in a separate worktree off `origin/main` + a region-scoped (HTML-only) bake shipped it clean without touching the other session's files. Earlier near-miss: the same shared-dogfood collision once briefly broke the live builder.)
+
 Origin: the Patently OG card asserted "9M+ opinions · full patent record · 22M+ registrations" before that data was live (caught 2026-06-07). Trust is the entire moat for a decision-support tool; one inflated claim poisons every true one.
