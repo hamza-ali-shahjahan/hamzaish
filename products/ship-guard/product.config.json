@@ -1,0 +1,22 @@
+{
+  "slug": "ship-guard",
+  "name": "ship-guard",
+  "one_liner": "A one-command, local-first 'are you about to get ransacked?' safety check for any git repo — installable as a pre-push hook.",
+  "created": "2026-06-23",
+  "stage": "launch",
+  "status": "LIVE — public GitHub repo (2026-06-25); CI green; LICENSE MIT",
+  "code_path": null,
+  "aliases": ["shipguard", "ship guard", "sg"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": { "github": "https://github.com/hamza-ali-shahjahan/ship-guard", "prod_url": null, "staging_url": null },
+  "notes": "Local-first CLI + git pre-push hook. Packaged from the 2026-06-19 repo/account security audit. Code lives OUTSIDE this repo in its own public repo (github.com/hamza-ali-shahjahan/ship-guard); local clone at ~/Claude/ShipGuard, absolute path in gitignored code-paths.local.json under slug 'ship-guard' (code_path null per path-portability rule). Name 'ship-guard' kept deliberately after clearance: the GitHub repo name is free and accurate; npm publishing (if ever) must be scoped (@hamzaali/ship-guard) since plain 'shipguard' exists. NOT on npm — distributed via git clone / npx github:. Mirrors the repolish layout."
+}
