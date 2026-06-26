@@ -2,6 +2,10 @@
 
 Minimum bar before any user touches the product. Run this with `agents/mvp/security-reviewer/`.
 
+## How to run it (and re-run it on AI-generated code)
+
+Don't trust a clean first pass. After every feature or AI-generated change, paste the code back and prompt: *"Act as an adversarial senior security engineer and audit this code against the checklist below. Do NOT reassure me — list what's wrong and how to exploit it."* Re-running this catches a surprising amount of what got left behind. It's the no-reassurance discipline: a green light only counts if something *tried* to break it first.
+
 ## Auth & session
 - [ ] Session cookies: `httpOnly`, `secure`, `sameSite=lax` or `strict`
 - [ ] Password reset rate-limited (max 5/hour/email)
@@ -13,7 +17,11 @@ Minimum bar before any user touches the product. Run this with `agents/mvp/secur
 
 ## Authorization
 - [ ] Every authenticated endpoint checks `userId === resourceOwnerId` OR uses RLS
+- [ ] **Authorization is server-side** — hiding a button or route in the client is NOT a check; enforce every permission on the server
+- [ ] **RLS enabled ≠ protected** — every table needs an explicit policy *per operation* (select/insert/update/delete). RLS on with no policy denies all — never "fix" that by turning RLS off
 - [ ] Supabase RLS enabled on every table, no `public` policies on user data
+- [ ] **`service_role` / admin keys BYPASS RLS** — server-side only, NEVER in a client-exposed env (`NEXT_PUBLIC_` / `VITE_`) or the browser bundle
+- [ ] **IDOR test** — log in as user A, swap an ID you don't own in a request (`/api/orders/123` → `124`); you must get 403/404, never the data
 - [ ] No "admin" endpoints accessible by changing a URL param
 - [ ] File uploads scoped to user's bucket/folder
 
@@ -22,6 +30,7 @@ Minimum bar before any user touches the product. Run this with `agents/mvp/secur
 - [ ] Error messages don't leak stack traces in production
 - [ ] No "X-Powered-By" headers leaking framework/version
 - [ ] Logs don't contain: passwords, full tokens, PII beyond what's necessary
+- [ ] Dev/debug ports and dashboards (e.g. `:3000`, admin panels, `/debug`) not publicly reachable in prod
 
 ## Input validation
 - [ ] All server actions / API routes validate input with zod (or equivalent)
@@ -39,6 +48,7 @@ Minimum bar before any user touches the product. Run this with `agents/mvp/secur
 
 ## Dependencies
 - [ ] `pnpm audit` passes (no high/critical without justification)
+- [ ] **Re-audit after every AI-added dependency** — agents add packages you didn't vet; some are unmaintained, hallucinated, or typosquats (a dependency scan that checks each package resolves on npm catches the last class)
 - [ ] No deps unmaintained > 12 months without a strong reason
 - [ ] Dependabot or Renovate enabled
 
