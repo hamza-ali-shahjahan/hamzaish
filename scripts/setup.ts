@@ -8,14 +8,14 @@
 //   1. Confirm Bun is present (you're already running under it)
 //   2. Create code-paths.local.json from the example (skip if you already have one)
 //   3. Create brain/identity/operator.local.md from the example (skip if yours exists)
-//   4. Wire the global slash commands into ~/.claude/commands/ (skip ones already linked)
+//   4. Install the global slash commands into ~/.claude/commands/ as REAL copies
 //   5. Build the brain index (bun brain/ingest.ts)
 //   6. Print what to do next
 //
-// It NEVER overwrites your existing .local files or your existing command symlinks.
+// It NEVER overwrites your existing .local files or any command file you've customized.
 // Re-running it is harmless — it just fills in whatever's missing.
 
-import { readFile, writeFile, mkdir, symlink, readlink, copyFile, stat } from "node:fs/promises";
+import { readFile, writeFile, mkdir, symlink, readlink, copyFile, unlink, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { homedir } from "node:os";
@@ -112,44 +112,56 @@ step(4, "Active-sprint state (which product the factory orients on — never com
 }
 
 // Step 4 — global slash commands -------------------------------------------
-step(4, "Global slash commands (so /work-on, /brain-ask, etc. work from any folder)");
+step(4, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work from any folder)");
 {
-  const commands = ["work-on", "portfolio-pulse", "brain-ask", "brain-ingest"];
+  // REAL copies, not symlinks: Claude Code's command/skill loader does not reliably
+  // follow symlinks during discovery, so a symlinked global command can silently show
+  // "Unknown command". Copies are always found. (In-repo /commands still resolve via the
+  // .claude symlinks; re-run setup after editing a command to refresh its global copy.)
+  const commands = ["hamzaish", "builder-mode", "work-on", "portfolio-pulse", "brain-ask", "brain-ingest"];
   if (!existsSync(CMD_DIR)) {
     await mkdir(CMD_DIR, { recursive: true });
     console.log(c.dim(`     created ${CMD_DIR}`));
   }
   for (const name of commands) {
     const target = join(ROOT, "factory", "commands", `${name}.md`);
-    const link = join(CMD_DIR, `${name}.md`);
+    const dest = join(CMD_DIR, `${name}.md`);
     if (!existsSync(target)) {
       warn(`/${name}: source missing at factory/commands/${name}.md — skipped.`);
       warned++;
       continue;
     }
-    if (existsSync(link)) {
-      // Is it already our symlink?
+    if (existsSync(dest)) {
+      // Distinguish: a legacy Hamzaish symlink (upgrade it to a copy), an identical
+      // copy (skip), or a foreign/customized file (leave it — never clobber your edits).
+      let legacySymlink = false;
       try {
-        const current = await readlink(link);
+        const current = await readlink(dest); // throws if dest is a real file
         if (resolve(current) === resolve(target)) {
-          skip(`/${name} already linked.`);
+          legacySymlink = true;
+        } else {
+          warn(`/${name}: ~/.claude/commands/${name}.md points elsewhere (${current}) — left as-is.`);
+          warned++;
+          continue;
+        }
+      } catch {
+        const [have, want] = await Promise.all([readFile(dest, "utf8"), readFile(target, "utf8")]);
+        if (have === want) {
+          skip(`/${name} already installed.`);
           skipped++;
           continue;
         }
-        warn(`/${name}: ~/.claude/commands/${name}.md exists but points elsewhere (${current}) — left as-is. Remove it manually if you want Hamzaish's version.`);
-        warned++;
-        continue;
-      } catch {
-        warn(`/${name}: ~/.claude/commands/${name}.md exists as a real file (not a symlink) — left as-is.`);
+        warn(`/${name}: ~/.claude/commands/${name}.md differs from Hamzaish's — left as-is (delete it to reinstall).`);
         warned++;
         continue;
       }
+      if (legacySymlink) await unlink(dest); // remove the old symlink, then copy below
     }
-    await symlink(target, link);
-    ok(`/${name} → linked.`);
+    await copyFile(target, dest); // dereferences (builder-mode.md -> hamzaish.md content)
+    ok(`/${name} → installed.`);
     created++;
   }
-  console.log(c.dim("     (Claude Code picks these up automatically. Other agents: read AGENTS.md.)"));
+  console.log(c.dim("     Real copies (the loader skips symlinks). In-repo /commands resolve via .claude/."));
 }
 
 // Step 5 — build the brain index -------------------------------------------
