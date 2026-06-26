@@ -133,6 +133,11 @@ the template copy; a few steps must run at scaffold time.
   `*.env.local` and re-includes `!.env.example`. Only the placeholder
   `.env.example` is tracked; real secrets go in `.env.local` (local) or Vercel
   project settings (prod), never the repo.
+- **Conversations gitignored** — verify the copied `.gitignore` carries the
+  "Conversations / chat transcripts / strategy & discussion notes" block (prose
+  `.md`/`.txt` patterns). Our conversations/strategy/discussion **never** belong in a
+  product repo — that context lives in local memory. The block is a backstop; the
+  guarantee is discipline. (A machine-wide `~/.config/git/ignore` net mirrors it.)
 - **Secret-scan CI included** — `.github/workflows/secret-scan.yml` (gitleaks,
   pinned action, `permissions: contents: read`) + `.gitleaks.toml` come with the
   template. Confirm they landed in the product's code repo.

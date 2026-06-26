@@ -64,7 +64,12 @@ A new factory skill (`factory/skills/go-live/`) that runs the pipeline for a sca
   0.5 clearance  — name-clearance skill: same-industry collision + TM signal + domain.
                    HARD GATE — a RED verdict blocks the buy. (The patently.legal miss:
                    domain was free, the *name* collided with an 8yr-old patent platform.)
-  1. domain      — registrar.domain_register(<name>) ; dns_record_set → Vercel
+  1. domain      — registrar.domain_register(<name>) ; dns_record_set → Vercel ;
+                   attach BOTH apex AND www as project domains. Vercel issues a TLS
+                   cert only for names ADDED to the project — if www isn't added it
+                   serves a mismatched cert and browsers/VPNs throw "connection isn't
+                   private" (the patently.legal www miss, 2026-06-26). Set www to
+                   308-redirect → apex for one canonical URL.
   2. repo        — gh repo create --private --source --push   (if not already)
   3. vercel      — project_create ; git_connect ; env_add (per-product keys from vault)
   4. database    — neon.project_create ; push DATABASE_URL(_UNPOOLED) to Vercel envs
@@ -91,7 +96,7 @@ Every stage is idempotent and resumable (re-running skips completed stages — s
 | # | Assertion | How | Pass criteria |
 |---|---|---|---|
 | A1 | Domain resolves | DNS lookup of the apex + www | both resolve to Vercel |
-| A2 | HTTPS serves | `GET https://<domain>/` | 200, valid cert |
+| A2 | HTTPS serves — apex **and** www | `GET https://<domain>/` **and** `GET https://www.<domain>/` (verify cert, no `-k`) | both 200 with a **valid cert**. www must be attached as a project domain or its cert won't cover the name (mismatch → "connection isn't private"). |
 | A3 | Health endpoint green | `GET /api/health` | `ok: true`, all probes pass |
 | A4 | Build is current | `/api/health.buildSha` | equals local HEAD short-sha |
 | A5 | Auth gate works | `POST /api/<authed-route>` no session | 401 (not 500, not 200) |
