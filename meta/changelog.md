@@ -8,6 +8,24 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-26 — v1.28 · Two go-live guardrails baked in from real incidents (apex+www TLS, finish-with-links)
+
+**What changed**
+
+- **Apex **and** www TLS guardrail** — `factory/playbooks/ai-native-2026/go-live-provisioning.md`: stage 1 (domain) now attaches **both** the apex and `www` as Vercel project domains (+ `www → apex` 308 redirect), and assertion **A2** now verifies a valid cert on the apex **and** `www`. A2 was apex-only — which is exactly how a missing-www cert slips through, since A1 already checked DNS for both. New learning: `brain/learnings/2026-06-26-vercel-www-cert.md`.
+- **Finish every response with the live + localhost links** — global `~/.claude/CLAUDE.md` + `BEST-PRACTICES.md` (*Run the factory*): any response involving a localhost or deployed/live URL ends with those links, labeled, as a required step. Learning: `brain/learnings/2026-06-26.md`.
+
+**Why**
+
+Both are end-moment footguns that look fine during the build and bite at/after launch — same shape as the auth-go-live lesson (2026-06-09). The trigger for the TLS one was a real `patently.legal` block: `www` resolved to Vercel and 307-redirected to the apex, but **no cert covered `www`** (Vercel only issues certs for names attached to the project), so browsers/NordVPN threw "This connection isn't private." One-command fix (`vercel domains add www.<domain>`). A portfolio sweep found the same gap on `theresasystemforthat.xyz` — both now serve valid certs on apex + www. Promoting each miss into a playbook assertion is the factory's own rule ("recurring failures get promoted into the playbook as a pre-check").
+
+**What to revisit**
+
+- A2 lives in the design-spec playbook (not yet built automation) — wire the apex+www cert assertion into the eval harness when `/go-live` graduates from spec to code.
+- This log was behind: several factory items since v1.27 (`/tidy` 06-20, `repolish` + `ship-guard` 06-23, local vision model 06-21) aren't yet logged — backfill as their own entries.
+
+---
+
 ## 2026-06-14 — v1.27 · `/go-live` — the 25-min account setup becomes a guided, resumable flow
 
 **What changed**
