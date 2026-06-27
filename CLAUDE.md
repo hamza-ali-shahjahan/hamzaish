@@ -266,4 +266,4 @@ When switching machines, **first thing**: `cd ~/Claude/<repo> && git pull --reba
 
 ## Versioning
 
-Hamzaish tracks its own versions in `meta/changelog.md`. Current: **v1.4** — auto-commit-push system upgraded to global (works in every git repo on this machine via `~/.claude/settings.json` hooks), SessionStart auto-pull-rebase added, opt-out markers (`.no-auto-commit` / `.no-auto-push` / `.no-auto-pull`), Muakkil opted out for Lovable round-trip discipline.
+Hamzaish versions by **semver** (`MAJOR.MINOR.PATCH`) — policy in [`docs/versioning.md`](docs/versioning.md), the live number in the root `package.json`, dated entries in `meta/changelog.md`. **MAJOR** = a milestone or a break in how it's used; **MINOR** = a new capability; **PATCH** = a fix. The `check-counts` CI guard keeps `package.json` and `docs/versioning.md` in lockstep so the version can't drift (it once read four different ways across the repo). Don't hardcode the number here — point to the source.
