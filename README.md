@@ -41,7 +41,22 @@ But most solo projects don't die in the build — they die in everything after i
 
 **→ [Read the full mission: Builder Mode](docs/builder-mode.md)** and **[The full philosophy →](docs/philosophy.md)**
 
+## Never used a terminal? Start here
+
+> **You can absolutely do this — no coding required.** You talk to an AI in plain English; it does the techie parts for you.
+
+**One honest catch first:** Hamzaish runs on **Claude Code**, which needs a **paid Claude plan** — **Claude Pro is ~$20/month** (like ChatGPT Plus). There's **no free tier**. Better to know now than five steps in.
+
+If that's a yes, the path is the same on every computer: **get the Claude app → download Hamzaish (a ZIP, no git) → open the folder and type one sentence.** The AI installs what it needs, sets itself up, and starts building — you watch. The only thing that changes by machine is how you *start* Claude:
+
+- **🍎 Mac · 🪟 Windows** — the Claude **desktop app**. No terminal at all.
+- **🐧 Linux** — one terminal command to install Claude Code, then the AI takes over.
+
+**→ [The complete click-by-click walkthrough — pick your machine, no jargon →](docs/start-here.md)** (🍎 Mac · 🐧 Linux · 🪟 Windows — every step with "what you'll see" + a troubleshooting kit).
+
 ## Quickstart — first win in 5 minutes
+
+> *Brand new — never used a terminal? Start with [Never used a terminal? Start here](#never-used-a-terminal-start-here) above. This path assumes you're comfortable in a terminal.*
 
 **One command** (installs Bun if missing, clones, sets up — [read it first](install.sh)):
 
@@ -81,7 +96,7 @@ Safety: scaffolded products run agent-generated code inside a devcontainer, secr
 
 ## Go deeper
 
-[Your first product in 10 minutes](docs/your-first-product.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
+[Start here — total beginner](docs/start-here.md) · [Your first product in 10 minutes](docs/your-first-product.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
 
 ---
 

@@ -2,7 +2,7 @@
 
 Hand-held walkthrough from a fresh clone to a product you're actively building — with the factory's brain working for you. No prior Hamzaish knowledge assumed.
 
-**Before you start:** you've run the [Quickstart](../README.md#quickstart-2-minutes) (`bun run setup`). If not, do that first — it's one command.
+**Before you start:** you've run the [Quickstart](../README.md#quickstart--first-win-in-5-minutes) (`bun run setup`), or the [complete-beginner walkthrough](start-here.md). If not, do that first.
 
 ---
 
