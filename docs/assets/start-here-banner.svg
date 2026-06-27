@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 190" font-family="Helvetica, Arial, sans-serif">
+  <rect x="3" y="3" width="1094" height="184" rx="18" fill="#1e1e2e" stroke="#313244" stroke-width="2"/>
+
+  <!-- friendly terminal icon -->
+  <rect x="46" y="50" width="106" height="90" rx="11" fill="#11111b" stroke="#45475a" stroke-width="2"/>
+  <circle cx="68" cy="69" r="5" fill="#f38ba8"/>
+  <circle cx="86" cy="69" r="5" fill="#f9e2af"/>
+  <circle cx="104" cy="69" r="5" fill="#a6e3a1"/>
+  <text x="62" y="122" font-family="monospace" font-size="27" font-weight="700" fill="#a6e3a1">&gt;</text>
+  <rect x="84" y="103" width="15" height="20" rx="2" fill="#cdd6f4"/>
+
+  <!-- copy -->
+  <text x="190" y="76" font-size="40" font-weight="800" fill="#f5e0dc">Never used a terminal?</text>
+  <text x="192" y="114" font-size="21" fill="#a6adc8">No coding required — you just talk to an AI; it does the techie parts.</text>
+  <text x="192" y="150" font-size="19" font-weight="700" fill="#89b4fa">macOS&#160;&#160;&#160;·&#160;&#160;&#160;Linux&#160;&#160;&#160;·&#160;&#160;&#160;Windows</text>
+
+  <!-- CTA pill -->
+  <rect x="904" y="66" width="160" height="58" rx="29" fill="#d97757"/>
+  <text x="984" y="103" font-size="22" font-weight="800" fill="#1e1e2e" text-anchor="middle">Start here&#160;&#160;→</text>
+</svg>

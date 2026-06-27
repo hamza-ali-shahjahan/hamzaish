@@ -6,6 +6,7 @@
 
 *Unlock your Builder Mode* — a setup that doesn't stop at code: it learns from every build and remembers every lesson. On a mission to democratize Builder Mode for every builder. Works with **Claude Code, Cursor, Codex & Windsurf**.
 
+[![🌱 Beginner-Friendly](https://img.shields.io/badge/%F0%9F%8C%B1_Beginner--Friendly-8957e5.svg)](docs/start-here.md)
 [![Open source](https://img.shields.io/badge/Open-source-brightgreen.svg)](#license)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
@@ -43,9 +44,9 @@ But most solo projects don't die in the build — they die in everything after i
 
 ## Never used a terminal? Start here
 
-> **You can absolutely do this — no coding required.** You talk to an AI in plain English; it does the techie parts for you.
+<a href="docs/start-here.md"><img src="docs/assets/start-here-banner.png" alt="Never used a terminal? Start here — no coding required; you just talk to an AI and it does the techie parts. macOS · Linux · Windows." width="100%"></a>
 
-**One honest catch first:** Hamzaish runs on **Claude Code**, which needs a **paid Claude plan** — **Claude Pro is ~$20/month** (like ChatGPT Plus). There's **no free tier**. Better to know now than five steps in.
+**You can absolutely do this — no coding required.** **One honest catch first:** Hamzaish runs on **Claude Code**, which needs a **paid Claude plan** — **Claude Pro is ~$20/month** (like ChatGPT Plus). There's **no free tier**. Better to know now than five steps in.
 
 If that's a yes, the path is the same on every computer: **get the Claude app → download Hamzaish (a ZIP, no git) → open the folder and type one sentence.** The AI installs what it needs, sets itself up, and starts building — you watch. The only thing that changes by machine is how you *start* Claude:
 
