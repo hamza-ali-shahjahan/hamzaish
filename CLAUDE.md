@@ -178,6 +178,8 @@ Permanent routing rule → add it here. Framework worth keeping → add to `fact
 
 These live at `factory/commands/*.md` (canonical home); `.claude/commands/` symlinks there so Claude Code auto-discovers them.
 
+**The engineering cycle lives here too.** `/full-cycle`, `/auto`, `/spec`, `/plan`, `/build`, `/test`, `/review`, `/code-simplify`, `/setup` (+ their 21 skills under `factory/skills/` and 3 subagents under `factory/agents/engineering/`) were **consolidated in from the operator's `agent-skills` project on 2026-06-28** — so the build engine `/builder-mode` routes into ships *with this repo*, not as a separate global install. (They were briefly mislabeled "Claude Code built-ins" in a review — they never were; see `brain/anti-patterns/assuming-provenance-of-a-resolving-command.md`.)
+
 ### Plugins (`factory/plugins/`)
 
 Some capabilities are packaged as **portable plugins** that double as plain skills. Pattern: the plugin folder (e.g. `factory/plugins/web-launch/`) is the single source of truth; the skills + command are **symlinked into `factory/skills/` and `factory/commands/`** so they auto-discover with zero setup (the **default, new-user** door), while `.claude-plugin/marketplace.json` exposes the same folder for `/plugin` install in non-Hamzaish repos (the **opt-in, portable** door). Edit once, both update — never duplicate. Use this pattern for capabilities that are reusable *outside* Hamzaish; keep Hamzaish-only operating skills as plain `factory/skills/` folders. (First instance: `web-launch` — verification-gated launch system. See its decision log entry 2026-06-09.)
