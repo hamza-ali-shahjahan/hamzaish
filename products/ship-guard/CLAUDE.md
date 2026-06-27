@@ -6,9 +6,8 @@
 the four "ransack" vectors (committed secrets, tracked secret files, force-push blast
 radius, risky GitHub Actions). Packaged from `meta/security/REPO-ACCOUNT-SECURITY-AUDIT.md`.
 
-**Where the code is**: a **standalone repo outside this tree** —
-`/Users/hamza/Claude/ShipGuard` (registered in gitignored `code-paths.local.json`
-under slug `ship-guard`). A single-file Node scanner (`bin/ship-guard`), an
+**Where the code is**: a **standalone repo outside this tree**, registered in
+gitignored `code-paths.local.json` under slug `ship-guard`. A single-file Node scanner (`bin/ship-guard`), an
 `install.sh`, tests in `test/`. Runs on Node 16+ and Bun. This `products/ship-guard/`
 folder holds **metadata only** — never put product code inside the public Hamzaish repo.
 
@@ -22,7 +21,7 @@ folder holds **metadata only** — never put product code inside the public Hamz
 - **The scanner must not flag itself.** Keep the `ship-guard:ignore-file` sentinel in
   `bin/ship-guard` and the fixture/vendored-dir path ignores intact.
 
-**How to run / test** (from `/Users/hamza/Claude/ShipGuard`):
+**How to run / test** (from the ship-guard repo root):
 - Ad-hoc scan: `node bin/ship-guard scan [path]`
 - Install hook into a repo: `node bin/ship-guard install` (from that repo), or `bash install.sh`
 - Evals: `node test/run-evals.mjs` (must hit goal.md's bars: recall ≥ 0.90, clean FP == 0)

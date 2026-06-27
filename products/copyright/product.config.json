@@ -6,7 +6,7 @@
   "stage": "mvp",
   "status": "active",
   "sprint": "private-beta",
-  "code_path": "/Users/hamza/Claude/CopyRight",
+  "code_path": null,
   "aliases": [
     "Patently",
     "patently",
@@ -46,7 +46,7 @@
     "ahrefs_target": null
   },
   "links": {
-    "github": "https://github.com/hamza-ali-shahjahan/ip-radar",
+    "github": null,
     "prod_url": "https://patently.legal",
     "admin_url": "https://patently.legal/admin",
     "staging_url": null,

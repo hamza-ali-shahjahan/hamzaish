@@ -84,7 +84,7 @@ The factory directory itself benefits from:
 - **sentry** — pull data across all products (likely already global, see top-level system prompt)
 - **github** — manage all products' repos
 
-These wire at `/Users/hamza/.claude/mcp.json` (global) or this folder's `.claude/mcp.json` (project-scoped).
+These wire at `~/.claude/mcp.json` (global) or this folder's `.claude/mcp.json` (project-scoped).
 
 ## Security checklist for MCP
 

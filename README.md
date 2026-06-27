@@ -12,7 +12,7 @@
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
-**[📚 128 practices](BEST-PRACTICES.md) · [🤖 32 agents](#-the-agents-32) · [🛠️ 29 skills & commands](#%EF%B8%8F-the-skills--commands-29) · [📖 39 playbooks](#-the-playbooks-39)**
+**[📚 133 practices](BEST-PRACTICES.md) · [🤖 32 agents](#-the-agents-32) · [🛠️ 33 skills & commands](#%EF%B8%8F-the-skills--commands-33) · [📖 41 playbooks](#-the-playbooks-41)**
 
 Every count real · every item linked · every claim marked ✅ proven / 🟡 partial / ⏳ research-baked → [What's inside](#whats-inside)
 
@@ -89,8 +89,8 @@ Safety: scaffolded products run agent-generated code inside a devcontainer, secr
 ## What you get
 
 - **[32 agents](#-the-agents-32) organized by lifecycle stage** — idea validation, architecture, scope-guarding, security review, landing copy, SEO, pricing, cold outreach, retention, kill-or-double-down. Not just builders: the *after-the-build* crew.
-- **[A pre-launch security gate that blocks.](factory/playbooks/mvp-stage/security-checklist.md)** 59 concrete checks (auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict.
-- **[39 playbooks](#-the-playbooks-39) + [128 distilled practices](BEST-PRACTICES.md)** — launch sequencing, first-100-customers, pricing, production ops. Short, sourced, and honestly badged: proven by a real ship, or marked research-baked until it is.
+- **[A pre-launch security gate that blocks.](factory/playbooks/mvp-stage/security-checklist.md)** 65 concrete checks (auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict.
+- **[41 playbooks](#-the-playbooks-41) + [133 distilled practices](BEST-PRACTICES.md)** — launch sequencing, first-100-customers, pricing, production ops. Short, sourced, and honestly badged: proven by a real ship, or marked research-baked until it is.
 - **A brain that remembers.** SQLite-indexed learnings, decisions, and anti-patterns, searchable from any session via `/brain-ask`. Your second product starts smarter than your first. ([brain/](brain/))
 - **Sane infra defaults** — Next.js + Supabase + Stripe + Resend + PostHog + Sentry, free-tier-first, pre-wired in every scaffold. ([the stack, and the accounts you set up once →](stack/README.md))
 - **Portfolio discipline** — `/portfolio-pulse` across everything you run; quarterly kill-or-double-down so zombie projects don't eat your year.
@@ -105,9 +105,9 @@ Safety: scaffolded products run agent-generated code inside a devcontainer, secr
 
 Everything below maps 1:1 to the repo's folders — the counts are the filesystem, not the marketing.
 
-## 📚 The practices ledger (128)
+## 📚 The practices ledger (133)
 
-**[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 128 practices for shipping products with Claude Code: **26 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
+**[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 133 practices for shipping products with Claude Code: **31 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
 
 ## 🤖 The agents (32)
 
@@ -170,9 +170,9 @@ One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is
 | [kill-or-double-down](factory/agents/portfolio/kill-or-double-down/SKILL.md) | Quarterly hard calls: kill, maintain, or double down — forced verdicts |
 | [_orchestrator](factory/agents/_orchestrator/SKILL.md) | The routing brain that picks the right agent for the request |
 
-## 🛠️ The skills & commands (29)
+## 🛠️ The skills & commands (33)
 
-17 skills + 12 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder.
+19 skills + 14 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder.
 
 | Invoke | What it does |
 |---|---|
@@ -201,17 +201,20 @@ One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is
 | `/brain-ask` | Search every learning, decision, playbook, and product doc — ranked citations |
 | `/brain-ingest` | Refresh the brain's SQLite FTS5 index |
 | `/learn-loop` | Impact-score the cycle's learnings; promote only the top few into guardrails |
+| `/pr` | One-command **repo** ship: branch → commit → PR → wait for CI → squash-merge → sync local |
+| *(skill)* `tidy` | The cleanup stage: scan a repo — or 100+ at once — for rot, see the extent, then clean with confirmation |
+| *(skill)* `write-a-goal` | Turn a rough ambition into a measurable, reachable goal — capability + named metric + ≥2 numeric evals + acceptance rule |
 | *(skills)* `product-pulse` · `seo-aeo-bootstrap` | Skills without a command wrapper yet — invoke by name in Claude Code |
 
-## 📖 The playbooks (39)
+## 📖 The playbooks (41)
 
 Short (300–800 words), sourced, stage-gated. The [practices ledger](BEST-PRACTICES.md) is the scannable index over these.
 
 | Stage | Playbooks |
 |---|---|
 | **💡 Idea (5)** | [The Mom Test](factory/playbooks/idea-stage/mom-test.md) · [Jobs-to-be-Done](factory/playbooks/idea-stage/jobs-to-be-done.md) · [Problem-Statement Rubric](factory/playbooks/idea-stage/problem-statement-rubric.md) · [TAM/SAM/SOM](factory/playbooks/idea-stage/tam-sam-som-templates.md) · [YC Startup School notes](factory/playbooks/idea-stage/yc-startup-school-notes.md) |
-| **🏗️ MVP (6)** | [Security Checklist — 80+ checks](factory/playbooks/mvp-stage/security-checklist.md) · [Architecture Decisions](factory/playbooks/mvp-stage/architecture-decisions.md) · [AI-Native Dev Loop](factory/playbooks/mvp-stage/ai-native-dev-loop.md) · [Scope Document](factory/playbooks/mvp-stage/scope-document.md) · [Measurement Framework](factory/playbooks/mvp-stage/measurement-framework.md) · [Sean Ellis Survey](factory/playbooks/mvp-stage/sean-ellis-survey.md) |
-| **🚀 Launch (10)** | [First 100 Customers](factory/playbooks/launch-stage/first-100-customers.md) · [Hacker News Launch](factory/playbooks/launch-stage/hacker-news-launch.md) · [Product Hunt Launch](factory/playbooks/launch-stage/product-hunt-launch.md) · [Pricing](factory/playbooks/launch-stage/pricing-playbook.md) · [Cold Outreach Templates](factory/playbooks/launch-stage/cold-outreach-templates.md) · [SEO+AEO Foundation](factory/playbooks/launch-stage/seo-aeo-foundation.md) · [SEO Content Strategy](factory/playbooks/launch-stage/seo-content-strategy.md) · [OSS Publishing Checklist](factory/playbooks/launch-stage/oss-publishing-checklist.md) · [Output Validation for Code-Gen Tools](factory/playbooks/launch-stage/output-validation-for-codegen-tools.md) · [Lenny's Frameworks Distilled](factory/playbooks/launch-stage/lenny-newsletter-distilled.md) |
+| **🏗️ MVP (7)** | [Security Checklist — 65 checks](factory/playbooks/mvp-stage/security-checklist.md) · [Architecture Decisions](factory/playbooks/mvp-stage/architecture-decisions.md) · [AI-Native Dev Loop](factory/playbooks/mvp-stage/ai-native-dev-loop.md) · [Scope Document](factory/playbooks/mvp-stage/scope-document.md) · [Measurement Framework](factory/playbooks/mvp-stage/measurement-framework.md) · [Sean Ellis Survey](factory/playbooks/mvp-stage/sean-ellis-survey.md) · [Agent Handoff Contracts](factory/playbooks/mvp-stage/agent-handoff-contracts.md) |
+| **🚀 Launch (12)** | [First 100 Customers](factory/playbooks/launch-stage/first-100-customers.md) · [Hacker News Launch](factory/playbooks/launch-stage/hacker-news-launch.md) · [Product Hunt Launch](factory/playbooks/launch-stage/product-hunt-launch.md) · [Pricing](factory/playbooks/launch-stage/pricing-playbook.md) · [Cold Outreach Templates](factory/playbooks/launch-stage/cold-outreach-templates.md) · [SEO+AEO Foundation](factory/playbooks/launch-stage/seo-aeo-foundation.md) · [SEO Content Strategy](factory/playbooks/launch-stage/seo-content-strategy.md) · [OSS Publishing Checklist](factory/playbooks/launch-stage/oss-publishing-checklist.md) · [Output Validation for Code-Gen Tools](factory/playbooks/launch-stage/output-validation-for-codegen-tools.md) · [Lenny's Frameworks Distilled](factory/playbooks/launch-stage/lenny-newsletter-distilled.md) · [Release Cadence as Content](factory/playbooks/launch-stage/release-cadence-as-content.md) · [Repo Go-Public Checklist](factory/playbooks/launch-stage/repo-go-public-checklist.md) |
 | **📈 Scale (7)** | [100→1000 Customers](factory/playbooks/scale-stage/100-to-1000-customers.md) · [Production Operations](factory/playbooks/scale-stage/production-operations.md) · [Abuse & Cost Controls](factory/playbooks/scale-stage/abuse-and-cost-controls.md) · [Churn Reduction](factory/playbooks/scale-stage/churn-reduction.md) · [Growth Loops (Reforge)](factory/playbooks/scale-stage/growth-loops-reforge.md) · [Moat Building](factory/playbooks/scale-stage/moat-building.md) · [Enterprise Readiness](factory/playbooks/scale-stage/enterprise-readiness.md) |
 | **🧭 Founder's wisdom (4)** | [$100K ARR Tactics](factory/playbooks/founders-wisdom/100k-arr-tactics.md) · [Gary Tan / YC era advice](factory/playbooks/founders-wisdom/gary-tan-yc-advice.md) · [Paul Graham essays](factory/playbooks/founders-wisdom/paul-graham-essays.md) · [Solopreneur Stack 2026](factory/playbooks/founders-wisdom/solopreneur-stack.md) |
 | **🤖 AI-native (6)** | [Eval-Driven Development](factory/playbooks/ai-native-2026/eval-driven-development.md) · [Founder's Playbook distilled](factory/playbooks/ai-native-2026/founders-playbook-distilled.md) · [Auth Go-Live](factory/playbooks/ai-native-2026/auth-go-live.md) · [Go-Live Provisioning](factory/playbooks/ai-native-2026/go-live-provisioning.md) · [MCP Servers per Product](factory/playbooks/ai-native-2026/mcp-servers.md) · [Hermes & Fallback Models](factory/playbooks/ai-native-2026/hermes-and-fallback-models.md) |

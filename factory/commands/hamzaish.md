@@ -55,7 +55,7 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - Next.js 16+: use `proxy.ts`, not `middleware.ts`.
    - Set a noreply git email before the first commit (avoids push rejection).
    - Build locally before any deploy.
-   - The starter ships tests + CI (`pnpm test`, `pnpm test:e2e`,
+   - The starter ships tests + CI (`bun run test`, `bun run test:e2e`,
      `.github/workflows/ci.yml`). Don't strip them — extend them.
    - **Tidy at milestones.** At a launch, before `/ship`, or at the end of a sprint, offer
      a `/tidy` pass: it scans the product — or every repo at once (`bun run tidy --all <dir>`)

@@ -83,6 +83,6 @@ You:
 4. Read README + status.md → current action: "Confirm Lovable Prompt 1 (auth) status. If not run yet: paste it. If run: pull, then start Block 1."
 5. List decisions/ → empty (newly registered)
 6. Stage=mvp → load architecture-decisions.md, scope-document.md, measurement-framework.md from playbooks
-7. Read `/Users/hamza/Claude/Muakkil/CLAUDE.md` → catches Bun, Lovable round-trip rule, .env discipline, etc.
+7. Read `~/Claude/Muakkil/CLAUDE.md` → catches Bun, Lovable round-trip rule, .env discipline, etc.
 8. brain-ask for muakkil open threads → surface buildathon plan + outstanding API key drop
-9. State: "Working on Muakkil — stage mvp, sprint buildathon-launch. Code at /Users/hamza/Claude/Muakkil. Today's action: confirm Lovable Prompt 1 (auth) status. Ready."
+9. State: "Working on Muakkil — stage mvp, sprint buildathon-launch. Code at ~/Claude/Muakkil. Today's action: confirm Lovable Prompt 1 (auth) status. Ready."
