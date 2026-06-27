@@ -153,6 +153,33 @@ for (const e of readdirSync(r("products"), { withFileTypes: true })) {
     fails.push(`products/${e.name}/product.config.json — code_path must be null (got ${JSON.stringify(json.code_path)})`);
 }
 
+// ─── version consistency: one source of truth (package.json), no drift ───────
+// Hamzaish's version was once stated four ways (package.json/CLAUDE.md/changelog/tag).
+// Source of truth = package.json; docs/versioning.md must mirror it; never behind the latest tag.
+const SEMVER = /^\d+\.\d+\.\d+$/;
+const cmpSemver = (a: string, b: string) => {
+  const A = a.split(".").map(Number), B = b.split(".").map(Number);
+  for (let i = 0; i < 3; i++) if (A[i] !== B[i]) return A[i] - B[i];
+  return 0;
+};
+const pkgVersion = JSON.parse(read("package.json")).version;
+if (!SEMVER.test(pkgVersion)) {
+  fails.push(`package.json version "${pkgVersion}" is not MAJOR.MINOR.PATCH semver`);
+} else {
+  const vm = read("docs/versioning.md").match(/Current version:\s*`?(\d+\.\d+\.\d+)`?/i);
+  if (!vm) fails.push(`docs/versioning.md is missing a "Current version: X.Y.Z" line`);
+  else if (vm[1] !== pkgVersion) fails.push(`version drift — docs/versioning.md says ${vm[1]} but package.json says ${pkgVersion}`);
+  try {
+    const tags = execSync("git tag --list 'v[0-9]*'", { cwd: root, encoding: "utf8" })
+      .trim().split("\n").map((t) => t.replace(/^v/, "")).filter((t) => SEMVER.test(t));
+    if (tags.length) {
+      const latest = tags.sort(cmpSemver).at(-1)!;
+      if (cmpSemver(pkgVersion, latest) < 0)
+        fails.push(`package.json ${pkgVersion} is BEHIND the latest released tag v${latest} — bump it`);
+    }
+  } catch { /* no git / no tags in a shallow CI checkout — skip, not a failure */ }
+}
+
 // ─── verdict ─────────────────────────────────────────────────────────────────
 if (fails.length) {
   console.error(`\n✗ ${fails.length} fact(s) drifted from disk:\n`);
@@ -161,5 +188,5 @@ if (fails.length) {
   console.error(`  Why: brain/anti-patterns/hand-maintained-facts-drift.md`);
   process.exit(1);
 }
-console.log(`\n✓ all headline counts match disk · no /Users/hamza leak · every code_path is null`);
+console.log(`\n✓ all headline counts match disk · no /Users/hamza leak · every code_path is null · version ${pkgVersion} consistent`);
 process.exit(0);
