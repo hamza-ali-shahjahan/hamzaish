@@ -8,6 +8,23 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-28 — v1.29 · Builder Mode banner rebuilt — full meditation figure, half-height strip
+
+**What changed**
+
+- **`docs/assets/builder-mode.png` rebuilt** from the original full-body meditation illustration: the whole figure (head → crossed legs → prayer rug, golden orbs included) is now shown. The previous cover cropped the operator at the waist behind a "Fable 5" card. New canvas is a wide **1920×540** strip — **half** the old 1080 height, so it's far less of a vertical wall in the README — and ~**573KB** (down from 1.7MB).
+- **`docs/assets/hamza-meditation.png`** (new) — the clean source illustration, committed so the banner is reproducible.
+- **`scripts/build-banner.py`** (new) — deterministic compositor (`rsvg-convert`): the full art is feathered into a navy canvas (`#080b16`, matching the art's own background so there's no rectangular seam), text on the left, thin gold frame. Re-run to regenerate. Same file feeds both the README hero and `docs/builder-mode.md`.
+
+**Why**
+
+The cover is the first thing a visitor sees; the figure cut in half looked broken. Rebuilding from the original art (recomposing, not re-illustrating) keeps the exact illustration while fixing the composition, and the half-height strip stops the README opening from being a vertical wall.
+
+**What to revisit**
+
+- The v1.28-era note still describes this asset as "16:9 / 521KB" — left as-is (append-only log); this entry supersedes it.
+- If a "Fable 5 / latest model" callout is wanted again, add it as a small corner tag that does **not** overlap the figure.
+
 ## 2026-06-26 — v1.28 · Two go-live guardrails baked in from real incidents (apex+www TLS, finish-with-links)
 
 **What changed**
