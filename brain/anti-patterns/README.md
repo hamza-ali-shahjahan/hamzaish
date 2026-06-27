@@ -45,3 +45,4 @@ Every new anti-pattern gets a one-liner in the root `BEST-PRACTICES.md` under "N
 - `public-repo-without-branch-protection.md` — taking a repo public (or parallel-sessioning it) without branch protection on the default branch (2026-06-23)
 - `vision-model-default-context-overflow.md` — two screenshots + a real prompt overflow a local vision model's default 4096-token context → misleading HTTP 400 (2026-06-23)
 - `hand-maintained-facts-drift.md` — stating the same fact (count, config value, path, caveat) by hand in multiple places with nothing deriving or checking it (2026-06-28)
+- `assuming-provenance-of-a-resolving-command.md` — concluding where a command/skill comes from because it resolves in your session, instead of finding the file that defines it (2026-06-28)

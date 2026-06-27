@@ -8,6 +8,25 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-28 — v1.31 · Consolidated the agent-skills engineering engine into Hamzaish (front door now self-contained)
+
+**What changed**
+
+- **Folded the operator's `agent-skills` build engine into Hamzaish** so `/builder-mode` works on a fresh clone with nothing else installed. Brought **21 engineering skills** (spec-driven-development, planning-and-task-breakdown, incremental-implementation, test-driven-development, debugging-and-error-recovery, code-review-and-quality, security-and-hardening, performance-optimization, frontend-ui-engineering, api-and-interface-design, browser-testing-with-devtools, ci-cd-and-automation, documentation-and-adrs, git-workflow-and-versioning, source-driven-development, context-engineering, deprecation-and-migration, code-simplification, shipping-and-launch, idea-refine, auto-orchestrator), **9 commands** (`/full-cycle`, `/spec`, `/plan`, `/build`, `/test`, `/review`, `/setup`, `/code-simplify`, and a new `/auto`), and **3 engineering subagents** (code-reviewer, security-auditor, test-engineer → `factory/agents/engineering/`). All `agent-skills:` namespace refs and retired `~/.claude/agent-skills/…` paths were rewritten to Hamzaish's layout.
+- **Resolved the two name collisions**: kept Hamzaish's `/hamzaish` router and `/ship` (product-production deploy) as canonical; dropped agent-skills' duplicates. `/full-cycle`'s SHIP gate now points at Hamzaish's `/ship`.
+- **Fixed the dangling `/auto` reference** (`builder-mode.md`/`hamzaish.md` routed to it but no command existed) — `/auto` now invokes the `auto-orchestrator` skill.
+- **Counts reconciled** (the new `check-counts` guard caught every site): agents 32 → **35**, skills 19 → **40**, commands 14 → **23**, skills+commands → **63**. README gained an engineering-cycle section + an engineering-subagents table.
+- **Corrected the v1.30 provenance error** (those commands were mislabeled Claude Code built-ins; they were the operator's own repo). New anti-pattern: `brain/anti-patterns/assuming-provenance-of-a-resolving-command.md`.
+
+**Why**
+
+The front door (`/builder-mode` → `/full-cycle`) depended on a *separate* repo (`agent-skills`, installed globally on the maintainer's machine) that a fresh cloner wouldn't have — so the headline "clone → first build" journey silently broke off-machine. Consolidating makes Hamzaish self-contained, lets `agent-skills` be retired, and removes an undeclared cross-repo dependency.
+
+**What to revisit**
+
+- **Skipped intentionally:** `using-agent-skills` (meta-doc about the old repo) and agent-skills' `hooks/` (simplify-ignore tooling + a session-start hook — runtime config that could collide with Hamzaish's hooks; migrate deliberately if the code-simplification ignore feature is wired in).
+- `agent-skills` is untouched and still public — retire/archive at the operator's discretion (per the hard rule, its visibility is never changed without explicit double-confirmation).
+
 ## 2026-06-28 — v1.30 · "Every count real" made self-enforcing — count/path/code_path CI guard + reality reconciliation
 
 **What changed**
@@ -26,7 +45,7 @@ An ultracode review found nearly every "every count real" headline had drifted a
 **What to revisit**
 
 - `products/_portfolio.md` is still stale ("All products (15)"; 18 real) — **deferred**: it needs a `/portfolio-pulse` regen over live product state, its own task; a half-refresh would just re-drift.
-- The front-door build commands (`/full-cycle`, `/spec`, `/plan`, `/build`) are Claude Code built-ins, not shipped here — declare them or ship thin wrappers so a fresh clone's flow is self-evident (review move #3).
+- ~~The front-door build commands are Claude Code built-ins~~ — **correction:** `/full-cycle`, `/spec`, `/plan`, `/build` etc. were **never** Claude Code built-ins; they came from the operator's own [`agent-skills`](https://github.com/hamza-ali-shahjahan/agent-skills) repo, installed globally — so a fresh Hamzaish-only clone was missing them. **Resolved in v1.31** by consolidating the engine into this repo. The mislabel is itself logged as `brain/anti-patterns/assuming-provenance-of-a-resolving-command.md`.
 
 ## 2026-06-28 — v1.29 · Builder Mode banner rebuilt — full meditation figure, half-height strip
 

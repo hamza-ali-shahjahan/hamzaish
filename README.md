@@ -12,7 +12,7 @@
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
-**[📚 133 practices](BEST-PRACTICES.md) · [🤖 32 agents](#-the-agents-32) · [🛠️ 33 skills & commands](#%EF%B8%8F-the-skills--commands-33) · [📖 41 playbooks](#-the-playbooks-41)**
+**[📚 133 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 63 skills & commands](#%EF%B8%8F-the-skills--commands-63) · [📖 41 playbooks](#-the-playbooks-41)**
 
 Every count real · every item linked · every claim marked ✅ proven / 🟡 partial / ⏳ research-baked → [What's inside](#whats-inside)
 
@@ -88,7 +88,7 @@ Safety: scaffolded products run agent-generated code inside a devcontainer, secr
 
 ## What you get
 
-- **[32 agents](#-the-agents-32) organized by lifecycle stage** — idea validation, architecture, scope-guarding, security review, landing copy, SEO, pricing, cold outreach, retention, kill-or-double-down. Not just builders: the *after-the-build* crew.
+- **[35 agents](#-the-agents-35) — lifecycle + engineering** — idea validation, architecture, scope-guarding, security review, landing copy, SEO, pricing, cold outreach, retention, kill-or-double-down, plus engineering subagents (code review, security audit, test). Not just builders: the *after-the-build* crew.
 - **[A pre-launch security gate that blocks.](factory/playbooks/mvp-stage/security-checklist.md)** 65 concrete checks (auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict.
 - **[41 playbooks](#-the-playbooks-41) + [133 distilled practices](BEST-PRACTICES.md)** — launch sequencing, first-100-customers, pricing, production ops. Short, sourced, and honestly badged: proven by a real ship, or marked research-baked until it is.
 - **A brain that remembers.** SQLite-indexed learnings, decisions, and anti-patterns, searchable from any session via `/brain-ask`. Your second product starts smarter than your first. ([brain/](brain/))
@@ -109,9 +109,9 @@ Everything below maps 1:1 to the repo's folders — the counts are the filesyste
 
 **[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 133 practices for shipping products with Claude Code: **31 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
 
-## 🤖 The agents (32)
+## 🤖 The agents (35)
 
-One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is a markdown SKILL.md your Claude Code session invokes by intent — the routing table lives in [`CLAUDE.md`](CLAUDE.md).
+One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory/agents/`](factory/agents/). Each is a markdown SKILL.md your Claude Code session invokes by intent — the routing table lives in [`CLAUDE.md`](CLAUDE.md).
 
 ### 💡 Idea stage (7)
 
@@ -170,9 +170,17 @@ One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is
 | [kill-or-double-down](factory/agents/portfolio/kill-or-double-down/SKILL.md) | Quarterly hard calls: kill, maintain, or double down — forced verdicts |
 | [_orchestrator](factory/agents/_orchestrator/SKILL.md) | The routing brain that picks the right agent for the request |
 
-## 🛠️ The skills & commands (33)
+### 🔧 Engineering subagents (3)
 
-19 skills + 14 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder.
+| Agent | What it does |
+|---|---|
+| [code-reviewer](factory/agents/engineering/code-reviewer/SKILL.md) | Deep multi-axis review of a change before merge |
+| [security-auditor](factory/agents/engineering/security-auditor/SKILL.md) | Hunts injection, authz gaps, secret exposure, unsafe deserialization |
+| [test-engineer](factory/agents/engineering/test-engineer/SKILL.md) | Designs and fills test coverage; reproduces bugs as failing tests |
+
+## 🛠️ The skills & commands (63)
+
+40 skills + 23 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder. The 21 engineering-cycle skills + their commands were consolidated in from the `agent-skills` project so the build engine ships with this repo (see the engineering cycle below).
 
 | Invoke | What it does |
 |---|---|
@@ -205,6 +213,24 @@ One router + 31 stage agents under [`factory/agents/`](factory/agents/). Each is
 | *(skill)* `tidy` | The cleanup stage: scan a repo — or 100+ at once — for rot, see the extent, then clean with confirmation |
 | *(skill)* `write-a-goal` | Turn a rough ambition into a measurable, reachable goal — capability + named metric + ≥2 numeric evals + acceptance rule |
 | *(skills)* `product-pulse` · `seo-aeo-bootstrap` | Skills without a command wrapper yet — invoke by name in Claude Code |
+
+### 🔧 The engineering cycle — `/full-cycle` and its phases
+
+Consolidated into Hamzaish so the build engine ships **with** the repo (no separate install). `/builder-mode` routes here for real builds.
+
+| Invoke | What it does |
+|---|---|
+| `/full-cycle` | The gated engine: SETUP → SPEC → PLAN → TEST → BUILD → REVIEW → SHIP, pausing for approval at each gate |
+| `/auto` | The same cycle run autonomously end-to-end — no per-gate stops; still pauses for irreversible/outward actions |
+| `/spec` | Write a structured spec before any code |
+| `/plan` | Break the spec into small, ordered, verifiable tasks |
+| `/build` | Implement the next task incrementally (TDD: red → green → refactor → commit) |
+| `/test` | Drive behavior with tests; browser-test real UIs via DevTools |
+| `/review` | Five-axis code review — correctness, readability, architecture, security, performance |
+| `/code-simplify` | Reduce complexity for clarity without changing behavior |
+| `/setup` | Bootstrap a project's Claude Code context (CLAUDE.md, rules, a starter command) |
+
+Backed by **21 engineering skills** under [`factory/skills/`](factory/skills/) — spec-driven-development, planning-and-task-breakdown, incremental-implementation, test-driven-development, debugging-and-error-recovery, code-review-and-quality, security-and-hardening, performance-optimization, frontend-ui-engineering, api-and-interface-design, browser-testing-with-devtools, ci-cd-and-automation, documentation-and-adrs, git-workflow-and-versioning, source-driven-development, context-engineering, deprecation-and-migration, code-simplification, shipping-and-launch, idea-refine, auto-orchestrator — invoked by name as the cycle runs.
 
 ## 📖 The playbooks (41)
 
