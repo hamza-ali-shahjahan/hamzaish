@@ -1,6 +1,6 @@
 # Shipping products with Claude Code — the practices ledger
 
-**130 practices · 28 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
+**133 practices · 31 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
 
 Most best-practice lists tell you how to *use* Claude Code. This one is about what comes after: taking a product from idea → MVP → launch → sell → scale with Claude Code as your cofounder — and not dying in the unglamorous parts.
 
@@ -10,7 +10,7 @@ Most best-practice lists tell you how to *use* Claude Code. This one is about wh
 - 🟡 **partially proven** — some of it validated here, the rest still waiting for contact with reality
 - ⏳ **research-baked** — adopted from a named source or established practice; honest status: not yet battle-tested by one of *our* ships
 
-The deep dives live in [`factory/playbooks/`](factory/playbooks/) (39 playbooks) — this page is the index that makes them scannable. For best practices on using Claude Code *itself*, [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) is excellent — this ledger picks up where the code stops.
+The deep dives live in [`factory/playbooks/`](factory/playbooks/) (41 playbooks) — this page is the index that makes them scannable. For best practices on using Claude Code *itself*, [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) is excellent — this ledger picks up where the code stops.
 
 ## ☠️ Never do this — each one cost us something real
 

@@ -9,7 +9,7 @@ Packaged from the 2026-06-19 repo/account security audit
 hand — committed secrets, tracked secret files, force-push blast radius, risky GitHub
 Actions — turned into a standing, reusable guard.
 
-- **Code**: a standalone repo **outside** this tree — `/Users/hamza/Claude/ShipGuard`
+- **Code**: a standalone repo **outside** this tree
   (path registered in gitignored `code-paths.local.json` under slug `ship-guard`).
   Single-file Node scanner (`bin/ship-guard`), one-command installer, evals.
 - **Goal / done-definition**: [`goal.md`](goal.md)
@@ -29,7 +29,7 @@ Actions — turned into a standing, reusable guard.
 - Verified by evals: recall **1.00** on the bad-repo fixture, **0** blocking false
   positives on the clean fixture, install round-trip green.
 
-See the code repo's `README.md` (`/Users/hamza/Claude/ShipGuard/README.md`) for full
+See the code repo's `README.md` (in the sibling ship-guard repo) for full
 usage. Left for v1 is tracked in [`status.md`](status.md).
 
 > **Layout note:** this `products/ship-guard/` folder is *metadata only* (config,

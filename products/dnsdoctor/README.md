@@ -1,6 +1,6 @@
 # dnsdoctor
 
-See [`product.config.json`](product.config.json). Code at `../dnsdoctor-code` (symlink → `/Users/hamza/Claude/DNSChecker`).
+See [`product.config.json`](product.config.json). Code lives in its own sibling repo (path in gitignored `code-paths.local.json`).
 
 ## What this is
 

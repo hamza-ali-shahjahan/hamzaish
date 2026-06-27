@@ -8,6 +8,26 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-28 — v1.30 · "Every count real" made self-enforcing — count/path/code_path CI guard + reality reconciliation
+
+**What changed**
+
+- **New guard `scripts/check-counts.ts`** (wired into `.github/workflows/ci.yml`) — derives agents/skills/commands/playbooks/practices/security-checks from the filesystem and fails CI if any README/ledger/`hero.ts` headline number drifts, if a tracked file leaks a real `/Users/hamza` path, or if any `products/*/product.config.json` has a non-null `code_path`. One guard closes the three faces of one root cause: facts hand-maintained in many places with nothing deriving them.
+- **Reconciled every drifted number to disk** across `README.md`, `BEST-PRACTICES.md`, `scripts/hero.ts`: practices 128/130 → **133** (✅31/🟡3/⏳99), playbooks 39 → **41**, skills + commands 29 (17+12) → **33** (19+14), security checks 59 / "80+" → **65**. Added the missing items to the README tables (`/pr`, `tidy`, `write-a-goal`; the `agent-handoff-contracts`, `release-cadence-as-content`, `repo-go-public-checklist` playbooks) and moved the section anchors to match.
+- **Fixed the High finding**: `products/copyright/product.config.json` `code_path` `/Users/hamza/…` → **`null`** (the real path lives in gitignored `code-paths.local.json`); it was the only non-null of 19 and was passing CI green.
+- **Closed 10 `/Users/hamza` path leaks** across product docs, a playbook, and a workflow (`~` / sibling-repo phrasing).
+- **Reconciliation quick wins**: `code-paths.example.json` no longer preloads the maintainer's 12 slugs (a fresh clone starts with its own empty factory); `pnpm` → `bun` in `factory/commands/hamzaish.md`; dropped the 404 `ip-radar` GitHub link from `SHOWCASE.md` and the copyright config.
+- **Learnings (this session)**: `brain/learnings/2026-06-28.md` (recompose-don't-regenerate; surgical staging; the drift realization), `brain/learnings/2026-06-28-thousandworlds-ml.md` (23 ML / benchmark-contribution / client-side-inference lessons mined from ThousandWorlds + the emulator), new anti-pattern `brain/anti-patterns/hand-maintained-facts-drift.md`, and the anti-pattern index completed (was 4 of 8).
+
+**Why**
+
+An ultracode review found nearly every "every count real" headline had drifted and the no-`/Users/` rule was breached and green in CI — the same root cause three times over (and independently in the ThousandWorlds repos: `n_folds` 3-vs-5, caveats-as-prose). For a repo whose whole pitch is "the counts are the filesystem, not the marketing," believability is the moat; this makes it self-enforcing instead of a recurring manual recount.
+
+**What to revisit**
+
+- `products/_portfolio.md` is still stale ("All products (15)"; 18 real) — **deferred**: it needs a `/portfolio-pulse` regen over live product state, its own task; a half-refresh would just re-drift.
+- The front-door build commands (`/full-cycle`, `/spec`, `/plan`, `/build`) are Claude Code built-ins, not shipped here — declare them or ship thin wrappers so a fresh clone's flow is self-evident (review move #3).
+
 ## 2026-06-28 — v1.29 · Builder Mode banner rebuilt — full meditation figure, half-height strip
 
 **What changed**

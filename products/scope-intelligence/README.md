@@ -2,7 +2,7 @@
 
 See [`product.config.json`](product.config.json) for the canonical manifest.
 
-Code at `../scope-intelligence-code` (symlink → `/Users/hamza/Claude/Scope Intelligence`).
+Code lives in its own sibling repo (path in gitignored `code-paths.local.json`).
 
 ## What this is
 

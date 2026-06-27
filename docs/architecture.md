@@ -65,7 +65,7 @@ to back up publicly and safe to open to collaborators — nobody's secret sauce 
 exposed, and a contributor points their own local file at their own private code.
 
 > **Why we dropped committed symlinks.** The old design committed `-code`
-> symlinks pointing at absolute paths like `/Users/hamza/Claude/…`. Those broke
+> symlinks pointing at absolute paths like `~/Claude/…`. Those broke
 > on every machine but one and doubled the folder to 28 entries. Storing the
 > mapping as git-ignored local data fixes portability *and* the leak risk.
 
