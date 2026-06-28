@@ -35,13 +35,17 @@ Express Lane. Otherwise ask once, with ① pre-selected:
 
    Halt ONLY on a true showstopper. "Could be better" is never a stop — note it
    and move on. If they said skip, skip silently.
-2. **Hand off to the build engine:**
-   - non-trivial → `/full-cycle` (spec → plan → test → build → review → ship, gated)
-   - fully autonomous → `/auto`
+2. **Pin the goal, then hand off.** First name what "done" looks like in one measurable
+   line — escalate to **`/write-a-goal`** for a fuzzy or ambitious target (it forges a
+   reachable metric + evals + acceptance, feasibility-checked so you don't chase a vague or
+   impossible number). The slices, the spec, and the tests all flow from that goal. Then route:
+   - non-trivial → `/full-cycle` (goal → setup → **slice** → spec → plan → test → build →
+     review → ship, gated; the slice step keeps only features you can evaluate and
+     end-to-end test, so the build only commits to provable work)
+   - fully autonomous, measurable target → `/goal` (the self-verifying loop — rubric +
+     fresh-eyes verification, iterating unattended until the bar is hit and independently confirmed)
+   - fully autonomous, open-ended → `/auto` (the cycle, run without human gates)
    - tiny change → `/build`
-   - a measurable objective ("make it good enough that X") → **`/write-a-goal`** first to
-     forge a measurable, *reachable* goal — it pins the exact metric and feasibility-checks
-     the target so you don't chase a vague or impossible number — then `/goal` to pursue it.
 3. **Standing guardrails** (distilled from `products/*/learnings.md` + `meta/`):
    - A new product is its OWN repo. Register it here with
      `cp -r products/_template products/<slug>` and add the slug → local path to

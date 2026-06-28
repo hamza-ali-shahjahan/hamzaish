@@ -7,19 +7,21 @@ You are orchestrating the **full development cycle** for the user. Invoke each s
 ## The sequence
 
 ```
-SETUP  →  SPEC  →  PLAN  →  TEST  →  BUILD  →  REVIEW  →  SHIP
-  │        │        │       │        │         │          │
-  ▼        ▼        ▼       ▼        ▼         ▼          ▼
-Gate 0   Gate 1   Gate 2   (per-task loop)    Gate 3      Gate 4
+GOAL  →  SETUP  →  SLICE  →  SPEC  →  PLAN  →  TEST·BUILD·REVIEW  →  SHIP
+(set)    Gate 0    Gate 1   Gate 2   Gate 3   Gate 4 (per task)      Gate 5
 ```
+
+The **goal** is pinned at kickoff; **slice** cuts it into features that can each be proven (eval + end-to-end test) and drops the ones that can't — so the spec only ever describes provable work.
 
 **Gates are non-negotiable.** After each phase, stop and wait for the user to say "continue", "next", "go", "approved", or equivalent before moving on. If the user says "revise X", rerun that phase with the feedback before advancing.
 
-## Step 0 — Kickoff
+## Step 0 — Kickoff + GOAL
 
-Before invoking any skill, post a one-line summary of what you understood the user wants to build, then ask:
+Before invoking any skill, post a one-line summary of what you understood the user wants to build, **and pin the goal**: name what "done" looks like in one measurable line — the outcome that proves it works. Keep it light by default; if the target is fuzzy, ambitious, or game-able, run **`/write-a-goal`** first to forge a reachable goal (a precise metric + ≥2 evals + an acceptance rule + non-goals). Everything downstream — the slices, the spec, the tests — flows from this goal.
 
-> I'll run setup → spec → plan → test → build → review → ship, pausing for your approval at each gate. Ready to start with /setup? (Or tell me to skip any phase, e.g. "skip setup if already done" or "skip ship".)
+Then ask:
+
+> Here's the goal: `<one measurable line>`. I'll run setup → slice → spec → plan → test → build → review → ship, pausing for approval at each gate — and the **slice** step keeps only features we can evaluate and end-to-end test. Ready to start with /setup? (Or tell me to skip any phase, e.g. "skip setup if already done" or "skip ship".)
 
 Wait for the user's response. Honor any skip requests by removing those phases from the sequence.
 
@@ -60,40 +62,49 @@ Bring the project's Claude Code file structure up to a healthy baseline **before
 
 Do not continue until approved.
 
-## Step 2 — SPEC (Gate 1)
+## Step 2 — SLICE (Gate 1)
 
-Invoke the `spec` skill. Produce the specification artifact.
+Invoke the `feature-slicing` skill. Cut the goal into the smallest vertical feature slices, and for each one define an **eval** (the measurable check) and an **end-to-end test** (the real user journey). Apply the selection gate: **keep only slices you can evaluate and test** — sharpen or defer the rest. This is what stops the spec from becoming a wishlist.
 
-**Gate 1:** Present the spec, list any open questions, and ask:
+**Gate 1:** Present the selected slices (each with its eval + e2e test) and the deferred list, then ask:
+> Slices ready — N selected, M deferred (can't prove yet). Approve to spec these, or tell me what to revise.
+
+Do not continue until approved.
+
+## Step 3 — SPEC (Gate 2)
+
+Invoke the `spec` skill. Produce the specification artifact **for the selected slices** — each slice's eval + end-to-end test is part of its acceptance.
+
+**Gate 2:** Present the spec, list any open questions, and ask:
 > Spec ready. Approve to move to /plan, or tell me what to revise.
 
 Do not continue until approved.
 
-## Step 3 — PLAN (Gate 2)
+## Step 4 — PLAN (Gate 3)
 
-Invoke the `plan` skill. Break the spec into small verifiable tasks with acceptance criteria and dependency ordering.
+Invoke the `plan` skill. Break the selected slices into small verifiable tasks with acceptance criteria and dependency ordering — each task carries its slice's eval + end-to-end test as its definition of done.
 
-**Gate 2:** Present the task list and ask:
+**Gate 3:** Present the task list and ask:
 > Plan ready — N tasks. Approve to start the test → build → review loop, or tell me what to revise.
 
 Do not continue until approved.
 
-## Step 4 — Per-task loop: TEST → BUILD → REVIEW
+## Step 5 — Per-task loop: TEST → BUILD → REVIEW
 
 For each task in the plan, in order:
 
-1. **TEST** — invoke the `test` skill to write failing tests for this task. (For bug fixes, use the Prove-It pattern.)
+1. **TEST** — invoke the `test` skill to write the slice's **eval + end-to-end test** for this task as failing tests first (TDD). (For bug fixes, use the Prove-It pattern.)
 2. **BUILD** — invoke the `build` skill to implement the task until the tests pass. Commit.
 3. **REVIEW** — invoke the `review` skill to run the five-axis review (correctness, readability, architecture, security, performance) on the diff. Fix anything flagged as blocking.
 
 After each task, post a one-line status (`Task X/N done — tests green, review clean`) and move to the next. Do NOT pause between individual tasks unless the review surfaces something blocking, or the user interjects.
 
-**Gate 3 (after all tasks):** Post a summary of everything built and ask:
+**Gate 4 (after all tasks):** Post a summary of everything built and ask:
 > All tasks complete. Approve to move to /ship, or let me know what to revise first.
 
 Do not continue until approved.
 
-## Step 5 — SHIP (Gate 4)
+## Step 6 — SHIP (Gate 5)
 
 Invoke the `shipping-and-launch` skill. Run the full pre-launch checklist (code quality, security, performance, a11y, infra, docs). Define the rollback plan.
 
