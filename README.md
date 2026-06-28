@@ -12,7 +12,7 @@
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
-**[📚 133 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 63 skills & commands](#%EF%B8%8F-the-skills--commands-63) · [📖 41 playbooks](#-the-playbooks-41)**
+**[📚 133 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 65 skills & commands](#%EF%B8%8F-the-skills--commands-65) · [📖 41 playbooks](#-the-playbooks-41)**
 
 Every count real · every item linked · every claim marked ✅ proven / 🟡 partial / ⏳ research-baked → [What's inside](#whats-inside)
 
@@ -178,9 +178,9 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 | [security-auditor](factory/agents/engineering/security-auditor/SKILL.md) | Hunts injection, authz gaps, secret exposure, unsafe deserialization |
 | [test-engineer](factory/agents/engineering/test-engineer/SKILL.md) | Designs and fills test coverage; reproduces bugs as failing tests |
 
-## 🛠️ The skills & commands (63)
+## 🛠️ The skills & commands (65)
 
-40 skills + 23 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder. The 21 engineering-cycle skills + their commands were consolidated in from the `agent-skills` project so the build engine ships with this repo (see the engineering cycle below).
+41 skills + 24 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder. The 22 engineering-cycle skills + their commands ship in-repo (21 consolidated from the `agent-skills` project + `feature-slicing`), so the build engine comes with this repo (see the engineering cycle below).
 
 | Invoke | What it does |
 |---|---|
@@ -216,13 +216,16 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 
 ### 🔧 The engineering cycle — `/full-cycle` and its phases
 
-Consolidated into Hamzaish so the build engine ships **with** the repo (no separate install). `/builder-mode` routes here for real builds.
+Consolidated into Hamzaish so the build engine ships **with** the repo (no separate install). `/builder-mode` routes here for real builds — starting from a **goal**, slicing it into features that can each be *proven* (an eval + an end-to-end test), and only then spec'ing and building. Features you can't evaluate or test don't make the cut.
 
 | Invoke | What it does |
 |---|---|
-| `/full-cycle` | The gated engine: SETUP → SPEC → PLAN → TEST → BUILD → REVIEW → SHIP, pausing for approval at each gate |
+| `/full-cycle` | The gated engine: GOAL → SETUP → SLICE → SPEC → PLAN → TEST → BUILD → REVIEW → SHIP, pausing for approval at each gate |
+| `/goal` | Pursue a measurable objective autonomously — rubric + fresh-eyes verification, iterate to the bar, resumable run-log (sibling of `/builder-mode`) |
 | `/auto` | The same cycle run autonomously end-to-end — no per-gate stops; still pauses for irreversible/outward actions |
-| `/spec` | Write a structured spec before any code |
+| *(skill)* `feature-slicing` | Slice a goal into provable feature slices — keep only the ones that come with an eval + an end-to-end test |
+| *(skill)* `write-a-goal` | Forge a fuzzy ambition into a measurable, reachable goal — metric + evals + acceptance + non-goals |
+| `/spec` | Write a structured spec before any code (for the selected slices) |
 | `/plan` | Break the spec into small, ordered, verifiable tasks |
 | `/build` | Implement the next task incrementally (TDD: red → green → refactor → commit) |
 | `/test` | Drive behavior with tests; browser-test real UIs via DevTools |
@@ -230,7 +233,7 @@ Consolidated into Hamzaish so the build engine ships **with** the repo (no separ
 | `/code-simplify` | Reduce complexity for clarity without changing behavior |
 | `/setup` | Bootstrap a project's Claude Code context (CLAUDE.md, rules, a starter command) |
 
-Backed by **21 engineering skills** under [`factory/skills/`](factory/skills/) — spec-driven-development, planning-and-task-breakdown, incremental-implementation, test-driven-development, debugging-and-error-recovery, code-review-and-quality, security-and-hardening, performance-optimization, frontend-ui-engineering, api-and-interface-design, browser-testing-with-devtools, ci-cd-and-automation, documentation-and-adrs, git-workflow-and-versioning, source-driven-development, context-engineering, deprecation-and-migration, code-simplification, shipping-and-launch, idea-refine, auto-orchestrator — invoked by name as the cycle runs.
+Backed by **22 engineering skills** under [`factory/skills/`](factory/skills/) — feature-slicing, spec-driven-development, planning-and-task-breakdown, incremental-implementation, test-driven-development, debugging-and-error-recovery, code-review-and-quality, security-and-hardening, performance-optimization, frontend-ui-engineering, api-and-interface-design, browser-testing-with-devtools, ci-cd-and-automation, documentation-and-adrs, git-workflow-and-versioning, source-driven-development, context-engineering, deprecation-and-migration, code-simplification, shipping-and-launch, idea-refine, auto-orchestrator — invoked by name as the cycle runs.
 
 ## 📖 The playbooks (41)
 

@@ -178,7 +178,9 @@ Permanent routing rule → add it here. Framework worth keeping → add to `fact
 
 These live at `factory/commands/*.md` (canonical home); `.claude/commands/` symlinks there so Claude Code auto-discovers them.
 
-**The engineering cycle lives here too.** `/full-cycle`, `/auto`, `/spec`, `/plan`, `/build`, `/test`, `/review`, `/code-simplify`, `/setup` (+ their 21 skills under `factory/skills/` and 3 subagents under `factory/agents/engineering/`) were **consolidated in from the operator's `agent-skills` project on 2026-06-28** — so the build engine `/builder-mode` routes into ships *with this repo*, not as a separate global install. (They were briefly mislabeled "Claude Code built-ins" in a review — they never were; see `brain/anti-patterns/assuming-provenance-of-a-resolving-command.md`.)
+**The engineering cycle lives here too.** `/full-cycle`, `/auto`, `/goal`, `/spec`, `/plan`, `/build`, `/test`, `/review`, `/code-simplify`, `/setup` (+ their 22 skills under `factory/skills/` and 3 subagents under `factory/agents/engineering/`) were **consolidated in from the operator's `agent-skills` project on 2026-06-28** — so the build engine `/builder-mode` routes into ships *with this repo*, not as a separate global install. (They were briefly mislabeled "Claude Code built-ins" in a review — they never were; see `brain/anti-patterns/assuming-provenance-of-a-resolving-command.md`.)
+
+**The cycle is goal-first and eval-gated.** `/full-cycle` runs **GOAL → SETUP → SLICE → SPEC → PLAN → TEST·BUILD·REVIEW → SHIP**: it pins a measurable goal (escalate to `/write-a-goal`), then the `feature-slicing` skill cuts it into slices that each ship with an eval + an end-to-end test — a slice you can't prove isn't built. `/goal` is the autonomous, self-verifying variant (rubric + fresh-eyes gate). Rule: *if you can't name the eval and the e2e test for a slice, it doesn't get built yet.*
 
 ### Plugins (`factory/plugins/`)
 

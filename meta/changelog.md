@@ -10,6 +10,22 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-28 — v1.32 · Goal-first, eval-gated build flow (GOAL → SLICE → spec → build)
+
+**What changed**
+
+- **`/full-cycle` now opens with a GOAL and a SLICE gate.** Kickoff pins what "done" means in one measurable line (escalate to `/write-a-goal` for fuzzy or ambitious targets). A new **SLICE** gate (the new `feature-slicing` skill) cuts the goal into vertical feature slices — each must declare an **eval + an end-to-end test**, and a slice you can't prove doesn't get selected. The spec is then written *for the selected slices*, and their evals/e2e tests become the per-task TDD gate. New sequence: **GOAL → SETUP → SLICE → SPEC → PLAN → TEST·BUILD·REVIEW → SHIP**.
+- **`/goal` shipped into the repo + elevated to a first-class mode.** It was global-only (`~/.claude/commands/goal.md`) — the router pointed at it but a fresh clone lacked it (the same provenance gap consolidation just closed). Now in `factory/commands/goal.md`; the `/builder-mode` router offers it as the autonomous, self-verifying path (rubric + fresh-eyes verification, resumable run-log) alongside gated `/full-cycle` and open-ended `/auto`.
+- **New skill `feature-slicing`**; counts reconciled (the guard caught every site): skills 40 → **41**, commands 23 → **24**, skills+commands → **65**.
+
+**Why**
+
+Specs are a result of the right goal, and a feature you can't evaluate or end-to-end test is a guess. This makes the cycle eval-driven *at the feature level* — operationalizing the eval-driven-development playbook so the system only commits to work it can prove. Momentum is preserved: the goal is one line by default, the slice gate is skippable, and the full `/write-a-goal` forge is the opt-in escalation, not a strategy toll.
+
+**What to revisit**
+
+- Folded into the **v2.0.0** release (still unpublished) — the goal-first, eval-gated flow is part of the v2.0 story, so the `v2.0.0` tag is re-cut at the HEAD that includes it.
+
 ## 2026-06-28 — v1.31 · Consolidated the agent-skills engineering engine into Hamzaish (front door now self-contained)
 
 **What changed**
