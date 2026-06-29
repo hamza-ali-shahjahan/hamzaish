@@ -15,6 +15,18 @@ If `$ARGUMENTS` is empty, ask which product (or `Read ${HAMZAISH_ROOT:-$HOME/Cla
 
 ## Run these checks
 
+### 0. Backend reality check (is there even a backend? — do this FIRST)
+A site can look fully **static / "no backend"** when its backend is **env-gated** —
+the data/auth client only initializes when env vars are present and degrades to
+local-only when absent. **Never conclude "fully static / no backend / scales
+trivially" from a keyless code read** — the keyed/production state is the truth.
+First-timer rule: *if the site has a sign-in button, a save/share feature, or an
+admin page, it HAS a backend — open the `.env` and check.*
+- Read `.env`, `.env.local`, `.env.production`, `.env.example` — populated keys = the backend is **LIVE in prod** even if the code path is conditional.
+- Grep deps + src for backend SDKs **even when usage is conditional**: `supabase`, `@clerk`, `firebase`, auth libs, `prisma`/`drizzle`/any DB client, server SDKs.
+- Check hosting config (`vercel.json`, `netlify.toml`, `next.config.*`) for **rewrites/proxies to OTHER deployments** — a "static" route can front a separate app with its own scale limits.
+- A site documented/claimed as "static" or "no backend" while env vars + a backend SDK say otherwise = **FAIL** (the verdict is graded on the wrong state). If a backend exists, then audit the scale ceilings: auth/**SMTP rate limits**, **DB tier limits** (connections/auto-pause/storage), and **RLS** (below). Full required list: `factory/playbooks/mvp-stage/security-checklist.md` → *Backend reality check*.
+
 ### 1. Tracked secrets / `.env` files
 - `git -C <code_path> ls-files | grep -E '(^|/)\.env($|\.)'` — anything other than
   `.env.example` is a **FAIL** (a real env file is tracked).
@@ -57,7 +69,8 @@ If `$ARGUMENTS` is empty, ask which product (or `Read ${HAMZAISH_ROOT:-$HOME/Cla
 Print a checklist (✅ pass / ⚠️ warn / ❌ fail), one line each, with the exact
 file/line for every finding and the one-line fix. Then force a verdict:
 
-- **❌ BLOCK** — any FAIL (tracked secret, unpinned/vulnerable action, over-broad
+- **❌ BLOCK** — any FAIL (a "static / no backend" claim contradicted by env-gated
+  backend code, tracked secret, unpinned/vulnerable action, over-broad
   permissions, untrusted-input trigger, missing RLS on user data).
 - **⚠️ CLEAR WITH CAVEATS** — only WARNs; list them with an owner/date.
 - **✅ CLEAR** — all checks pass.
