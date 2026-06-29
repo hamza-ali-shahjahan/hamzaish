@@ -10,6 +10,22 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-29 — v1.33 · Audit guard: an env-gated backend is still a backend
+
+**What changed**
+
+- **New required audit step — the "Backend reality check."** `factory/playbooks/mvp-stage/security-checklist.md` now opens with a backend-reality section (5 checks: read `.env*` + trace gating, grep deps/src for backend SDKs used conditionally, check hosting rewrites/proxies, separate build-time vs runtime calls, audit SMTP/DB-tier/RLS scale ceilings) plus a first-timer heuristic. It runs *before* the auth/RLS sections, which assume a backend already exists. Security checks 65 → **70**.
+- **Enforced in the gate.** `/security-check` (`factory/commands/security-check.md`) runs the backend-reality check first and BLOCKs on a "claimed static but env-gated backend" finding.
+- **Distilled.** New anti-pattern `brain/anti-patterns/concluding-no-backend-from-code-alone.md`; new *Never do this* ledger line (practices 133 → **134**, proven 31 → **32**); a matching `launch-gotchas` entry; learning `brain/learnings/2026-06-29.md`.
+
+**Why**
+
+A site/scale audit of Thousand Worlds Explorer read the keyless/dev state and wrongly called it "fully static, no backend, scales trivially" — it actually had a live env-gated Supabase backend (auth, CRUD, telemetry, admin) plus a `/emulator` route proxying a separate app. "Static" is a delivery claim, not a code-only property: the same bundle is backend-driven in prod purely because env vars are set. The fix makes "prove the negative from env + deployment state, never a keyless code read" a required, enforced step — and frames it simply so a first-timer is protected by default.
+
+**What to revisit**
+
+- If products start declaring a `static`/`content-site` profile, fold the backend-reality check into `web-launch`'s launch-workbook so it's a tracked workbook item, not only a security-gate step.
+
 ## 2026-06-28 — v1.32 · Goal-first, eval-gated build flow (GOAL → SLICE → spec → build)
 
 **What changed**

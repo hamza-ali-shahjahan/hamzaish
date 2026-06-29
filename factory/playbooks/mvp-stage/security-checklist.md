@@ -6,6 +6,18 @@ Minimum bar before any user touches the product. Run this with `agents/mvp/secur
 
 Don't trust a clean first pass. After every feature or AI-generated change, paste the code back and prompt: *"Act as an adversarial senior security engineer and audit this code against the checklist below. Do NOT reassure me — list what's wrong and how to exploit it."* Re-running this catches a surprising amount of what got left behind. It's the no-reassurance discipline: a green light only counts if something *tried* to break it first.
 
+## Backend reality check — is there even a backend? (do this FIRST)
+
+**Required before any "static / no backend / scales trivially" conclusion.** A site can look fully static when its backend is **env-gated**: the data/auth client only initializes when env vars are present and falls back to local-only when they're absent. Audit the keyless/dev state and you'll wrongly conclude there's no backend — but the **keyed/production state is the truth**. "Static" is a delivery claim, not a code-only property. (Wound: Thousand Worlds Explorer, 2026-06-29 — see `brain/anti-patterns/concluding-no-backend-from-code-alone.md`.)
+
+> **First-timer heuristic:** If the site has a sign-in button, a save/share feature, or an admin page, it HAS a backend — even if the code looks like it runs without one. Open the .env file and check.
+
+- [ ] **Read the env files and trace the gating** — `.env`, `.env.local`, `.env.production`, `.env.example`. Populated keys mean the backend is **LIVE in prod**, even if the code path is conditional (`if (SUPABASE_URL) initClient()` is a live backend, not a dead branch)
+- [ ] **Grep deps + src for backend SDKs even when usage is conditional** — `supabase`, `@clerk`, `firebase`, auth libs, `prisma`/`drizzle`/any DB client, server SDKs. Presence in `package.json` + a conditional init = a real backend
+- [ ] **Check hosting config for rewrites/proxies to OTHER deployments** — `vercel.json`, `netlify.toml`, `next.config.*`. A "static route" can front a separate app with its own scaling limits
+- [ ] **Distinguish BUILD-TIME vs per-user RUNTIME network calls** — a call at build/SSG time is not the same scale risk as one on every user request
+- [ ] **If a backend exists, audit the scale-critical layers** — auth email/**SMTP rate limits** (free magic-link SMTP is the classic FIRST failure at scale), **DB tier limits** (connection caps, auto-pause, storage ceilings), and **RLS / authorization correctness** (public anon keys get probed at scale)
+
 ## Auth & session
 - [ ] Session cookies: `httpOnly`, `secure`, `sameSite=lax` or `strict`
 - [ ] Password reset rate-limited (max 5/hour/email)
