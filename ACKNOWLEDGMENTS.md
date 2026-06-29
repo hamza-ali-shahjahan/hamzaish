@@ -2,7 +2,7 @@
 
 ![Hamzaish — the credits roll](docs/assets/hamzaish-credits.gif)
 
-Hamzaish is a factory built on a thousand generosities. Almost nothing here is
+Hamzaish is built on a thousand generosities. Almost nothing here is
 wholly original — it's the field's best ideas, carefully studied, credited, and
 recombined in service of one mission: **getting every builder into Builder Mode,
 fast, and keeping them there.** This is the credits roll. Stay through to the

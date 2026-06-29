@@ -16,7 +16,7 @@ const lines: Array<[string, number]> = [
   [center(C.bold(C.accent("H A M Z A I S H"))), 250],
   [center(C.dim("— credits —")), 250],
   ["", 600],
-  [center(C.dim("a factory built on a thousand generosities")), 1100],
+  [center(C.dim("built on a thousand generosities")), 1100],
   ["", 700],
   [center(C.gold("✦  THE SHOULDERS WE STAND ON  ✦")), 700],
   ["", 350],
