@@ -10,6 +10,33 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-06-30 — v1.34 · Site audits, for first-timers: the factory now catches the "looks static, but it's live" trap
+
+The factory's **site-audit capability set** is now complete enough to name as one thing. If you point Hamzaish at a website and ask "is this safe to ship, and will it hold up?", you get a real audit — not a vibe check — and the newest piece closes the gap that's easiest for a beginner to fall into.
+
+**The headline: an env-gated backend is still a backend.** A site can *look* fully static — no backend, no database, "scales trivially" — when its data/auth client only switches on if environment variables are present, and quietly falls back to local-only when they're absent. Read the code without the keys and you'll swear there's no backend. There is; it's just live in production, where the keys exist. The factory now refuses to call a site "static / no backend" from a keyless code read, and says so in plain language:
+
+> **If the site has a sign-in button, a save/share feature, or an admin page, it HAS a backend — even if the code looks like it runs without one. Open the .env file and check.**
+
+**What a builder gets for free when they audit a site now — one connected set:**
+
+- **`/security-check` — the pre-deploy gate.** A fast, mechanical pass that ends in a forced **BLOCK / CLEAR-WITH-CAVEATS / CLEAR** verdict. It now runs the **backend-reality check first** and BLOCKs ship on a "claimed static but env-gated backend" finding — alongside its existing checks for tracked secrets, unpinned/vulnerable GitHub Actions, over-broad workflow permissions, untrusted-input triggers, and RLS.
+- **`mvp-stage/security-checklist.md` — the source of truth (70 checks).** The deep list `/security-check` is built on. It now **opens** with the *Backend reality check* (read `.env*` + trace the gating · grep deps/src for backend SDKs used conditionally · check hosting rewrites/proxies to other deployments · separate build-time vs runtime calls · audit the scale ceilings) — placed before the auth/RLS sections, which only make sense once you've confirmed a backend exists.
+- **web-launch `launch-workbook` — the tracked launch checklist.** The 14-phase, sign-off-gated workbook now carries the backend-reality check as a **P0 item in Phase 2 (Technical Architecture)**, flagged for `hybrid` / `content-site` profiles — so it's a row someone has to *verify*, not just a thing to remember.
+- **`launch-gotchas` — the "here's what burned us" library.** Now includes *Env-gated backend read as "fully static"* (what happened · root cause · prevent), built from the real case, so the next builder recognizes the trap before paying for it.
+- **`scale-stage` production-operations & abuse/cost playbooks — the "will it hold" half.** Once a backend is confirmed, the scale tail is explicit: **auth-email/SMTP rate limits** (free magic-link SMTP is the classic *first* failure under load), **DB tier caps / connection limits / auto-pause**, and **RLS / anon-key authorization** that gets probed at scale.
+
+**Why this matters for the mission.** Democratizing builder mode means a first-timer shouldn't have to already know the traps to be protected from them. The "it looks static, so it scales for free" mistake is one an expert avoids by reflex and a beginner can't see coming. Baking it into the gate, the checklist, the launch workbook, and the gotcha library means the factory carries that reflex *for* the builder — by default, no expertise required.
+
+**What changed in this entry**
+
+- **web-launch `launch-workbook.md`:** new Phase-2 P0 item — *Backend reality check (a "static" site can have an env-gated backend)* — for `hybrid` / `content-site` launches (completes the "what to revisit" noted in v1.33).
+- **This release note:** the first consolidated statement of the site-audit capability set, with the env-gated-backend check as its headline.
+
+**What to revisit**
+
+- If the site-audit set keeps growing, promote it from a changelog showcase to a standing `docs/` capability page (and a `/release` GitHub Release at the next major-cycle boundary).
+
 ## 2026-06-29 — v1.33 · Audit guard: an env-gated backend is still a backend
 
 **What changed**
