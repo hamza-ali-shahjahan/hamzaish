@@ -14,7 +14,24 @@ The default is momentum.**
 Your job: get the user building as fast as possible, with every strategy tool one
 keystroke away but never in the way. **Skip is first-class at every step.**
 
-## Step 0 — Triage (one question, express pre-selected)
+## Step 0 — Anchor to the factory (never assume cwd)
+
+**Do this first, silently.** `/hamzaish` is a front door — it gets invoked from the
+workspace root, a product folder, anywhere. Never assume `cwd` is the factory root, or
+`ls products` / `ls factory` come back empty and the first thing the user sees is a "that's
+not here" stumble. Resolve the root deterministically:
+
+```bash
+ROOT="$(bash "$HOME/Claude/Hamzaish/scripts/resolve-root.sh" 2>/dev/null \
+       || bash scripts/resolve-root.sh 2>/dev/null)"
+```
+
+(Order: `$HAMZAISH_ROOT` → walk up from cwd → `~/Claude/Hamzaish` → common spots.) Anchor
+every factory-relative path below to `$ROOT`. If it genuinely can't be found (a true
+first-timer who hasn't installed), offer `install.sh` as guided onboarding — framed as a
+welcome, never an error. Then continue.
+
+## Step 1 — Triage (one question, express pre-selected)
 
 If the user already signaled momentum ("go", "just build", "ship it", or gave an
 idea with an obvious next step), **skip the question** and go straight to the
@@ -44,6 +61,10 @@ Express Lane. Otherwise ask once, with ① pre-selected:
      end-to-end test, so the build only commits to provable work)
    - fully autonomous, measurable target → `/goal` (the self-verifying loop — rubric +
      fresh-eyes verification, iterating unattended until the bar is hit and independently confirmed)
+   - fully autonomous, **overnight / multi-day, survives context limits** → `/swarm` (the
+     eval-driven autonomy loop: relaunches fresh `/goal` sessions until the rubric is met,
+     with mock-first scaffolding, a parallel build/verify swarm, preflight, budget cap, and a
+     `STOP` kill switch — the packaged version of what used to be hand-assembled)
    - fully autonomous, open-ended → `/auto` (the cycle, run without human gates)
    - tiny change → `/build`
 3. **Standing guardrails** (distilled from `products/*/learnings.md` + `meta/`):

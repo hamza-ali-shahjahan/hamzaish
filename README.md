@@ -12,7 +12,7 @@
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
-**[📚 134 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 65 skills & commands](#%EF%B8%8F-the-skills--commands-65) · [📖 41 playbooks](#-the-playbooks-41)**
+**[📚 134 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 66 skills & commands](#%EF%B8%8F-the-skills--commands-66) · [📖 41 playbooks](#-the-playbooks-41)**
 
 Every count real · every item linked · every claim marked ✅ proven / 🟡 partial / ⏳ research-baked → [What's inside](#whats-inside)
 
@@ -178,9 +178,9 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 | [security-auditor](factory/agents/engineering/security-auditor/SKILL.md) | Hunts injection, authz gaps, secret exposure, unsafe deserialization |
 | [test-engineer](factory/agents/engineering/test-engineer/SKILL.md) | Designs and fills test coverage; reproduces bugs as failing tests |
 
-## 🛠️ The skills & commands (65)
+## 🛠️ The skills & commands (66)
 
-41 skills + 24 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder. The 22 engineering-cycle skills + their commands ship in-repo (21 consolidated from the `agent-skills` project + `feature-slicing`), so the build engine comes with this repo (see the engineering cycle below).
+41 skills + 25 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder. The 22 engineering-cycle skills + their commands ship in-repo (21 consolidated from the `agent-skills` project + `feature-slicing`), so the build engine comes with this repo (see the engineering cycle below).
 
 | Invoke | What it does |
 |---|---|

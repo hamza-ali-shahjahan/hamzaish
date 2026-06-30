@@ -10,6 +10,32 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-01 — v1.35 · The factory goes eval-loop + swarm native: `/swarm`, and `/hamzaish` that never loses the factory
+
+Two gaps surfaced the first time a real autonomous build ran through the factory (a function-replica build, codename synthux), and both are exactly the kind a *new* user hits first. This entry closes them and promotes the swarm pattern from hand-assembled to one command.
+
+**`/hamzaish` no longer assumes where it's standing.** Invoked from the workspace root — which is how a new user invokes it — the front door's factory-relative paths resolved to nothing and its first visible act was a "that folder isn't here" probe. Awful first impression. Now there's a **deterministic factory-root resolver** (`scripts/resolve-root.sh`: `$HAMZAISH_ROOT` → walk up from cwd → `~/Claude/Hamzaish` → common spots) and a **"Step 0 — Anchor to the factory"** preamble that runs it silently before anything else. From-anywhere just works.
+
+**The swarm is now a first-class lane, not a buried script.** The world moved past one-shot spec-driven dev to **eval-driven loops + agentic swarms**. The factory already had the parts — `scripts/autonomy-loop.ts` (relaunches fresh `/goal` sessions so a build outlives any one context window), `/goal` (the eval), the `Workflow` swarm — but they were undiscoverable and had to be wired together by hand (~12 files in the synthux run). New **`/swarm`** packages them: pin a measurable rubric → **mock-first** scaffold (deterministic mock-LLM + local store, so "functional" is provable with **zero secrets** and the loop never waits on a credential) → an on-disk operating brief (the multi-day memory) → a parallel **build → verify** swarm per phase → launch with preflight, budget cap, branch-only, and a `STOP` kill switch. It's surfaced as a 4th Express-Lane hand-off in `/hamzaish` (overnight / multi-day / survives context limits).
+
+**The loop got two pieces of hardening from what the live run actually did.** Session 1 hit `--max-turns` and exited **without writing `loop-state.json`**, so the loop relaunched blind — self-healing but able to burn the whole session budget invisibly. The loop now **preflights** (`claude` CLI + `git` + repo present — fail fast, since a flaky/missing shell is the #1 cause of an unattended run that produces nothing) and **stops after 2 consecutive sessions that make no progress and write no handoff** (distinguishing "stuck" from "progressed but didn't write state" via the commit sha).
+
+**Why this matters for the mission.** Democratizing builder mode means a first-timer gets the *current* state of the art — eval, loop, swarm, mock-first, runs unattended — from one command, with the safety rails on by default. They shouldn't have to know the autonomy loop exists, or hand-assemble it, to use it.
+
+**What changed**
+
+- **New `scripts/resolve-root.sh`** — deterministic factory-root resolver (single source of truth; reusable by hooks).
+- **New `factory/commands/swarm.md`** — the `/swarm` command; **new `templates/build-swarm.workflow.js`** — the parallel build/verify swarm it copies into a product repo.
+- **`factory/commands/hamzaish.md`** — "Step 0 — Anchor to the factory" preamble (triage → Step 1); `/swarm` added to the Express-Lane routing.
+- **`scripts/autonomy-loop.ts`** — preflight gate + stuck-session stop (no-handoff-and-no-commits ×2).
+- **New `brain/anti-patterns/sensitive-product-stays-local.md`** — a competitor-replica / sensitive product keeps its *metadata* (not just code) out of the always-public factory; wired in only via gitignored `code-paths.local.json` (the synthux call, recorded).
+- **New learning** `brain/learnings/2026-07-01-swarm-run-and-factory-gaps.md`.
+
+**What to revisit**
+
+- Open hardening follow-ups (noted in the learning): a **per-session wall-clock watchdog** (a hung network call can still wedge a session under `--max-turns`), and a **scheduled-cloud execution** option so a flaky *local* shell isn't the single point of failure for a multi-day run.
+- If `/swarm` proves out, consider repackaging it as a portable plugin under `factory/plugins/` (like `web-launch`) so it installs outside Hamzaish too.
+
 ## 2026-06-30 — v1.34 · Site audits, for first-timers: the factory now catches the "looks static, but it's live" trap
 
 The factory's **site-audit capability set** is now complete enough to name as one thing. If you point Hamzaish at a website and ask "is this safe to ship, and will it hold up?", you get a real audit — not a vibe check — and the newest piece closes the gap that's easiest for a beginner to fall into.
