@@ -102,6 +102,39 @@ async function readState(): Promise<{ state: string; note?: string } | null> {
   }
 }
 
+// Fail fast BEFORE burning sessions: the headless loop needs the `claude` CLI on PATH and
+// a git repo to keep work on a branch. A flaky/missing shell is the #1 cause of an
+// unattended run that "ran all night" but produced nothing — surface it in one message.
+function preflight(): void {
+  const problems: string[] = [];
+  if (!Bun.which("claude"))
+    problems.push("`claude` CLI not on PATH — headless sessions can't launch (install Claude Code).");
+  if (!Bun.which("git"))
+    problems.push("`git` not on PATH — branch-only safety can't be enforced.");
+  if (!existsSync(join(repo!, ".git")))
+    problems.push(`${repo} is not a git repo — run \`git init\` so work stays on a branch.`);
+  if (problems.length) {
+    console.error("✗ preflight failed:\n  - " + problems.join("\n  - "));
+    process.exit(1);
+  }
+  console.log("✓ preflight ok: claude CLI + git + repo present.");
+}
+
+// HEAD sha, used to tell "made no progress" from "progressed but didn't write a handoff".
+async function headSha(): Promise<string> {
+  try {
+    const p = Bun.spawn(["git", "-C", repo!, "rev-parse", "HEAD"], {
+      stdout: "pipe",
+      stderr: "ignore",
+    });
+    const out = await new Response(p.stdout).text();
+    await p.exited;
+    return out.trim();
+  } catch {
+    return "";
+  }
+}
+
 async function runSession(sessionNum: number): Promise<number> {
   const prompt = sessionPrompt(sessionNum);
   const cmd = [
@@ -140,6 +173,10 @@ async function main() {
     `  repo=${repo}\n  slug=${slug} model=${model} max-sessions=${maxSessions} runs/session=${runsPerSession}${DRY ? " (dry-run)" : ""}`,
   );
 
+  if (!DRY) preflight();
+  let stuck = 0; // consecutive sessions with no handoff AND no new commits
+  let lastSha = DRY ? "" : await headSha();
+
   for (let s = 1; s <= maxSessions; s++) {
     if (existsSync(join(repo!, "STOP"))) {
       console.log(`\n■ STOP file present in repo — halting before session ${s}.`);
@@ -153,13 +190,34 @@ async function main() {
     }
 
     const state = await readState();
+    const sha = await headSha();
+    const advanced = sha !== "" && sha !== lastSha;
+    lastSha = sha;
     if (!state) {
+      if (advanced) {
+        console.warn(
+          `  ! no .goal/${slug}/loop-state.json this session, but new commits landed — ` +
+            `treating as progress, continuing.`,
+        );
+        stuck = 0;
+        continue;
+      }
+      stuck++;
       console.warn(
-        `  ! no .goal/${slug}/loop-state.json written this session — cannot tell progress.\n` +
-          `    Continuing to next session (the relaunch is harmless), but check the goal log.`,
+        `  ! no loop-state.json AND no new commits this session (stuck ${stuck}/2). ` +
+          `Likely hit --max-turns (${maxTurns}) before writing state.`,
       );
+      if (stuck >= 2) {
+        console.log(
+          `\n■ ${stuck} consecutive sessions made no progress and wrote no handoff — stopping to ` +
+            `avoid burning the session budget blindly. Inspect ${repo}/.goal/${slug}/ ` +
+            `(raise --max-turns, narrow the goal, or check the shell).`,
+        );
+        return;
+      }
       continue;
     }
+    stuck = 0;
     console.log(`  state=${state.state}${state.note ? ` — ${state.note}` : ""}`);
     if (state.state === "achieved") {
       console.log(`\n✓ Goal achieved after ${s} session(s).`);
