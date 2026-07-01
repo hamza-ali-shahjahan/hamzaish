@@ -74,6 +74,59 @@ For Hamzaish:
 
 ---
 
+## Hamzaish's real peer group — spec-driven agent OSes
+
+> Added 2026-07-01. The three clones above (gbrain/hermes/openclaw) are *runtime/brain*
+> inspiration. The two below are the **closest systems to Hamzaish itself**: markdown-on-
+> Claude-Code, spec-driven, methodology-as-a-product. They solve the same problem —
+> turn a coding agent into a disciplined product factory — and are a year-plus ahead on
+> some patterns. Study the *prescription*, port ideas per Discipline below; never adopt
+> wholesale. See `brain/anti-patterns/hamzaish-is-an-agent-os-not-a-runtime-framework.md`
+> for why Hamzaish stays an agent OS, not a runtime framework.
+
+### bmad-method — github.com/bmad-code-org/bmad-method
+
+**What it is**: "Breakthrough Method for Agile AI-Driven Development." Scale-adaptive,
+markdown-driven, tool-agnostic (Claude Code / Cursor / Copilot). 12+ specialized agent
+personas, structured workflows from brainstorm → architecture → implementation. Ships
+markdown **skills** (`src/bmm-skills`, `src/core-skills`) — same shape as ours.
+
+**What to mine**:
+1. **Two-phase split: Agentic Planning → Context-Engineered Development** — their core
+   idea. Compare against our GOAL→SLICE→SPEC→BUILD cycle; steal sharpening where theirs
+   is tighter.
+2. **Scale-adaptive planning depth** — adjusts rigor from bug-fix to enterprise. We
+   have momentum-vs-strategy rails; see how they gate depth automatically. → `src/`, `docs/`.
+3. **Agent persona structure** — how 12+ roles are defined and handed between. Compare
+   to `factory/agents/`. → `src/bmm-skills`.
+4. **Diátaxis docs** (`docs/` = explanation / how-to / reference / tutorials) — a clean
+   docs taxonomy worth mirroring.
+5. **`AGENTS.md` conventions** — read for prompt-engineering patterns.
+
+**Verdict for Hamzaish**: study deeply — the closest peer in spirit. Mine the planning
+→ build split and scale-adaptive gating. Reference-only; stay Claude-Code-native.
+
+### agent-os — github.com/buildermethods/agent-os
+
+**What it is**: Builder Methods' lightweight standards+spec layer. Works alongside
+Claude Code / Cursor / Antigravity. All-markdown. Four moves: **Discover Standards**
+(extract conventions from a codebase), **Deploy/Inject Standards** (surface the right
+standard for what you're building), **Shape Spec**, **Index Standards**. Tiny (~328K):
+`commands/agent-os`, `profiles/default`.
+
+**What to mine**:
+1. **Standards injection** — discover standards *from* a codebase, then inject the
+   relevant ones at the right moment. Directly relevant to how `brain/` could feed rules
+   into a build. → `commands/`, `profiles/`.
+2. **Profiles model** (`profiles/default`) — how reusable standard-sets are packaged.
+   Compare to our playbooks + `stack/` ADRs.
+3. **Spec-shaping commands** — compare to our `/spec`.
+
+**Verdict for Hamzaish**: study the standards-injection mechanic specifically — it's
+the one idea here we don't have a clean equivalent for. Small, fast read.
+
+---
+
 ## Discipline
 
 - **Never `import` from `references/`** into anything in `factory/`, `brain/`, or `products/`.
