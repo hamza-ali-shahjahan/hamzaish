@@ -26,6 +26,8 @@ clone_if_missing() {
 clone_if_missing "gbrain"       "https://github.com/garrytan/gbrain.git"
 clone_if_missing "hermes-agent" "https://github.com/nousresearch/hermes-agent.git"
 clone_if_missing "openclaw"     "https://github.com/openclaw/openclaw.git"
+clone_if_missing "bmad-method"  "https://github.com/bmad-code-org/bmad-method.git"
+clone_if_missing "agent-os"     "https://github.com/buildermethods/agent-os.git"
 
 echo ""
 echo "Done. references/README.md explains what to mine from each."

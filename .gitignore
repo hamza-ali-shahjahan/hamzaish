@@ -5,6 +5,8 @@
 references/gbrain/
 references/hermes-agent/
 references/openclaw/
+references/bmad-method/
+references/agent-os/
 
 # Node / build artifacts
 node_modules/
