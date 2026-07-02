@@ -63,6 +63,10 @@ Never dump raw git unless asked.
 9. **Sync local.** `git switch main && git pull --ff-only`. If this fails with
    "diverged", local `main` has unpushed commits — `git pull --rebase` and tell the
    user those commits exist locally but are **not** published.
+   Then: if the merged change touched `factory/commands/`, run `bun run setup` —
+   the global `~/.claude/commands/` copies refresh automatically (manifest-tracked;
+   customized copies are never clobbered). Copies rot silently otherwise —
+   `brain/learnings/2026-07-02.md`.
 
 10. **(Optional) Release.** If the user says this is a release point, `git tag vX.Y.Z`
    + `gh release create` with notes — the moment the
