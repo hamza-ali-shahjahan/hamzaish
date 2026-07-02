@@ -26,9 +26,11 @@ Decompose work into small, verifiable tasks with explicit acceptance criteria. G
 Before writing any code, operate in read-only mode:
 
 - Read the spec and relevant codebase sections
+- **Read the target subsystem's own constitution FIRST** — its README, design doc, or stated rules. A subsystem with written constraints may already forbid your plan (promoted 2026-07-02: a ~22-case eval backfill was cancelled because the harness's README required live verification per case and documented a hard cost ceiling — the plan that shipped came from those constraints, not from the original intent). The plan-level view knows what's missing; only the subsystem knows what's *forbidden*.
 - Identify existing patterns and conventions
 - Map dependencies between components
 - Note risks and unknowns
+- If working from a fan-out report (audit, inventory, review sweep): its per-file claims are **leads, not facts** — read the artifact before planning against any specific claim (`brain/anti-patterns/trusting-fanout-reports-over-artifacts.md`)
 
 **Do NOT write code during planning.** The output is a plan document, not implementation.
 

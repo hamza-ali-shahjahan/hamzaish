@@ -10,6 +10,20 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-02 — v2.4.1 · /learn-loop "audit roadmap executed (v2.1→v2.4)": scored 5, promoted 2 — first run of the dual-scoring + ratification gate
+
+**What changed**
+
+- **First real `/learn-loop` under the v2.3 protocol — and the gate bit.** Five candidates scored twice independently (main session + a fresh-context subagent, blind to each other's numbers); the fresh scorer filtered 4 live candidates to **2**; the operator batch-ratified before anything was written. One 6-point disagreement logged as signal (the "mechanical triggers" lesson — skeptic correctly noted its gain is unobserved and its guardrail already exists).
+- **Promoted (both dual-cleared ≥24/35, operator-ratified):**
+  - *Fan-out report claims are leads, not facts* (30 + 27) → new anti-pattern `brain/anti-patterns/trusting-fanout-reports-over-artifacts.md`, a lead-verification line in `planning-and-task-breakdown` Step 1, ☠️ ledger line. Two dated instances from today's audit.
+  - *Read the subsystem's constitution before planning its extension* (28 + 27) → constitution-first read in `planning-and-task-breakdown` Step 1, ⚙️ ledger line.
+- **Logged, not promoted:** "mechanical triggers beat wording" (26 vs 20 — dual gate failed) · "ratchet over big-bang" (28 vs 23 — one instance; re-eligible on recurrence). The PR-stowaway lesson, promoted same-day at incident time, got its `[SCORED]` block for the audit trail (30/35).
+- **Ledger:** practices 135 → **137**, proven 33 → **35**. All `[SCORED]` blocks with predicted gains + 2026-10-02 feedback checks: `brain/learnings/2026-07-02.md`. `/kill-or-keep` re-verifies in October.
+- **Release:** this boundary is cut as the **v2.4.1 GitHub Release** (marked latest) — the external half of the cycle, per `/release`.
+
+**Retro:** skipped — scoring pass over an already-retroed cycle (four phase retros filed today cover the substance).
+
 ## 2026-07-02 — v2.4 · Phase 4: the heavy protocols go fleet-native — fan out blind, verify adversarially, synthesize with a judge
 
 **What changed**
