@@ -10,6 +10,24 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-03 — v2.5.4 · Identity guardrails: your commits can never again wear a stranger's face
+
+**What changed**
+
+- **The wound (same morning):** the repo's front page showed a commit by "noreply" (profile: China) — indistinguishable from an intrusion. Investigation proved it was us: a repo-local `user.email = noreply@users.noreply.github.com` override + one direct push. GitHub maps that placeholder email to the real, unrelated GitHub account named `noreply`. Full diagnosis path (reflog → push activity → email mapping) preserved in the anti-pattern.
+- **Fixed at the source, then baked in three layers deep:**
+  - **`bun run setup` step 2 (new)** — every fresh clone now gets a git-identity check: placeholder/unset emails (`noreply@github.com`, `noreply@users.noreply.github.com`, empty, `you@example.com`) are flagged with the exact personalized fix (pulled live from `gh api user` when available), including detection of the sneaky repo-**local** override shadowing a healthy global. Setup never edits your config silently — it tells you precisely what to run.
+  - **`scripts/auto-commit.sh`** — warns on placeholder identity at commit time (local restore-points still happen; losing work is worse), and **hard-refuses auto-push** under one: a misattributed commit can no longer leave the machine automatically.
+  - **`/pr` pre-flight** — identity check before anything is staged.
+- **Repo hardening from the same incident:** the require-PR ruleset's **admin bypass is removed** — direct pushes to main are now closed for everyone including the owner; every change goes through PR + guards. (The misattributed commit reached main via that bypass.) The already-pushed commit was rewritten in place with correct authorship (`644fb55`) under a 10-second rules lift, protections restored and verified.
+- **Distilled:** anti-pattern `brain/anti-patterns/misattributed-commits-placeholder-email.md` (with the diagnose-before-panicking checklist); ledger line (practices 138 → **139**, proven 36 → **37**); learning in `brain/learnings/2026-07-03.md`.
+
+**Why**
+
+The operator's instruction after the scare: make sure this can't happen again — for us and for every new Hamzaish user. New users are the real beneficiaries: a fresh machine with an unset git email is exactly who hits this, on their first ever push, with no way to know the stranger on their repo is an email-mapping artifact.
+
+**Retro:** skipped — incident, diagnosis, and every enforcement layer captured in the anti-pattern + this entry.
+
 ## 2026-07-03 — v2.5.3 · Guardrail: multi-repo sessions address repos, never navigate to them
 
 **What changed**
@@ -34,6 +52,8 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 - Whether a PreToolUse hook should flag `git add -A`/`git commit` in Bash commands that don't
   carry an explicit `-C <path>` when the session has touched more than one repo.
+
+**Retro:** skipped — single-guardrail entry from a parallel session; incident + revert fully described above. (Line added retroactively by the v2.5.4 ship: this entry predates its author-session learning that `check-retro` now enforces the skip-loudly rule.)
 
 ---
 

@@ -6,11 +6,13 @@
 //
 // What it does (all steps idempotent + safe to re-run):
 //   1. Confirm Bun is present (you're already running under it)
-//   2. Create code-paths.local.json from the example (skip if you already have one)
-//   3. Create brain/identity/operator.local.md from the example (skip if yours exists)
-//   4. Install the global slash commands into ~/.claude/commands/ as REAL copies
-//   5. Build the brain index (bun brain/ingest.ts)
-//   6. Print what to do next
+//   2. Check git identity — placeholder emails misattribute your commits on GitHub
+//   3. Create code-paths.local.json from the example (skip if you already have one)
+//   4. Create brain/identity/operator.local.md from the example (skip if yours exists)
+//   5. Create products/_active.local.md sprint state from the example
+//   6. Install the global slash commands into ~/.claude/commands/ as REAL copies
+//   7. Build the brain index (bun brain/ingest.ts)
+//   then print what to do next
 //
 // It NEVER overwrites your existing .local files or any command file you've customized.
 // Re-running it is harmless — it just fills in whatever's missing.
@@ -54,8 +56,44 @@ console.log(c.dim(`   root: ${ROOT}`));
 step(1, "Runtime");
 ok(`Bun ${Bun.version} — you're running under it, so it's installed.`);
 
-// Step 2 — code-paths.local.json -------------------------------------------
-step(2, "Local code-path map (where your product code lives — never committed)");
+// Step 2 — git identity ------------------------------------------------------
+step(2, "Git identity (so YOUR commits are attributed to YOU on GitHub)");
+{
+  // 2026-07-03 incident: a placeholder email (noreply@users.noreply.github.com)
+  // makes GitHub credit your commits to a STRANGER's account — the literal GitHub
+  // user "noreply". Looks exactly like an intrusion on your own repo. Detect
+  // placeholders up front; NEVER silently edit the user's git config — print the
+  // exact fix instead (with their real private address when gh is available).
+  const email = (Bun.spawnSync(["git", "config", "user.email"]).stdout?.toString() || "").trim();
+  const PLACEHOLDERS = new Set(["", "noreply@github.com", "noreply@users.noreply.github.com", "you@example.com"]);
+  if (!PLACEHOLDERS.has(email)) {
+    ok(`git identity looks real: ${email}`);
+    skipped++;
+  } else {
+    warn(`git user.email is ${email === "" ? "UNSET" : `'${email}'`} — GitHub will misattribute your commits (possibly to a stranger's account).`);
+    warned++;
+    let suggestion = "<id>+<username>@users.noreply.github.com";
+    try {
+      const proc = Bun.spawnSync(["gh", "api", "user", "--jq", '"\\(.id)+\\(.login)@users.noreply.github.com"']);
+      const v = (proc.stdout?.toString() || "").trim();
+      if (proc.exitCode === 0 && v.includes("@")) suggestion = v;
+    } catch {
+      /* gh not installed/authed — generic hint stands */
+    }
+    console.log(c.dim(`     fix:  git config --global user.email '${suggestion}'`));
+    console.log(c.dim(`     and:  git config --global user.name  '<your name>'`));
+    console.log(c.dim(`     (setup never edits git config for you; the auto-push hook refuses placeholder identities either way)`));
+  }
+  // A repo-LOCAL override shadowing a healthy global is the sneaky variant that bit us.
+  const localEmail = (Bun.spawnSync(["git", "config", "--local", "user.email"], { cwd: ROOT }).stdout?.toString() || "").trim();
+  if (localEmail && PLACEHOLDERS.has(localEmail)) {
+    warn(`this repo has a LOCAL user.email override ('${localEmail}') shadowing your global config — remove it: git config --local --unset user.email`);
+    warned++;
+  }
+}
+
+// Step 3 — code-paths.local.json -------------------------------------------
+step(3, "Local code-path map (where your product code lives — never committed)");
 {
   const dst = join(ROOT, "code-paths.local.json");
   const src = join(ROOT, "code-paths.example.json");
@@ -74,7 +112,7 @@ step(2, "Local code-path map (where your product code lives — never committed)
 }
 
 // Step 3 — operator identity -----------------------------------------------
-step(3, "Operator identity (your working style + stack defaults — never committed)");
+step(4, "Operator identity (your working style + stack defaults — never committed)");
 {
   const dst = join(ROOT, "brain", "identity", "operator.local.md");
   const src = join(ROOT, "brain", "identity", "operator.example.md");
@@ -93,7 +131,7 @@ step(3, "Operator identity (your working style + stack defaults — never commit
 }
 
 // Step 3b — active-product sprint state (yours, never committed) ------------
-step(4, "Active-sprint state (which product the factory orients on — never committed)");
+step(5, "Active-sprint state (which product the factory orients on — never committed)");
 {
   const dst = join(ROOT, "products", "_active.local.md");
   const src = join(ROOT, "products", "_active.example.md");
@@ -113,7 +151,7 @@ step(4, "Active-sprint state (which product the factory orients on — never com
 }
 
 // Step 4 — global slash commands -------------------------------------------
-step(4, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work from any folder)");
+step(6, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work from any folder)");
 {
   // REAL copies, not symlinks: Claude Code's command/skill loader does not reliably
   // follow symlinks during discovery, so a symlinked global command can silently show
@@ -212,7 +250,7 @@ step(4, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
 }
 
 // Step 5 — build the brain index -------------------------------------------
-step(5, "Brain index (full-text search over the factory)");
+step(7, "Brain index (full-text search over the factory)");
 {
   const proc = Bun.spawnSync(["bun", join(ROOT, "brain", "ingest.ts")], {
     cwd: ROOT,

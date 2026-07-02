@@ -160,6 +160,22 @@ git add -A 2>/dev/null || exit 0
 # Re-check: skip if the stage is still empty after add (e.g., everything was gitignored)
 git diff --cached --quiet 2>/dev/null && exit 0
 
+# 7.5 IDENTITY GUARD (2026-07-03 "noreply from China" incident): a placeholder
+#     git email makes GitHub attribute your commits to a STRANGER's account
+#     (noreply@users.noreply.github.com maps to the real GitHub user "noreply").
+#     Local restore-point commits still happen (losing work is worse), but we
+#     warn loudly here — and the PUSH path below hard-refuses these identities,
+#     so a misattributed commit can never leave the machine automatically.
+#     Cheap (one git config read), fail-open like everything else in this file.
+GIT_EMAIL=$(git config user.email 2>/dev/null || echo "")
+BAD_IDENTITY=""
+case "$GIT_EMAIL" in
+  ""|"noreply@github.com"|"noreply@users.noreply.github.com"|"you@example.com")
+    BAD_IDENTITY="yes"
+    echo "auto-commit: WARNING — git user.email is '$GIT_EMAIL' (placeholder). Commits will be misattributed on GitHub. Fix: git config --global user.email '<id>+<username>@users.noreply.github.com' (your value: gh api user --jq '\"\(.id)+\(.login)@users.noreply.github.com\"')" >&2
+    ;;
+esac
+
 # 8. Commit (timeout-bounded). --no-verify so pre-commit hooks (linters etc.)
 #    can't block a safety snapshot. Fail-open on timeout/error.
 TS=$(date +%Y-%m-%dT%H:%M:%S)
@@ -209,7 +225,11 @@ secret_scan_clean() {
 }
 
 # 9. Push — OPT-IN ONLY, timeout-bounded. Step 8 already left a local commit.
-if [ -f "$REPO/.auto-push" ] && [ ! -f "$REPO/.no-auto-push" ]; then
+#    HARD GUARD: never auto-push commits made under a placeholder identity —
+#    that's how a stranger's avatar ends up on your public repo (2026-07-03).
+if [ -n "$BAD_IDENTITY" ]; then
+  [ -f "$REPO/.auto-push" ] && echo "auto-commit: push REFUSED — placeholder git identity would misattribute your commits publicly. Fix user.email first (see warning above)." >&2
+elif [ -f "$REPO/.auto-push" ] && [ ! -f "$REPO/.no-auto-push" ]; then
   if git remote get-url origin > /dev/null 2>&1; then
     BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null) || exit 0
 
