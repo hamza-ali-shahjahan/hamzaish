@@ -2,7 +2,7 @@
 
 Hamzaish uses **[Semantic Versioning](https://semver.org)** — `MAJOR.MINOR.PATCH` — with **one source of truth** and a CI guard, so the number can't drift across the repo. (It did once: `package.json` said `1.10.0`, this kind of note said `v1.4`, the changelog said `v1.31`, and the last released tag was `v1.2.0` — four different numbers, nothing reconciling them. Never again — that's what the guard is for.)
 
-**Current version: `2.5.2`** — *the factory never resolves an ambiguous instruction silently: ask when stakes are destructive/irreversible/external, declare the reading taken otherwise — momentum stays the default, silent coin flips don't.*
+**Current version: `2.5.4`** — *identity guardrails after the "noreply from China" scare: setup checks git identity on every fresh clone, auto-push refuses placeholder emails, /pr pre-flights it, and the require-PR ruleset's admin bypass is gone — your commits can never again wear a stranger's face, and nothing reaches main unreviewed.*
 
 ## One source of truth
 

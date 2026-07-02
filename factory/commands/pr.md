@@ -25,6 +25,11 @@ Never dump raw git unless asked.
      intended files — never `git add -A`.
    - **Secret scan the staged diff** (gitleaks if present, else grep for key patterns).
      If anything looks like a secret → **abort before pushing**, tell the user.
+   - **Identity check:** `git config user.email` must be a real address — not empty,
+     not `noreply@github.com` / `noreply@users.noreply.github.com` / `you@example.com`.
+     A placeholder gets your commits attributed to a stranger's GitHub account
+     (2026-07-03 incident: `brain/anti-patterns/misattributed-commits-placeholder-email.md`).
+     Bad identity → stop, print the fix (`gh api user --jq '"\(.id)+\(.login)@users.noreply.github.com"'`).
 
 2. **Branch — from `origin/main`, never local `main`.**
    `git fetch origin && git switch -c change/<kebab-slug-from-$ARGUMENTS> origin/main`.
