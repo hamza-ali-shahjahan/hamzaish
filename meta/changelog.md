@@ -10,6 +10,33 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-03 — v2.5.3 · Guardrail: multi-repo sessions address repos, never navigate to them
+
+**What changed**
+
+- **New Express-Lane standing guardrail** (`factory/commands/hamzaish.md`, serves `/hamzaish` +
+  `/builder-mode`): shell cwd does not reliably persist across tool calls, and a compound
+  `cd X && …` silently runs against the wrong repo when the cd is skipped/reset. Always
+  `git -C <abs-path>` for git; absolute paths for output-writing commands (`curl -o`,
+  redirects); never `git add -A`/commit without a just-run `git -C <path> status` on the
+  intended repo.
+
+**Why**
+
+- Incident 2026-07-02 (ThousandWorlds emulator build, two repos in one session): a build-stage
+  `cd X && git add -A && git commit` ran in the *other* repo after a cwd reset — sweeping that
+  repo's unrelated uncommitted files into a mislabeled commit on the user's feature branch.
+  Caught on a routine state check and reverted with `git reset --mixed HEAD~1`; nothing lost.
+  `/ship` already ran all its git through `git -C <code_path>` — the gap was ad-hoc build-stage
+  git. Same failure family as the hermes `curl -o` CWD-drift incident in `references/`.
+
+**What to revisit**
+
+- Whether a PreToolUse hook should flag `git add -A`/`git commit` in Bash commands that don't
+  carry an explicit `-C <path>` when the session has touched more than one repo.
+
+---
+
 ## 2026-07-02 — v2.5.2 · Ambiguity protocol: never resolve an unclear instruction silently
 
 **What changed**

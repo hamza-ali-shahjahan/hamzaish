@@ -59,6 +59,12 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - Next.js 16+: use `proxy.ts`, not `middleware.ts`.
    - Set a noreply git email before the first commit (avoids push rejection).
    - Build locally before any deploy.
+   - **Multi-repo sessions: address, don't navigate.** Shell cwd does NOT reliably persist
+     across tool calls, and a compound `cd X && …` silently runs against the wrong repo when
+     the cd is skipped or reset. Always `git -C <abs-path>` for git, absolute paths for any
+     output-writing command (`curl -o`, redirects), and never `git add -A`/commit without
+     having just verified the target with `git -C <path> status`. (Incident 2026-07-02: a
+     build-stage commit swept another repo's uncommitted files under a wrong message.)
    - The starter ships tests + CI (`bun run test`, `bun run test:e2e`,
      `.github/workflows/ci.yml`). Don't strip them — extend them.
    - **Tidy at milestones.** At a launch, before `/ship`, or at the end of a sprint, offer
