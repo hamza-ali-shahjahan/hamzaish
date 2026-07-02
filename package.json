@@ -1,6 +1,6 @@
 {
   "name": "hamzaish",
-  "version": "2.4.1",
+  "version": "2.5.0",
   "private": true,
   "type": "module",
   "description": "The AI Co-builder & Startup OS — a brain + orchestrator for builders to run a portfolio of products from idea to scale.",
@@ -25,6 +25,7 @@
     "check-counts": "bun scripts/check-counts.ts",
     "check-evals": "bun scripts/check-evals.ts",
     "check-retro": "bun scripts/check-retro.ts",
+    "telemetry": "bun scripts/telemetry.ts",
     "tidy": "bun scripts/tidy.ts"
   },
   "_note": "Zero runtime dependencies — everything uses Bun + Node built-ins (bun:sqlite, node:fs, etc.). No `bun install` needed. Just `bun run setup`."

@@ -10,6 +10,26 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-02 — v2.5 · The portfolio gets senses: real Stripe / PostHog / Sentry connectors + `bun run telemetry`
+
+**What changed**
+
+- **Three of the four dashboard connectors are now real** (fetch-based, zero new dependencies, injectable fetch for tests): **Stripe** (active-subscription MRR normalized to monthly incl. year/week/day intervals and seat quantities, distinct paying customers, pagination, connected-account header, metered prices excluded rather than guessed) · **PostHog** (one HogQL query → 7d actives, 7d signups with configurable event name, WAU/MAU retention *proxy* — labeled as such) · **Sentry** (24h event pressure). **GSC stays honestly stubbed** — it needs OAuth, a scope boundary rather than a TODO.
+- **The lie is dead.** The v1 stubs returned `status: 'connected'` with hardcoded zeros — a keyed product read as "live, $0 MRR, 0 users." The honesty contract is now tested (11-test suite): no key → `not_connected`; API failure → `error` with nulls; `connected` means the numbers came from the API.
+- **`bun run telemetry [--json]`** (`scripts/telemetry.ts`) — the whole portfolio in one table from the factory CLI, runnable with zero installed dependencies. Verified live in the keyless state: renders every product with ⚪ not_connected and a one-line key hint.
+- **`/portfolio-pulse` step 6 now pulls it** — the snapshot's MRR / actives / errors columns come from data, with honest `—` for missing values. This is audit upgrade #4 ("the five most decision-heavy agents are the five blindest") closed at the data-source level; conductor and kill-or-double-down inherit it through the pulse.
+
+**Why**
+
+Portfolio decisions (focus, kill-or-double-down, pricing reviews) were running on a hand-updated markdown snapshot last touched 2026-06-07. A factory that enforces evidence everywhere else shouldn't allocate the operator's hours on stale prose.
+
+**Retro:** [meta/retros/2026-07-02-factory-telemetry-connectors.md](retros/2026-07-02-factory-telemetry-connectors.md)
+
+**What to revisit**
+
+- First keyed run: eyeball the computed MRR against the Stripe dashboard once before trusting it in reviews.
+- GSC connector (OAuth) and per-stage health_score weights — next telemetry increments.
+
 ## 2026-07-02 — v2.4.1 · /learn-loop "audit roadmap executed (v2.1→v2.4)": scored 5, promoted 2 — first run of the dual-scoring + ratification gate
 
 **What changed**
