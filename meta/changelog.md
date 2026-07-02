@@ -10,6 +10,20 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-02 — v2.1.1 · Guardrail: a PR can never again publish a stowaway local commit
+
+**What changed**
+
+- **`/pr` step 2 rewritten:** branch from `origin/main` explicitly (`git fetch origin && git switch -c change/<slug> origin/main`), never bare `git switch -c` off local `main` — on this machine, local main being ahead (auto-commit hooks, parallel sessions) is normal, and branching off it smuggles unpushed commits into the squash-merge.
+- **`/pr` step 4 added — pre-push scope check:** the reviewed list is `git diff origin/main --stat` (the *publish* set), not the staged list; plus the mirror completeness check (the v2.1 ship forgot to stage its own two guard scripts and went red in CI — both failure directions now have a step).
+- **Distilled:** new anti-pattern `brain/anti-patterns/pr-branch-from-ahead-local-main.md`; ledger line in BEST-PRACTICES.md (practices 134 → **135**, proven 32 → **33**); learning appended to `brain/learnings/2026-07-02.md`.
+
+**Why**
+
+During the v2.1 ship (PR #21), an unpushed `decisions(muakkil)` commit from a parallel session rode inside the squash and was published without an explicit decision. Content was benign (public-by-design product metadata) — the mechanism was not: the same path would publish a private note or a secret just as silently. The operator's instruction: make sure this can't happen again.
+
+**Retro:** skipped — five-file guardrail patch; context covered by today's [trust-loop retro](retros/2026-07-02-factory-trust-loop-phase1.md).
+
 ## 2026-07-02 — v2.1 · The trust loop, phase 1: eval ratchet, typed handoffs, enforced disciplines
 
 The first execution phase of the full-factory audit (the "close the trust loop" roadmap). Theme: convert declared discipline into enforced machinery — every one of these existed as a written rule; none had a mechanism.
