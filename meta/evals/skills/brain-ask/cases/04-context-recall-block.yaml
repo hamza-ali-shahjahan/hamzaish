@@ -1,0 +1,23 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: context-recall-block
+skill: brain-ask
+description: >
+  The --context mode (added v2.3) must emit a ready-to-inject briefing block:
+  the recall header, at least one grouped section, a cited path, and the
+  verify-before-relying footer. Deterministic only — no LLM involved.
+invoke:
+  cmd: ["bun", "brain/ask.ts", "--context", "--limit", "6", "agent-blind eval judge regression"]
+  timeout_ms: 15000
+preflight: { must_exist: ["brain/brain.db"], commands: ["bun"] }
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: '^### 🧠 Brain recall —'
+  - type: stdout_matches
+    regex: '^\*\*(Defenses \(anti-patterns\)|Learnings & decisions|Other context):\*\*'
+  - type: stdout_matches
+    regex: 'meta/evals/README\.md'
+  - type: stdout_matches
+    regex: 'Verify against the live file before relying'

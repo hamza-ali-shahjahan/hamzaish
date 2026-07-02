@@ -10,6 +10,27 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-02 — v2.3 · Phase 3: recall becomes push — the brain injects itself, the learning loop gets a second scorer and a ratification gate
+
+**What changed**
+
+- **`bun brain/ask.ts --context`** — a ready-to-inject session briefing block: **anti-patterns lead** (defenses beat context), then learnings/decisions, then the rest, with a verify-before-relying footer. New deterministic eval case `brain-ask/context-recall-block` — verified live PASS, baselined (brain-ask: 4 cases).
+- **`/work-on` injects recall automatically** (command + workflow step 7): two `--context` blocks at session start — the product's open threads, and the anti-patterns most relevant to today's action. Recall was pull (operator must remember to `/brain-ask`); now it's push — forgetting is impossible.
+- **Product learnings joined the brain.** `brain/ingest.ts` now indexes `products/*/learnings/` and `products/*/validation/` — closing the audit's cross-product-synthesis gap: lessons captured inside one product were invisible to the factory. (+5 documents on first re-ingest.)
+- **`/learn-loop` v2 — Movement 2 shape:** gathers product learnings as candidates (same problem in 2+ products = automatic strong Recurrence) · **dual independent scoring** (a fresh-context subagent scores blind to the first scorer's numbers; both composites must clear ≥24/35; disagreements ≥6 points are logged as signal, not smoothed over) · **propose → operator batch-ratification → promote** replaces score-and-write-in-one-pass. The loop proposes; the operator ratifies; nothing auto-promotes.
+- **Deliberately not attempted:** vector embeddings. Zero-dependency principle + no local embedder = FTS5 is the honest ceiling; `--context` extracts more from the index that exists rather than faking semantics. Revisit trigger recorded in the retro.
+
+**Why**
+
+Phase 3 of the audit roadmap ("compound the brain"). The factory's core promise is that product #2 starts smarter than product #1 — that only compounds if recall reaches the session without being asked for, and if lessons flow up from products into guardrails through an honest gate.
+
+**Retro:** [meta/retros/2026-07-02-factory-phase3-brain-recall.md](retros/2026-07-02-factory-phase3-brain-recall.md)
+
+**What to revisit**
+
+- Calibrate the dual-scoring disagreement threshold (≥6) after 2-3 real `/learn-loop` cycles.
+- Extend the two-block recall injection to `/builder-mode` and `/full-cycle` kickoffs (Phase 4 candidate).
+
 ## 2026-07-02 — v2.2 · Phase 2: the model policy is wired — right model for the right job, executed
 
 **What changed**

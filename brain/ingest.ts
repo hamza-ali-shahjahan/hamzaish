@@ -223,8 +223,11 @@ if (existsSync(productsAbs)) {
         if (f.endsWith(".md")) await ingestFile(f, "products/decisions");
       }
     }
-    // Launch / analytics / interviews docs
-    for (const sub of ["launch", "analytics", "interviews"]) {
+    // Launch / analytics / interviews / learnings / validation docs
+    // (learnings + validation added 2026-07-02: product learnings were invisible
+    // to the brain — the cross-product synthesis gap from the factory audit.
+    // /learn-loop now gathers them as promotion candidates.)
+    for (const sub of ["launch", "analytics", "interviews", "learnings", "validation"]) {
       const subDir = `${base}/${sub}`;
       if (existsSync(join(HAMZAISH_ROOT, subDir))) {
         for await (const f of walk(subDir, true)) {

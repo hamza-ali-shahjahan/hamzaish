@@ -19,8 +19,11 @@ Short version:
 4. List + read last 3 entries in `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/$ARGUMENTS/decisions/`
 5. Load stage-specific playbooks from `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/playbooks/<stage>-stage/` and note relevant agents under `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/agents/<stage>/`
 6. Read the product's own `CLAUDE.md` at `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/$ARGUMENTS-code/CLAUDE.md` (follow the symlink)
-7. Surface open threads: `bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --product $ARGUMENTS --limit 6 "open decisions blockers"`
-8. Announce: "Working on <name> — stage `<stage>`, sprint `<sprint>`. Code at `<absolute code_path>`. Today's action: `<from status.md>`. Ready."
+7. Inject brain recall (two blocks — recall is push, not pull):
+   - Open threads: `bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --context --product $ARGUMENTS --limit 6 "open decisions blockers risks"`
+   - Defenses for this stage: `bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --context --source brain/anti-patterns --limit 4 "<stage> <today's action keywords>"`
+   Read both blocks; they are point-in-time recall — verify against live files before relying on any line.
+8. Announce: "Working on <name> — stage `<stage>`, sprint `<sprint>`. Code at `<absolute code_path>`. Today's action: `<from status.md>`. Ready." Include the top recall hit if it changes today's action.
 
 Then wait for the user's next instruction.
 

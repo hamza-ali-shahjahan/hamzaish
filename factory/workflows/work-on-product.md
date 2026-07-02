@@ -45,11 +45,12 @@ The user should be able to make any request about the product immediately, and y
 
 7. **Load the product's own CLAUDE.md** at `products/<slug>-code/CLAUDE.md` if it exists. Note any product-specific conventions or Lovable round-trip rules.
 
-8. **Brain-ask for any open threads.** Run:
+8. **Inject brain recall — push, not pull.** Two `--context` blocks (added 2026-07-02; recall used to require the operator to remember to ask):
    ```
-   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --product <slug> --limit 6 "open decisions blockers"
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --context --product <slug> --limit 6 "open decisions blockers risks"
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --context --source brain/anti-patterns --limit 4 "<stage> <today's action keywords>"
    ```
-   Surface unresolved items.
+   The first surfaces unresolved threads; the second surfaces **defenses** — the anti-patterns most relevant to what today's session is about to do. Both are point-in-time recall: verify against the live file before relying on any line.
 
 9. **Enter the workspace.** State explicitly:
    > "Working on **<name>** — stage `<stage>`, sprint `<sprint>`. Code at `<code_path>`. Today's action: `<from status.md>`. Ready."
