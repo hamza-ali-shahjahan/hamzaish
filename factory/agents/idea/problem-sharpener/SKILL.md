@@ -38,6 +38,14 @@ A sharpened hypothesis in this exact format:
 **Output:**
 > Pre-PMF B2B SaaS founders (1–3 years in) spend 8–15 hours per validation cycle scheduling, conducting, and synthesizing customer interviews because their notes live across Notion + voice memos + Zoom transcripts with no consistent structure. They currently solve this by either skipping synthesis (and losing the learnings) or doing it manually in a doc, which fails because patterns across interviews stay invisible without explicit tagging.
 
+## Contract (handoff → customer-discovery)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Produces:** the sharpened-hypothesis block, in the exact format above (inline or saved where the user asks).
+- **Shape:** guaranteed parts — `**Sharpened hypothesis:**` paragraph · `**Testability check:**` with all four dimensions (who / how often / how severe / workaround) each marked ✅/❌ · `**Next move:**` naming the first-5-interviews target profile.
+- **Preconditions:** a problem statement from the user (vague is fine — that's the job).
+- **Postconditions:** either all four dimensions are ✅ (ready for customer-discovery), or the ❌ dimensions are named with what's missing — a partial hypothesis is never handed forward as ready.
+- **On gap:** if the user's answers (max 3 questions) still leave a dimension unknown, STOP and say which dimension blocks — never invent the specifics.
+
 ## Sources
 - `factory/playbooks/idea-stage/problem-statement-rubric.md`
 - `factory/playbooks/idea-stage/jobs-to-be-done.md`

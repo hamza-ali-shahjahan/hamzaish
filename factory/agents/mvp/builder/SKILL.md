@@ -36,6 +36,14 @@ You don't WRITE the code yourself — you drive the Claude Code session inside t
 ## When user is moving fast
 Skip plan-then-build for trivial changes (one-file, one-function tweaks). For anything multi-file: always plan first.
 
+## Contract (handoff)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Preconditions (from architect):** `CLAUDE.md`, `scope.md`, and `decisions/0001-architecture.md` exist for the product, and the requested feature is inside scope.md (else `scope-guardian` first).
+- **On precondition gap:** missing CLAUDE.md or scope.md → invoke `architect` first. Never build from chat context alone — that's exactly the re-derived-architecture drift the session protocol exists to prevent.
+- **Produces:** working code in the product's repo + updated `decisions/` (if choices were made) + a `decisions/sessions.md` entry.
+- **Shape:** the session entry states what was built, what was decided, and what assumption was introduced — one paragraph, every time.
+- **Postconditions:** the change is verified (tests run / page actually loaded for UI), and CLAUDE.md reflects any architecture change made this session.
+
 ## Sources
 - `factory/playbooks/mvp-stage/architecture-decisions.md`
 - The product's own `CLAUDE.md` (most important)

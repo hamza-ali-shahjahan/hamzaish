@@ -6,9 +6,32 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 > **Numbering note (2026-06-14).** Parallel build sessions left the version numbers non-contiguous, and that's fine — **entries are the source of truth; the numbers are advisory labels, not a guaranteed sequence.** `/release` reads entry headings in order and does not require contiguity. Specifics, for the record: some small commits (v1.5, v1.6, v1.12) were folded into a neighbouring entry rather than getting their own block; a few entries (v1.13–v1.16, v1.18, v1.22, v1.23) were committed via the GitHub web UI with non-`vX.Y` messages, so they appear here but not in `git log` version subjects; the duplicate-number collisions from 2026-06-13 (two v1.20s, two v1.21s) were de-duped in commit `4039f09`; and the v1.26 entry below had its header dropped in a rebase (rendering it as part of v1.27) — restored here from commit `6e06696`. Do **not** renumber historical entries: the numbers are mirrored in commit messages and the `v1.0.0` release tag, and renumbering would desync them.
 
-> **Releases vs entries (2026-06-28).** The `vX.Y` labels on entries below are *iteration notes*, **not releases** — full policy in [`docs/versioning.md`](../docs/versioning.md). A release is a semver git tag cut at a milestone via [`/release`](../factory/commands/release.md). **Current version: `2.0.0`** — the self-contained build OS (bundles every entry since the `v1.2.0` tag: the engine consolidation, the count/version guard, the new banner, the reality reconciliation). The version itself lives in the root `package.json` and is CI-guarded against drift — it had been stated four different ways across the repo before this.
+> **Releases vs entries (2026-06-28).** The `vX.Y` labels on entries below are *iteration notes*, **not releases** — full policy in [`docs/versioning.md`](../docs/versioning.md). A release is a semver git tag cut at a milestone via [`/release`](../factory/commands/release.md). **Current version: `2.1.0`** — the self-contained build OS (bundles every entry since the `v1.2.0` tag: the engine consolidation, the count/version guard, the new banner, the reality reconciliation). The version itself lives in the root `package.json` and is CI-guarded against drift — it had been stated four different ways across the repo before this.
 
 ---
+
+## 2026-07-02 — v2.1 · The trust loop, phase 1: eval ratchet, typed handoffs, enforced disciplines
+
+The first execution phase of the full-factory audit (the "close the trust loop" roadmap). Theme: convert declared discipline into enforced machinery — every one of these existed as a written rule; none had a mechanism.
+
+**What changed**
+
+- **Eval coverage is now a CI-enforced ratchet.** New guard `scripts/check-evals.ts` (+ `bun run check-evals`, wired into CI): a structural floor (every agent/skill SKILL.md must carry frontmatter name/description, orphaned playbook references warned), plus the debt rule from `meta/evals/README.md` made real — a **new** agent or skill cannot ship without an eval case; a **covered** entity that loses its cases is a blocked regression. Everything pre-existing is grandfathered *by name* in `meta/evals/coverage.json` (72 entries — the visible debt backlog; coverage % prints on every run). Why a ratchet and not a big bang: the harness's own rules (honest-green floors, LLM cost ceiling) forbid mass backfill — `brain/decision-log/2026-07-02-eval-coverage-ratchet.md`.
+- **Two new behavioral eval cases** — the first *agent* (vs. skill) evals: `problem-sharpener` (exact-format floor + specificity/no-solutioneering judge) and `devils-advocate` (template floor incl. ≥3 numbered assumptions + forced KILL/PIVOT/PROCEED verdict + structural-attack judge). Eval-covered entities: 3 → **5**.
+- **The six core agent handoffs are now typed contracts.** `factory/playbooks/mvp-stage/agent-handoff-contracts.md` — written 2026-06, applied to zero agents until today — now lives in 11 agent SKILL.mds as Contract blocks (Produces / Shape / Preconditions / Postconditions / On-gap): problem-sharpener → customer-discovery → interview-synthesizer · architect → builder · keyword-researcher → seo-strategist · pricing-strategist → pricing-optimizer · brand-story-builder → landing-page-copywriter. Highlights: the synthesizer refuses batches <5; the builder refuses to build from chat context alone; the keyword brief bans invented volumes; the pricing strategist must name the signals the optimizer will need a quarter later.
+- **Retro discipline is mechanical.** New guard `scripts/check-retro.ts` (+ CI): every changelog entry dated on/after 2026-07-02 must link a `meta/retros/` file (that exists) or carry an explicit `**Retro:** skipped — <reason>` line. Skipping stays legal; skipping silently doesn't. (Audit finding: 1 retro filed against a year with four launches.)
+- **Decision capture is a checklist item, not a virtue.** `meta/factory-improving-factory.md`'s end-of-session checklist and `/checkpoint` now ask the forced question — "did I make a call a future session could second-guess?" → `brain/decision-log/` (date · decision · why · wrong-if · revisit-trigger). (Audit finding: 1 logged decision against 15 products.)
+
+**Why**
+
+The 2026-07-02 audit's core diagnosis: Hamzaish's architecture is sound but ~60% of its promised value sat in a declared-but-not-wired state, and its two record-keeping disciplines ran on good intentions. Phase 1 targets the trust half: what the factory claims about itself (evals, handoffs, retros, decisions) is now checked by machinery, not memory.
+
+**Retro:** [meta/retros/2026-07-02-factory-trust-loop-phase1.md](retros/2026-07-02-factory-trust-loop-phase1.md) · Learnings: `brain/learnings/2026-07-02.md`
+
+**What to revisit**
+
+- Pay down the grandfathered eval debt in `/learn-loop`-boundary batches (next: the forced-verdict agents — scope-guardian, security-reviewer, interview-synthesizer — cheapest to floor deterministically).
+- Phase 2 of the roadmap: wire `factory/model-policy.md` into real agent spawning + finish `factory/runtime/loop.ts`.
 
 ## 2026-06-30 — v1.34 · Site audits, for first-timers: the factory now catches the "looks static, but it's live" trap
 

@@ -2,7 +2,7 @@
 
 Hamzaish uses **[Semantic Versioning](https://semver.org)** — `MAJOR.MINOR.PATCH` — with **one source of truth** and a CI guard, so the number can't drift across the repo. (It did once: `package.json` said `1.10.0`, this kind of note said `v1.4`, the changelog said `v1.31`, and the last released tag was `v1.2.0` — four different numbers, nothing reconciling them. Never again — that's what the guard is for.)
 
-**Current version: `2.0.0`** — *the self-contained build OS: the engineering engine ships in the repo, so a fresh clone builds end-to-end with nothing else installed.*
+**Current version: `2.1.0`** — *the trust loop starts closing: eval coverage becomes a CI-enforced ratchet, the six core agent handoffs become typed contracts, and the retro + decision-log disciplines get mechanical triggers instead of good intentions.*
 
 ## One source of truth
 

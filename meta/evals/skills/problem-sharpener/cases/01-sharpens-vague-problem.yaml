@@ -1,0 +1,63 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: sharpens-vague-problem
+skill: problem-sharpener
+description: >
+  Given a vague problem plus pre-answered clarifying facts, the agent must emit
+  its exact deliverable format: a sharpened hypothesis, the four-dimension
+  testability check, and a next-move line — and stay in its lane (sharpen the
+  problem, never pitch a product or start validating). Deterministic floor:
+  the format's required section markers. Judge gate: specificity and
+  no-solutioneering.
+invoke:
+  cmd:
+    - claude
+    - -p
+    - >-
+      Read factory/agents/idea/problem-sharpener/SKILL.md and execute its
+      protocol exactly on this input problem: "Freelancers struggle with
+      invoicing." You are running headless: never ask questions, never wait
+      for input. The protocol's clarifying questions are already answered:
+      who = solo freelance designers and developers in the US billing 3-8
+      clients per month; frequency = every monthly invoicing cycle; current
+      workaround = hand-editing a Word/Google-Docs invoice template and
+      tracking payment status in a spreadsheet. Output only the final
+      deliverable in the SKILL.md's exact format to stdout. Do not create or
+      modify any files.
+    - --model
+    - sonnet
+    - --allowedTools
+    - Read Glob Grep
+    - --max-turns
+    - "30"
+  timeout_ms: 480000
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: '\*\*Sharpened hypothesis:\*\*'
+  - type: stdout_matches
+    regex: '\*\*Testability check:\*\*'
+  - type: stdout_matches
+    regex: 'Who exactly:'
+  - type: stdout_matches
+    regex: 'How often:'
+  - type: stdout_matches
+    regex: 'How severe:'
+  - type: stdout_matches
+    regex: 'Current workaround named:'
+  - type: stdout_matches
+    regex: '\*\*Next move:\*\*'
+  - type: llm_judge
+    criteria:
+      - id: hypothesis_specific
+        requirement: >-
+          The sharpened hypothesis names a specific role and context, a
+          quantified cost (time, money, or effort), a named current
+          workaround, and that workaround's specific failure mode — not
+          generic filler like "freelancers waste time on invoicing".
+      - id: no_solutioneering
+        requirement: >-
+          The output sharpens the problem only: it does not pitch, name, or
+          describe a product/solution, and it does not claim the hypothesis
+          is validated — the next move is interviews, not a build.

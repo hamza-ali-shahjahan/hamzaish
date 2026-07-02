@@ -29,6 +29,14 @@ Use templates from `templates/claude-md-template.md` and `templates/scope-doc-te
 6. The scope.md uses the template format strictly. Don't paraphrase — every section gets filled.
 7. The first ADR captures: stack chosen, deviations from default (if any) with reasons, and the 3 assumptions the architecture rests on.
 
+## Contract (handoff → builder)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Preconditions:** a validated problem statement (problem-sharpener output) and, where interviews happened, the synthesis (interview-synthesizer output). If neither exists, say so — architecture on an unvalidated problem is a recorded bet, not a default.
+- **Produces:** `products/<name>/CLAUDE.md` + `products/<name>/scope.md` + `products/<name>/decisions/0001-architecture.md`.
+- **Shape:** CLAUDE.md carries goal / stack / dependencies-to-avoid / the must-be-true thing; scope.md is the template fully filled (including the doesn't-do list); the ADR names the stack, every deviation with its reason, and the 3 founding assumptions.
+- **Postconditions:** all three files ≤1 page; every stack deviation has an ADR reason; each founding assumption has a "wrong if" signal the builder can watch for.
+- **On gap:** if scope is ambiguous mid-conversation, STOP → `problem-sharpener`; don't invent scope to keep momentum.
+
 ## Sources
 - `factory/playbooks/mvp-stage/architecture-decisions.md`
 - `factory/playbooks/mvp-stage/claude-md-templates/` (pick the best-fitting one)

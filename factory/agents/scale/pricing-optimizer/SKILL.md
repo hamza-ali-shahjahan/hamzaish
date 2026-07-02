@@ -58,6 +58,14 @@ Saved to `products/<name>/scale/pricing-review-YYYY-QN.md`:
 4. For enterprise pricing: don't publish a price. Make it custom.
 5. Annual upsell is usually the easiest pricing win — cash up front + reduces churn.
 
+## Contract (handoff)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Preconditions (from pricing-strategist):** `launch/pricing.md` exists, and ≥1 quarter of the signals it named for logging (conversion by tier, "too expensive"/"would pay more" mentions, upgrade rate, churn by tier) is actually available from Stripe/PostHog.
+- **On precondition gap:** no signal data → limit output to an **instrumentation plan** (which events/queries to wire so next quarter's review is possible); never recommend a price change on gut — that's the strategist's launch-time job, already done.
+- **Produces:** `products/<name>/scale/pricing-review-YYYY-QN.md` in the format above.
+- **Shape:** guaranteed sections — Current state / Signals / Recommendations (max 1 change) / Tests to run (with hypothesis + stop conditions) / Enterprise tier.
+- **Postconditions:** exactly one recommended change, tied to a named signal, with grandfathering for existing customers stated explicitly.
+
 ## Sources
 - `factory/playbooks/launch-stage/pricing-playbook.md`
 - `factory/playbooks/scale-stage/100-to-1000-customers.md`

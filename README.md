@@ -12,7 +12,7 @@
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
-**[📚 134 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 65 skills & commands](#%EF%B8%8F-the-skills--commands-65) · [📖 41 playbooks](#-the-playbooks-41)**
+**[📚 134 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 66 skills & commands](#%EF%B8%8F-the-skills--commands-66) · [📖 41 playbooks](#-the-playbooks-41)**
 
 Every count real · every item linked · every claim marked ✅ proven / 🟡 partial / ⏳ research-baked → [What's inside](#whats-inside)
 
@@ -46,7 +46,7 @@ But most solo projects don't die in the build — they die in everything after i
 
 <a href="docs/start-here.md"><img src="docs/assets/start-here-banner.png" alt="Never used a terminal? Start here — no coding required; you just talk to an AI and it does the techie parts. macOS · Linux · Windows." width="100%"></a>
 
-**You can absolutely do this — no coding required.** **One honest catch first:** Hamzaish runs on **Claude Code**, which needs a **paid Claude plan** — **Claude Pro is ~$20/month** (like ChatGPT Plus). There's **no free tier**. Better to know now than five steps in.
+**You can absolutely do this — no coding required.** **One honest catch first:** Hamzaish runs on **Claude Code**, which needs a **paid Claude plan** — there's **no free tier**. Better to know that now than five steps in.
 
 If that's a yes, the path is the same on every computer: **get the Claude app → download Hamzaish (a ZIP, no git) → open the folder and type one sentence.** The AI installs what it needs, sets itself up, and starts building — you watch. The only thing that changes by machine is how you *start* Claude:
 
@@ -97,7 +97,7 @@ Safety: scaffolded products run agent-generated code inside a devcontainer, secr
 
 ## Go deeper
 
-[Start here — total beginner](docs/start-here.md) · [Your first product in 10 minutes](docs/your-first-product.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
+[Start here — total beginner](docs/start-here.md) · [Your first product in 10 minutes](docs/your-first-product.md) · [FAQ](docs/FAQ.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
 
 ---
 
@@ -178,9 +178,9 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 | [security-auditor](factory/agents/engineering/security-auditor/SKILL.md) | Hunts injection, authz gaps, secret exposure, unsafe deserialization |
 | [test-engineer](factory/agents/engineering/test-engineer/SKILL.md) | Designs and fills test coverage; reproduces bugs as failing tests |
 
-## 🛠️ The skills & commands (65)
+## 🛠️ The skills & commands (66)
 
-41 skills + 24 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder. The 22 engineering-cycle skills + their commands ship in-repo (21 consolidated from the `agent-skills` project + `feature-slicing`), so the build engine comes with this repo (see the engineering cycle below).
+42 skills + 24 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder. The 22 engineering-cycle skills + their commands ship in-repo (21 consolidated from the `agent-skills` project + `feature-slicing`), so the build engine comes with this repo (see the engineering cycle below).
 
 | Invoke | What it does |
 |---|---|

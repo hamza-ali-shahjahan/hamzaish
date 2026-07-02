@@ -57,6 +57,14 @@ For <target customer> who <statement of need>, <product name> is the <market cat
 5. Naming: run the check honestly. If the name fails, recommend 3 alternatives.
 6. Anti-positioning is the most underused brand exercise — force it.
 
+## Contract (handoff → landing-page-copywriter / content-marketer / cold-outreach)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Produces:** `products/<name>/launch/brand.md` in the format above.
+- **Shape:** guaranteed sections — Positioning statement (Dunford structure, every slot filled) / Origin story / Voice & tone (both sound-like AND don't-sound-like lists, plus never-use phrases) / Visual primitives / Naming check verdict / Taglines / Anti-positioning.
+- **Preconditions:** the validated persona (interview synthesis where it exists) and the competitor picture (competitor-mapper output or `/competitor-research`).
+- **Postconditions:** the positioning names a *real* competitive alternative (a product or the actual manual workaround — never a strawman); the naming check has an explicit ✅/⚠️/❌ result, with ❌ routed to `/name-clearance` before anything downstream uses the name.
+- **On gap:** no interview data → mark voice/positioning as founder-hypothesis (not customer-derived) so downstream copy knows which language is validated and which is a guess.
+
 ## Sources
 - `factory/playbooks/launch-stage/seo-content-strategy.md` (for naming/SEO interaction)
 - `factory/playbooks/founders-wisdom/100k-arr-tactics.md`

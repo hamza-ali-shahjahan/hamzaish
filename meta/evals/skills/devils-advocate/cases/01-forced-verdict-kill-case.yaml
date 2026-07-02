@@ -1,0 +1,68 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: forced-verdict-kill-case
+skill: devils-advocate
+description: >
+  The devil's advocate must produce its full deliverable (kill case, hidden
+  assumptions, disconfirming evidence, failed analogs, surviving version) and
+  FORCE exactly one verdict — no hedging. Deterministic floor: the template's
+  section headers, >=3 numbered assumptions, and a verdict keyword. Judge
+  gate: the kill case attacks structure (market dynamics, switching costs,
+  distribution) rather than surface execution, and the verdict is committed,
+  not fence-sitting. The input idea is deliberately weak-moated; the case
+  does NOT prescribe which verdict is correct — only that one is chosen and
+  argued.
+invoke:
+  cmd:
+    - claude
+    - -p
+    - >-
+      Read factory/agents/idea/devils-advocate/SKILL.md and execute its
+      protocol exactly on this idea: "A $9/month subscription web app that
+      uses AI to generate a personalized daily motivational quote and action
+      prompt for entrepreneurs, delivered by email." You are running
+      headless: never ask questions, never wait for input. Web search is
+      unavailable in this environment — for failed analogs, rely on prior
+      products you already know of and say so plainly. Output only the final
+      deliverable in the SKILL.md's exact format to stdout. Do not create or
+      modify any files.
+    - --model
+    - sonnet
+    - --allowedTools
+    - Read Glob Grep
+    - --max-turns
+    - "30"
+  timeout_ms: 480000
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: '^## The kill case'
+  - type: stdout_matches
+    regex: '^## Hidden assumptions'
+  - type: stdout_count_min
+    regex: '^[0-9]+\. '
+    min: 3
+  - type: stdout_matches
+    regex: '^## Disconfirming evidence'
+  - type: stdout_matches
+    regex: '^## Failed analogs'
+  - type: stdout_matches
+    regex: '^## The version that survives'
+  - type: stdout_matches
+    regex: '^## Verdict'
+  - type: stdout_matches
+    regex: '(KILL|PIVOT|PROCEED)'
+  - type: llm_judge
+    criteria:
+      - id: structural_attack
+        requirement: >-
+          The kill case attacks the value proposition and structural factors
+          (willingness to pay, churn dynamics, substitutes, distribution,
+          switching costs) — not surface execution details like UI quality
+          or marketing polish.
+      - id: committed_verdict
+        requirement: >-
+          Exactly one of KILL / PIVOT / PROCEED is chosen and argued as the
+          verdict; the output does not hedge with "it depends", "more data
+          needed", or multiple simultaneous verdicts.

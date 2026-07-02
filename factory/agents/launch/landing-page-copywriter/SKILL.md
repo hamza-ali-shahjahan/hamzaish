@@ -57,6 +57,14 @@ Restate the primary CTA + add a guarantee or risk-reduction (free trial, money-b
 - Use the customer's words, not yours. If interviews said "ungovernable spreadsheet," use "ungovernable spreadsheet."
 - Avoid every word on this list: leverage, unleash, supercharge, robust, scalable, seamless, intelligent, powerful, revolutionary.
 
+## Contract (handoff)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Preconditions (from brand-story-builder + interview-synthesizer):** `launch/brand.md` exists (voice + positioning are its API); interview synthesis exists for the problem bullets and objections/FAQ.
+- **On precondition gap:** missing brand.md → run `brand-story-builder` first (copy written before positioning gets rewritten after it — do it once). Missing synthesis → write the objections section anyway but mark each as **assumption, needs validation** — never present invented objections as customer language.
+- **Produces:** `products/<name>/launch/landing-copy.md` in the format above.
+- **Shape:** guaranteed sections — Above the fold / Problem / Solution (3 props) / How it works (≤3 steps) / Social proof / Objections FAQ / Final CTA.
+- **Postconditions:** headline and problem bullets use words that appear in interview quotes where they exist; zero banned buzzwords; every CTA is verb + outcome.
+
 ## Sources
 - `factory/playbooks/launch-stage/seo-content-strategy.md`
 - `factory/playbooks/launch-stage/first-100-customers.md`

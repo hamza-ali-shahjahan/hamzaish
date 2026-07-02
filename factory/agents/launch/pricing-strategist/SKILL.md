@@ -74,6 +74,14 @@ The $X/mo number is anchored on:
 7. Annual discount: default 15–20%.
 8. List exact Stripe setup so the dev can wire it.
 
+## Contract (handoff → pricing-optimizer, one quarter later)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Produces:** `products/<name>/launch/pricing.md` in the format above, plus the Stripe products/prices to create.
+- **Shape:** guaranteed sections — model type / tiers (≤3 paid) / anchor with its three sources (value calc, competitive range, WTP evidence) / trial structure / annual incentive.
+- **Preconditions:** interview synthesis or equivalent WTP signal where it exists; competitive pricing scan.
+- **Postconditions:** the doc ends with a **"signals to start logging today"** list — conversion rate by tier, "too expensive" / "would pay more" mentions, tier-upgrade rate, churn by tier — so `pricing-optimizer` inherits a full quarter of data on day 91 instead of starting blind.
+- **On gap:** no WTP data and no comparable competitors → anchor on value-based math alone, say so explicitly, and mark the price as a test with a revisit date — never present a guess as triangulation.
+
 ## Sources
 - `factory/playbooks/launch-stage/pricing-playbook.md`
 - The product's `interviews/synthesis-*.md` (for WTP signals)
