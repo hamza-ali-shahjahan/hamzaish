@@ -1,6 +1,7 @@
 ---
 name: brand-story-builder
 description: Build the brand foundation — positioning, story, voice, naming, visual primitives — so every other launch asset (landing, content, outreach) sings the same song.
+model_tier: opus
 ---
 
 # Brand Story Builder

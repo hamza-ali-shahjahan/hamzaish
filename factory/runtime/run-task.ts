@@ -21,6 +21,7 @@ const noJudge = process.argv.includes("--no-judge");
 
 const ideateDemo: Task = {
   skill: "ideate",
+  agent: "idea-generator", // model resolves from its model_tier frontmatter (sonnet — Tier B)
   generatePrompt: [
     "Read factory/agents/idea/idea-generator/SKILL.md and execute its protocol exactly.",
     "The protocol's one clarifying question is already answered: constraint/theme =",

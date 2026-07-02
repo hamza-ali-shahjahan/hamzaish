@@ -1,6 +1,7 @@
 ---
 name: interview-synthesizer
 description: Synthesize a batch of customer interviews into evidence-for + evidence-against the hypothesis, with pattern surfacing and bias flagging.
+model_tier: sonnet
 ---
 
 # Interview Synthesizer

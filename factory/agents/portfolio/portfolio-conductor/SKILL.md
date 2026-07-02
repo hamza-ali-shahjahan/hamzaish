@@ -1,6 +1,7 @@
 ---
 name: portfolio-conductor
 description: Decide where attention goes today across the 10-product portfolio. The "if you had 4 hours to work on the portfolio, do this" agent.
+model_tier: opus
 ---
 
 # Portfolio Conductor

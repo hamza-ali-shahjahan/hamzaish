@@ -1,6 +1,7 @@
 ---
 name: pricing-optimizer
 description: Iterate pricing post-PMF based on real data — willingness to pay, expansion revenue, packaging tweaks, annual upsell, enterprise pricing.
+model_tier: opus
 ---
 
 # Pricing Optimizer

@@ -1,6 +1,7 @@
 ---
 name: content-marketer
 description: Build content calendars and draft individual pieces — blog posts, social, LinkedIn, threads — anchored on keyword research and brand voice.
+model_tier: sonnet
 ---
 
 # Content Marketer

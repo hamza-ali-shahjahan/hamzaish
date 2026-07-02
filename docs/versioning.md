@@ -2,7 +2,7 @@
 
 Hamzaish uses **[Semantic Versioning](https://semver.org)** — `MAJOR.MINOR.PATCH` — with **one source of truth** and a CI guard, so the number can't drift across the repo. (It did once: `package.json` said `1.10.0`, this kind of note said `v1.4`, the changelog said `v1.31`, and the last released tag was `v1.2.0` — four different numbers, nothing reconciling them. Never again — that's what the guard is for.)
 
-**Current version: `2.1.1`** — *the trust loop starts closing: eval coverage is a CI-enforced ratchet, the six core agent handoffs are typed contracts, the retro + decision-log disciplines have mechanical triggers — and `/pr` can no longer publish a stowaway local commit.*
+**Current version: `2.2.0`** — *the model policy is wired: every agent carries its tier as frontmatter, a tested resolver reads it at the spawn boundary, and stakes escalation (auth/payments/migrations → top tier) is active, up-only.*
 
 ## One source of truth
 

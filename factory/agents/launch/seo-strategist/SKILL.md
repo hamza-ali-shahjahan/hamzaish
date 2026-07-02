@@ -1,6 +1,7 @@
 ---
 name: seo-strategist
 description: Build the SEO strategy — content hubs, target keywords, internal linking, schema, technical baseline — for a product that needs organic growth.
+model_tier: sonnet
 ---
 
 # SEO Strategist

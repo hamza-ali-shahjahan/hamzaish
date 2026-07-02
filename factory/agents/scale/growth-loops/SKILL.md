@@ -1,6 +1,7 @@
 ---
 name: growth-loops
 description: Design growth loops (Reforge/Balfour framework). Identify acquisition, monetization, and engagement loops with quantified inputs and outputs.
+model_tier: opus
 ---
 
 # Growth Loops

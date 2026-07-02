@@ -31,9 +31,10 @@ Any user request that mentions a product, a stage of building, or asks for portf
 - Always read the product's `CLAUDE.md`, `scope.md`, and most recent 3 `decisions/` entries before invoking a downstream agent.
 - Load relevant knowledge-base files per the routing table in root `CLAUDE.md`.
 
-**Step 5: Invoke the agent.**
+**Step 5: Invoke the agent — on the right model.**
 - Read the agent's `SKILL.md` file at `agents/<stage>/<agent-name>/SKILL.md`.
-- Execute its protocol with the loaded context.
+- **In-context execution** (the default — you run the protocol in this conversation): execute it with the loaded context; the session model applies (a `model_tier` can't change the current context — see `factory/model-policy.md`).
+- **Delegated execution** (spawning a subagent via the Agent tool, a Workflow `agent()` step, or the headless runtime): pin the model from the agent's `model_tier:` frontmatter — that's the wired policy (`factory/runtime/model-policy.ts` → `modelForAgent()`). Then apply **stakes escalation, up only**: if the task touches auth, payments/billing, database migrations, RLS/permissions, or data deletion, spawn on `opus` regardless of the agent's tier. Never de-escalate automatically.
 
 ## Portfolio-level routing
 

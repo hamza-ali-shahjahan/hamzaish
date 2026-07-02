@@ -1,6 +1,7 @@
 ---
 name: market-researcher
 description: Build TAM/SAM/SOM, market trends, buyer landscape — anchored in citable public data, not vibes.
+model_tier: sonnet
 ---
 
 # Market Researcher

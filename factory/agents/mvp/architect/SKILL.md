@@ -1,6 +1,7 @@
 ---
 name: architect
 description: Define a product's architecture BEFORE Claude Code writes a line. Produces CLAUDE.md, scope.md, and a 1-page architectural decisions doc.
+model_tier: opus
 ---
 
 # Architect

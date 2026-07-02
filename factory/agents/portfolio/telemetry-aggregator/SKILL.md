@@ -1,6 +1,7 @@
 ---
 name: telemetry-aggregator
 description: Pull metrics across all products into a single view. Powers the dashboard and the daily/weekly briefings.
+model_tier: haiku
 ---
 
 # Telemetry Aggregator

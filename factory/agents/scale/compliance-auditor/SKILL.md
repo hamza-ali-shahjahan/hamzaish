@@ -1,6 +1,7 @@
 ---
 name: compliance-auditor
 description: Pre-enterprise compliance check — SOC2 / GDPR / HIPAA / CCPA gap analysis with prioritized remediation. Not a substitute for real audit.
+model_tier: opus
 ---
 
 # Compliance Auditor

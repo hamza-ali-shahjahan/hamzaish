@@ -1,6 +1,7 @@
 ---
 name: cold-outreach
 description: First 100 customers by hand. Sourcing → personalized cold messages → follow-up cadence → tracking. Volume × signal, not spam.
+model_tier: sonnet
 ---
 
 # Cold Outreach
