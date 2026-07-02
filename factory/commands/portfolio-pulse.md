@@ -19,7 +19,11 @@ Short version:
    **Showcase rule (yours vs the maintainer's):** read `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/code-paths.local.json`. Products registered there (or scaffolded by you) are **your portfolio** — the main table. Committed products NOT in your code-paths map are the **maintainer's showcase** — render them as one collapsed line at the bottom ("Showcase — N products built by the maintainer: <names>"), never in your priorities. If `code-paths.local.json` is missing or its map is empty, ALL repo products are showcase: say "Your factory is empty — start with /scaffold or /hamzaish" instead of prioritizing someone else's work.
 4. For each product, read `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/<slug>/product.config.json` and `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/<slug>/status.md`. Note stage, sprint, "today's action."
 5. Invoke `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/agents/portfolio/portfolio-conductor/SKILL.md` for prioritization (read the agent prompt, follow its protocol).
-6. If telemetry is wired (PostHog/Sentry/Stripe IDs in config), invoke `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/agents/portfolio/telemetry-aggregator/SKILL.md`. If no telemetry IDs are set, skip metrics columns and note "no telemetry connected" for those products.
+6. **Pull real telemetry** (wired 2026-07-02 — live Stripe MRR, PostHog actives/signups + WAU/MAU, Sentry error pressure):
+   ```
+   bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/scripts/telemetry.ts --json
+   ```
+   Fill the snapshot's metrics columns from this output. Connectors degrade honestly (no key → `not_connected`, API failure → `error` — never invented numbers): render missing values as `—`, and if everything is not_connected, say so once ("telemetry keys not set — see scripts/telemetry.ts header") instead of per-row noise. The deeper aggregation protocol stays `factory/agents/portfolio/telemetry-aggregator/SKILL.md`.
 7. Output the standardized format:
 
 ```
