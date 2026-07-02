@@ -26,27 +26,45 @@ Never dump raw git unless asked.
    - **Secret scan the staged diff** (gitleaks if present, else grep for key patterns).
      If anything looks like a secret → **abort before pushing**, tell the user.
 
-2. **Branch.** `git switch -c change/<kebab-slug-from-$ARGUMENTS>` off latest `main`.
+2. **Branch — from `origin/main`, never local `main`.**
+   `git fetch origin && git switch -c change/<kebab-slug-from-$ARGUMENTS> origin/main`.
+   Local `main` may carry unpushed commits from parallel sessions; branching off it
+   smuggles them into the squash and **publishes work nobody reviewed** (this happened:
+   2026-07-02, PR #21 — see `brain/anti-patterns/pr-branch-from-ahead-local-main.md`).
+   If local `main` is ahead of `origin/main`, say so out loud — those commits are NOT
+   part of this ship unless the user says they are.
+   (Branching from `origin/main` detaches from the working tree's base but keeps the
+   working-tree changes — exactly what we want staged.)
 
 3. **Commit.** Real, specific message (Conventional-Commits style: `type(scope): summary`).
 
-4. **Push.** `git push -u origin <branch>`.
+4. **Pre-push scope check (the only diff that matters is vs `origin/main`).**
+   - `git diff origin/main --stat` — read the file list once more; it must contain
+     **only** the intended files. A file you don't recognize → stop and ask.
+   - Completeness, the mirror check: does the commit reference anything not in the
+     list? (A script named in package.json/CI, a file a doc links to.) Staging by
+     curated list can *omit* as easily as `git add -A` over-includes — the v2.1 ship
+     forgot its own guard scripts and went red in CI.
 
-5. **Open the PR.** `gh pr create --fill` (or a written title/body from the diff).
+5. **Push.** `git push -u origin <branch>`.
+
+6. **Open the PR.** `gh pr create --fill` (or a written title/body from the diff).
    Show the user the PR URL.
 
-6. **Wait for CI.** `gh pr checks <branch> --watch`.
+7. **Wait for CI.** `gh pr checks <branch> --watch`.
    - **Green → continue.**
    - **Red → STOP.** Show which check failed (`gh run view`), explain it plainly,
      offer to fix. Never merge a red PR.
 
-7. **Squash-merge.** `gh pr merge <branch> --squash --delete-branch`. One tidy
+8. **Squash-merge.** `gh pr merge <branch> --squash --delete-branch`. One tidy
    commit on `main`; branch removed. If GitHub reports the branch is behind
    (a parallel session pushed) → `gh pr update-branch` (or rebase) then merge.
 
-8. **Sync local.** `git switch main && git pull --ff-only`.
+9. **Sync local.** `git switch main && git pull --ff-only`. If this fails with
+   "diverged", local `main` has unpushed commits — `git pull --rebase` and tell the
+   user those commits exist locally but are **not** published.
 
-9. **(Optional) Release.** If the user says this is a release point, `git tag vX.Y.Z`
+10. **(Optional) Release.** If the user says this is a release point, `git tag vX.Y.Z`
    + `gh release create` with notes — the moment the
    [release-cadence playbook](../playbooks/launch-stage/release-cadence-as-content.md)
    turns into a content atom. Offer it, don't force it.
