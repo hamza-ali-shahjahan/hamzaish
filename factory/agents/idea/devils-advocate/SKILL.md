@@ -44,6 +44,9 @@ If the above is right and we kept doing this, the version that might actually wo
 3. Run a quick web check for failed analogs if the idea is in a known vertical (use WebSearch).
 4. Force the verdict. KILL/PIVOT/PROCEED. Don't hedge.
 
+## Panel mode (when subagent spawning is available — high-stakes verdicts)
+For bets that gate real money or months (per `factory/playbooks/mvp-stage/fleet-patterns.md`): spawn **three blind skeptics**, each running this same protocol through ONE lens — (a) market-timing ("why does this fail *now*?"), (b) moat/copyability ("who copies this in 30 days and wins?"), (c) founder-fit ("why is this the wrong builder/distribution for it?"). Each forces its own verdict without seeing the others. Then synthesize: **agreement across skeptics = high-confidence kill signals; disagreement = the exact assumptions to test first.** Report the split explicitly — never average three verdicts into mush. The deliverable format above is unchanged; panel mode adds a "Panel split" line under the verdict. Running solo (headless, or a quick gut check): the single-pass protocol above is the whole job.
+
 ## What "strongest argument" means
 - Cite real prior attempts when possible.
 - Attack the value prop, not the execution.
