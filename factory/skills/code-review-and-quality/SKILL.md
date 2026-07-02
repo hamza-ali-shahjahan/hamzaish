@@ -204,6 +204,16 @@ our project conventions. The spec says [X]. The change should [Y].
 Flag any issues as Critical, Important, or Suggestion.
 ```
 
+### Fleet mode — the five axes as five blind reviewers
+
+When subagent spawning is available and the change gates something real (a merge to main, a production deploy), upgrade the multi-model pattern to the full fleet shape (`factory/playbooks/mvp-stage/fleet-patterns.md`):
+
+1. **Fan out blind:** five concurrent reviewers, one per axis (correctness, readability, architecture, security, performance), each getting the diff + spec + its axis only — none sees another's findings.
+2. **Verify adversarially:** every **Critical** finding gets a fresh refuter ("prove this isn't real — default to refuted if uncertain", top model tier) before it's allowed to block the merge. Plausible-but-wrong Criticals are what erode trust in review; the refuter is the filter.
+3. **Synthesize:** dedupe across axes, report agreements (multiple axes flagging the same lines = highest priority), surface disagreements explicitly, and force the verdict — APPROVE or REQUEST CHANGES.
+
+Serial five-axis review (this skill's default) stays fully valid for everyday changes — fleet mode is for gates, not for every diff.
+
 ## Dead Code Hygiene
 
 After any refactoring or implementation change, check for orphaned code:

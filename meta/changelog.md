@@ -10,6 +10,26 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-02 — v2.4 · Phase 4: the heavy protocols go fleet-native — fan out blind, verify adversarially, synthesize with a judge
+
+**What changed**
+
+- **New playbook `factory/playbooks/mvp-stage/fleet-patterns.md`** (playbooks 41 → **42**) — the canonical multi-agent shape, written once: (1) fan out blind workers (independence is the signal — agreement between workers who read each other is contagion); (2) every blocking/killing/gating finding faces a refuter that defaults to *refuted* (unverifiable findings are reported as unverified, never silently dropped, never allowed to block); (3) a judge synthesizes, reporting **disagreement as output** rather than averaging it away. Verifiers/judges run on the top model tier via the wired policy.
+- **Wired into the five gate-holding protocols:** `/validate` (4 idea agents fan out blind on the raw idea; kill case AND strongest FOR evidence each get a refuter; snapshot carries the agreement/disagreement map) · `/security-check` (blind per-category workers; a FAIL must survive refutation to BLOCK) · `code-review-and-quality` (five axes as five blind reviewers; Criticals adversarially verified before gating) · `devils-advocate` **panel mode** (three blind skeptic lenses — market-timing / moat-copyability / founder-fit; splits reported, never averaged) · `kill-or-double-down` (one analyst per product, blind to siblings — anti-halo; DOUBLE-DOWN challenged against the PMF hard rule).
+- **Serial stays first-class:** every protocol still runs in one context with identical deliverables — fleet mode activates when subagent spawning is available and the verdict gates something real. The devils-advocate eval was re-run after the change: **PASS** (the solo contract is untouched).
+- **Phase-3 carryover:** `/full-cycle` Step 0 now injects the brain-recall block (defenses first) before pinning the goal.
+
+**Why**
+
+Phase 4 (final) of the 2026-07-02 audit roadmap. Adversarial verification and independent perspectives are the two rigor upgrades a single context structurally cannot give itself; with the model policy wired (v2.2) and recall push-based (v2.3), the fleet shape is the natural execution substrate for every verdict that gates a launch, a merge, or a kill.
+
+**Retro:** [meta/retros/2026-07-02-factory-phase4-fleet-patterns.md](retros/2026-07-02-factory-phase4-fleet-patterns.md)
+
+**What to revisit**
+
+- A `Task[]` fan-out helper in `factory/runtime/` so the headless loop can run fleets, not just single tasks (after the first real interactive fleet run).
+- Run `/learn-loop` v2 on this whole four-phase cycle — it's a textbook major-cycle boundary.
+
 ## 2026-07-02 — v2.3 · Phase 3: recall becomes push — the brain injects itself, the learning loop gets a second scorer and a ratification gate
 
 **What changed**

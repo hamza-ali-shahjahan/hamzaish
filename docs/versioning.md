@@ -2,7 +2,7 @@
 
 Hamzaish uses **[Semantic Versioning](https://semver.org)** — `MAJOR.MINOR.PATCH` — with **one source of truth** and a CI guard, so the number can't drift across the repo. (It did once: `package.json` said `1.10.0`, this kind of note said `v1.4`, the changelog said `v1.31`, and the last released tag was `v1.2.0` — four different numbers, nothing reconciling them. Never again — that's what the guard is for.)
 
-**Current version: `2.3.0`** — *recall is push, not pull: `/work-on` auto-injects brain recall (anti-patterns first), product learnings feed the promotion pipeline, and `/learn-loop` promotes only what two independent scorers agree on and the operator ratifies.*
+**Current version: `2.4.0`** — *the heavy protocols are fleet-native: validation, security, review, devil's advocacy, and portfolio verdicts fan out blind, face adversarial refuters, and synthesize with a judge that reports disagreement instead of averaging it away.*
 
 ## One source of truth
 

@@ -13,6 +13,10 @@ silently. Companion to `/ship` and `docs/security.md`.
 If `$ARGUMENTS` is empty, ask which product (or `Read ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/_portfolio.md` to list). Resolve the code path from
 `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/products/$ARGUMENTS/product.config.json` → `code_path` (the code lives at the absolute path it maps to). Run the checks **in that product's code repo**.
 
+## Fleet mode (when subagent spawning is available)
+
+Per `factory/playbooks/mvp-stage/fleet-patterns.md`: run the categories below as **blind parallel workers** (one per numbered section, each seeing only the repo + its own section), then — before any FAIL becomes a BLOCK — spawn a **refuter** per would-be blocker whose job is to disprove it ("default to refuted if uncertain"; verifiers run on the top model tier). Only findings that survive refutation block; unverifiable ones are reported as *unverified*, never silently dropped. Serial execution (below, in order) remains fully valid and is the headless default — same verdict format either way.
+
 ## Run these checks
 
 ### 0. Backend reality check (is there even a backend? — do this FIRST)

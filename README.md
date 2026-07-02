@@ -12,7 +12,7 @@
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
-**[📚 135 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 66 skills & commands](#%EF%B8%8F-the-skills--commands-66) · [📖 41 playbooks](#-the-playbooks-41)**
+**[📚 135 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 66 skills & commands](#%EF%B8%8F-the-skills--commands-66) · [📖 42 playbooks](#-the-playbooks-42)**
 
 Every count real · every item linked · every claim marked ✅ proven / 🟡 partial / ⏳ research-baked → [What's inside](#whats-inside)
 
@@ -90,7 +90,7 @@ Safety: scaffolded products run agent-generated code inside a devcontainer, secr
 
 - **[35 agents](#-the-agents-35) — lifecycle + engineering** — idea validation, architecture, scope-guarding, security review, landing copy, SEO, pricing, cold outreach, retention, kill-or-double-down, plus engineering subagents (code review, security audit, test). Not just builders: the *after-the-build* crew.
 - **[A pre-launch security gate that blocks.](factory/playbooks/mvp-stage/security-checklist.md)** 70 concrete checks (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict.
-- **[41 playbooks](#-the-playbooks-41) + [135 distilled practices](BEST-PRACTICES.md)** — launch sequencing, first-100-customers, pricing, production ops. Short, sourced, and honestly badged: proven by a real ship, or marked research-baked until it is.
+- **[42 playbooks](#-the-playbooks-42) + [135 distilled practices](BEST-PRACTICES.md)** — launch sequencing, first-100-customers, pricing, production ops. Short, sourced, and honestly badged: proven by a real ship, or marked research-baked until it is.
 - **A brain that remembers.** SQLite-indexed learnings, decisions, and anti-patterns, searchable from any session via `/brain-ask`. Your second product starts smarter than your first. ([brain/](brain/))
 - **Sane infra defaults** — Next.js + Supabase + Stripe + Resend + PostHog + Sentry, free-tier-first, pre-wired in every scaffold. ([the stack, and the accounts you set up once →](stack/README.md))
 - **Portfolio discipline** — `/portfolio-pulse` across everything you run; quarterly kill-or-double-down so zombie projects don't eat your year.
@@ -235,7 +235,7 @@ Consolidated into Hamzaish so the build engine ships **with** the repo (no separ
 
 Backed by **22 engineering skills** under [`factory/skills/`](factory/skills/) — feature-slicing, spec-driven-development, planning-and-task-breakdown, incremental-implementation, test-driven-development, debugging-and-error-recovery, code-review-and-quality, security-and-hardening, performance-optimization, frontend-ui-engineering, api-and-interface-design, browser-testing-with-devtools, ci-cd-and-automation, documentation-and-adrs, git-workflow-and-versioning, source-driven-development, context-engineering, deprecation-and-migration, code-simplification, shipping-and-launch, idea-refine, auto-orchestrator — invoked by name as the cycle runs.
 
-## 📖 The playbooks (41)
+## 📖 The playbooks (42)
 
 Short (300–800 words), sourced, stage-gated. The [practices ledger](BEST-PRACTICES.md) is the scannable index over these.
 

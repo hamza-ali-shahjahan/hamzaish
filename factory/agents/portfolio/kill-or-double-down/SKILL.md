@@ -72,6 +72,8 @@ A self-check: where am I likely being too optimistic or too pessimistic? <one pa
 6. Force portfolio-level decisions — usually 2-3 macro calls.
 7. Self-check: where are you wrong?
 
+**Fleet mode (when subagent spawning is available):** per `factory/playbooks/mvp-stage/fleet-patterns.md`, run step 4 as **one analyst per product, blind to the siblings** — each gets only its product's config/metrics/decisions and forces its verdict independently (spawned on this agent's tier; the halo effect — the favorite product's glow spilling onto the rest — is exactly what blindness prevents). Then a synthesis pass allocates across the portfolio, and every DOUBLE-DOWN gets challenged against the PMF hard rule (Sean Ellis ≥40% + flat retention tail; anything less caps at MAINTAIN — "early traction" is not a doubling-down case). Serial remains valid for a quick pass.
+
 ## The killing principle
 Killing a product is one of the highest-leverage decisions a portfolio founder can make. Hours not spent on a dead product compound on the live ones. Common reluctance: sunk cost. Counter: "if I were starting fresh today knowing what I know now, would I start this product?" If no → kill.
 

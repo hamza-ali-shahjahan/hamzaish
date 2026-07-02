@@ -17,7 +17,9 @@ The **goal** is pinned at kickoff; **slice** cuts it into features that can each
 
 ## Step 0 — Kickoff + GOAL
 
-Before invoking any skill, post a one-line summary of what you understood the user wants to build, **and pin the goal**: name what "done" looks like in one measurable line — the outcome that proves it works. Keep it light by default; if the target is fuzzy, ambitious, or game-able, run **`/write-a-goal`** first to forge a reachable goal (a precise metric + ≥2 evals + an acceptance rule + non-goals). Everything downstream — the slices, the spec, the tests — flows from this goal.
+Before anything, **inject brain recall** (defenses first — same pattern as `/work-on` step 7): `bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ask.ts --context --limit 5 "<the build's key nouns>"` — the anti-patterns and prior lessons most relevant to what's about to be built, before it's built. Point-in-time recall; verify before relying.
+
+Then post a one-line summary of what you understood the user wants to build, **and pin the goal**: name what "done" looks like in one measurable line — the outcome that proves it works. Keep it light by default; if the target is fuzzy, ambitious, or game-able, run **`/write-a-goal`** first to forge a reachable goal (a precise metric + ≥2 evals + an acceptance rule + non-goals). Everything downstream — the slices, the spec, the tests — flows from this goal.
 
 Then ask:
 

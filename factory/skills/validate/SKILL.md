@@ -22,8 +22,12 @@ Outputs go to `products/<slug>/` (creating the folder if new).
 ## What you do as the assistant when this is invoked
 1. Resolve `<idea>` to a product slug (existing or new).
 2. If new product: create `products/<slug>/` with minimal structure, log in `decisions/0001-validation-start.md`.
-3. Run the 5 agents. Steps 1, 3, 4 can run in parallel (read-only). Step 2 (devil's advocate) takes the output of step 1. Step 5 takes outputs of 1+2.
-4. After all done: produce a 1-page "validation snapshot" summarizing GO / PAUSE / KILL with reasoning.
+3. Run the 5 agents — **fleet mode when subagent spawning is available** (see `factory/playbooks/mvp-stage/fleet-patterns.md`):
+   - **Fan out blind:** problem-sharpener, devils-advocate, market-researcher, competitor-mapper as 4 concurrent subagents, each getting the raw idea + its own SKILL.md only — none sees another's output (independent verdicts are the point; devils-advocate attacks the raw idea, which is the harder, more honest target). Spawn each on its `model_tier`.
+   - **Verify adversarially:** before synthesis, spawn one refuter against the kill case ("is this actually fatal, or survivable?") and one against the strongest FOR evidence ("is this signal or founder hope?").
+   - **Synthesize:** customer-discovery runs on the (surviving) sharpened hypothesis; then produce the snapshot, reporting where the blind agents *agreed* (high confidence) and *disagreed* (the open questions — never averaged away).
+   - **Serial fallback (no spawning):** run in sequence as before — 1, then 2 on 1's output, 3+4, then 5 on 1+2. Same deliverables either way.
+4. After all done: produce a 1-page "validation snapshot" summarizing GO / PAUSE / KILL with reasoning — including the agreement/disagreement map when fleet mode ran.
 
 ## Output location
 - `products/<slug>/validation/snapshot.md` — the summary
