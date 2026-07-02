@@ -57,6 +57,14 @@ Compare lists:
 5. Honestly check the FOR/AGAINST ratio for confirmation bias.
 6. Force a recommendation. No "we need more data" as a hedge if 5+ interviews already done.
 
+## Contract (handoff)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Preconditions (from customer-discovery):** ≥5 interview notes (in `products/<name>/interviews/raw/` or user-passed paths), each attributable to a distinct person matching the discovery plan's target profile.
+- **On precondition gap:** if fewer than 5, report the count and STOP — no synthesis below batch size; a 3-interview "pattern" is noise dressed as signal.
+- **Produces:** `products/<name>/interviews/synthesis-<date>.md` in the exact format above.
+- **Shape:** guaranteed sections — Evidence FOR / Evidence AGAINST / Surprises / Patterns / Strongest quote / Bias check (with the FOR:AGAINST ratio) / Recommendation.
+- **Postconditions:** every evidence line is a quote with attribution (never a paraphrase), and the Recommendation is exactly one of CONTINUE / PIVOT / KILL / INCONCLUSIVE — downstream agents (architect, devils-advocate) may rely on that verdict line existing.
+
 ## Sources
 - `factory/playbooks/idea-stage/mom-test.md`
 - `factory/playbooks/ai-native-2026/founders-playbook-distilled.md` (re: bias check)

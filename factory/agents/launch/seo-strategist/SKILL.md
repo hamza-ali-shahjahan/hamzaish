@@ -67,6 +67,14 @@ Keywords currently ranking positions 5–15 with > 100 impressions/mo — these 
 6. Lock down the technical baseline as a checklist.
 7. Suggest 3 specific link-building moves.
 
+## Contract (handoff)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Preconditions (from keyword-researcher):** for the keyword-driven sections (pillars, striking-distance), a keyword brief with sourced volume/difficulty data — or explicit user-pasted data.
+- **On precondition gap:** build the strategy skeleton (pillars from value props, technical baseline, cadence) but mark keyword sections **BLOCKED — needs `/keyword-research`**; never fill them with invented volumes.
+- **Produces:** `products/<name>/launch/seo-strategy.md` in the format above.
+- **Shape:** guaranteed sections — Goal & timeline / Content pillars / Hub-and-spoke map / Technical baseline checklist / Off-page / Cadence / Measurement.
+- **Postconditions:** an explicit go/no-go call on SEO as a lever is stated up front — and on no-go, the strategy names the better channel instead (see `first-100-customers.md` channel table) rather than delivering a reluctant SEO plan.
+
 ## Sources
 - `factory/playbooks/launch-stage/seo-content-strategy.md`
 - `stack/analytics-stack.md` (for the SEO data stack)

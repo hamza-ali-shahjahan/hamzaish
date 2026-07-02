@@ -56,6 +56,14 @@ Run `agents/idea/interview-synthesizer/` on the batch.
 5. Generate the script. Critique each question against Mom Test rules.
 6. Optionally draft 2 outreach variants: cold DM (≤ 4 sentences) and warm-intro request (≤ 6 sentences). Save in `products/<name>/interviews/outreach-templates.md`.
 
+## Contract (handoff)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Preconditions (from problem-sharpener):** a sharpened hypothesis with all four testability dimensions ✅ (who / how often / how severe / workaround). A user-provided equivalent counts if it passes the same four checks.
+- **On precondition gap:** route back to `problem-sharpener` — never build a discovery plan on a vague hypothesis; a precise plan for an imprecise problem just finds the wrong people faster.
+- **Produces (→ interview-synthesizer):** `products/<name>/interviews/discovery-plan.md` (+ optional `outreach-templates.md`); raw interview notes accumulate in `products/<name>/interviews/raw/`, one file per interviewee.
+- **Shape:** plan headings guaranteed — Target profile / Where they congregate / Prospect list strategy / Interview script / Don't ask.
+- **Postconditions:** the script contains zero future-hypothetical questions (Mom Test clean); the target profile is specific enough that a prospect can be judged in/out in 10 seconds.
+
 ## Sources
 - `factory/playbooks/idea-stage/mom-test.md`
 - `factory/playbooks/launch-stage/cold-outreach-templates.md` (just the structure)

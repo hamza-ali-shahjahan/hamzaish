@@ -16,6 +16,8 @@ Then report:
 - The files included (`git show --stat HEAD | head -20`)
 - Whether to push (ask the user; do NOT auto-push)
 
+Then the decision-capture check (a checkpoint is exactly when calls get lost): did the work behind this checkpoint include a non-obvious call — architecture, stack, naming, scope, pricing, tooling, "X not Y"? If yes, offer to append it to `brain/decision-log/` (date · decision · why · wrong-if · revisit-trigger) before finishing. If no, move on silently.
+
 If the working tree is clean (nothing to commit), say so and ask whether the user wanted to make a tag or annotated checkpoint instead.
 
 If `$ARGUMENTS` is empty, ask for a message first — checkpoints without messages defeat the purpose.

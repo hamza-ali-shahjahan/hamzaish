@@ -68,6 +68,14 @@ Use sparingly — each call costs fractions of a cent but adds up. Bundle querie
 
 Per brief: target < $0.50 in API costs.
 
+## Contract (handoff → seo-strategist / content-marketer)
+Per `factory/playbooks/mvp-stage/agent-handoff-contracts.md`:
+- **Produces:** `products/<name>/launch/keyword-briefs/YYYY-MM-DD-<topic>.md`.
+- **Shape:** guaranteed sections — Method (with named data source + date range) / Clusters (each with primary keyword, supporting keywords, intent, recommended page, outline) / Striking-distance table / Quick wins / Skip these.
+- **Preconditions:** at least one wired data source for the input type (GSC / Ahrefs WT for own domains, DataForSEO for competitor or topic input).
+- **Postconditions:** every recommended keyword carries volume + difficulty + intent from a named source; no invented numbers anywhere in the brief.
+- **On gap:** no data source wired → STOP and name the exact wiring step (verify site in GSC / add DataForSEO credentials via `/go-live`); a brief with made-up volumes is worse than no brief.
+
 ## Sources
 - `stack/analytics-stack.md` (for the SEO data stack rationale)
 - `factory/playbooks/launch-stage/seo-content-strategy.md`

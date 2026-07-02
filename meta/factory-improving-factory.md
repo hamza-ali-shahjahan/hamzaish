@@ -70,8 +70,9 @@ If the session did real work, before ending:
 - [ ] Did anything surprise me? → write a `brain/learnings/YYYY-MM-DD.md` entry
 - [ ] Did I re-derive anything? → it goes in `factory/playbooks/` or `factory/skills/`
 - [ ] Did I get corrected? → check whether it belongs in `brain/anti-patterns/`, `CLAUDE.md`, or `brain/identity/`
+- [ ] **Did I make a call a future session could second-guess?** (architecture, stack, naming, scope, pricing, strategy, tooling, "we'll do X not Y") → append it to `brain/decision-log/` as date · decision · why · wrong-if · revisit-trigger. The 2026-07-02 audit found ONE logged decision against 15 products — the biggest calls were oral. This question exists so that never recurs.
 - [ ] Did a product move stages, ship, or fail? → write a `meta/retros/` entry
-- [ ] Did I change Hamzaish itself? → append to `meta/changelog.md` (and at a major-cycle boundary worth surfacing publicly, cut a tag with `/release`)
+- [ ] Did I change Hamzaish itself? → append to `meta/changelog.md` — and every entry dated 2026-07-02 or later must link a `meta/retros/` file or carry an explicit `**Retro:** skipped — <reason>` line (enforced by `bun run check-retro` in CI; skipping is legal, skipping *silently* is not). At a major-cycle boundary worth surfacing publicly, cut a tag with `/release`.
 
 ## Quarterly: kill-or-keep on Hamzaish itself
 

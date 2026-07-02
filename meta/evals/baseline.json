@@ -7,5 +7,7 @@
   "ideate/portfolio-grounding": "PASS",
   "validate/weak-validation-flagged": "PASS",
   "validate/strong-validation-accepted": "PASS",
-  "validate/problem-sharpening": "PASS"
+  "validate/problem-sharpening": "PASS",
+  "problem-sharpener/sharpens-vague-problem": "PASS",
+  "devils-advocate/forced-verdict-kill-case": "PASS"
 }
