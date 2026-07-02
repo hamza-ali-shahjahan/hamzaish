@@ -1,12 +1,32 @@
 # Muakkil — Live Status
 
-**Last updated**: 2026-05-26
-**Stage**: MVP (buildathon sprint to shipping beta)
-**Sprint**: Lovable buildathon — submission = beta launch
+**Last updated**: 2026-07-02
+**Stage**: MVP (venture-agent re-aim — Phase 1 build)
+**Sprint**: venture-agent MVP — "speak your idea → launched"
+
+> **Direction change 2026-07-02:** Muakkil is now a venture agent for non-technical founders (build + distribute end-to-end). See `decisions/2026-07-02-venture-agent-pivot.md`. The buildathon assistant scope below is superseded; kept for history. Validation (Mom-Test interviews + paid concierge pilot) runs in parallel with the build — debt recorded in the decision entry.
 
 ## North star this sprint
 
-> User opens muakkil.app, signs in, clicks "Speak your charge", says one sentence, gets a research email within 60s. Sign-in to aha: under 90 seconds.
+> A non-technical founder speaks an idea to Muakkil and, without touching code, DNS, or a marketing tool, gets a live product at their own domain with a launch executed and first-user data reported back. Metric: ventures reaching ≥10 non-founder users within 30 days.
+
+## Phase 1 slices (each ships with an eval + e2e test)
+
+| # | Slice | Status |
+|---|---|---|
+| 1 | Auth + Venture object + dashboard + approval queue | 🔨 in progress |
+| 2 | Scribe intake (voice/chat → venture brief) | ⏳ |
+| 3 | Seeker validation pack | ⏳ |
+| 4 | Maker thin (brand kit + landing + waitlist, auto-deploy) | ⏳ |
+| 5 | Herald-lite (domain, SEO/AEO, launch kit, welcome email) | ⏳ |
+| 6 | Weekly founder report | ⏳ |
+| 7 | Import-and-launch (Lovable/Bolt export → distribution) | ⏳ |
+
+---
+
+## Superseded buildathon status (history)
+
+> Original sprint north star: user speaks a charge, gets a research email within 60s.
 
 ## What's done
 
