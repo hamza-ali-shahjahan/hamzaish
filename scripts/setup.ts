@@ -16,9 +16,10 @@
 // Re-running it is harmless — it just fills in whatever's missing.
 
 import { readFile, writeFile, mkdir, symlink, readlink, copyFile, unlink, stat } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { homedir } from "node:os";
+import { decideCommandAction } from "./lib/command-refresh";
 
 const ROOT = resolve(import.meta.dir, "..");
 const HOME = homedir();
@@ -117,13 +118,36 @@ step(4, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
   // REAL copies, not symlinks: Claude Code's command/skill loader does not reliably
   // follow symlinks during discovery, so a symlinked global command can silently show
   // "Unknown command". Copies are always found. (In-repo /commands still resolve via the
-  // .claude symlinks; re-run setup after editing a command to refresh its global copy.)
-  const commands = ["hamzaish", "builder-mode", "work-on", "portfolio-pulse", "brain-ask", "brain-ingest"];
+  // .claude symlinks.)
+  //
+  // Staleness fix (2026-07-02, brain/learnings/2026-07-02.md): copies rot after factory
+  // upgrades, and "the copy differs" alone can't distinguish "the factory moved ahead"
+  // (safe to refresh) from "you customized it" (never clobber). A manifest of installed
+  // hashes (.hamzaish-installed.json) settles it — the conffile pattern. Scope: the CORE
+  // set installs if missing; ANY ~/.claude/commands/*.md with a factory/commands
+  // counterpart is refresh-managed (having it there is the opt-in).
+  const CORE = ["hamzaish", "builder-mode", "work-on", "portfolio-pulse", "brain-ask", "brain-ingest"];
+  const MANIFEST_PATH = join(CMD_DIR, ".hamzaish-installed.json");
+  const forceRefresh = process.argv.includes("--refresh-commands");
+  const sha = (s: string) => new Bun.CryptoHasher("sha256").update(s).digest("hex");
+
   if (!existsSync(CMD_DIR)) {
     await mkdir(CMD_DIR, { recursive: true });
     console.log(c.dim(`     created ${CMD_DIR}`));
   }
-  for (const name of commands) {
+  let manifest: Record<string, string> = {};
+  try {
+    manifest = JSON.parse(await readFile(MANIFEST_PATH, "utf8"));
+  } catch {
+    /* first run under the manifest scheme */
+  }
+
+  const names = new Set(CORE);
+  for (const f of readdirSync(CMD_DIR)) {
+    if (f.endsWith(".md") && existsSync(join(ROOT, "factory", "commands", f))) names.add(f.slice(0, -3));
+  }
+
+  for (const name of [...names].sort()) {
     const target = join(ROOT, "factory", "commands", `${name}.md`);
     const dest = join(CMD_DIR, `${name}.md`);
     if (!existsSync(target)) {
@@ -131,37 +155,60 @@ step(4, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
       warned++;
       continue;
     }
+    // Legacy Hamzaish symlink → upgrade to a copy; foreign symlink → never touch.
     if (existsSync(dest)) {
-      // Distinguish: a legacy Hamzaish symlink (upgrade it to a copy), an identical
-      // copy (skip), or a foreign/customized file (leave it — never clobber your edits).
-      let legacySymlink = false;
       try {
         const current = await readlink(dest); // throws if dest is a real file
         if (resolve(current) === resolve(target)) {
-          legacySymlink = true;
+          await unlink(dest);
         } else {
           warn(`/${name}: ~/.claude/commands/${name}.md points elsewhere (${current}) — left as-is.`);
           warned++;
           continue;
         }
       } catch {
-        const [have, want] = await Promise.all([readFile(dest, "utf8"), readFile(target, "utf8")]);
-        if (have === want) {
-          skip(`/${name} already installed.`);
-          skipped++;
-          continue;
-        }
-        warn(`/${name}: ~/.claude/commands/${name}.md differs from Hamzaish's — left as-is (delete it to reinstall).`);
-        warned++;
-        continue;
+        /* real file — the normal case */
       }
-      if (legacySymlink) await unlink(dest); // remove the old symlink, then copy below
     }
-    await copyFile(target, dest); // dereferences (builder-mode.md -> hamzaish.md content)
-    ok(`/${name} → installed.`);
-    created++;
+
+    const srcContent = await readFile(target, "utf8");
+    const srcHash = sha(srcContent);
+    const destExists = existsSync(dest);
+    const destHash = destExists ? sha(await readFile(dest, "utf8")) : undefined;
+    const action = decideCommandAction({ destExists, destHash, srcHash, manifestHash: manifest[name], force: forceRefresh });
+
+    switch (action) {
+      case "install":
+        await copyFile(target, dest); // dereferences (builder-mode.md -> hamzaish.md content)
+        manifest[name] = sha(await readFile(dest, "utf8"));
+        ok(`/${name} → installed.`);
+        created++;
+        break;
+      case "skip":
+        manifest[name] = destHash!; // record identical pre-manifest installs so future upgrades auto-refresh
+        skip(`/${name} already current.`);
+        skipped++;
+        break;
+      case "refresh":
+        await copyFile(target, dest);
+        manifest[name] = sha(await readFile(dest, "utf8"));
+        ok(`/${name} → refreshed to the current factory version (you hadn't customized it).`);
+        created++;
+        break;
+      case "force-refresh":
+        await copyFile(target, dest);
+        manifest[name] = sha(await readFile(dest, "utf8"));
+        ok(`/${name} → overwritten with the factory version (--refresh-commands).`);
+        created++;
+        break;
+      case "keep-customized":
+        warn(`/${name}: locally customized — left as-is. (bun run setup --refresh-commands overwrites; a copy of your edits first is on you.)`);
+        warned++;
+        break;
+    }
   }
-  console.log(c.dim("     Real copies (the loader skips symlinks). In-repo /commands resolve via .claude/."));
+  await writeFile(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n");
+  console.log(c.dim("     Real copies (the loader skips symlinks); .hamzaish-installed.json tracks them so upgrades refresh, edits never clobber."));
 }
 
 // Step 5 — build the brain index -------------------------------------------

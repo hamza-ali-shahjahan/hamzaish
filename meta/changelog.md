@@ -10,6 +10,22 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-02 — v2.5.1 · Global command copies can't rot anymore: manifest-tracked refresh in setup
+
+**What changed**
+
+- **The wound:** `~/.claude/commands/` held June-25 copies of 22 commands after the v2.1→v2.5 upgrade day — anyone invoking `/work-on` or `/portfolio-pulse` from outside the Hamzaish folder silently got pre-upgrade behavior. Worse, old setup couldn't fix it: "the copy differs" made it refuse ("left as-is"), because it couldn't distinguish *the factory moved ahead* from *you customized the file*.
+- **The fix — the conffile pattern:** setup now records what it installed in `~/.claude/commands/.hamzaish-installed.json`. Copy == manifest → the factory moved ahead → **auto-refresh**. Copy ≠ manifest → you edited it → **never clobbered** (explicit `bun run setup --refresh-commands` to override). Identical pre-manifest copies get adopted into the manifest on first run, so existing installs migrate for free.
+- **Scope widened honestly:** setup managed only 6 hardcoded commands; now **every** `~/.claude/commands/*.md` with a `factory/commands/` counterpart is refresh-managed (having the file there is the opt-in). Foreign files and foreign symlinks stay untouched.
+- **Tested:** decision logic isolated in `scripts/lib/command-refresh.ts` with a 7-case suite; all three live branches verified end-to-end (upgrade→refresh, edit→protected, force→overwrite).
+- **`/pr` step 9 addition:** a merge touching `factory/commands/` ends with "run `bun run setup`" so the refresh actually happens at the moment it's needed.
+
+**Why**
+
+The operator asked "are we running the new Hamzaish?" and the honest answer was "only from inside the folder." Learning + enforcement trail: `brain/learnings/2026-07-02.md`.
+
+**Retro:** skipped — single-mechanism patch, same-day follow-through on a logged learning.
+
 ## 2026-07-02 — v2.5 · The portfolio gets senses: real Stripe / PostHog / Sentry connectors + `bun run telemetry`
 
 **What changed**
