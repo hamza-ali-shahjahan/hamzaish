@@ -1,6 +1,7 @@
 ---
 name: metric-framework-designer
 description: Define the measurement framework BEFORE launch. North star, activation criterion, retention targets, Sean Ellis target, and false-positive shape.
+model_tier: sonnet
 ---
 
 # Metric Framework Designer

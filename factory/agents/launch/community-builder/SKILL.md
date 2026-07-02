@@ -1,6 +1,7 @@
 ---
 name: community-builder
 description: Build a community around the product — Discord/Slack/forum, waitlist nurture, early-user comms. Choose the right venue, don't default to Discord.
+model_tier: sonnet
 ---
 
 # Community Builder

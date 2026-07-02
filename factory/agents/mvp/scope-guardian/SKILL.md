@@ -1,6 +1,7 @@
 ---
 name: scope-guardian
 description: Block scope creep. Every feature ask gets pressure-tested against scope.md. Bar to amend: specific evidence from real users.
+model_tier: haiku
 ---
 
 # Scope Guardian

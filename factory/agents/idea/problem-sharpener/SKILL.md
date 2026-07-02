@@ -1,6 +1,7 @@
 ---
 name: problem-sharpener
 description: Turn vague problem observations into testable hypothesis statements with specific who/when/severity/current-workaround dimensions.
+model_tier: opus
 ---
 
 # Problem Sharpener

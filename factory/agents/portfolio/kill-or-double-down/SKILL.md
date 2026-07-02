@@ -1,6 +1,7 @@
 ---
 name: kill-or-double-down
 description: Quarterly portfolio review. Hard call on what to kill, what to maintain, what to double down on. Forces decisions.
+model_tier: opus
 ---
 
 # Kill or Double Down

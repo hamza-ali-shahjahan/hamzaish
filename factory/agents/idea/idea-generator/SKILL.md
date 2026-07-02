@@ -1,6 +1,7 @@
 ---
 name: idea-generator
 description: Generate startup ideas grounded in Hamza's existing patterns, current trends, and validated demand signals. Never just brainstorms — pulls from real signals.
+model_tier: sonnet
 ---
 
 # Idea Generator

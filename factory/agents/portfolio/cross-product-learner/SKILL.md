@@ -1,6 +1,7 @@
 ---
 name: cross-product-learner
 description: Identify patterns across products — what's working that should propagate, what's failing in similar ways, what knowledge should become MEMORY.md entries.
+model_tier: opus
 ---
 
 # Cross-Product Learner

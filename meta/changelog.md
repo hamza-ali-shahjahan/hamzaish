@@ -10,6 +10,27 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-02 — v2.2 · Phase 2: the model policy is wired — right model for the right job, executed
+
+**What changed**
+
+- **Every spawnable agent now carries `model_tier:` frontmatter** — all 34 (15 opus / 15 sonnet / 4 haiku), per the policy tables plus three new engineering rows (code-reviewer + security-auditor → opus, test-engineer → sonnet). `_orchestrator` stays untiered by design: it IS the main loop.
+- **New `factory/runtime/model-policy.ts`** — the wiring: `modelForAgent()` resolves a model from the agent's frontmatter (Tier-B fallback, never a crash); `escalate()` applies the Phase-2 stakes rule, **active and up-only** (auth / payments / migrations / RLS / data-deletion → top tier regardless of role; de-escalation stays manual judgment — a "trivial" auth tweak is the classic trap); `stakesFromPrompt()` as belt-and-suspenders. Tested: `model-policy.test.ts` resolves real agents and asserts *every agent on disk has a valid tier* — 18/18 across the runtime suite.
+- **The headless runtime picks its model from the policy.** `Task` gained `agent` + `stakes`; resolution order: explicit override → frontmatter tier → default, then escalation. The demo task now resolves `idea-generator → sonnet` from frontmatter instead of hardcoding.
+- **`factory/model-policy.md` ships** (was untracked) — status updated from "Phase 1, not yet wired" to Phase 2 wired, with the frontmatter-wins drift rule written down. Orchestrator step 5 now distinguishes in-context execution (session model) from delegated execution (pin from frontmatter + escalate); `mvp/builder` carries the stakes-escalation discipline (high-stakes changes also get a `security-reviewer` pass).
+- **Correction for the record:** the 2026-07-02 audit reported `loop.ts` as unfinished ("TODO: wire orchestrator"). Direct read: no TODOs — the loop, router, and tests were complete; the genuine gap was model-policy resolution, which is what this entry ships. Second confirmed case of "audit inventories are leads, not facts."
+
+**Why**
+
+Phase 2 of the audit roadmap ("wire the declared machinery"). The policy was the highest-value declared-but-unwired artifact: it named the right model for all 31 lifecycle agents and nothing read it. Now the tier travels with the agent, the resolver is tested code, and stakes beat role automatically — in the up direction only.
+
+**Retro:** [meta/retros/2026-07-02-factory-phase2-model-policy-wired.md](retros/2026-07-02-factory-phase2-model-policy-wired.md)
+
+**What to revisit**
+
+- Tuning loop needs a data pipeline (log tier × outcome per runtime run; re-tier on evidence).
+- Fable-tier verification for brand/creative work (the policy's "unverified" row).
+
 ## 2026-07-02 — v2.1.1 · Guardrail: a PR can never again publish a stowaway local commit
 
 **What changed**

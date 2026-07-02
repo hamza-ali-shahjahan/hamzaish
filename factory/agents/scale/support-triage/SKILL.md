@@ -1,6 +1,7 @@
 ---
 name: support-triage
 description: Triage incoming support — categorize, prioritize, draft responses, identify product bug vs user-error vs feature-request. Routes to engineering when needed.
+model_tier: haiku
 ---
 
 # Support Triage

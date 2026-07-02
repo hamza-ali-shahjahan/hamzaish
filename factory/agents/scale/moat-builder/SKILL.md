@@ -1,6 +1,7 @@
 ---
 name: moat-builder
 description: Identify and deepen moats — workflow lock-in, data network effects, domain depth, integration depth. Audit current moats + propose investments.
+model_tier: opus
 ---
 
 # Moat Builder

@@ -1,6 +1,7 @@
 ---
 name: competitor-mapper
 description: Map the competitive landscape by tier (direct/indirect/acquirer/adjacent) and argue why each could win. Antidote to competitor neglect.
+model_tier: sonnet
 ---
 
 # Competitor Mapper

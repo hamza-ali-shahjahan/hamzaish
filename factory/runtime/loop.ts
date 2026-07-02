@@ -23,6 +23,7 @@ import { mkdir } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { runChecks, runInvocation, type CheckSpec, type CheckResult } from "../../meta/evals/lib/checks";
 import { llmJudge, JUDGE_MODEL, type JudgeCriterion, type CriterionVerdict, type JudgeResult } from "../../meta/evals/lib/judge";
+import { modelForAgent, escalate, stakesFromPrompt, DEFAULT_MODEL, type Stakes } from "./model-policy";
 
 const ROOT = resolve(import.meta.dir, "..", "..");
 const PROPOSALS_DIR = join(import.meta.dir, "proposals");
@@ -35,11 +36,13 @@ export type RuntimeOutcome = "PASS" | "FAIL_BUILDABLE" | "GAP" | "UNCERTAIN";
 
 export type Task = {
   skill: string;
+  agent?: string; // the factory agent this task executes — its model_tier frontmatter drives model choice
   generatePrompt: string; // the claude -p prompt for the system under test
   deterministicChecks: CheckSpec[]; // reused harness type — cheap floor, runs first
   judgeCriteria: JudgeCriterion[]; // reused harness type — the gate, runs only after the floor
   maxAttempts: number; // bounded; one regenerate on FAIL_BUILDABLE is maxAttempts: 2
-  model?: string; // SUT model, default sonnet
+  model?: string; // explicit override; else resolved from agent's model_tier (factory/model-policy.md, wired)
+  stakes?: Stakes; // "high" escalates to the top tier regardless of role; default sniffed from the prompt
 };
 
 export type Attempt = {
@@ -149,7 +152,10 @@ function finish(
 export async function runTask(task: Task, deps: { generate?: Generator; judge?: Judge } = {}): Promise<TaskResult> {
   const generate = deps.generate ?? claudeGenerator;
   const judge = deps.judge ?? ((c, o, m) => llmJudge(c, o, m));
-  const model = task.model ?? "sonnet";
+  // Model resolution order (factory/model-policy.md, now wired): explicit override →
+  // the agent's model_tier frontmatter → Tier B default. Then stakes escalate UP only.
+  const base = task.model ?? (task.agent ? modelForAgent(task.agent) : DEFAULT_MODEL);
+  const model = escalate(base, task.stakes ?? stakesFromPrompt(task.generatePrompt));
   const attempts: Attempt[] = [];
   let feedback = "";
 

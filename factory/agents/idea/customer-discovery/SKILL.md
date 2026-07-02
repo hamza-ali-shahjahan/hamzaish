@@ -1,6 +1,7 @@
 ---
 name: customer-discovery
 description: Plan customer discovery — define target profile, build prospect list, draft interview script, set up outreach + scheduling logistics.
+model_tier: sonnet
 ---
 
 # Customer Discovery

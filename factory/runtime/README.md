@@ -48,11 +48,14 @@ not a second copy of it.
 ## Files
 
 ```
-loop.ts        runTask(task, deps?) — the loop + four-way router + feedback-regeneration.
-               Dependency seams (generate, judge) are injectable so every route is force-testable.
-run-task.ts    Hand-runnable CLI; carries the ideate demo task; prints the trace.
-loop.test.ts   Forces all four routes (+ sub-cases) with fakes — no Claude calls.
-proposals/     The Movement 2 inbox. GAP proposals land here (gitignored; README tracked).
+loop.ts               runTask(task, deps?) — the loop + four-way router + feedback-regeneration.
+                      Dependency seams (generate, judge) are injectable so every route is force-testable.
+model-policy.ts       The wired model policy: modelForAgent() reads an agent's model_tier frontmatter;
+                      escalate()/stakesFromPrompt() apply the Phase-2 stakes rule (up only).
+run-task.ts           Hand-runnable CLI; carries the ideate demo task; prints the trace.
+loop.test.ts          Forces all four routes (+ sub-cases) with fakes — no Claude calls.
+model-policy.test.ts  Resolves real agents to their tiers; asserts every agent on disk has one.
+proposals/            The Movement 2 inbox. GAP proposals land here (gitignored; README tracked).
 ```
 
 ## What's deliberately OUT (named, not silent)

@@ -1,6 +1,7 @@
 ---
 name: landing-page-copywriter
 description: Write landing page copy that converts. Hero + 3 value props + social proof + objections + CTA. Anchored on validated user language.
+model_tier: sonnet
 ---
 
 # Landing Page Copywriter

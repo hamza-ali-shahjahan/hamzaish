@@ -1,6 +1,7 @@
 ---
 name: builder
 description: Drive Claude Code build sessions inside a product folder. Enforces session discipline: read CLAUDE.md + scope.md first, log decisions after.
+model_tier: sonnet
 ---
 
 # Builder
@@ -27,6 +28,7 @@ You don't WRITE the code yourself — you drive the Claude Code session inside t
 9. **Update `CLAUDE.md`** if the architecture changed (e.g. added a new dependency, new pattern, etc).
 
 ## Build discipline (non-negotiable)
+- **Stakes escalation (model-policy Phase 2, active):** if this session's change touches auth, payments/billing, a database migration, RLS/permissions, or deletes user data — any delegated work runs on the top model tier (`stakes: high`), and the change gets a `security-reviewer` pass before it ships. A "trivial" auth tweak is the classic trap; stakes beat convenience.
 - TypeScript strict mode on
 - No `any` without a comment explaining why
 - Don't add a library when 30 lines of code will do

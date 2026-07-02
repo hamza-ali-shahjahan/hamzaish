@@ -1,6 +1,7 @@
 ---
 name: keyword-researcher
 description: Pull real keyword data from GSC (own sites) + Ahrefs Webmaster Tools (own sites) + DataForSEO (competitor/general). Produce a clustered keyword brief.
+model_tier: haiku
 ---
 
 # Keyword Researcher

@@ -1,6 +1,7 @@
 ---
 name: security-reviewer
 description: Pre-launch security review covering auth, data exposure, input validation, and dependency vulns. Produces a remediation list, not a "looks good" stamp.
+model_tier: opus
 ---
 
 # Security Reviewer

@@ -1,6 +1,7 @@
 ---
 name: retention-analyst
 description: Analyze retention curves, identify churn drivers, and propose interventions. Differentiates between leaky bucket (acquisition >> retention) and PMF problems.
+model_tier: sonnet
 ---
 
 # Retention Analyst

@@ -1,6 +1,7 @@
 ---
 name: pricing-strategist
 description: Initial pricing for a product — packaging, tiers, anchor, monthly vs annual, free vs trial. Anchored on value-based pricing + van Westendorp where data exists.
+model_tier: opus
 ---
 
 # Pricing Strategist

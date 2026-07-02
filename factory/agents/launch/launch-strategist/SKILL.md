@@ -1,6 +1,7 @@
 ---
 name: launch-strategist
 description: Plan and execute the launch — Product Hunt, Hacker News, X/Twitter, LinkedIn, newsletters, communities — sequenced for compounding signal.
+model_tier: sonnet
 ---
 
 # Launch Strategist

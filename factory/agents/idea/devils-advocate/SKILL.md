@@ -1,6 +1,7 @@
 ---
 name: devils-advocate
 description: Stress-test an idea or hypothesis. Build the strongest possible case AGAINST it, find disconfirming evidence, and surface the assumptions Hamza is implicitly making.
+model_tier: opus
 ---
 
 # Devil's Advocate
