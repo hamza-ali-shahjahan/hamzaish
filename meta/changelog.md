@@ -10,6 +10,20 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-02 — v2.5.2 · Ambiguity protocol: never resolve an unclear instruction silently
+
+**What changed**
+
+- **New always-read protocol** (`CLAUDE.md` → Operating mode; tool-agnostic twin as `AGENTS.md` hard rule 11), three tiers: **stop-and-ask** when readings diverge into materially different actions and any is destructive / irreversible / external-facing / contradicts a logged decision (readings listed, recommended first) · **interpret-and-declare** for everything else ambiguous — take the momentum-preserving reading but *say which reading you took*, preferring the reversible path · **just proceed** when unambiguous or trivially reversible. Tier 2 is the load-bearing one: guessing is fine, silent guessing is not.
+- **Distilled:** anti-pattern `brain/anti-patterns/silently-resolving-ambiguous-instructions.md`; ledger line (practices 137 → **138**, proven 35 → **36**); learning in `brain/learnings/2026-07-02.md`.
+- **Honest limit, named:** no CI guard detects ambiguous English — for judgment behaviors the strongest wiring is always-read placement + recallable anti-pattern + the declare habit making every resolution visible while it's still cheap to undo.
+
+**Why**
+
+Real incident, same day: "go no rerun it" reads as *go on, rerun it* or *go, no — don't rerun it*. The session coin-flipped (correctly) on a state-changing command without flagging the fork. The operator caught the method, not the outcome: on a `git reset` instead of an idempotent script, that's an incident. Momentum stays the default — the protocol only adds disclosure, and asks only when stakes are real.
+
+**Retro:** skipped — single-protocol patch; incident + design fully captured in the anti-pattern and learning.
+
 ## 2026-07-02 — v2.5.1 · Global command copies can't rot anymore: manifest-tracked refresh in setup
 
 **What changed**

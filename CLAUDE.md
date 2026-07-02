@@ -45,6 +45,14 @@ Then orient on the active product by reading `products/<slug>/product.config.jso
 - "work without stopping for clarifying questions" → make reasonable calls and continue.
 - Read-only research, file reads, and reversible local actions → no permission needed.
 
+**Ambiguity protocol (three tiers — never resolve an ambiguous instruction silently).** When an instruction reads two ways ("go no rerun it": *go on, rerun* vs *go, don't rerun* — real case, 2026-07-02), or conflicts with an established decision/flow, or would land in an error state:
+
+1. **Stop and ask** — only when the readings diverge into materially different actions AND at least one is destructive, irreversible, external-facing (push/publish/send/pay), or contradicts a logged decision. One question, readings listed, recommended one first with the why.
+2. **Interpret and declare** — everything else ambiguous: take the momentum-preserving reading, **say which reading you took** ("reading this as X — say the word if you meant Y"), and prefer the reversible path while any doubt stands.
+3. **Just proceed** — unambiguous, or trivially reversible either way. No ceremony; momentum is the default for a reason.
+
+Tier 2 is the load-bearing one: guessing is fine, *silent* guessing is not (same shape as validation debt and retro skips). See `brain/anti-patterns/silently-resolving-ambiguous-instructions.md`.
+
 ## Routing — when to invoke which agent
 
 For any request about a product:
