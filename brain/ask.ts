@@ -29,6 +29,7 @@ let limit = 8;
 let product: string | null = null;
 let source: string | null = null;
 let asJson = false;
+let asContext = false; // --context: a compact, ready-to-inject session briefing block
 const queryParts: string[] = [];
 
 for (let i = 0; i < args.length; i++) {
@@ -37,8 +38,10 @@ for (let i = 0; i < args.length; i++) {
   else if (a === "--product" || a === "-p") { product = args[++i]; }
   else if (a === "--source" || a === "-s") { source = args[++i]; }
   else if (a === "--json") { asJson = true; }
+  else if (a === "--context") { asContext = true; }
   else if (a === "--help" || a === "-h") {
-    console.log(`Usage: bun brain/ask.ts [--product slug] [--source path] [--limit N] [--json] "<query>"`);
+    console.log(`Usage: bun brain/ask.ts [--product slug] [--source path] [--limit N] [--json|--context] "<query>"`);
+    console.log(`  --context  emit a compact recall block for injecting into a session (anti-patterns first)`);
     process.exit(0);
   }
   else { queryParts.push(a); }
@@ -119,6 +122,36 @@ try {
 
 if (asJson) {
   console.log(JSON.stringify({ query, fts_query: ftsQ, count: rows.length, results: rows }, null, 2));
+  process.exit(0);
+}
+
+if (asContext) {
+  // A briefing block a session injects at start (used by /work-on step 7).
+  // Anti-patterns lead: defenses are worth more than context. Recall is
+  // point-in-time — the footer tells the reader to verify before relying.
+  const clean = (s: string) => s.replace(/\n+/g, " ").trim();
+  const groups: { title: string; match: (src: string) => boolean }[] = [
+    { title: "Defenses (anti-patterns)", match: (s) => s.startsWith("brain/anti-patterns") },
+    { title: "Learnings & decisions", match: (s) => s.startsWith("brain/learnings") || s.startsWith("brain/decision-log") || s.startsWith("products/decisions") || s.startsWith("products/learnings") },
+    { title: "Other context", match: () => true },
+  ];
+  console.log(`### 🧠 Brain recall — ${query}\n`);
+  if (rows.length === 0) {
+    console.log(`_No recall hits. Either genuinely new territory, or re-run \`bun brain/ingest.ts\` if files are fresh._`);
+    process.exit(0);
+  }
+  const used = new Set<string>();
+  for (const g of groups) {
+    const hits = rows.filter((r) => !used.has(r.path) && g.match(r.source as string));
+    if (hits.length === 0) continue;
+    console.log(`**${g.title}:**`);
+    for (const r of hits) {
+      used.add(r.path);
+      console.log(`- ${r.title} · \`${r.path}\` — ${clean(r.snippet as string)}`);
+    }
+    console.log();
+  }
+  console.log(`_Recalled from the brain index (FTS5, point-in-time). Verify against the live file before relying on any of it._`);
   process.exit(0);
 }
 

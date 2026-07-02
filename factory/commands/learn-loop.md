@@ -14,13 +14,17 @@ Only at a **major-cycle boundary** (see the rubric §1): a product crosses a sta
 ## Steps
 
 1. **Confirm the boundary.** State which trigger fired (use `$ARGUMENTS` as the cycle label if given). If it isn't actually a boundary, stop and tell the user.
-2. **Gather candidates.** Collect the raw learnings accumulated since the last `/learn-loop` run:
+2. **Gather candidates — factory AND products.** Collect the raw learnings accumulated since the last `/learn-loop` run:
    - New/changed `brain/learnings/*.md` entries since the last scored cycle.
+   - **New/changed `products/*/learnings/*.md` entries** (indexed in the brain since 2026-07-02) — the cross-product channel: a lesson learned inside one product that would help the next one is exactly what this loop exists to catch. Same-problem-in-2+-products is an automatic strong Recurrence score.
    - The latest `meta/retros/` entry if a sprint just closed (its **What worked** = promotion candidates for playbooks; **What didn't / structural friction** = anti-pattern candidates; **Surprises** = highest signal). Reference it — don't duplicate it.
-   - Use `/brain-ask` if you need to pull related prior context.
-3. **Score each candidate** on the five axes (Speed ×2, Build-quality ×2, Recurrence, Generalizability, Confidence) → composite /35. Apply the rubric honestly; don't inflate to force a promotion.
+   - Use `bun brain/ask.ts --context "<candidate theme>"` to pull related prior context per candidate.
+3. **Score each candidate twice — independently.** First: score on the five axes (Speed ×2, Build-quality ×2, Recurrence, Generalizability, Confidence) → composite /35, honestly, no inflating to force a promotion. Then: spawn a **fresh-context subagent** (it gets the rubric + the candidate's raw text, NOT your scores) to score the same candidates. A candidate is promotable only if **both** composites clear ≥24/35. Disagreements ≥6 points are the interesting signal — log them in the `[SCORED]` block; they usually mean the candidate is context-dependent, not general.
 4. **Write a `[SCORED]` block** for each candidate in `brain/learnings/` using the rubric §5 format (append to today's dated file, or a `YYYY-MM-DD-<slug>.md` for a standalone). Every candidate gets an entry — even below-threshold ones, marked `LOGGED (history only)`.
-5. **Promote the top ~3 that clear ≥24/35** (respect the cap and the Confidence soft-gate). For each promotion, make the lesson load-bearing in the right home (rubric §3): a guardrail in a skill/agent, a playbook step, an anti-pattern entry, or a routing rule in `CLAUDE.md`/`AGENTS.md`. Record the **predicted gain** and a **feedback-check date** in the `[SCORED]` block, and set `Status: PROMOTED → <target>`.
+5. **Propose, then ratify, then promote** (Movement 2 discipline — the loop proposes; the operator ratifies; nothing auto-promotes):
+   - **First present the proposal table** in chat: candidate · your composite · fresh-eyes composite · target home · predicted gain · feedback-check date. Lead with your recommendation.
+   - **Wait for the operator's batch ratification** (approve all / approve some / reject). This is one batched decision, not a stream of interruptions.
+   - **Then promote the ratified ones** — top ~3 max that cleared ≥24/35 on both scorings (respect the cap and the Confidence soft-gate). For each, make the lesson load-bearing in the right home (rubric §3): a guardrail in a skill/agent, a playbook step, an anti-pattern entry, or a routing rule in `CLAUDE.md`/`AGENTS.md`. Record the **predicted gain** and a **feedback-check date** in the `[SCORED]` block, and set `Status: PROMOTED → <target>`.
    **Also add the practice to the public ledger:** every promotion gets a one-liner in `BEST-PRACTICES.md` (right lifecycle section, ✅/🟡/⏳ badge per its evidence, dated source, link to the deep file) — and update the counts line at the top. The ledger is the surfaced view of this loop; a promotion that skips it is invisible to readers.
 6. **Append a one-line changelog entry** to `meta/changelog.md` (newest first, under a dated heading) summarizing the cycle: e.g. `/learn-loop <label>: scored N candidates, promoted M (→ <targets>).` Bump the Hamzaish version if the promotions changed the factory's behavior.
 7. **Re-index:** `bun brain/ingest.ts` so the new scored entries are searchable.
