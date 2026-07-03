@@ -3,7 +3,7 @@
   "name": "Formpad",
   "one_liner": "Form builder for indie SaaS founders — auto-generates forms backed by Supabase. (The product is the form-flair repo.)",
   "created": "2026-03-22",
-  "stage": "mvp",
+  "stage": "launch",
   "status": "active",
   "code_path": null,
   "aliases": [
@@ -32,8 +32,8 @@
   },
   "links": {
     "github": "https://github.com/hamza-ali-shahjahan/form-flair",
-    "prod_url": null,
+    "prod_url": "https://formpad.app",
     "staging_url": null
   },
-  "notes": "form-flair IS formpad (confirmed 2026-06-04). Pre-factory Lovable build (created 2026-03-22, last push 2026-04-03 — predates Hamzaish, so onboarded INTO the factory, not built with it). Dormant since April. Has real code (src/, supabase/) + Playwright/Vitest tests. Code lives locally at ~/Claude/form-flair (map it in code-paths.local.json). Next step when revived: /work-on formpad → assess state, write scope.md + status.md, decide validate vs continue-build."
+  "notes": "form-flair IS formpad (confirmed 2026-06-04). Pre-factory Lovable build (created 2026-03-22 — predates Hamzaish, so onboarded INTO the factory, not built with it; listed on SHOWCASE.md's onboarded line, never the built-with table). LIVE at formpad.app — verified 2026-07-03 (HTTP 200, real product page); site launched outside the factory flow and portfolio metadata was reconciled same day (stage mvp→launch, prod_url filled — it had drifted). Has real code (src/, supabase/) + Playwright/Vitest tests at ~/Claude/form-flair (map in code-paths.local.json). Next: /work-on formpad → wire analytics IDs so telemetry sees it, then decide the growth path."
 }

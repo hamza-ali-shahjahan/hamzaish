@@ -24,7 +24,7 @@ Every count real · every item linked · every claim marked ✅ proven / 🟡 pa
 
 <!-- v1 "factory in motion" demo (real command output, reproducible via scripts/hero.tape). Replace with the live idea→scaffold→ship TUI recording when ready. -->
 
-*Shipped through it so far: 4 live products and an npm package → [the showcase](products/SHOWCASE.md).*
+*Shipped through it so far: 7 products with public artifacts — live sites, npm CLIs, OSS tools → [the showcase](products/SHOWCASE.md).*
 
 ---
 
