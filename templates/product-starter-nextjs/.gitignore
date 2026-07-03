@@ -71,3 +71,11 @@ DISCUSSION-NOTES.md
 # Autonomy-loop control markers (see docs/autonomy.md) — operator-local.
 .autonomy-ok
 STOP
+
+# Security-posture documents (audits, secret inventories, rotation logs, pentest
+# findings) — NEVER commit these: they map your weaknesses even when they contain
+# no keys. Keep them in meta/security/ locally or outside the repo entirely.
+meta/security/
+*SECURITY-AUDIT*
+*security-audit*
+*secrets-audit*

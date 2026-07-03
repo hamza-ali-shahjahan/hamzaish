@@ -66,3 +66,11 @@ meta/research/
 
 # Eval run reports — derived, regenerable verdicts (the committed contract is baseline.json)
 meta/evals/runs/
+
+# Security-posture documents (audits, secret inventories, rotation logs) — LOCAL ONLY,
+# this repo is always public. Layer 1 of the gate; scripts/check-sensitive-docs.ts is
+# the enforcing layer (CI + on demand) in case something sensitive lands outside here.
+meta/security/
+*SECURITY-AUDIT*
+*security-audit*
+*secrets-audit*

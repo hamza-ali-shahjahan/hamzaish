@@ -48,6 +48,21 @@ git diff --cached | grep -nEi '(api[_-]?key|secret|token|password|BEGIN [A-Z ]*P
 - Check for absolute home paths, internal hostnames, and personal emails in scripts/configs.
 - If a secret already landed in history: rotate it (assume it's burned), then scrub with `git filter-repo` or start a clean history.
 
+**Also scan for security-POSTURE documents, not just secrets** (Incident 2026-07-03: a
+`REPO-ACCOUNT-SECURITY-AUDIT.md` — which repos had exposed secrets + rotation status — sat
+one `git add -A` from publication). An audit contains no keys, but it maps your weaknesses
+for an attacker. These NEVER go in a public tree: security audits, secret
+inventories/exposure lists, rotation logs/schedules, pentest findings, incident reports
+naming credentials. Check paths AND history:
+
+```bash
+git ls-files | grep -riE 'security[-_ ]?audit|secrets?[-_ ]?(audit|inventory|exposure|rotation)|rotation[-_ ]?(log|status)|pentest' || echo "clean"
+git log --all --diff-filter=A --name-only --format= | sort -u | grep -riE 'security[-_ ]?audit|pentest' || echo "history clean"
+```
+
+Keep them in a gitignored `meta/security/` (the factory ships this ignore + a
+`check-sensitive-docs` CI guard) or outside the repo entirely.
+
 ## Step 3 — Community-health files (GitHub's "community profile" checkboxes)
 
 A stranger should be able to understand, trust, use, and contribute. The full set:

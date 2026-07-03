@@ -10,6 +10,7 @@ name: CI
 #   • check-counts     — a headline count / a /Users path / a non-null code_path drifted from disk (2026-06-28)
 #   • check-evals      — a new agent/skill shipped without an eval case (the debt rule, ratcheted 2026-07-02)
 #   • check-retro      — a factory change shipped without a retro or a recorded skip (2026-07-02)
+#   • check-sensitive-docs — a security-posture doc (audit/secret inventory/rotation log) tracked in this PUBLIC repo (2026-07-03)
 
 on:
   push:
@@ -66,3 +67,6 @@ jobs:
 
       - name: Retro guard — post-2026-07-02 changelog entries carry a retro or a recorded skip
         run: bun run check-retro --quiet
+
+      - name: Sensitive-docs guard — no security audits / secret inventories in a public tree
+        run: bun run check-sensitive-docs --quiet

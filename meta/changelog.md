@@ -10,6 +10,34 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-03 — v2.5.6 · Gate: security-posture documents can never reach a public tree
+
+**What changed**
+
+- **New CI + on-demand guard `check-sensitive-docs`** (`scripts/check-sensitive-docs.ts`,
+  wired into `package.json` + `ci.yml`): fails if any TRACKED path looks like a
+  security-posture document — `meta/security/`, security audits (`(?!or)` spares the
+  security-auditor agent), secret inventories/exposure lists, rotation logs, pentest
+  findings. Tested both ways: clean tree passes 733 paths; a `git add -f`'d audit is
+  caught with exit 1.
+- **Layer 1**: `.gitignore` gains `meta/security/` + audit-name patterns (here AND in
+  `templates/product-starter-nextjs`, so every scaffolded product is born protected).
+- **Layer 3**: `repo-go-public-checklist.md` Step 2 now scans for posture DOCUMENTS,
+  not just secrets — including a history sweep — with the incident recorded.
+
+**Why**
+
+- 2026-07-03: a stray `meta/security/REPO-ACCOUNT-SECURITY-AUDIT.md` (which repos had
+  exposed secrets + rotation status) sat untracked beside three committable stray docs —
+  one habitual `git add -A` from publishing an attacker's shopping list in this
+  always-public repo. An audit holds no keys, but it maps the weaknesses. Ignore lines
+  alone are bypassable; the guard makes the tracked tree itself fail loudly.
+
+**Retro:** skipped — single-guard addition in the existing check-* pattern; the incident,
+fix, and both-ways test are fully documented in this entry; no process pivot.
+
+---
+
 ## 2026-07-03 — v2.5.5 · Showcase catches up with reality: rotscan + repolish join the table, formpad honestly placed
 
 **What changed**

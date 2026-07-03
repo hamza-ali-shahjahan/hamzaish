@@ -25,6 +25,7 @@
     "check-counts": "bun scripts/check-counts.ts",
     "check-evals": "bun scripts/check-evals.ts",
     "check-retro": "bun scripts/check-retro.ts",
+    "check-sensitive-docs": "bun scripts/check-sensitive-docs.ts",
     "telemetry": "bun scripts/telemetry.ts",
     "tidy": "bun scripts/tidy.ts"
   },
