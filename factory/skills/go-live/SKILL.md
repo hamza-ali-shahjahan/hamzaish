@@ -16,7 +16,7 @@ Where it sits in the chain:
 
 1. Resolve the product: `$ARGUMENTS` is the slug. If empty, ask (or `Read products/_portfolio.md`).
 2. Resolve the **code path** from `products/<slug>/product.config.json` → `code_path` (maps via `code-paths.local.json`). All provisioning happens **in that product's code repo** — that's where `.env.local` lives.
-3. Confirm there's an `.env.local` (create from `.env.example` if missing). **Never** write secrets to anything tracked; `.env.local` is gitignored.
+3. Confirm there's an `.env.local` (`test -s .env.local`). If missing, the **user** creates it: `cp .env.local.example .env.local` (ship the `.example` if the starter lacks one). **Claude never creates, reads, or writes `.env.local` itself** — hook-enforced; see The guided loop step 3–5. **Never** write secrets to anything tracked; `.env.local` is gitignored.
 
 ## The state ledger (resume)
 
@@ -34,9 +34,9 @@ Group services into **required-to-deploy** first, **optional** second. For each 
 
 1. **Explain in one line** what it's for and the cheapest skip ("no payments yet? skip Stripe").
 2. **Open the deep-link** (print it; the user signs up — you can't create accounts for them).
-3. **Ask for the key(s)**, naming exactly what to copy from where.
-4. **Validate the format** (table below) before writing — a malformed key caught now saves a broken deploy later.
-5. **Write to `.env.local`** under the documented var name(s).
+3. **Name exactly what to copy from where** — but the key's VALUE never enters chat and Claude never touches the file. Give the user the exact line to add, e.g. "in your editor, add `STRIPE_SECRET_KEY=<the sk_test_… key you just copied>` to `.env.local`". First run: the user creates the file themselves with `cp .env.local.example .env.local`.
+4. **User pastes the key into `.env.local` themselves** and says "done".
+5. **Validate presence + format with NON-PRINTING checks only** (table below): `grep -qE '^STRIPE_SECRET_KEY=sk_(live|test)_' .env.local && echo OK` — boolean/count output only, never the value. Never Read/Write/Edit `.env.local`, never `cat` it (the `guard-secrets-files.sh` hook blocks it anyway — incident 2026-07-03: a Claude-created `.env.local` got harness-watched and the user's pasted keys were echoed into the transcript; both keys rotated).
 6. **Mark the service `done`** in the ledger. Offer `skip`/`later` at every step (records the choice, moves on).
 
 ### Service catalog (deep-links · keys · validation)
@@ -72,5 +72,6 @@ When the **required-to-deploy** set is `done`:
 ## Honest rules
 
 - Never commit a real key. Only `.env.local` (gitignored) or the platform's secret store. The `.env.example` stays placeholders-only.
+- **Secrets files are user-touched only.** Claude edits only `.example` templates; the user copies + pastes their own keys; verification is non-printing (`grep -q/-c`, `test`). Key values never enter chat in either direction. Enforced machine-wide by `~/.claude/hooks/guard-secrets-files.sh`; see `brain/anti-patterns/claude-touched-secrets-file.md` (incident 2026-07-03).
 - Record skips honestly in the ledger; a skipped service is a deliberate choice, not a gap.
 - This command lives at `factory/commands/go-live.md` (symlinked into `.claude/commands/`).
