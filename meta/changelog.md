@@ -30,6 +30,8 @@ Incident 2026-07-03 (Muakkil go-live): Claude created `.env.local` with blank ke
 - Product starters: ship `.env.local.example` by default (Muakkil now has one; add to `templates/product-starter-nextjs`).
 - `bun run setup` refresh of `~/.claude/commands/` copies so the updated go-live/hamzaish text propagates outside the repo.
 
+**Retro:** skipped — incident, root cause, and every enforcement layer fully captured in `brain/anti-patterns/claude-touched-secrets-file.md` + the 2026-07-03 learning entry + this entry; the hook shipped with an 18-case test suite and was verified live in-session (it blocked its own author twice).
+
 ---
 
 ## 2026-07-03 — v2.5.6 · Gate: security-posture documents can never reach a public tree
