@@ -10,6 +10,22 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-03 — v2.5.5 · Showcase catches up with reality: rotscan + repolish join the table, formpad honestly placed
+
+**What changed**
+
+- **Two verified additions to [`products/SHOWCASE.md`](../products/SHOWCASE.md):** **rotscan** ([`@hamzaish/rotscan` 0.1.0 live on npm](https://www.npmjs.com/package/@hamzaish/rotscan) — the repo-rot scanner behind `/tidy`) and **Repolish** (public GitHub since 2026-06-23, factory-scaffolded → factory-launched with both decisions on record). Every claim verified live before listing (registry lookup, repo visibility API, site probes).
+- **Formpad placed honestly:** [formpad.app](https://formpad.app) is live (verified 2026-07-03) — but its own config records it as a **pre-factory Lovable build onboarded into the portfolio**, so it appears on a clearly-labeled "onboarded, not factory-built" line rather than the built-with table. The showcase claims only what the factory built.
+- **Formpad metadata drift fixed:** the portfolio had `stage: mvp`, `prod_url: null`, status "idea/slot_reserved" while the site served real traffic. Reconciled (stage → launch, prod_url filled, status rewritten with the real next step: wire analytics IDs so telemetry can see it). A live product the factory couldn't see is exactly the blindness `bun run telemetry` exists to end.
+- **Repolish metadata folder committed** (was untracked from a parallel session — reviewed + secret-scanned before inclusion, per the stowaway rule). README headline updated: "7 products with public artifacts" replaces the stale "4 live products and an npm package."
+- **Not added, on purpose:** scope-intelligence (MVP, nothing publicly touchable — the showcase's own bar) and ThousandWorlds Explorer (not yet registered in the portfolio; joins once its URL + story are on record).
+
+**Why**
+
+The operator spotted the showcase underselling the portfolio. Both directions of drift violate honest-copy — the fix adds what's real *and* refuses what isn't provable (formpad's table exclusion is the same "no overclaims" pass Repolish performs on READMEs).
+
+**Retro:** skipped — docs/metadata reconciliation; every verification recorded in this entry.
+
 ## 2026-07-03 — v2.5.4 · Identity guardrails: your commits can never again wear a stranger's face
 
 **What changed**
