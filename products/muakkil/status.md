@@ -14,13 +14,17 @@
 
 | # | Slice | Status |
 |---|---|---|
-| 1 | Auth + Venture object + dashboard + approval queue | 🔨 in progress |
-| 2 | Scribe intake (voice/chat → venture brief) | ⏳ |
-| 3 | Seeker validation pack | ⏳ |
-| 4 | Maker thin (brand kit + landing + waitlist, auto-deploy) | ⏳ |
-| 5 | Herald-lite (domain, SEO/AEO, launch kit, welcome email) | ⏳ |
-| 6 | Weekly founder report | ⏳ |
-| 7 | Import-and-launch (Lovable/Bolt export → distribution) | ⏳ |
+| 1 | Auth + Venture object + dashboard + approval queue | ✅ built + live-smoked (self-owned Supabase) |
+| 2 | Scribe intake (voice/chat → venture brief, **editable before approve**) | ✅ built |
+| 3 | Seeker validation pack (live web search verified) | ✅ built |
+| 4 | Maker thin (landing + waitlist live at muakkil.com/v/slug) | ✅ built |
+| 5 | Herald-lite (launch kit + welcome email, approval-gated) | ✅ built |
+| 6 | Weekly founder report (grounded numbers) | ✅ built |
+| — | **Muakkal dance UX**: per-agent progress animation, live polling, auto-advance after approve | ✅ built 2026-07-03 |
+| — | Business layer: /pricing (plans single-source), /terms, /privacy, landing→app bridge | ✅ built |
+| 7 | Import-and-launch (Lovable/Bolt export → distribution) | ⏳ next build |
+
+**2026-07-03 notes:** canonical domain is **muakkil.com** (every `.app` reference purged). Backend runs on the operator's own Supabase (see decisions). Secrets handling now follows the example+user-copies pattern (machine hook enforces; v2.5.7). Direct competitor identified: **Polsia** (venture-agent category proven at $49/mo + $250M valuation; their failure modes = our differentiators — validation-first, approval gates, no lock-in).
 
 ---
 
@@ -56,7 +60,7 @@
 
 1. **Orchestrator misroute** — mitigate with 10-canonical-charge eval before submission
 2. **Slack OAuth eats > 4h** — ship email-only Slack v1.5 post-buildathon if needed
-3. **Email deliverability** — `muakkil.app` DKIM/SPF v1 + `resend.dev` fallback
+3. **Email deliverability** — `muakkil.com` DKIM/SPF v1 + `resend.dev` fallback
 4. **LLM rate limits** — Anthropic Tier 1 + Groq free tier; queue-with-toast on 429
 5. **DNS doesn't propagate** — `onboarding@resend.dev` for demo if needed
 
@@ -71,7 +75,7 @@
 - [ ] Run Lovable Prompt 1 (auth)
 - [ ] Drop API keys into `.env.local`: `ANTHROPIC_API_KEY`, `GROQ_API_KEY`, `RESEND_API_KEY`
 - [ ] Create Slack app (Client ID + Secret) before Sunday afternoon
-- [ ] Cloudflare DNS access ready for Resend `muakkil.app` setup
+- [ ] Cloudflare DNS access ready for Resend `muakkil.com` setup
 
 ## Explicitly deferred to v2+
 
@@ -87,6 +91,6 @@
 
 ## Verification gate before submission
 
-End-to-end smoke: open muakkil.app in fresh browser → Google sign-in → "Speak your charge" → say "Research the top 3 AI meeting note apps and email me a summary" → email arrives within 60s. Plus mobile Safari smoke (graceful text-input degrade).
+End-to-end smoke: open muakkil.com in fresh browser → Google sign-in → "Speak your charge" → say "Research the top 3 AI meeting note apps and email me a summary" → email arrives within 60s. Plus mobile Safari smoke (graceful text-input degrade).
 
 Full checklist at `muakkil-code/docs/buildathon-plan.md` §Verification.
