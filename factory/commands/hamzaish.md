@@ -59,6 +59,14 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - Next.js 16+: use `proxy.ts`, not `middleware.ts`.
    - Set a noreply git email before the first commit (avoids push rejection).
    - Build locally before any deploy.
+   - **Secrets files are user-touched only.** Claude never Reads/Writes/Edits `.env.local`
+     (or any real-secrets file) — a Claude-touched file becomes harness-watched, and the
+     user's pasted keys get echoed into the chat transcript (incident 2026-07-03: Muakkil's
+     keys leaked exactly this way; rotation required). Pattern: Claude ships
+     `<name>.example` with placeholders → user runs `cp` and pastes keys themselves →
+     Claude verifies with non-printing checks (`grep -q/-c`, `test -s`). Enforced
+     machine-wide by `~/.claude/hooks/guard-secrets-files.sh`; see
+     `brain/anti-patterns/claude-touched-secrets-file.md`.
    - **Multi-repo sessions: address, don't navigate.** Shell cwd does NOT reliably persist
      across tool calls, and a compound `cd X && …` silently runs against the wrong repo when
      the cd is skipped or reset. Always `git -C <abs-path>` for git, absolute paths for any

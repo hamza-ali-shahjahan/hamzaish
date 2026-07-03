@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-03 — v2.5.7 · Guardrail: Claude never touches secrets files (the watcher-echo leak, closed)
+
+**What changed**
+
+- **New machine-wide PreToolUse hook `~/.claude/hooks/guard-secrets-files.sh`** (wired in `~/.claude/settings.json` for `Read|Write|Edit|NotebookEdit` and `Bash`): hard-blocks Claude's access to real-secrets files (`.env.local`, `.env.*.local`, `.dev.vars`, `id_rsa*`, `*.pem`, `credentials.json`, `secrets.*`) and Bash commands that would print them (`cat`/`head`/`sed`/plain `grep`); non-printing checks (`grep -q/-c`, `test`, `wc -l`) stay allowed; `.example` templates always allowed; override only via explicit in-chat approval token. 14-case unit test passed.
+- **New anti-pattern** `brain/anti-patterns/claude-touched-secrets-file.md` — the pattern, the incident, the example+user-copies fix.
+- **go-live skill redesigned** (`factory/skills/go-live/SKILL.md`): guided-loop steps 3–5 now user-pastes-keys-themselves + Claude verifies with non-printing checks; it previously instructed Claude to write keys into `.env.local` (the same latent bug).
+- **New standing guardrail** in `factory/commands/hamzaish.md`: secrets files are user-touched only.
+- **Global `~/.claude/CLAUDE.md`**: new hard-rule section "Never touch real-secrets files" (machine-wide).
+
+**Why**
+
+Incident 2026-07-03 (Muakkil go-live): Claude created `.env.local` with blank keys and told the user to fill it in himself so values never touch chat. Because Claude had written the file, it was harness-watched — the moment the user pasted his real Supabase service-role + Anthropic keys, the harness echoed the full file contents into the chat transcript. Both keys rotated. The behavioral rule was followed by both parties and still failed: **policy without enforcement fails at the tool layer**, so the fix is a hook, not a reminder.
+
+**What to revisit**
+
+- After a week of real sessions: any false blocks (legit `.example` work caught, patterns to loosen/tighten)?
+- Product starters: ship `.env.local.example` by default (Muakkil now has one; add to `templates/product-starter-nextjs`).
+- `bun run setup` refresh of `~/.claude/commands/` copies so the updated go-live/hamzaish text propagates outside the repo.
+
+---
+
 ## 2026-07-03 — v2.5.6 · Gate: security-posture documents can never reach a public tree
 
 **What changed**
