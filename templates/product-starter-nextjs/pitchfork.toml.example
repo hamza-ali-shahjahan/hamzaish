@@ -1,0 +1,34 @@
+# pitchfork.toml — supervised dev servers for {{PRODUCT_NAME}} (TEMPLATE)
+# ---------------------------------------------------------------------------
+# pitchfork (https://pitchfork.jdx.dev) supervises long-running dev processes so
+# they start once, survive across terminal/agent sessions, and are reachable at a
+# stable URL — instead of ad-hoc `bun dev` that orphans on ^C and collides on ports.
+# Copy to `pitchfork.toml` (safe to commit — no secrets). Start with:
+#   pitchfork start web        # or `pitchfork start -l` for all local daemons
+#
+# Combine with fnox to inject secrets into the supervised server:
+#   run = "fnox exec -- bun dev"
+
+[daemons.web]
+run = "bun dev"
+# auto = ["start"] → auto-start when you cd into this project (kept running when
+# you leave, so it survives across sessions). Use ["start","stop"] to also stop on exit.
+auto = ["start"]
+# READINESS — prefer ready_output (matches THIS daemon's own stdout) over an HTTP
+# check. PILOT FINDING (2026-07-04): an `--http` ready-check can FALSE-POSITIVE to
+# "running" when ANOTHER process already answers that URL (e.g. a second product on
+# the same port) — it verifies "something answers", not "my daemon is alive".
+# ready_output reads the daemon's log, so it can't be fooled by a neighbour.
+ready_output = "Ready"       # Next.js dev prints "✓ Ready in …"
+# ready_delay = 5            # or: just wait N seconds (least precise)
+
+# --- Multiple products in parallel: give each a DISTINCT port ---------------
+# Running several products at once? Each MUST bind its own port, or the readiness
+# checks (and any shared reverse proxy) collide. e.g. PORT=3001 bun dev, 3002, …
+# [daemons.web]
+# run = "PORT=3001 bun dev"
+
+# --- Optional: stable local HTTPS URL (opt-in, NOT enabled here) ------------
+# `pitchfork proxy` gives every daemon a stable https://<name>.localhost URL, but
+# it installs a CA into your system trust store and edits /etc/hosts — a system
+# change. Enable it deliberately (`pitchfork proxy start`), not from a template.

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "fnox": {
+      "command": "fnox",
+      "args": ["mcp"]
+    },
+    "pitchfork": {
+      "command": "pitchfork",
+      "args": ["mcp"]
+    }
+  }
+}

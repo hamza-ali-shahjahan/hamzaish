@@ -1,0 +1,46 @@
+# fnox.toml — encrypted secrets config for {{PRODUCT_NAME}} (TEMPLATE)
+# ---------------------------------------------------------------------------
+# fnox (https://fnox.jdx.dev) is the RECOMMENDED secrets backend: unlike
+# .env.local, this file holds only CIPHERTEXT or remote-provider references and
+# is SAFE TO COMMIT. Secrets never exist as plaintext on disk. Copy this to
+# `fnox.toml` and `fnox set <NAME>` your values (the [secrets] block fills in
+# as you set them — see SETUP.md). Run the app with: `fnox exec -- bun dev`.
+#
+# WHY over .env.local: closes the 2026-07-03 watcher-echo leak class at the
+# root — there is no plaintext file for the harness to watch and echo into chat.
+
+# --- Option A: remote provider (PREFERRED for agent workflows) --------------
+# No local decryption key to protect. Uncomment ONE and set your account refs.
+#
+# [providers.op]          # 1Password
+# type = "onepassword"
+# vault = "{{PRODUCT_SLUG}}"
+#
+# [providers.aws]         # AWS Secrets Manager / KMS
+# type = "aws-secrets-manager"
+# region = "us-east-1"
+
+# --- Option B: age (local key — key MUST live outside this repo + agent reach)
+[providers.age]
+type = "age"
+recipients = ["age1REPLACE_WITH_YOUR_AGE_PUBLIC_KEY"]
+# key_file points at your age identity. Keep it OUTSIDE the repo and unreadable
+# to any AI agent (reading it fully decrypts every secret here). e.g.:
+key_file = "~/.config/fnox/{{PRODUCT_SLUG}}.key"
+
+# --- MCP: how AI agents (Claude Code) reach secrets — EXEC-ONLY -------------
+# Agents call `fnox mcp`'s `exec` tool, which redacts resolved secret values
+# from stdout/stderr. tools=["exec"] is mandatory: it blocks get_secret/get so
+# an agent can never retrieve a raw value through MCP. The committed
+# .claude/settings.json denies ALL `fnox` at the agent's shell so it can't
+# bypass redaction via `fnox get`/`export` — but deny-rules are best-effort,
+# not a hard boundary. The real protection is keeping the decryption key out of
+# the agent's reach (remote provider, or a key file it can't read). See SETUP.md
+# + the go-live skill's honest threat model.
+[mcp]
+tools = ["exec"]
+# secrets = ["STRIPE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY"]  # explicit allowlist
+
+# --- secrets (ciphertext, filled by `fnox set` — safe to commit) ------------
+# [secrets]
+# STRIPE_SECRET_KEY = { provider = "age", value = "<ciphertext>" }

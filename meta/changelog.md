@@ -10,6 +10,48 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-04 — v2.7.0 · pitchfork adopted as the supervised dev-server floor (jdx toolchain Phase 2)
+
+**What changed**
+
+- **Product starter** (`templates/product-starter-nextjs/`): new **schema-validated** `pitchfork.toml.example` (a `web` daemon: `run = "bun dev"`, `auto = ["start"]`, `ready_output = "Ready"`), and pitchfork added to `.mcp.json.example` alongside fnox (so an agent can `pitchfork_start/status/stop` servers).
+- **`/go-live` skill**: the "Verify, then hand off" step now **verifies a server is actually up (via pitchfork) before emitting any localhost link** — mechanizing the global "never hand over a dead localhost link" rule.
+- **SETUP.md**: new "Running it supervised" section (start-once, survives sessions, `fnox exec -- bun dev` to combine with secrets, distinct-port rule for parallel products).
+- **Decision log** `brain/decision-log/2026-07-04-pitchfork-dev-server-supervision.md`: the decision + full pilot evidence table + honest limits.
+
+**Why**
+
+Ad-hoc `bun dev` orphans on ^C, collides on ports, and dies between sessions — against the operator's "never share a dead localhost link" rule and unworkable across multiple parallel products. pitchfork supervises (start-once, ready-checks, cross-session persistence, MCP-drivable). It's also the process-supervision half of the "safe unattended runs" floor (with fnox the secrets half) that the autonomy grading names as prerequisite to the orchestration rung. Piloted in scratchpad (no showcase repos touched — `code-paths.local.json` is empty, so all products are showcase): verified start-once, persistence, crash detection, and the MCP tools; **found and documented a real gotcha** — an HTTP ready-check false-positives to "running" when another process already answers the port (readiness ≠ liveness), mitigated by `ready_output` + distinct ports. Config-schema validated against the README (a guessed `ready={http=…}` field is silently ignored — same discipline as Phase 1's `_comment` catch).
+
+**What to revisit**
+
+Opt-in and pilot-only by design; no fleet rollout, no production supervision, `pitchfork proxy` (CA/hosts) left escalation-gated. pitchfork is the least-adopted jdx tool (~550 stars) — revisit if supervision proves flaky in real multi-product use or cadence stalls > 3 months. hk/aube remain not-adopted.
+
+**Retro:** `meta/retros/2026-07-04-jdx-toolchain-floor-fnox-pitchfork.md` (covers both v2.6.0 + v2.7.0 — one cohesive ship).
+
+---
+
+## 2026-07-04 — v2.6.0 · fnox adopted as the recommended secrets backend for go-live (root-cause fix + red-team gate)
+
+**What changed**
+
+- **`/go-live` skill** (`factory/skills/go-live/SKILL.md`): new "Secrets backend — fnox (recommended) vs `.env.local` (fallback)" section. fnox stores only ciphertext / provider references in a committable `fnox.toml`; agents reach secrets solely through `fnox mcp` in **exec-only** mode (redacts resolved values from output). Ships the **honest, red-teamed threat model** and the mandatory confinement conditions.
+- **Product starter** (`templates/product-starter-nextjs/`): new `fnox.toml.example` (age + remote-provider options, `[mcp] tools=["exec"]`), `.mcp.json.example` (exec-only fnox MCP server), `.claude/settings.json` (Bash **deny-rule** blocking **all** `fnox` at the agent's shell — `Bash(fnox)` + `Bash(fnox:*)`), `.gitignore` updates (commit `fnox.toml` ciphertext; never the `*.key` or the go-live ledger), and a new SETUP.md "Step 0 — pick your secrets backend".
+- **Anti-pattern** `brain/anti-patterns/claude-touched-secrets-file.md`: added the root-cause fix (no plaintext file at all, via fnox) with its red-teamed caveat.
+- **Decision log** `brain/decision-log/2026-07-04-fnox-secrets-backend.md`: the decision + full red-team evidence table + revisit triggers.
+
+**Why**
+
+The 2026-07-03 watcher-echo leak was closed at the *symptom* by `guard-secrets-files.sh` (Claude can't touch the file). fnox closes it at the *root*: there is no plaintext secrets file for the harness to watch. Piloted with a throwaway age key + fake secret and red-teamed against the exec-only MCP config: it **closes the accidental-leak class** (`printenv`/`echo` → `[REDACTED]`, `get_secret` blocked) but **not adversarial exfiltration** (base64/reverse/write-to-file, and CLI `fnox get`/`export` all recover the value). So it's shipped **conditional on confinement** — Bash deny-rules + key-out-of-agent-reach + the guard hook as defense-in-depth. Phase 1 of the jdx/en.dev toolchain evaluation; hk/aube not adopted, pitchfork is Phase 2.
+
+**What to revisit**
+
+Next quarterly toolchain review, or the first product that runs an unattended/autonomous go-live (where adversarial confinement stops being hypothetical). fnox is young (~1.9k stars) — revisit if release cadence stalls > 3 months.
+
+**Retro:** `meta/retros/2026-07-04-jdx-toolchain-floor-fnox-pitchfork.md` (covers both v2.6.0 + v2.7.0 — one cohesive ship).
+
+---
+
 ## 2026-07-03 — v2.5.7 · Guardrail: Claude never touches secrets files (the watcher-echo leak, closed)
 
 **What changed**
