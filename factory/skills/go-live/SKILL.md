@@ -1,6 +1,6 @@
 ---
 name: go-live
-description: Guided, stateful provisioning of a product's production stack — service by service, with deep-links, key-format validation, .env.local writes, a resumable ledger, and CLI automation after signup. Hands off to /security-check → /ship. Turns the 25-min SETUP.md into a walked, resumable flow.
+description: Guided, stateful provisioning of a product's production stack — service by service, with deep-links, key-format validation, a secrets backend (fnox recommended, or user-touched .env.local), a resumable ledger, and CLI automation after signup. Hands off to /security-check → /ship. Turns the 25-min SETUP.md into a walked, resumable flow.
 ---
 
 # /go-live
@@ -15,8 +15,26 @@ Where it sits in the chain:
 ## Preconditions
 
 1. Resolve the product: `$ARGUMENTS` is the slug. If empty, ask (or `Read products/_portfolio.md`).
-2. Resolve the **code path** from `products/<slug>/product.config.json` → `code_path` (maps via `code-paths.local.json`). All provisioning happens **in that product's code repo** — that's where `.env.local` lives.
-3. Confirm there's an `.env.local` (`test -s .env.local`). If missing, the **user** creates it: `cp .env.local.example .env.local` (ship the `.example` if the starter lacks one). **Claude never creates, reads, or writes `.env.local` itself** — hook-enforced; see The guided loop step 3–5. **Never** write secrets to anything tracked; `.env.local` is gitignored.
+2. Resolve the **code path** from `products/<slug>/product.config.json` → `code_path` (maps via `code-paths.local.json`). All provisioning happens **in that product's code repo** — that's where secrets get wired.
+3. **Pick the secrets backend** (see next section). Default recommendation: **fnox** — no plaintext secrets file on disk. Fallback: user-touched `.env.local`. Either way, **Claude never creates, reads, or writes a plaintext secrets file itself** (hook-enforced), and never writes secrets to anything tracked.
+
+## Secrets backend — fnox (recommended) vs `.env.local` (fallback)
+
+**Recommend fnox first** (jdx/en.dev — `brew install fnox`). It removes the *root cause* of the 2026-07-03 leak: with fnox there is **no plaintext `.env.local` to be harness-watched**. `fnox.toml` holds only age/KMS ciphertext or remote-provider references (1Password, AWS/GCP/Azure secret managers, Vault, Doppler, …) and is safe to commit. The app runs via `fnox exec -- <cmd>`, which injects secrets into the child process env only at run time.
+
+**Agents access secrets only through fnox's MCP server, exec-only.** The product repo's `.mcp.json` runs `fnox mcp` with `[mcp] tools = ["exec"]`; its `exec` tool redacts resolved values from stdout/stderr, so `printenv`/`echo $SECRET` return `[REDACTED]` in the transcript.
+
+**Honest threat model (red-teamed 2026-07-04 — see `brain/decision-log/2026-07-04-fnox-secrets-backend.md`).** fnox's MCP redaction is literal string-matching. It closes the **accidental-leak class** (the watcher-echo / `printenv` incident) — which is the one that actually bit us — but **not adversarial exfiltration** (base64/reverse/write-to-file all recover the value). Layer these, weakest to strongest:
+
+- **The real boundary — key out of agent reach.** This is the only layer robust against a *determined/injected* agent. Prefer a **remote provider (1Password/KMS)** whose auth the agent can't complete, so no local key exists. A local age key must live **outside the repo and unreadable to the agent** (reading it fully decrypts `fnox.toml`).
+- **Shell deny-rules (best-effort).** The committed `.claude/settings.json` denies **all** `fnox` at the agent's shell (`Bash(fnox)`, `Bash(fnox:*)`) — the agent has no legitimate shell use of fnox; it goes through MCP. Note this is *best-effort*, not a security boundary: Claude Code deny-rules are bypassable (option injection, env-var prefixes, `eval`, absolute paths — per the permissions docs). It stops the naive path, not a determined one.
+- **`tools = ["exec"]` + explicit `secrets` allowlist** in `fnox.toml` — never the permissive default; blocks `get_secret`/`get` through MCP.
+- **`guard-secrets-files.sh` stays** as defense-in-depth.
+- **JSON config caveat:** `.claude/settings.json` and `.mcp.json` use strict validation — **no `_comment` keys** (an unknown key rejects the whole file, silently dropping the deny-rules). Document rationale outside the JSON.
+
+Setting a secret (the **user** runs this themselves, value never in chat): `fnox set STRIPE_SECRET_KEY --provider age` (prompts for the value). Verify non-printing: `fnox list` (names only) or `fnox check`.
+
+**Fallback — `.env.local`:** if the user declines fnox, use the user-touched flow below. Confirm there's an `.env.local` (`test -s .env.local`); if missing, the **user** creates it (`cp .env.local.example .env.local`) and pastes keys themselves. `.env.local` is gitignored.
 
 ## The state ledger (resume)
 
@@ -34,9 +52,13 @@ Group services into **required-to-deploy** first, **optional** second. For each 
 
 1. **Explain in one line** what it's for and the cheapest skip ("no payments yet? skip Stripe").
 2. **Open the deep-link** (print it; the user signs up — you can't create accounts for them).
-3. **Name exactly what to copy from where** — but the key's VALUE never enters chat and Claude never touches the file. Give the user the exact line to add, e.g. "in your editor, add `STRIPE_SECRET_KEY=<the sk_test_… key you just copied>` to `.env.local`". First run: the user creates the file themselves with `cp .env.local.example .env.local`.
-4. **User pastes the key into `.env.local` themselves** and says "done".
-5. **Validate presence + format with NON-PRINTING checks only** (table below): `grep -qE '^STRIPE_SECRET_KEY=sk_(live|test)_' .env.local && echo OK` — boolean/count output only, never the value. Never Read/Write/Edit `.env.local`, never `cat` it (the `guard-secrets-files.sh` hook blocks it anyway — incident 2026-07-03: a Claude-created `.env.local` got harness-watched and the user's pasted keys were echoed into the transcript; both keys rotated).
+3. **Name exactly what to copy from where** — the key's VALUE never enters chat and Claude never touches a secrets file. **Store it — steps 3–4 depend on the chosen backend:**
+   - **fnox (recommended):** tell the user to run `fnox set STRIPE_SECRET_KEY --provider age` (or their provider) — value omitted, so fnox **prompts with hidden input** (never in chat, never in shell history). First run: `cp fnox.toml.example fnox.toml` and set the provider.
+   - **`.env.local` (fallback):** give the exact line to add, e.g. "in your editor, add `STRIPE_SECRET_KEY=<the sk_test_… key you just copied>` to `.env.local`". First run: the user creates it with `cp .env.local.example .env.local`.
+4. **User stores the key themselves** (fnox prompt, or paste into `.env.local`) and says "done".
+5. **Validate presence + format with NON-PRINTING checks only** — boolean/count/names output, never the value:
+   - **fnox:** `fnox list` (names + ciphertext only, no plaintext) and `fnox check` (health verdict). Never `fnox get`/`export`/`exec` — those return raw values and are deny-listed for the agent anyway.
+   - **`.env.local`:** `grep -qE '^STRIPE_SECRET_KEY=sk_(live|test)_' .env.local && echo OK` (table below). Never Read/Write/Edit or `cat` it (the `guard-secrets-files.sh` hook blocks it anyway — incident 2026-07-03: a Claude-created `.env.local` got harness-watched and the user's pasted keys were echoed into the transcript; both keys rotated).
 6. **Mark the service `done`** in the ledger. Offer `skip`/`later` at every step (records the choice, moves on).
 
 ### Service catalog (deep-links · keys · validation)
@@ -66,8 +88,9 @@ State plainly what you can't do: you can't sign the user up, accept their ToS, o
 ## Verify, then hand off
 
 When the **required-to-deploy** set is `done`:
-1. **Verify**: every required var is present in `.env.local` and well-formed (re-run the format checks). Confirm `LOCAL_MODE` will now be off (Supabase set).
-2. **Offer the handoff**: "Stack wired. Run `/security-check <slug>` (gate), then `/ship <slug>` (deploy)?" — `/go-live` provisions; `/ship` deploys. Don't deploy from here.
+1. **Verify**: every required var is present and well-formed (re-run the format checks). On fnox: `fnox check` + `fnox list` (names only). On `.env.local`: non-printing `grep -qE` checks. Confirm `LOCAL_MODE` will now be off (Supabase set).
+2. **Verify the server is actually up before sharing any localhost link** (global rule: never hand over a dead localhost link). If the product uses **pitchfork**, `pitchfork start web` (idempotent) then `pitchfork status web` — or curl the port for a 2xx — before emitting the URL. pitchfork keeps the server supervised across sessions, so the link stays live. Multiple products: distinct ports (a readiness check confirms "something answers," not "*this* server" — a collision can false-positive).
+3. **Offer the handoff**: "Stack wired. Run `/security-check <slug>` (gate), then `/ship <slug>` (deploy)?" — `/go-live` provisions; `/ship` deploys. Don't deploy from here.
 
 ## Honest rules
 

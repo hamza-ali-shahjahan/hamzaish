@@ -29,6 +29,8 @@ The deeper lesson: **policy without enforcement fails at the tool layer.** The b
 
 **Enforcement:** `~/.claude/hooks/guard-secrets-files.sh` (PreToolUse on Read/Write/Edit/NotebookEdit + Bash) hard-blocks Claude's access to `.env.local`, `.env.*.local`, `.dev.vars`, `id_rsa*`, `*.pem`, `credentials.json`, `secrets.*` — and Bash commands that would print them. Override requires Hamza's explicit in-chat approval (token `I-CONFIRM-SECRETS-FILE-ACCESS`).
 
+**The stronger, root-cause fix (2026-07-04): no plaintext file at all.** The guard hook patches the *symptom* (Claude can't touch the file). **fnox** (recommended secrets backend, `brain/decision-log/2026-07-04-fnox-secrets-backend.md`) removes the *cause*: `fnox.toml` holds only ciphertext/provider references and is safe to commit, so there is no plaintext file for the harness to watch and echo. Agents reach secrets only through `fnox mcp` in exec-only mode, which redacts resolved values from output. **Caveat (red-teamed):** that redaction is literal string-matching — it closes this accidental-leak class but not adversarial exfiltration (base64/reverse/write-to-file), so it must be paired with Bash deny-rules (`fnox get`/`export`/`exec`) and a key kept out of agent reach. The guard hook stays as defense-in-depth.
+
 ## When this might not apply
 
 - `.example` templates are always fine — creating them IS the sanctioned pattern.

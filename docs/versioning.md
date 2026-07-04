@@ -2,7 +2,7 @@
 
 Hamzaish uses **[Semantic Versioning](https://semver.org)** — `MAJOR.MINOR.PATCH` — with **one source of truth** and a CI guard, so the number can't drift across the repo. (It did once: `package.json` said `1.10.0`, this kind of note said `v1.4`, the changelog said `v1.31`, and the last released tag was `v1.2.0` — four different numbers, nothing reconciling them. Never again — that's what the guard is for.)
 
-**Current version: `2.5.7`** — *Claude never touches secrets files: machine-wide PreToolUse guard closes the watcher-echo leak (a Claude-created `.env.local` echoed the user's pasted keys into the transcript); go-live redesigned to user-pastes-keys; anti-pattern + standing guardrail recorded.*
+**Current version: `2.7.0`** — *jdx/en.dev toolchain floor, Phase 2: pitchfork adopted as the opt-in supervised dev-server layer (start-once, survives sessions, MCP-drivable; go-live now verifies a server is up before sharing a localhost link). Pilot-validated with an honest limits model (readiness≠liveness port false-positive; proxy CA/hosts left escalation-gated). Builds on Phase 1 (2.6.0, fnox secrets backend).*
 
 ## One source of truth
 

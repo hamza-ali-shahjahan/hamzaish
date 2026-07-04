@@ -8,6 +8,14 @@
 *.env.local
 !.env.example
 
+# fnox: fnox.toml (ciphertext / provider refs) IS safe to commit and tracked.
+# But the age decryption key and the resumable go-live ledger are NOT.
+*.key
+!fnox.toml.example
+.mcp.json
+!.mcp.json.example
+.hamzaish-go-live.json
+
 node_modules
 .next
 .vercel
@@ -62,11 +70,13 @@ DISCUSSION-NOTES.md
 # /goal autonomy run logs (rubric, run journal) — local restore points.
 .goal/
 
-# Local Claude workspace: share only project rules & commands; ignore the rest
-# (settings.local.json, the auto-generated .claude/HAMZAISH.md, etc.).
+# Local Claude workspace: share project rules, commands & settings; ignore the rest
+# (settings.local.json, the auto-generated .claude/HAMZAISH.md, etc.). settings.json
+# is shared — it carries the fnox confinement deny-rules that MUST ship (see fnox.toml.example).
 .claude/*
 !.claude/rules
 !.claude/commands
+!.claude/settings.json
 
 # Autonomy-loop control markers (see docs/autonomy.md) — operator-local.
 .autonomy-ok
