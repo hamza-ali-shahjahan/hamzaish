@@ -27,6 +27,8 @@ Ad-hoc `bun dev` orphans on ^C, collides on ports, and dies between sessions —
 
 Opt-in and pilot-only by design; no fleet rollout, no production supervision, `pitchfork proxy` (CA/hosts) left escalation-gated. pitchfork is the least-adopted jdx tool (~550 stars) — revisit if supervision proves flaky in real multi-product use or cadence stalls > 3 months. hk/aube remain not-adopted.
 
+**Retro:** `meta/retros/2026-07-04-jdx-toolchain-floor-fnox-pitchfork.md` (covers both v2.6.0 + v2.7.0 — one cohesive ship).
+
 ---
 
 ## 2026-07-04 — v2.6.0 · fnox adopted as the recommended secrets backend for go-live (root-cause fix + red-team gate)
@@ -45,6 +47,8 @@ The 2026-07-03 watcher-echo leak was closed at the *symptom* by `guard-secrets-f
 **What to revisit**
 
 Next quarterly toolchain review, or the first product that runs an unattended/autonomous go-live (where adversarial confinement stops being hypothetical). fnox is young (~1.9k stars) — revisit if release cadence stalls > 3 months.
+
+**Retro:** `meta/retros/2026-07-04-jdx-toolchain-floor-fnox-pitchfork.md` (covers both v2.6.0 + v2.7.0 — one cohesive ship).
 
 ---
 
