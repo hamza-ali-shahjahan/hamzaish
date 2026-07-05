@@ -10,6 +10,22 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-05 — v2.8.0 · Phase 3 (autonomy) harness hardening: the manager loop enforces the floor + escalates actively
+
+**What changed**
+
+- **`scripts/autonomy-loop.ts`** — the existing unattended `/goal` manager loop gained two things before it dispatches:
+  - **A floor precondition gate** (`checkFloorPreconditions()`): if the target repo uses fnox, `fnox check` must pass (config valid / required secrets defined) — a **hard gate**; a pitchfork daemon is **noted** (not asserted live — `pitchfork status` exits 0 for a merely *defined* daemon, so it can't prove liveness); and a **loud spend-visibility (#6) warning** fires when no `.autonomy-spend-ok` marker is present (an unattended loop caps *sessions*, not tokens — the cost-runaway the abuse-and-cost-controls playbook guards against).
+  - **Active escalation** (`escalate()`): on `blocked` or budget-spent, the loop now writes a durable `.goal/<slug>/ESCALATION.md` **and** fires a desktop notification (macOS `osascript`, fail-soft) — instead of only printing to a console nobody's watching unattended.
+
+**Why**
+
+Phase 3 of the autonomy arc is "prove one `/goal` runs unattended on the safe floor and escalates only when stuck." The manager loop already existed (opt-in `.autonomy-ok`, STOP switch, session budget) and model routing already existed (`factory/model-policy.ts`), so Phase 3 wasn't a new build — it was wiring the new v2.7.0 floor (fnox/pitchfork) into the loop and upgrading its passive console "blocked" into an active escalation. The gate makes the contract's hard preconditions **self-enforcing**: the loop refuses to run silently without safe secrets or spend visibility. The live pilot on a real product still waits on **#6 spend visibility** (efficiency session) and a **registered product** (`code-paths.local.json` is empty). Verified via `--dry-run` on a throwaway pilot; caught + fixed two of my own overclaiming checks (`fnox check` verifies *defined*, not *decrypts*; `pitchfork status` ≠ liveness) — the same "passes without verifying what it claims" class this arc keeps surfacing.
+
+**Retro:** skipped — a bounded increment on the same jdx-floor/autonomy arc already captured in `meta/retros/2026-07-04-jdx-toolchain-floor-fnox-pitchfork.md` + the 2026-07-04 learning; the dry-run evidence and the two self-caught bugs are recorded in this entry and the learning.
+
+---
+
 ## 2026-07-04 — v2.7.0 · pitchfork adopted as the supervised dev-server floor (jdx toolchain Phase 2)
 
 **What changed**
