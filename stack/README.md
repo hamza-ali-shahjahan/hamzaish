@@ -1,6 +1,6 @@
 # Your Stack & Accounts — Set Up Once
 
-> **The front door to the factory's tech stack.** This is what every Hamzaish product is built on, the accounts you sign up for **once** (then reuse for every product), and — the part most stack docs skip — **what each service actually buys you beyond the obvious.** New here? Read this top-to-bottom once. After that, starting product #2, #3, #10 reuses the same accounts in ~5 minutes.
+> **The front door to the factory's tech stack.** This is what every Hamzaish product is built on, the accounts you sign up for **once** (then reuse for every product), and — the part most stack docs skip — **what each service actually buys you beyond the obvious.** New here? Read this top-to-bottom once. After that, product #2, #3, #10 skips every account signup — the per-product wiring (new projects + keys in each service) still takes ~25 minutes today; shrinking that to minutes is the factory's current goal ([`meta/goals/live-path.md`](../meta/goals/live-path.md)).
 >
 > Deeper docs: full rationale + when-to-deviate → [`tech-stack.md`](tech-stack.md) · click-by-click account walkthrough → [`../templates/product-starter-nextjs/SETUP.md`](../templates/product-starter-nextjs/SETUP.md) · how Claude is wired → [`agent-stack.md`](agent-stack.md).
 

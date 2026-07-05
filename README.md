@@ -2,21 +2,18 @@
 
 # 🏭 Hamzaish
 
-**An open-source Claude Code setup that builds, launches, and learns — across the whole product lifecycle.**
+**Unlock your Builder Mode — build the product, then everything after it.**
 
-*Unlock your Builder Mode* — a setup that doesn't stop at code: it learns from every build and remembers every lesson. On a mission to democratize Builder Mode for every builder. Works with **Claude Code, Cursor, Codex & Windsurf**.
+Not another AI coding setup. AI already writes your code — nobody's running your launch, your pricing, your first hundred customers, or the kill-call. Hamzaish is an open-source Claude Code setup that runs the whole life of a product, and remembers every lesson for your next one. Works with **Claude Code, Cursor, Codex & Windsurf**.
 
 [![🌱 Beginner-Friendly](https://img.shields.io/badge/%F0%9F%8C%B1_Beginner--Friendly-8957e5.svg)](docs/start-here.md)
-[![Open source](https://img.shields.io/badge/Open-source-brightgreen.svg)](#license)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
 
-**[📚 139 practices](BEST-PRACTICES.md) · [🤖 35 agents](#-the-agents-35) · [🛠️ 66 skills & commands](#%EF%B8%8F-the-skills--commands-66) · [📖 42 playbooks](#-the-playbooks-42)**
-
-Every count real · every item linked · every claim marked ✅ proven / 🟡 partial / ⏳ research-baked → [What's inside](#whats-inside)
-
 </div>
+
+## See it work
 
 <p align="center">
   <img src="docs/assets/hamzaish-hero-card.gif" alt="Hamzaish — puts you in Builder Mode, with a live eval run as proof" width="820">
@@ -24,94 +21,49 @@ Every count real · every item linked · every claim marked ✅ proven / 🟡 pa
 
 <!-- v1 "factory in motion" demo (real command output, reproducible via scripts/hero.tape). Replace with the live idea→scaffold→ship TUI recording when ready. -->
 
-*Shipped through it so far: 7 products with public artifacts — live sites, npm CLIs, OSS tools → [the showcase](products/SHOWCASE.md).*
+Type one sentence. Get a local-first product running in 60 seconds — zero accounts, zero config. Then take it past localhost: `/go-live` wires the stack you set up once, the security gate clears it, and `/ship` puts it on a real URL people can sign up at. *Shipped through it so far: 7 products with public artifacts — live sites, npm CLIs, OSS tools → [the showcase](products/SHOWCASE.md).*
 
----
-
-## Welcome to Builder Mode
+## The 11pm moment
 
 [![Builder Mode — momentum first, strategy second](docs/assets/builder-mode.png)](docs/builder-mode.md)
 
+**Most AI tools stop when the code is done. Builders' problems start there.**
+
 Every builder knows the moment: it's 11pm, you have an idea, and your hands are itching to build. Then the "right way" kicks in — business plans, market sizing, twenty validation interviews — and by the time the strategy funnel is done with you, the spark is dead. **Strategy-first kills more builders than bad ideas ever did.**
 
-That advice was written for a world where building was expensive. That world is gone. With AI, building is cheap, fast, and reversible — **the thing you ship *is* the test.**
+That advice was written for a world where building was expensive. That world is gone. With AI, building is cheap, fast, and reversible — **the thing you ship *is* the test.** Builder Mode is that flipped calculus made a working mode: build aggressively with instinct, validate iteratively, scale with strategy. Strategy is a rail you pull in — never a toll you pay to start.
 
-So I've made it my mission to simplify the builder spirit into a momentum-first, strategy-second mode: **Builder Mode.** The idea is to enable millions to start leveraging AI to build better, build faster, and build more — to build aggressively with instinct, validate iteratively, and scale with strategy.
+But most solo projects don't die in the build. They die in everything *after* it: the security review, the launch, the pricing call, the first-100-customers grind, knowing when to kill. Hamzaish is Builder Mode as a working system — it runs the whole lifecycle, **Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down**, with stage-specific agents, playbooks distilled from real ships, and a brain that carries every lesson into your next product.
 
-But most solo projects don't die in the build — they die in everything after it: the security review, the launch, pricing, first customers, knowing when to kill. Hamzaish is Builder Mode as a working system — the Claude Code setup that **doesn't stop at code**. It runs the whole lifecycle — **Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down** — with stage-specific agents, playbooks distilled from real ships, and a brain that carries every lesson into your next product.
+**→ [The full mission: Builder Mode](docs/builder-mode.md) · [The philosophy](docs/philosophy.md)**
 
-**→ [Read the full mission: Builder Mode](docs/builder-mode.md)** and **[The full philosophy →](docs/philosophy.md)**
+## What it feels like
 
-## Never used a terminal? Start here
+> **11:04pm.** You type `/builder-mode` and one sentence about the idea. A minute later a local product is running — no accounts, no config, no business plan demanded first. The strategy funnel never got a vote.
 
-<a href="docs/start-here.md"><img src="docs/assets/start-here-banner.png" alt="Never used a terminal? Start here — no coding required; you just talk to an AI and it does the techie parts. macOS · Linux · Windows." width="100%"></a>
+> **Launch morning.** `/go-live` wires the accounts you set up once — database, payments, email, analytics, your domain. The security gate reads the product and says **BLOCK** — seventy concrete checks, a forced verdict — and names why. You fix it, it says **CLEAR**, `/ship` deploys. The link you share isn't `localhost:3000`. It's your domain, live, and people can sign up.
 
-**You can absolutely do this — no coding required.** **One honest catch first:** Hamzaish runs on **Claude Code**, which needs a **paid Claude plan** — there's **no free tier**. Better to know that now than five steps in.
+> **Product #2.** Your first product passed 138 tests and still broke in production. That lesson is a guardrail now, not a memory — your second build inherits it automatically, and plugs into the same accounts with no re-setup. This is the part that compounds.
 
-If that's a yes, the path is the same on every computer: **get the Claude app → download Hamzaish (a ZIP, no git) → open the folder and type one sentence.** The AI installs what it needs, sets itself up, and starts building — you watch. The only thing that changes by machine is how you *start* Claude:
+Localhost is where products are born, not where they live. Local-first means you start free and instant — it never means you stay there.
 
-- **🍎 Mac · 🪟 Windows** — the Claude **desktop app**. No terminal at all.
-- **🐧 Linux** — one terminal command to install Claude Code, then the AI takes over.
+## What's inside
 
-**→ [The complete click-by-click walkthrough — pick your machine, no jargon →](docs/start-here.md)** (🍎 Mac · 🐧 Linux · 🪟 Windows — every step with "what you'll see" + a troubleshooting kit).
+| | | |
+|---|---|---|
+| 🧠 **A brain that remembers** | learnings, decisions, and anti-patterns — SQLite-indexed, searchable from any session via `/brain-ask` | [`brain/`](brain/) |
+| 🏭 **A factory that acts** | 35 agents + 66 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
+| 📖 **Playbooks with receipts** | 42 playbooks · 139 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
+| 🔒 **A gate that blocks** | 70-check pre-launch security review (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict | [security checklist](factory/playbooks/mvp-stage/security-checklist.md) |
+| 🧪 **An engine that proves** | eval-gated build cycle — a feature slice without a named eval + an end-to-end test doesn't get built | [`/full-cycle`](factory/commands/full-cycle.md) |
+| 🔌 **A stack you set up once** | Vercel, Supabase, Stripe, Resend, PostHog, Sentry, your domain — sign up once, free-tier-first, pre-wired in every scaffold; every product after plugs into the same accounts | [`stack/`](stack/README.md) |
+| 🗂️ **Portfolio discipline** | `/portfolio-pulse` across everything you run; quarterly kill-or-double-down so zombie projects don't eat your year | [`/kill-or-keep`](factory/skills/kill-or-keep/SKILL.md) |
 
-## Quickstart — first win in 5 minutes
+**Every count real, every item linked, every claim badged.** The full catalog, expanded:
 
-> *Brand new — never used a terminal? Start with [Never used a terminal? Start here](#never-used-a-terminal-start-here) above. This path assumes you're comfortable in a terminal.*
+<details><summary><b>🤖 The agents (35) — lifecycle + engineering</b></summary>
 
-**One command** (installs Bun if missing, clones, sets up — [read it first](install.sh)):
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
-```
-
-<details><summary>…or set it up by hand</summary>
-
-You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code).
-
-```bash
-git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
-cd hamzaish
-bun run setup        # idempotent — creates YOUR factory, never touches existing data
-```
-</details>
-
-Then open Claude Code and type:
-
-```
-/builder-mode a tip calculator for freelancers
-```
-
-Watch it scaffold a **local-first product that runs in 60 seconds — zero accounts, zero config.** Add your stack (Stripe, Resend, Supabase…) only when you want it with **`/go-live`**, and ship when you're ready. ([The 10-minute guided version →](docs/your-first-product.md))
-
-Safety: scaffolded products run agent-generated code inside a devcontainer, secrets are gitignored from commit zero, and nothing auto-pushes off your machine. ([Full threat model →](docs/security.md))
-
-## What you get
-
-- **[35 agents](#-the-agents-35) — lifecycle + engineering** — idea validation, architecture, scope-guarding, security review, landing copy, SEO, pricing, cold outreach, retention, kill-or-double-down, plus engineering subagents (code review, security audit, test). Not just builders: the *after-the-build* crew.
-- **[A pre-launch security gate that blocks.](factory/playbooks/mvp-stage/security-checklist.md)** 70 concrete checks (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict.
-- **[42 playbooks](#-the-playbooks-42) + [139 distilled practices](BEST-PRACTICES.md)** — launch sequencing, first-100-customers, pricing, production ops. Short, sourced, and honestly badged: proven by a real ship, or marked research-baked until it is.
-- **A brain that remembers.** SQLite-indexed learnings, decisions, and anti-patterns, searchable from any session via `/brain-ask`. Your second product starts smarter than your first. ([brain/](brain/))
-- **Sane infra defaults** — Next.js + Supabase + Stripe + Resend + PostHog + Sentry, free-tier-first, pre-wired in every scaffold. ([the stack, and the accounts you set up once →](stack/README.md))
-- **Portfolio discipline** — `/portfolio-pulse` across everything you run; quarterly kill-or-double-down so zombie projects don't eat your year.
-
-## Go deeper
-
-[Start here — total beginner](docs/start-here.md) · [Your first product in 10 minutes](docs/your-first-product.md) · [FAQ](docs/FAQ.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
-
----
-
-# What's inside
-
-Everything below maps 1:1 to the repo's folders — the counts are the filesystem, not the marketing.
-
-## 📚 The practices ledger (139)
-
-**[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 139 practices for shipping products with Claude Code: **37 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
-
-## 🤖 The agents (35)
-
-One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory/agents/`](factory/agents/). Each is a markdown SKILL.md your Claude Code session invokes by intent — the routing table lives in [`CLAUDE.md`](CLAUDE.md).
+One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory/agents/`](factory/agents/). Each is a markdown SKILL.md your session invokes by intent — the routing table lives in [`CLAUDE.md`](CLAUDE.md).
 
 ### 💡 Idea stage (7)
 
@@ -178,9 +130,11 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 | [security-auditor](factory/agents/engineering/security-auditor/SKILL.md) | Hunts injection, authz gaps, secret exposure, unsafe deserialization |
 | [test-engineer](factory/agents/engineering/test-engineer/SKILL.md) | Designs and fills test coverage; reproduces bugs as failing tests |
 
-## 🛠️ The skills & commands (66)
+</details>
 
-42 skills + 24 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder. The 22 engineering-cycle skills + their commands ship in-repo (21 consolidated from the `agent-skills` project + `feature-slicing`), so the build engine comes with this repo (see the engineering cycle below).
+<details><summary><b>🛠️ The skills & commands (66)</b></summary>
+
+42 skills + 24 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Most commands wrap a skill of the same name; the deeper protocol lives in the skill's folder.
 
 | Invoke | What it does |
 |---|---|
@@ -235,9 +189,13 @@ Consolidated into Hamzaish so the build engine ships **with** the repo (no separ
 
 Backed by **22 engineering skills** under [`factory/skills/`](factory/skills/) — feature-slicing, spec-driven-development, planning-and-task-breakdown, incremental-implementation, test-driven-development, debugging-and-error-recovery, code-review-and-quality, security-and-hardening, performance-optimization, frontend-ui-engineering, api-and-interface-design, browser-testing-with-devtools, ci-cd-and-automation, documentation-and-adrs, git-workflow-and-versioning, source-driven-development, context-engineering, deprecation-and-migration, code-simplification, shipping-and-launch, idea-refine, auto-orchestrator — invoked by name as the cycle runs.
 
-## 📖 The playbooks (42)
+</details>
 
-Short (300–800 words), sourced, stage-gated. The [practices ledger](BEST-PRACTICES.md) is the scannable index over these.
+<details><summary><b>📖 The playbooks (42) + the practices ledger (139)</b></summary>
+
+**[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 139 practices for shipping products with Claude Code: **37 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
+
+Playbooks are short (300–800 words), sourced, stage-gated:
 
 | Stage | Playbooks |
 |---|---|
@@ -248,33 +206,70 @@ Short (300–800 words), sourced, stage-gated. The [practices ledger](BEST-PRACT
 | **🧭 Founder's wisdom (4)** | [$100K ARR Tactics](factory/playbooks/founders-wisdom/100k-arr-tactics.md) · [Gary Tan / YC era advice](factory/playbooks/founders-wisdom/gary-tan-yc-advice.md) · [Paul Graham essays](factory/playbooks/founders-wisdom/paul-graham-essays.md) · [Solopreneur Stack 2026](factory/playbooks/founders-wisdom/solopreneur-stack.md) |
 | **🤖 AI-native (6)** | [Eval-Driven Development](factory/playbooks/ai-native-2026/eval-driven-development.md) · [Founder's Playbook distilled](factory/playbooks/ai-native-2026/founders-playbook-distilled.md) · [Auth Go-Live](factory/playbooks/ai-native-2026/auth-go-live.md) · [Go-Live Provisioning](factory/playbooks/ai-native-2026/go-live-provisioning.md) · [MCP Servers per Product](factory/playbooks/ai-native-2026/mcp-servers.md) · [Hermes & Fallback Models](factory/playbooks/ai-native-2026/hermes-and-fallback-models.md) |
 
----
-
-<div align="center">
-
-### 💛 Built on a thousand generosities
-
-[![Hamzaish — the credits roll](docs/assets/hamzaish-credits.gif)](ACKNOWLEDGMENTS.md)
-
-*We stand on giants, and we're loud about it.*
-**[Read the full credits →](ACKNOWLEDGMENTS.md)**
-
-</div>
-
----
+</details>
 
 ## How it's different
 
-Now that you've seen what's inside — the side-by-side:
+| | build-stage setups<br>(gstack / BMAD / SuperClaude) | AI app builders<br>(Lovable / v0 / Bolt) | agent frameworks<br>(AutoGPT / crewAI) | personal AI OS<br>(assistant runtimes) | **Hamzaish** |
+|---|---|---|---|---|---|
+| Scope | build stage only | build + host a prototype | a framework you assemble | your inbox, tasks, and tools | **a product's whole life** |
+| The output | code | an app on their platform | an agent run | a tidier day | **a live product on your domain** |
+| After "code is done" | you're on your own | hosting, then you're on your own | you're on your own | not its job | **launch, sell, scale, kill rails** |
+| Memory across projects | per-session | per-project | per-run | app-level memory service | **persistent brain + learnings loop** |
+| Runs on | config + tools | their cloud | a Python service | containers + a database stack | **a folder + Claude Code** |
+| Form | config | closed platform | framework | hosted app | **markdown-first method, forkable — yours** |
 
-| | gstack / BMAD / SuperClaude | AutoGPT / MetaGPT / crewAI | **Hamzaish** |
-|---|---|---|---|
-| Scope | build-stage setup | agent framework you build on | **full company lifecycle** |
-| After "code is done" | you're on your own | you're on your own | **launch, sell, scale, kill rails** |
-| Memory across projects | per-session | per-run | **persistent brain + learnings loop** |
-| Form | config + tools | Python framework | **markdown-first method, forkable** |
+## Two doors in
 
----
+### 🚀 Comfortable in a terminal? First win in 5 minutes
+
+**One command** (installs Bun if missing, clones, sets up — [read it first](install.sh)):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
+```
+
+<details><summary>…or set it up by hand</summary>
+
+You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code).
+
+```bash
+git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
+cd hamzaish
+bun run setup        # idempotent — creates YOUR factory, never touches existing data
+```
+</details>
+
+Then open Claude Code and type:
+
+```
+/builder-mode a tip calculator for freelancers
+```
+
+Watch it scaffold a **local-first product that runs in 60 seconds — zero accounts, zero config.** Local is mile one, not the destination: when you're ready, **`/go-live`** wires the accounts you set up once (Supabase, Stripe, Resend, your domain…), **`/security-check`** gates it, and **`/ship`** puts it live on a URL you can share. ([The 10-minute guided version →](docs/your-first-product.md))
+
+### 🌱 Never used a terminal? You can absolutely do this
+
+<a href="docs/start-here.md"><img src="docs/assets/start-here-banner.png" alt="Never used a terminal? Start here — no coding required; you just talk to an AI and it does the techie parts. macOS · Linux · Windows." width="100%"></a>
+
+No coding required — you talk to an AI and it does the techie parts. **One honest catch first:** Hamzaish runs on **Claude Code**, which needs a **paid Claude plan** — there's **no free tier**. Better to know that now than five steps in. If that's a yes: **get the Claude app → download Hamzaish (a ZIP, no git) → open the folder and type one sentence.**
+
+**→ [The complete click-by-click walkthrough — pick your machine, no jargon →](docs/start-here.md)** (🍎 Mac · 🐧 Linux · 🪟 Windows — every step with "what you'll see" + a troubleshooting kit).
+
+**Safety, either door:** scaffolded products run agent-generated code inside a devcontainer, secrets are gitignored from commit zero, and nothing auto-pushes off your machine. ([Full threat model →](docs/security.md))
+
+## The discipline
+
+1. **Build is the default — validate before irreversible bets.** Cheap, fast, reversible ships *are* validation. Before expensive moves: ~5 target-profile conversations. The hard rule: never skip it *silently* — `bun run check-validation <slug>` records the debt.
+2. **Scope is the moat.** Every product's `scope.md` says what it does AND deliberately doesn't.
+3. **Persistent context.** Every product gets a `CLAUDE.md`; every decision is logged in `decisions/`.
+4. **Measurement before launch.** North-star, activation, retention — defined before the first user.
+5. **The factory is a product.** If it can't ship product #1 through, fix the factory before adding slots.
+6. **Honest copy.** Every outward-facing word is true and verifiable when it ships; aspiration is labelled, never present-tense. Proven vs. promising is tracked in [the honest ledger](meta/RESEARCH-BAKED-PRACTICES.md).
+
+## The self-improvement loop
+
+Every working session appends learnings to [`brain/learnings/`](brain/learnings/). At major-cycle boundaries, `/learn-loop` scores candidates on five axes ([rubric](meta/learning-loop-rubric.md)) and promotes only the top few into load-bearing guardrails — a skill rule, a playbook step, an anti-pattern, a line in [the practices ledger](BEST-PRACTICES.md). Quarterly, `/kill-or-keep` runs on Hamzaish itself and re-checks each promoted guardrail: deliver the predicted gain, or get sunset. The factory compounds; it doesn't ossify.
 
 ## Architecture
 
@@ -289,35 +284,41 @@ templates/    — Next.js starter + doc templates
 
 Product **code is never in this repo** — only metadata and learnings. Your code (the moat) stays private; locations are wired via a git-ignored `code-paths.local.json`. So the repo is safe to share without exposing anyone's secret sauce. ([the public/private boundary →](docs/architecture.md#the-publicprivate-boundary--protecting-your-secret-sauce))
 
-## The discipline
+## Go deeper
 
-1. **Build is the default — validate before irreversible bets.** Cheap, fast, reversible ships *are* validation. Before expensive moves: ~5 target-profile conversations. The hard rule: never skip it *silently* — `bun run check-validation <slug>` records the debt. (The [wp-to-astro lesson](brain/learnings/), encoded.)
-2. **Scope is the moat.** Every product's `scope.md` says what it does AND deliberately doesn't.
-3. **Persistent context.** Every product gets a `CLAUDE.md`; every decision is logged in `decisions/`.
-4. **Measurement before launch.** North-star, activation, retention, false-positive shape — defined before the first user.
-5. **The factory is a product.** If it can't ship product #1 through, fix the factory before adding slots.
-6. **Honest copy.** Every outward-facing word is true and verifiable when it ships; aspiration is labelled, never present-tense. What's proven vs. promising is tracked in [the honest ledger](meta/RESEARCH-BAKED-PRACTICES.md).
+[Start here — total beginner](docs/start-here.md) · [Your first product in 10 minutes](docs/your-first-product.md) · [FAQ](docs/FAQ.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
 
-## The self-improvement loop
+---
 
-Every working session appends learnings to [`brain/learnings/`](brain/learnings/). At major-cycle boundaries, `/learn-loop` scores candidates on five axes ([rubric](meta/learning-loop-rubric.md)) and promotes only the top few into load-bearing guardrails — a skill rule, a playbook step, an anti-pattern, a line in [the practices ledger](BEST-PRACTICES.md). Quarterly, `/kill-or-keep` runs on Hamzaish itself and re-checks each promoted guardrail: deliver the predicted gain, or get sunset. The factory compounds; it doesn't ossify.
+<div align="center">
 
-Budget posture: free tiers and pay-per-query by default; every subscription needs written ROI in a product's `decisions/`. ([the bootstrapped stack →](stack/analytics-stack.md))
+### 💛 Built on a thousand generosities
 
-## Built on, and informed by
+[![Hamzaish — the credits roll](docs/assets/hamzaish-credits.gif)](ACKNOWLEDGMENTS.md)
+
+*We stand on giants, and we're loud about it.*
+**[Read the full credits →](ACKNOWLEDGMENTS.md)**
+
+</div>
 
 The backbone is hard-won venture experience — the Business-SWAT roles, opportunities, and mentors that came with years at **[Disrupt.com](https://disrupt.com)**, taking things from zero to one before AI made building cheap. On that foundation, the patterns studied and credited — Addy Osmani's spec→ship discipline, Karpathy's eval-driven flywheel, gbrain (knowledge graph), Anthropic's *Founder's Playbook* (lifecycle framing), hermes-agent (self-improving skills), openclaw (multi-channel gateway), and ponytail (multi-agent portability) — sharpened that instinct and 10×'d the AI and agentic-building learning on top of it. Study material lives in `references/`, never imported.
-
-→ **[The full credits, and the roll](ACKNOWLEDGMENTS.md)**
 
 ## License
 
 **TL;DR — free for builders. Don't take it closed-source and sell it. Commercial license on request.**
 
-**AGPL-3.0** — see [`LICENSE`](LICENSE). Copyright © 2026 Hamza Ali.
+**AGPL-3.0** — clean, no added clauses; see [`LICENSE`](LICENSE). Copyright © 2026 Hamza Ali.
 
 In plain English: use, study, modify, and self-host freely. If you run a *modified* version as a network service, your source must be AGPL too — the factory stays open for solo builders; nobody quietly turns it into a closed product. **Commercial license available** for closed-source use — contact below.
 
 ---
 
+<div align="center">
+
+### It's 11pm somewhere.
+
+**`/builder-mode <your idea>` — get into yours.**
+
 *Built in public by [Hamza Ali](https://github.com/hamza-ali-shahjahan) — mail.hamza.ali@gmail.com. The factory's repo runs on the factory's own discipline.*
+
+</div>
