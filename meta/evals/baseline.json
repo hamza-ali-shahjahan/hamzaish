@@ -10,5 +10,7 @@
   "validate/strong-validation-accepted": "PASS",
   "validate/problem-sharpening": "PASS",
   "problem-sharpener/sharpens-vague-problem": "PASS",
-  "devils-advocate/forced-verdict-kill-case": "PASS"
+  "devils-advocate/forced-verdict-kill-case": "PASS",
+  "security-check/mcp-scan-flags-seeded-config": "PASS",
+  "security-check/mcp-scan-passes-clean-config": "PASS"
 }

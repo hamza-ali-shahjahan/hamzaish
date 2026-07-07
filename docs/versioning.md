@@ -2,7 +2,7 @@
 
 Hamzaish uses **[Semantic Versioning](https://semver.org)** — `MAJOR.MINOR.PATCH` — with **one source of truth** and a CI guard, so the number can't drift across the repo. (It did once: `package.json` said `1.10.0`, this kind of note said `v1.4`, the changelog said `v1.31`, and the last released tag was `v1.2.0` — four different numbers, nothing reconciling them. Never again — that's what the guard is for.)
 
-**Current version: `2.8.0`** — *Phase 3 (autonomy) harness hardening: the existing manager loop (`scripts/autonomy-loop.ts`) now enforces the safe/lean/observable floor before dispatching — a fnox-config gate, a pitchfork readiness note, and a loud spend-visibility (#6) warning — and escalates ACTIVELY on blocked/budget-spent (durable `ESCALATION.md` + desktop notification) instead of a console line nobody's watching. The live unattended pilot still gates on #6 + a registered product. Builds on the v2.7.0 floor.*
+**Current version: `2.9.0`** — *MetaHarness ingestion: `/security-check` gains an MCP-config surface dimension backed by a deterministic scanner (`scripts/check-mcp-config.ts` — inline credentials, wildcard allowlists, bypassPermissions, plaintext/unpinned servers) with true-positive + false-positive eval cases on the regression floor; MetaHarness cloned into `references/` with a mining guide; three candidate patterns (score-before-scaffold, Darwin measured-retention, cost-per-dollar) captured in `brain/knowledge/`. Goal contract: `meta/goals/metaharness-ingestion.md`.*
 
 ## One source of truth
 

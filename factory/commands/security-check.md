@@ -1,5 +1,5 @@
 ---
-description: Fast security baseline audit of a product — tracked secrets, unpinned/vulnerable GitHub Actions, workflow permission scope, untrusted-input triggers, and an RLS reminder. Returns a pass/fail checklist with a verdict.
+description: Fast security baseline audit of a product — tracked secrets, unpinned/vulnerable GitHub Actions, workflow permission scope, untrusted-input triggers, MCP-config surface, and an RLS reminder. Returns a pass/fail checklist with a verdict.
 argument-hint: <product-slug>
 ---
 
@@ -64,7 +64,25 @@ admin page, it HAS a backend — open the `.env` and check.*
   if a `create table` has no matching RLS, flag = **FAIL** (or **WARN** if you
   can't confirm). No `public`-readable policies on user data.
 
-### 6. Deploy hygiene (quick)
+### 6. MCP-config surface (agent-tool supply chain)
+MCP/agent configs are an attack surface the same way workflows are — and AI-scaffolded
+repos ship them silently. Run the deterministic scanner (idea ported from
+metaharness's `mcp-scan`; see `references/README.md` § metaharness):
+
+```bash
+bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/scripts/check-mcp-config.ts <code_path>
+```
+
+It scans `.mcp.json`, `mcp.json`, `.claude/settings*.json`, `.cursor/mcp.json`, and
+`claude_desktop_config.json` for:
+- **Inline credentials in `env`/`headers` blocks** = **FAIL** — configs reference env var *names*, never values (same rule as hard rule #4; the key must be rotated, not just removed).
+- **Over-broad permission allowlists** (`"*"`, bare `"Bash"`, `"mcp__*"`) or `bypassPermissions` = **FAIL** — default-deny, allow specific commands.
+- **Plaintext `http://` remote MCP servers** = **FAIL**; **moving-tag server pulls** (`@latest`/`@main`) = **WARN** — same pinning rule as section 2.
+
+Exit 1 = at least one FAIL. Also eyeball any MCP server whose package you don't
+recognize — the scanner can't judge publisher trust; you must.
+
+### 7. Deploy hygiene (quick)
 - `.no-auto-push` marker present in the code repo (wip snapshots stay local). Missing = **WARN**.
 - Production branch is `production` and Vercel's Production Branch is set to it (confirm with the user if unknown).
 
@@ -75,7 +93,8 @@ file/line for every finding and the one-line fix. Then force a verdict:
 
 - **❌ BLOCK** — any FAIL (a "static / no backend" claim contradicted by env-gated
   backend code, tracked secret, unpinned/vulnerable action, over-broad
-  permissions, untrusted-input trigger, missing RLS on user data).
+  permissions, untrusted-input trigger, inline credential or wildcard allowlist
+  in an MCP config, missing RLS on user data).
 - **⚠️ CLEAR WITH CAVEATS** — only WARNs; list them with an owner/date.
 - **✅ CLEAR** — all checks pass.
 

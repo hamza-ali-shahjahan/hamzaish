@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "payments": {
+      "command": "npx",
+      "args": ["-y", "@example/payments-mcp@latest"],
+      "env": {
+        "STRIPE_SECRET_KEY": "sk_live_FAKEFIXTURE",
+        "STRIPE_MODE": "production"
+      }
+    },
+    "telemetry": {
+      "url": "http://mcp.example-telemetry.dev/sse"
+    }
+  }
+}

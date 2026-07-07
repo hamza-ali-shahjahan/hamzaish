@@ -71,6 +71,13 @@ webhook payloads, scraped pages, uploaded files, and **any text passed to an LLM
   actions on the user's behalf, hit internal services, or render as trusted HTML.
   Sanitize model output before rendering (don't trust markdown to be safe HTML);
   keep LLM API keys server-side only; cap per-user spend.
+- **MCP/agent configs:** `.mcp.json` and `.claude/settings*.json` are part of the
+  attack surface — inline credentials in `env` blocks, wildcard permission
+  allowlists (`"Bash"`, `"mcp__*"`), `bypassPermissions`, plaintext `http://`
+  servers, and moving-tag server pulls (`@latest`) all ship silently in
+  AI-scaffolded repos. `scripts/check-mcp-config.ts` scans these deterministically;
+  `/security-check` runs it as its § 6. (Idea ported from metaharness's `mcp-scan`
+  — see `references/README.md` § metaharness.)
 - **App input:** validate every server action / API route with zod (or equivalent);
   parameterize SQL; validate file MIME/size/extension; guard user-supplied URLs
   against SSRF (no internal IPs).

@@ -10,6 +10,31 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-07 — v2.9.0 · MetaHarness ingestion: MCP-config scanning lands in /security-check; score-before-scaffold + Darwin retention captured as candidates
+
+**What changed**
+
+- **`scripts/check-mcp-config.ts` (new)** — deterministic MCP-config scanner: flags inline credentials in `mcpServers` env/headers blocks (masked, never printed), over-broad permission allowlists (`"*"`, bare `"Bash"`, `"mcp__*"`), `bypassPermissions`, plaintext `http://` remote servers (FAIL), and moving-tag server pulls like `@latest` (WARN). Exit 1 on any FAIL. Idea ported from metaharness's `mcp-scan` ("npm audit for agent tools") — idea only, implementation ours.
+- **`/security-check` § 6 (new dimension)** — runs the scanner against the product's code repo; inline credential / wildcard allowlist in an MCP config is now a BLOCK-class FAIL. `docs/security.md` § 2 and the CLAUDE.md command table updated to match.
+- **Eval floor grew by the true-positive/false-positive pair** — `meta/evals/skills/security-check/cases/` (seeded fixture must flag 5 FAILs + exit 1; clean fixture must produce 0 findings + exit 0), both PASS and recorded in `baseline.json` (12 → 14 cases).
+- **`references/metaharness/` (new clone) + mining guide** — added to the spec-driven-peer-group section of `references/README.md` (5 mine-items, paths verified). Study-only, per references discipline.
+- **`brain/knowledge/2026-07-07-metaharness-factory-for-harnesses.md` (new)** — three patterns captured as factory-change-gate *candidates*: score-before-scaffold (a static pre-ignition report card for `/scaffold`), the Darwin retention rule (the factory keeps only *measured* improvements — extends our admission gate with a demotion rule), and capability-per-dollar as a first-class metric (cheap→frontier cascades; Muakkil unit economics).
+- **Goal contract** — `meta/goals/metaharness-ingestion.md`: 4 named metrics, 4 evals (E1 mining paths resolve, E2 knowledge retrievable via the brain, E3 scanner passes both fixtures + no eval regressions, E4 Muakkil prior-art note with sourced facts), executed same-day, pending operator review.
+
+**Why**
+
+MetaHarness is the closest thing to Hamzaish's own species — a factory that ships factories — and it treats MCP configs as an audited attack surface, which `/security-check` didn't. That gap was the one behavior change worth making immediately (harness-adjacent surfaces are a live risk class here — the 2026-07-03 key leak was exactly that shape). The other three patterns are deliberately *captured, not built*: per the factory-change gate they're candidates until a bench or a real product proves them. A separate prior-art note for Muakkil's venture-agent pivot went to the Phase 0 research folder (outside this repo, per sprint rules).
+
+**Revisit**
+
+- Score-before-scaffold: at the next `/scaffold` run — if a pre-ignition report card would have changed nothing twice in a row, kill the idea.
+- Cost-per-dollar/cascades: when any product's monthly LLM spend crosses ~$50.
+- Scanner scope: add publisher-trust checks if/when MCP server marketplaces mature.
+
+**Retro:** skipped — bounded single-session ingestion following the established learn-from-repos pattern (nanoGPT/D1 precedent); evidence lives in the goal contract + this entry + the 2026-07-07 learning.
+
+---
+
 ## 2026-07-05 — v2.8.0 · Phase 3 (autonomy) harness hardening: the manager loop enforces the floor + escalates actively
 
 **What changed**

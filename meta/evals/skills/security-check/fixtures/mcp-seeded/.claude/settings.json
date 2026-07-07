@@ -1,0 +1,6 @@
+{
+  "permissions": {
+    "allow": ["Bash", "mcp__*", "Read(src/**)"],
+    "defaultMode": "bypassPermissions"
+  }
+}

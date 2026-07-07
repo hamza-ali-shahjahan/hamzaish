@@ -7,6 +7,7 @@ references/hermes-agent/
 references/openclaw/
 references/bmad-method/
 references/agent-os/
+references/metaharness/
 
 # Node / build artifacts
 node_modules/
