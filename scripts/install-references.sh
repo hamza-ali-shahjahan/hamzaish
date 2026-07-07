@@ -28,6 +28,7 @@ clone_if_missing "hermes-agent" "https://github.com/nousresearch/hermes-agent.gi
 clone_if_missing "openclaw"     "https://github.com/openclaw/openclaw.git"
 clone_if_missing "bmad-method"  "https://github.com/bmad-code-org/bmad-method.git"
 clone_if_missing "agent-os"     "https://github.com/buildermethods/agent-os.git"
+clone_if_missing "metaharness"  "https://github.com/ruvnet/metaharness.git"
 
 echo ""
 echo "Done. references/README.md explains what to mine from each."

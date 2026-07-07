@@ -125,6 +125,43 @@ standard for what you're building), **Shape Spec**, **Index Standards**. Tiny (~
 **Verdict for Hamzaish**: study the standards-injection mechanic specifically — it's
 the one idea here we don't have a clean equivalent for. Small, fast read.
 
+### metaharness — github.com/ruvnet/metaharness
+
+**What it is**: ruvnet's "factory for agent frameworks" — turns any GitHub repo into
+its own branded agent harness (CLI, MCP server, memory, security gates, signed
+releases) in under a minute. TypeScript + Rust/WASM kernel, 19 vertical templates,
+9 host runtimes (Claude Code, Codex, Copilot, …). Structurally the same species as
+Hamzaish: a factory that ships factories. Added 2026-07-07 (381★, v0.1.3, CI green).
+
+**What to mine**:
+1. **Score-before-scaffold** (`metaharness score`, `harness genome`) — a static,
+   no-execution report card *before* committing to a scaffold: fit, build likelihood,
+   tool safety, rough **cost-per-run**; inferred commands tagged `trust: inferred ·
+   execution: disabled`. The gap in our `/scaffold` ignition. → `docs/USAGE.md`,
+   `docs/USERGUIDE.md`.
+2. **`mcp-scan` + threat-model** — MCP configs treated as an audited attack surface
+   ("npm audit for agent tools"): default-deny, wildcard-permission detection, a
+   threat-model artifact reviewable in PRs. Ported into our `/security-check` § 7 +
+   `scripts/check-mcp-config.sh` (2026-07-07). → `docs/adrs/INDEX.md` (ADR-022),
+   `packages/harness/`.
+3. **Darwin Mode retention rule** — the harness mutates its own config in a sandbox,
+   benchmarks each variant, and keeps **only measured improvements**; the model stays
+   frozen, the harness evolves. The eval-gated version of our learn-loop, applied to
+   the factory itself — same spirit as `meta/evals/factory-change-gate.md`.
+   → `packages/darwin-mode/LEARNINGS.md`, `packages/darwin-mode/bench/results/RESULTS.md`.
+4. **Cost-Pareto leaderboard** — capability-per-dollar as a first-class ranked metric
+   (cheap-model→frontier cascades hitting 55.6% SWE-bench Verified at ~1/10 cost).
+   The right axis for any product with an LLM bill.
+   → `docs/research/cheap-vs-frontier/REPORT.md`, `SUBMISSIONS.md`.
+5. **Vertical template packaging** — 19 domain harnesses (sales, legal, trading, …)
+   each shipping agents + skills + governance as one installable unit. Compare to our
+   stage agents when factory skills become shareable. → `examples-packages/GISTS.md`.
+
+**Verdict for Hamzaish**: peer-group study, like bmad-method. Mine 1–3 now (2 is
+already ported); 4–5 are parked levers. **Separately flagged as prior art for
+Muakkil's venture-agent pivot** — that evidence lives in the Muakkil Phase 0 research
+folder, not here.
+
 ---
 
 ## Discipline

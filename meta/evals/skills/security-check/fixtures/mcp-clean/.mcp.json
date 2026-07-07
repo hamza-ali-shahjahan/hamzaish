@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "payments": {
+      "command": "npx",
+      "args": ["-y", "@example/payments-mcp@1.4.2"],
+      "env": {
+        "STRIPE_SECRET_KEY": "${STRIPE_SECRET_KEY}"
+      }
+    },
+    "docs": {
+      "url": "https://mcp.example-docs.dev/sse"
+    }
+  }
+}

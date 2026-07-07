@@ -1,0 +1,36 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: mcp-scan-flags-seeded-config
+skill: security-check
+description: >
+  The /security-check § 6 backend (scripts/check-mcp-config.ts) must flag a
+  fixture repo seeded with the full bad-config set: an inline live-looking
+  credential in an mcpServers env block, a plaintext http:// remote server,
+  a bare "Bash" + "mcp__*" allowlist, and bypassPermissions. True-positive
+  half of the pair; the clean-config case is the false-positive guard.
+  Verified live 2026-07-07 (5 FAIL, 1 WARN, exit 1).
+invoke:
+  cmd:
+    - bun
+    - scripts/check-mcp-config.ts
+    - meta/evals/skills/security-check/fixtures/mcp-seeded
+  timeout_ms: 15000
+preflight:
+  commands: ["bun"]
+  must_exist:
+    - scripts/check-mcp-config.ts
+    - meta/evals/skills/security-check/fixtures/mcp-seeded/.mcp.json
+checks:
+  - type: exit_code
+    equals: 1
+  - type: stdout_matches
+    regex: "FAIL .*STRIPE_SECRET_KEY.*inline credential"
+  - type: stdout_matches
+    regex: "FAIL .*plaintext remote MCP server"
+  - type: stdout_matches
+    regex: "FAIL .*over-broad allowlist entry \"Bash\""
+  - type: stdout_matches
+    regex: "FAIL .*bypassPermissions"
+  - type: stdout_count_min
+    regex: "^❌ FAIL"
+    min: 5

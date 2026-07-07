@@ -1,0 +1,26 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: mcp-scan-passes-clean-config
+skill: security-check
+description: >
+  The false-positive guard for the MCP scanner: a fixture repo whose configs
+  do everything right — ${ENV_VAR} references instead of values, pinned server
+  version, https URL, specific permission allowlist — must produce zero
+  findings and exit 0. A scanner that flags everything is as useless as one
+  that flags nothing. Verified live 2026-07-07 (0 FAIL, 0 WARN, exit 0).
+invoke:
+  cmd:
+    - bun
+    - scripts/check-mcp-config.ts
+    - meta/evals/skills/security-check/fixtures/mcp-clean
+  timeout_ms: 15000
+preflight:
+  commands: ["bun"]
+  must_exist:
+    - scripts/check-mcp-config.ts
+    - meta/evals/skills/security-check/fixtures/mcp-clean/.mcp.json
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: "0 FAIL, 0 WARN"
