@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-08 — v2.11.0 · Agent docs from day one: OpenWiki wired (dormant) into the starter + /scaffold
+
+**What changed**
+
+- **`templates/product-starter-nextjs/.github/workflows/openwiki-update.yml` (new)** — scheduled action (weekly + manual) that maintains a generated agent wiki (`openwiki/`) from git diffs and opens a docs PR when the code drifted. Ships **dormant**: every step gates on the `ANTHROPIC_API_KEY` repo secret existing, so an un-opted-in scaffold runs it green-and-silent. Pinning per our policy (GitHub-official actions on major tags; `peter-evans/create-pull-request` on a full commit SHA).
+- **`/scaffold` § "Agent docs from day one"** — the skill now confirms the workflow landed and surfaces the one-line opt-in pointer at scaffold time; it explicitly must NOT generate the wiki for the user (the provider key in `~/.openwiki/.env` is user-touched only, per the secrets rule).
+- **Starter `SETUP.md` § "Agent docs"** — the ~5-min opt-in: generate once locally (`openwiki --init` + one generation run), review + commit, add the repo secret; skipping breaks nothing.
+- **Practice #140** in `BEST-PRACTICES.md` (⏳ research-baked, sourced to [LangChain OpenWiki](https://github.com/langchain-ai/openwiki), launched 2026-07-01, MIT): a diff-maintained wiki + thin `AGENTS.md`/`CLAUDE.md` router beats one ever-ballooning instruction file, and one wiki serves Claude Code / Cursor / Codex / Windsurf alike. Counts bumped everywhere they're claimed (README ×3, ledger header, `hero.ts`) — `check-counts` green.
+
+**Why**
+
+The factory's own architecture already bets on "thin router + deep docs" (`AGENTS.md` → layers). OpenWiki is that same pattern productized for *product* repos, with the missing piece we don't have: **maintenance from diffs on a schedule**, so agent context can't silently rot as the code moves. Wiring it dormant keeps the starter's zero-config promise intact — the scaffold still boots with no accounts, and agent docs are one secret away when a product earns them. Honest status: ⏳ research-baked — no Hamzaish-scaffolded product has run the loop yet; first real scaffold that opts in gets to promote (or demote) it.
+
+**Revisit**
+
+- At the next `/scaffold` that opts in: did `openwiki --update` behave on a repo whose wiki was generated locally (model id `claude-sonnet-5` accepted, PR opened, pages sane)? Promote to 🟡/✅ or fix the workflow.
+- If two scaffolds in a row skip the opt-in and their `CLAUDE.md`s stay small anyway, question whether the starter needs this at all — Darwin rule applies.
+
+**Retro:** skipped — bounded single-session adoption of an external pattern into the template + one skill; evidence is this entry + `brain/learnings/2026-07-08.md`.
+
+---
+
 ## 2026-07-08 — v2.10.0 · Story-first front door + the Live Path goal (shipped 2026-07-05, PR #37; entry recorded at release)
 
 **What changed**

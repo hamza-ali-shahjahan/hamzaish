@@ -124,6 +124,16 @@ Example tests live at `src/lib/utils.test.ts`, `src/__tests__/smoke.test.tsx`, a
 
 > Why both layers: a 100%-green unit suite can still ship a broken app. The e2e smoke is the cheap "run it in the real environment" gate — see `factory/playbooks/launch-stage/output-validation-for-codegen-tools.md`.
 
+## Agent docs (optional, ~5 min) — a wiki your coding agents keep fresh
+
+The starter ships `.github/workflows/openwiki-update.yml` **dormant**: it does nothing (skips green) until you opt in. [OpenWiki](https://github.com/langchain-ai/openwiki) (LangChain, MIT) generates an `openwiki/` docs folder for this repo and points `AGENTS.md`/`CLAUDE.md` at it — so the instruction file stays a thin router instead of ballooning, and any agent (Claude Code, Cursor, Codex, Windsurf) finds the deep context on demand.
+
+1. Generate the wiki once, locally: `npm install -g openwiki`, then in this repo run `openwiki --init` (pick provider + model; the key goes in `~/.openwiki/.env` — **you** paste it, never the agent), then `openwiki "Generate documentation for this repository"`.
+2. Review the generated `openwiki/` + the pointer it added to `AGENTS.md`/`CLAUDE.md`, and commit.
+3. To keep it fresh automatically: add an `ANTHROPIC_API_KEY` **repository secret** (GitHub → Settings → Secrets and variables → Actions). From then on the workflow re-reads the diffs weekly and opens a docs PR when something drifted.
+
+Skip it entirely and nothing breaks — the workflow stays green-and-silent.
+
 ## When you have paying customers — production ops
 Don't bolt these on during an incident. Read before your first real users:
 - `factory/playbooks/scale-stage/production-operations.md` — incident response, the DB-down runbook, backups/DR

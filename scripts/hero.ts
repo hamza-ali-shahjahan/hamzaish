@@ -31,7 +31,7 @@ console.log(line());
 console.log(line(C.bold("Puts you in Builder Mode — and keeps you there.")));
 console.log(line());
 console.log(line(C.dim("momentum first · validate in the process, not before")));
-console.log(line(C.dim("139 practices · 35 agents · 42 playbooks")));
+console.log(line(C.dim("140 practices · 35 agents · 42 playbooks")));
 console.log(line());
 console.log(line(C.sky("→  /builder-mode  <your idea>")));
 console.log(line());

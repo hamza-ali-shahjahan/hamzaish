@@ -1,6 +1,6 @@
 # Shipping products with Claude Code — the practices ledger
 
-**139 practices · 37 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
+**140 practices · 37 proven by real ships and incidents · 3 partially proven · 100 research-baked — every one sourced and linked.**
 
 Most best-practice lists tell you how to *use* Claude Code. This one is about what comes after: taking a product from idea → MVP → launch → sell → scale with Claude Code as your cofounder — and not dying in the unglamorous parts.
 
@@ -47,6 +47,7 @@ The deep dives live in [`factory/playbooks/`](factory/playbooks/) (42 playbooks)
 ## 🏗️ Build the MVP
 
 - **Run every agent session stateful in writing, stateless in memory — docs are the memory.** Between sessions the agent remembers nothing; without written state Claude re-derives architecture every time and drift compounds until unmaintainable. — ⏳ *research-baked* · *Anthropic Founder's Playbook — MVP chapter on persistent context* · [playbook](factory/playbooks/mvp-stage/ai-native-dev-loop.md)
+- **Give every product repo a generated agent wiki kept fresh from git diffs — keep `AGENTS.md`/`CLAUDE.md` a thin router into it.** One instruction file that holds everything balloons until every agent turn pays for it and it still goes stale; a diff-maintained `openwiki/` keeps deep context current and serves every agent tool (Claude Code, Cursor, Codex, Windsurf) from one place. Wired dormant into the product starter + `/scaffold`; opt-in via one repo secret. — ⏳ *research-baked* · *LangChain OpenWiki (launched 2026-07-01, MIT)* · [source](https://github.com/langchain-ai/openwiki)
 - **Give each session one topic; never mix refactors with feature changes.** Mixed intents destroy review-ability and the decision log captures neither change well. — ⏳ *research-baked* · *Anthropic Founder's Playbook — MVP chapter on persistent context* · [playbook](factory/playbooks/mvp-stage/ai-native-dev-loop.md)
 - **Keep a decisions/surprises.md logging anything that behaved differently than CLAUDE.md implied.** Surprise entries accumulate into architecture corrections and expose where your written mental model has drifted from the code. — ⏳ *research-baked* · *factory playbook* · [playbook](factory/playbooks/mvp-stage/ai-native-dev-loop.md)
 - **Promote any architecture decision repeated across 3+ products into the factory starter template.** The next product gets it for free — this is the mechanism by which the factory improves itself. — ⏳ *research-baked* · *factory playbook* · [playbook](factory/playbooks/mvp-stage/ai-native-dev-loop.md)

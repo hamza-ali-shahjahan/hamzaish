@@ -1,0 +1,62 @@
+name: openwiki-update
+
+# Keeps the agent wiki (openwiki/) fresh: OpenWiki reads the commits since its
+# last run, diffs what changed, and opens a PR updating only the affected pages.
+# The wiki is the deep repo context; AGENTS.md / CLAUDE.md stay thin routers.
+# Pattern: LangChain OpenWiki (https://github.com/langchain-ai/openwiki, MIT).
+#
+# Ships DORMANT — every step skips cleanly (run stays green) until you add the
+# ANTHROPIC_API_KEY repository secret. See SETUP.md → "Agent docs".
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1" # weekly, Mon 06:00 UTC — tighten to daily if the repo moves fast
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: openwiki-update
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      # Empty until the repo secret exists → every step below skips via its `if`.
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      # TODO: adjust to taste — OpenWiki also speaks OpenAI / OpenRouter / Fireworks /
+      # Baseten (swap the key env + model id; see the OpenWiki README).
+      OPENWIKI_MODEL_ID: claude-sonnet-5
+    steps:
+      # Pinning policy (same as secret-scan.yml): never @main/@beta. GitHub-official
+      # actions/* use a major tag; third-party actions pin to a full commit SHA.
+      - uses: actions/checkout@v4
+        if: env.ANTHROPIC_API_KEY != ''
+        with:
+          fetch-depth: 0 # --update diffs history since the last wiki refresh
+
+      - uses: actions/setup-node@v4
+        if: env.ANTHROPIC_API_KEY != ''
+        with:
+          node-version: "22"
+
+      - name: Update the agent wiki
+        if: env.ANTHROPIC_API_KEY != ''
+        run: |
+          npm install --global openwiki
+          openwiki --update --print
+
+      - name: Open a PR with the wiki changes
+        if: env.ANTHROPIC_API_KEY != ''
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
+        with:
+          add-paths: openwiki
+          branch: openwiki/update
+          commit-message: "docs: update agent wiki (OpenWiki)"
+          title: "docs: update agent wiki (OpenWiki)"
+          body: |
+            Automated agent-wiki refresh — OpenWiki read the commits since the
+            last run and updated the affected pages. Review like any docs PR.
