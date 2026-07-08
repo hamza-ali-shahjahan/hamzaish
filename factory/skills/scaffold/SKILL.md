@@ -161,6 +161,23 @@ the template copy; a few steps must run at scaffold time.
 - Tell the user they can run `/security-check <slug>` any time to audit all of the
   above, and that `/ship` runs it as a gate before every deploy.
 
+## Agent docs from day one (OpenWiki)
+
+Every scaffolded repo is agent-readable beyond its `CLAUDE.md`: the template
+carries `.github/workflows/openwiki-update.yml` — a **dormant** scheduled action
+that maintains a generated agent wiki (`openwiki/`) from git diffs and opens a
+docs PR when the code drifts. Pattern: [LangChain OpenWiki](https://github.com/langchain-ai/openwiki)
+(MIT) — keep the instruction file a thin router; deep context lives in a wiki
+any agent (Claude Code, Cursor, Codex, Windsurf) discovers on demand.
+
+At scaffold time there is nothing to run — just confirm the workflow landed in
+the code repo and say one line in the final message: "agent docs are pre-wired
+but off; SETUP.md → *Agent docs* turns them on in ~5 min (generate once locally
+with `openwiki --init`, then add the `ANTHROPIC_API_KEY` repo secret)." The
+workflow skips green until that secret exists, so it costs nothing to ignore.
+Never generate the wiki *for* the user at scaffold time — it needs a provider
+key in `~/.openwiki/.env`, and keys are user-touched only.
+
 ## Edge cases
 - If `templates/product-starter-nextjs/` doesn't exist yet, scaffold the doc files only and tell the user to wait for the starter (Phase C of this build pass).
 - If user provides only `<slug>` without `<one-liner>`, ask for the one-liner once. Don't proceed without it.
