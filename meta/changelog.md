@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-08 — v2.10.0 · Story-first front door + the Live Path goal (shipped 2026-07-05, PR #37; entry recorded at release)
+
+**What changed**
+
+- **`README.md` rebuilt story-first** — promise before inventory: negation hero ("Not another AI coding setup"), demo directly after the hero, the 11pm thesis promoted to position 3 with a verb-hammer opener ("Most AI tools stop when the code is done. Builders' problems start there."), three true vignettes (the 11:04pm scaffold · BLOCK→CLEAR→live-URL launch morning · the 138-tests lesson becoming a guardrail), one 6-row what's-inside table with the full 35-agent/66-command/42-playbook catalog preserved verbatim in `<details>` collapses, the comparison table moved up and extended with an AI-app-builders (Lovable-class) column and an "output" row ("a live product on your domain"), a two-doors quickstart (terminal / never-used-a-terminal as equals), and a closing CTA. Framing rule shipped with it: **"Localhost is where products are born, not where they live"** — local-first is the on-ramp, never the destination.
+- **`meta/goals/live-path.md` (new, ACTIVE)** — the factory's next structural goal: set up accounts once → any scaffolded product reaches a *verified* live URL in minutes. Named metrics (`time_to_live`, `manual_dashboard_actions`, `live_assertions_passed`); evals E1 (≤15 min human time, ≤5 dashboard actions), E2 (10/10 A1–A10 assertions against the deployed URL — domain, HTTPS, production-mode auth, verified email, analytics + Sentry events, live signup), E3 (three consecutive ships with zero account-level re-setup); milestones M1 wire-the-eval-harness → M2 kill the four manual dead-ends (registrar/DNS, Neon, Clerk, Resend) → M3 account-aware ledger fast path → M4 scaffold the kill switch. Decision log: `brain/decision-log/2026-07-05-live-path-goal.md`.
+- **`stack/README.md` honesty fix** — the "product #2, #3, #10 in ~5 minutes" claim softened to measured reality (account signups are skipped; per-product wiring still ≈25 min), linked to the goal whose E3 earns the bold claim back with ledger receipts.
+- **`brain/learnings/2026-07-05.md` (new)** — three distilled rules from the positioning cycle: counts are receipts, not pitches; audit adjacent docs' quantitative claims whenever positioning copy is rewritten; never let the free-and-instant on-ramp read as the product.
+
+**Why**
+
+A same-day audit of the go-live pipeline against the operator's vision (real, shareable, traffic-ready products — not localhost prototypes) found the machinery ahead of the copy: the `/go-live` → `/security-check` → `/ship` chain and the set-up-once stack doctrine were real and proven on live ships, while the README sold the local on-ramp as the destination and one stack claim had drifted into present-tense aspiration. The rebuild fixes the story order; the goal contract turns the vision's gap (guided provisioning, declared-not-verified "live", product #2 repeating product #1's wiring) into measurable, agent-runnable targets.
+
+**Revisit**
+
+- M1 (A1–A10 assertions wired into `/go-live` as a blocking verify) is the next build; E1+E2 on two products (one Supabase-path, one Neon+Clerk-path) + E3 across three ships marks the goal achieved and restores the stack README's minutes claim.
+- If two real ships through M1–M3 still exceed the E1 bar, the bottleneck is the service dashboards themselves — reset the bar, keep the direction (per the decision log's falsifier).
+
+**Retro:** skipped — bounded positioning + goal-setting cycle; evidence lives in the goal contract, the decision-log entry, and the 2026-07-05 learnings.
+
+---
+
 ## 2026-07-07 — v2.9.0 · MetaHarness ingestion: MCP-config scanning lands in /security-check; score-before-scaffold + Darwin retention captured as candidates
 
 **What changed**
