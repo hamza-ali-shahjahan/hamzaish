@@ -1,0 +1,36 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: verify-live-broken-target-blocks
+skill: go-live
+description: >
+  The blocking half of the live gate: against the seeded-broken mock
+  (--self-test bad — db probe failing, authed route returning 200, pk_test_
+  dev-mode key, open cron route, sk_live_ leaked into the page) the harness
+  must FAIL each seeded assertion, print the NOT LIVE verdict, and exit 1 so
+  /go-live can never close over a broken deploy. Verified live 2026-07-07.
+invoke:
+  cmd:
+    - bun
+    - scripts/verify-live.ts
+    - --self-test
+    - bad
+  timeout_ms: 30000
+preflight:
+  commands: ["bun"]
+  must_exist:
+    - scripts/verify-live.ts
+checks:
+  - type: exit_code
+    equals: 1
+  - type: stdout_matches
+    regex: "A6 +DB reachable +FAIL"
+  - type: stdout_matches
+    regex: "A5 +Auth gate works +FAIL"
+  - type: stdout_matches
+    regex: "A7 +Auth is production +FAIL"
+  - type: stdout_matches
+    regex: "A9 +Cron gated +FAIL"
+  - type: stdout_matches
+    regex: "A10 No secret leakage +FAIL.*ROTATE"
+  - type: stdout_matches
+    regex: "verdict: NOT LIVE"

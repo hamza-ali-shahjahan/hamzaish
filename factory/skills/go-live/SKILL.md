@@ -92,6 +92,34 @@ When the **required-to-deploy** set is `done`:
 2. **Verify the server is actually up before sharing any localhost link** (global rule: never hand over a dead localhost link). If the product uses **pitchfork**, `pitchfork start web` (idempotent) then `pitchfork status web` — or curl the port for a 2xx — before emitting the URL. pitchfork keeps the server supervised across sessions, so the link stays live. Multiple products: distinct ports (a readiness check confirms "something answers," not "*this* server" — a collision can false-positive).
 3. **Offer the handoff**: "Stack wired. Run `/security-check <slug>` (gate), then `/ship <slug>` (deploy)?" — `/go-live` provisions; `/ship` deploys. Don't deploy from here.
 
+## The live gate — A1–A10 (blocking; go-live is not done at handoff)
+
+Provisioned-and-shipped is still only *declared* live. `/go-live` closes when the
+product is **provably** live: after `/ship` reports deployed, run the assertion
+harness from `factory/playbooks/ai-native-2026/go-live-provisioning.md` against
+the real production URL:
+
+```bash
+bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/scripts/verify-live.ts https://<domain> \
+  --sha <deployed short-sha> [--authed-route </api/…>] [--resend-domain <domain>]
+```
+
+It checks A1–A10 (DNS apex+www, TLS on both, `/api/health` ok + buildSha + db
+probe, auth gate 401s, `pk_live_` not dev-mode, cron gated, no server-secret in
+the client payload) and emits a scorecard — `EVAL: n/N`, per-assertion
+PASS/FAIL/PENDING/MANUAL with remediation. Rules:
+
+- **Any FAIL → not live.** Fix, re-run; exit 1 blocks. Never close the ledger or
+  tell the user "you're live" over a failing scorecard.
+- **PENDING/MANUAL are named, never dropped** (e.g. "A8 PENDING: Resend DNS
+  propagating, recheck in 1h" — the A7b throwaway-signup stays a human step).
+- **Record the verdict in the ledger** (`"live_gate": "EVAL: 9/9 …"` + date), and
+  append every FAIL to `brain/learnings/` with assertion id + cause + fix —
+  recurring misses get promoted into the playbook as pre-checks.
+- Products scaffolded before the health convention report A3/A4/A6 as PENDING —
+  the starter now ships `/api/health` (`ok`, `buildSha`, `probes.db`); backfill
+  the route when touching an older product.
+
 ## Honest rules
 
 - Never commit a real key. Only `.env.local` (gitignored) or the platform's secret store. The `.env.example` stays placeholders-only.

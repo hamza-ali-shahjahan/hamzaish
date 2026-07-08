@@ -12,5 +12,7 @@
   "problem-sharpener/sharpens-vague-problem": "PASS",
   "devils-advocate/forced-verdict-kill-case": "PASS",
   "security-check/mcp-scan-flags-seeded-config": "PASS",
-  "security-check/mcp-scan-passes-clean-config": "PASS"
+  "security-check/mcp-scan-passes-clean-config": "PASS",
+  "go-live/verify-live-healthy-target": "PASS",
+  "go-live/verify-live-broken-target-blocks": "PASS"
 }
