@@ -10,6 +10,29 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-08 — v2.11.0 · Live Path M1: the live gate — /go-live closes on a scorecard, not a claim
+
+**What changed**
+
+- **`scripts/verify-live.ts` (new)** — the A1–A10 go-live eval harness from `factory/playbooks/ai-native-2026/go-live-provisioning.md`, finally runnable: DNS apex+www (A1), TLS on both (A2), `/api/health` ok (A3) + buildSha match (A4) + db probe (A6), auth gate 401s (A5), `pk_live_`-not-dev-mode (A7), cron gated (A9), no server-secret patterns in the served HTML/bundles (A10). Per-assertion **PASS/FAIL/PENDING/MANUAL/SKIP** with remediation, an `EVAL: n/N` scorecard line (never a bare "done"), exit 1 on any FAIL. A7b (throwaway signup) stays honestly MANUAL — automated signups pollute prod data.
+- **`/go-live` gains the blocking live gate** — new section in `factory/skills/go-live/SKILL.md` + step 6 in the command: after `/ship` deploys, the harness runs against the production URL and `/go-live` closes **only** on its scorecard; FAILs are appended to `brain/learnings/` (assertion id + cause + fix). Also scrubbed the command doc's stale pre-fnox "write to `.env.local`" wording (contradicted the hook-enforced user-touched-secrets rule).
+- **Starter template ships `/api/health`** — `ok` / `buildSha` (from `VERCEL_GIT_COMMIT_SHA`) / `probes.db` (head-count on `waitlist`, `off` in local mode), so A3/A4/A6 are assertable on every product scaffolded from now on. Pre-convention products report those three as PENDING, never as false FAILs (found live: ventbox.co serves a 200 catch-all at `/api/health` — the harness reads that as "predates the convention," not "broken").
+- **Eval floor 14 → 16 cases** — `--self-test good` (healthy mock → exit 0, `EVAL: 7/9`, LIVE-PENDING) and `--self-test bad` (five seeded failures → exit 1, NOT LIVE) run deterministically in CI with no external network.
+- **`meta/goals/live-path.md` M1 marked done** — E2's 10/10 against a fresh deploy lands with the next real ship (M3 measures E1/E3).
+
+**Why**
+
+The Live Path goal's own words: highest leverage, smallest build. `/go-live` previously ended at "keys present and well-formed" — provisioning proof, not liveness proof; the gap between *declared* live and *provably* live is where the patently.legal www-cert miss and the IP-Radar dev-instance trap lived. The harness turns each of those scars into a permanent assertion, and the self-test mocks mean the gate itself is regression-guarded like everything else on the eval floor.
+
+**Revisit**
+
+- First real 10/10: run the gate on the next `/ship` of any product (E2). If an assertion false-FAILs on a real product shape the mocks didn't anticipate, fix the harness and add the shape to the self-test.
+- A8 automation (Resend polling) and the provisioning MCPs are M2 — the harness's `--resend-domain` flag is ready for it.
+
+**Retro:** skipped — a bounded milestone inside the already-retro'd Live Path goal arc (decision log `brain/decision-log/2026-07-05-live-path-goal.md`); evidence lives in the goal file's M1 note + this entry + the 2026-07-08 learning.
+
+---
+
 ## 2026-07-08 — v2.10.0 · Story-first front door + the Live Path goal (shipped 2026-07-05, PR #37; entry recorded at release)
 
 **What changed**

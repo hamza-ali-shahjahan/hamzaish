@@ -1,6 +1,6 @@
 # Go-Live Provisioning Layer — the 0-to-live machine
 
-**Status**: design spec (2026-06-04). Not yet built. This is the architecture for turning Hamzaish from a *build* accelerator into a *ship* machine — where a product goes from named to live-on-its-own-domain (auth + DB + email + analytics wired, deployed, verified) without the founder leaving the chat.
+**Status**: design spec (2026-06-04); **the eval harness (A1–A10) is BUILT as of 2026-07-07** — `scripts/verify-live.ts`, wired into `/go-live` as its blocking live gate (Live Path goal M1; see `meta/goals/live-path.md`). The provisioning MCPs below remain design. This is the architecture for turning Hamzaish from a *build* accelerator into a *ship* machine — where a product goes from named to live-on-its-own-domain (auth + DB + email + analytics wired, deployed, verified) without the founder leaving the chat.
 
 **Why this exists**: building IP Radar surfaced the gap. The code shipped in-session, but every *infrastructure* step forced a context-switch to a browser — buy the domain on Vercel, click through ID.me/USPTO, reset the Neon password in the dashboard, create the Clerk webhook, verify the Resend domain in DNS. `/scaffold` writes a `SETUP.md` *checklist* of these; it doesn't *do* them. The founder is the manual orchestrator across 5 dashboards. That's the bottleneck this layer removes.
 

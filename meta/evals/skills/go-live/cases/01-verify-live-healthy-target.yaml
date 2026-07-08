@@ -1,0 +1,34 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: verify-live-healthy-target
+skill: go-live
+description: >
+  The A1–A10 live gate (scripts/verify-live.ts) against its built-in healthy
+  mock (--self-test good): health/buildSha/db/auth-gate/prod-key/cron/leak
+  checks all PASS, the two honest human steps (A7b throwaway signup, A8 email
+  domain) stay MANUAL, no FAILs, exit 0. Guards the harness against drifting
+  into false alarms on a good deploy. Verified live 2026-07-07.
+invoke:
+  cmd:
+    - bun
+    - scripts/verify-live.ts
+    - --self-test
+    - good
+  timeout_ms: 30000
+preflight:
+  commands: ["bun"]
+  must_exist:
+    - scripts/verify-live.ts
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: "A3 +Health endpoint +PASS"
+  - type: stdout_matches
+    regex: "A10 No secret leakage +PASS"
+  - type: stdout_matches
+    regex: "A7b Auth signup works +MANUAL"
+  - type: stdout_matches
+    regex: "EVAL: 7/9"
+  - type: stdout_matches
+    regex: "verdict: LIVE-PENDING"

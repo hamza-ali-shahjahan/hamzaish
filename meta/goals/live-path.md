@@ -39,7 +39,7 @@ The goal is met when **E1 and E2 pass on two different products** — one on the
 
 ## Milestones (suggested order)
 
-1. **M1 — Prove "live":** wire A1–A10 into `/go-live` as a blocking verify step before handoff to `/ship`. (Highest leverage, smallest build — turns "declared live" into "verified live.")
+1. **M1 — Prove "live":** wire A1–A10 into `/go-live` as a blocking verify step before handoff to `/ship`. (Highest leverage, smallest build — turns "declared live" into "verified live.") — ✅ **DONE 2026-07-07**: `scripts/verify-live.ts` (per-assertion PASS/FAIL/PENDING/MANUAL scorecard, exit-1-on-FAIL, deterministic `--self-test` for CI) + the blocking "live gate" section in `factory/skills/go-live/SKILL.md` + `/api/health` (`ok`/`buildSha`/`probes.db`) added to the starter so A3/A4/A6 are assertable on every new product. Smoked against ventbox.co (correctly reads LIVE-PENDING: pre-convention product, zero false FAILs). E2's 10/10 run against a fresh deploy lands with the next real ship (M3 measures it).
 2. **M2 — Kill the dead-ends:** automate registrar/DNS records, Resend verification polling, Clerk app + webhook creation, Neon provisioning — CLI/API first, MCP only where no CLI exists.
 3. **M3 — The compounding fast path:** account-aware ledger so product #2 skips every account-level step; measure E1/E3 on the next two real ships.
 4. **M4 — The kill switch, scaffolded:** PostHog feature-flag gating + `KILL_SWITCH` env pattern in the starter template, with a 3am runbook in production-operations.md. (From the abuse-and-cost-controls playbook — described, currently unbuilt.)
