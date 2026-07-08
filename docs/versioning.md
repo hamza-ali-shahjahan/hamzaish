@@ -2,7 +2,7 @@
 
 Hamzaish uses **[Semantic Versioning](https://semver.org)** — `MAJOR.MINOR.PATCH` — with **one source of truth** and a CI guard, so the number can't drift across the repo. (It did once: `package.json` said `1.10.0`, this kind of note said `v1.4`, the changelog said `v1.31`, and the last released tag was `v1.2.0` — four different numbers, nothing reconciling them. Never again — that's what the guard is for.)
 
-**Current version: `2.9.0`** — *MetaHarness ingestion: `/security-check` gains an MCP-config surface dimension backed by a deterministic scanner (`scripts/check-mcp-config.ts` — inline credentials, wildcard allowlists, bypassPermissions, plaintext/unpinned servers) with true-positive + false-positive eval cases on the regression floor; MetaHarness cloned into `references/` with a mining guide; three candidate patterns (score-before-scaffold, Darwin measured-retention, cost-per-dollar) captured in `brain/knowledge/`. Goal contract: `meta/goals/metaharness-ingestion.md`.*
+**Current version: `2.10.0`** — *Story-first front door + the Live Path goal: the README rebuilt promise-before-inventory (negation hero, the 11pm thesis, true vignettes, full catalog preserved in collapses, local-as-mile-one framing, AI-app-builders comparison column); `meta/goals/live-path.md` becomes an active factory goal — set up once → verified-live in minutes (E1 ≤15 min / ≤5 dashboard actions, E2 10/10 live assertions, E3 zero account re-setup across 3 ships); the stack README's "~5 minutes for product #2" claim softened to measured reality until E3 earns it back. Decision log: `brain/decision-log/2026-07-05-live-path-goal.md`.*
 
 ## One source of truth
 
