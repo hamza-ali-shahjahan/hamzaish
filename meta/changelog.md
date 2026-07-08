@@ -30,6 +30,8 @@ A same-day audit of the go-live pipeline against the operator's vision (real, sh
 
 **Retro:** skipped — bounded positioning + goal-setting cycle; evidence lives in the goal contract, the decision-log entry, and the 2026-07-05 learnings.
 
+**/release v2.10.0** (2026-07-08): cut from 2 changelog entries since v2.8.0 (this one + v2.9.0) — [releases/tag/v2.10.0](https://github.com/hamza-ali-shahjahan/hamzaish/releases/tag/v2.10.0).
+
 ---
 
 ## 2026-07-07 — v2.9.0 · MetaHarness ingestion: MCP-config scanning lands in /security-check; score-before-scaffold + Darwin retention captured as candidates
