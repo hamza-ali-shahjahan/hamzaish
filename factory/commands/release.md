@@ -29,10 +29,21 @@ If none of those fired since the last release, say so and stop — every-session
    - Create the Release: `gh release create <version> --title "<version> — <headline>" --latest --notes-file <notes>` (background).
 6. **Verify.** `gh release view <version>` / `gh release list` — confirm it published, isn't a draft, and is marked **Latest**. Report the URL.
 7. **Record it.** Append a one-line changelog entry under the dated heading: `/release <version>: cut from <N> changelog entries since <prev>.` Bump the factory version line if it lagged.
+8. **Distribution shots.** A release nobody hears about is a changelog entry with extra steps — each release is a content atom (`factory/playbooks/launch-stage/release-cadence-as-content.md`). Tier the shot by the bump, **draft — never post** (the operator posts), and log every draft as a `drafted` line in `meta/marketing/channels-ledger.md`:
+   - **Patch** → no shot. The release feed itself is the signal.
+   - **Minor** → turn the release notes into one content atom at `meta/marketing/news-waves/YYYY-MM-DD-release-<version>.md`: an X thread + an r/ClaudeAI post (subreddit-native: lead with the useful change, not the project). Recommend which one to actually post, and why.
+   - **Major** → run the **Show HN gate** below. Pass → say "this release qualifies for Show HN" and generate the full kit per `factory/playbooks/launch-stage/hacker-news-launch.md`: title (`Show HN: … – …`, en-dash, <80 chars), 150–300-word first comment, and the Tue–Thu 06:00–09:00 PT slot recommendation. Fail → name the failing criteria out loud — that list is the pre-launch work list — and fall back to the minor-tier drafts.
+
+   **Show HN gate — recommend the shot only when ALL four hold** (this is the "are we at that level?" check, stated once so it isn't re-litigated every release):
+   1. The README converts a cold visitor: pain-naming one-liner above the fold, quickstart *actually verified* under 5 minutes, alternatives section present.
+   2. At least one real shipped product in `products/SHOWCASE.md` a stranger can click — proof, not promises.
+   3. The release gives a *stranger* a capability stateable in one sentence with no Hamzaish vocabulary.
+   4. ≥30 days since this repo's last Show HN, or it has meaningfully changed since (HN repost etiquette).
 
 ## Notes
 
 - **Tag the public tip, not your branch.** The whole point is that the Release reflects what's actually published. Tagging an unpushed or feature-branch commit makes a Release GitHub can't resolve.
 - **Background the push and `gh release create`** — they're the network ops most likely to hang. If one stalls, the tag may still have gone through; re-check with `gh release list` before retrying.
 - `/learn-loop` (promote learnings) and `/release` (publish the cut) are the two halves of a boundary: internal compounding + external surface. Neither runs every session.
+- Step 8 rides *our* releases; `/news-wave` rides *Anthropic's*. Both draft-only, both log to `meta/marketing/channels-ledger.md` — the ledger, not a playbook, is the memory of which channels actually convert.
 - This command lives at `factory/commands/release.md` (canonical home); `.claude/commands/` symlinks there so Claude Code auto-discovers it as `/release`.

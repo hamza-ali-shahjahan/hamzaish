@@ -10,6 +10,26 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-12 — v2.13.0 · Distribution engine: /news-wave tracker + channel shots baked into /release
+
+**What changed**
+
+- **New command `/news-wave`** (`factory/commands/news-wave.md`) — sweeps Anthropic/Claude Code releases and news since last check (state in `meta/marketing/news-watch.json`), classifies each item WAVE/RIPPLE/SKIP, runs a truth gate (only claim feature usage the repo can prove), and drafts ready-to-paste content atoms (repo announcement, X thread, r/ClaudeAI post) into `meta/marketing/news-waves/` with a HOT/WARM/COLD window stamp. Draft-only — the operator posts.
+- **`/release` step 8: Distribution shots** — every release now ends with a tiered channel action: patch → nothing; minor → one content atom drafted from the release notes; major → a four-criteria **Show HN gate** (README converts, clickable proof in SHOWCASE, stranger-stateable capability, repost etiquette) that either generates the full Show HN kit or names the failing criteria as the pre-launch work list.
+- **`meta/marketing/channels-ledger.md`** — append-only ledger of every distribution shot (trigger · channel · draft path · URL · outcome), written by both commands, so which channels/angles actually move stars becomes measured memory instead of playbook prior.
+- `/news-wave` routed in the README command table.
+
+**Why**
+
+The LibrePods GTM study (28.8K stars) showed the growth shape: months of cadence, then a spike when external attention lands — and the spike rides *news waves* (GitHub's tweet, an Android-update news hook) that have ~48-hour windows. The factory had the cadence lever (`release-cadence-as-content.md`) but no mechanism to detect Anthropic's waves same-day, and no memory of which channel shots convert. This wires both in as commands rather than intentions, per factory-improving-factory: friction ("we keep missing the wave") → rail.
+
+**Revisit**
+
+- After 3 `/news-wave` runs: is the WAVE/RIPPLE/SKIP classification calibrated, or does everything land WAVE?
+- After the first major release: does the Show HN gate read as a useful readiness checklist or as friction to bypass?
+- Is anyone updating ledger outcomes? An outcome-less ledger is a TODO list, not memory.
+---
+
 ## 2026-07-08 — v2.11.0 · Live Path M1: the live gate — /go-live closes on a scorecard, not a claim
 
 **What changed**

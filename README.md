@@ -151,6 +151,7 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 | *(skill)* `launch-gotchas` | Library of real launch failure modes — indexation, redirects, analytics undercounting — with the fix for each |
 | *(skill)* `pseo-at-scale` | Programmatic-SEO discipline for 100s–10,000s of templated pages: thin-content prevention, indexation ramp |
 | `/release` | Cut a polished GitHub Release from the changelog at a major-cycle boundary |
+| `/news-wave` | Track Anthropic/Claude Code releases; draft same-day ride-the-wave content while the 48h window is open |
 | `/keyword-research` | Clustered keyword brief from GSC + Ahrefs Webmaster + DataForSEO |
 | `/seo-aeo-bootstrap` | Ship the SEO + AEO foundation: llms.txt, AI-bot robots.txt, JSON-LD, sitemap, meta block |
 | `/name-product` | End-to-end naming pipeline: brief → competitors → generate → clear → select → lock |
