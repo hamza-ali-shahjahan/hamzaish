@@ -6,7 +6,7 @@ Append-only. One line per shot (a post, a launch, a submission). This is the fac
 
 | Date | Trigger | Channel | Content | URL | Outcome |
 |---|---|---|---|---|---|
-| _(none yet)_ | | | | | |
+| 2026-07-12 | wedge-launch: guardhooks v0.1 (+ ship-guard as sibling) | r/ClaudeAI | draft delivered in chat (postmortem angle: leaked keys → 4 fail-open guards) | _pending — operator posting_ | _record 48h star delta for both repos_ |
 
 **Trigger** = what earned the shot: `news-wave: <item>`, `release: <version>`, or `milestone: <what>`.
 **Channel** = show-hn · r/ClaudeAI · x · repo-discussion · other (name it).
