@@ -26,6 +26,8 @@ Hamza had twice universalized "anything I copy goes in a copyable block"; the re
 
 - ThousandWorlds' full 18-entry learnings log is pending Hamza's review — several more entries (supabase lazy-thenable inserts, gz magic-byte sniffing, Actions secrets-in-`if`, no-commit-feature-agents orchestration) are candidates for the same promotion path.
 
+**Retro:** skipped — bounded single-session rule promotion (one lapse → one anti-pattern + hard rule 13 + practice line); evidence lives in this entry + `brain/anti-patterns/file-path-instead-of-paste-contents.md`; the ThousandWorlds sprint itself gets its retro when the 18-entry learnings review lands.
+
 ---
 
 ## 2026-07-08 — v2.12.0 · The Orca distillation: community flywheel + orchestration discipline
