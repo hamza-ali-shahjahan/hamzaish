@@ -1,6 +1,6 @@
 # Shipping products with Claude Code — the practices ledger
 
-**139 practices · 37 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
+**140 practices · 38 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
 
 Most best-practice lists tell you how to *use* Claude Code. This one is about what comes after: taking a product from idea → MVP → launch → sell → scale with Claude Code as your cofounder — and not dying in the unglamorous parts.
 
