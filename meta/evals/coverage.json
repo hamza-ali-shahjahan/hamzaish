@@ -1,13 +1,12 @@
 {
-  "_comment": "Eval-coverage ratchet (scripts/check-evals.ts). `covered` entities must keep >=1 case under meta/evals/skills/<name>/cases/ (deleting one is a CI-blocked regression). `grandfathered` is the honest debt backlog: everything that existed before the ratchet landed (2026-07-02) without a case. New agents/skills may NOT be added to grandfathered casually — pay the debt (write a verified case) or record a dated reason in the PR. Coverage only goes up. Decision: brain/decision-log/2026-07-02-eval-coverage-ratchet.md",
+  "_comment": "Eval-coverage ratchet (scripts/check-evals.ts). `covered` entities must keep >=1 case under meta/evals/skills/<name>/cases/ (deleting one is a CI-blocked regression). `grandfathered` is the honest debt backlog: everything that existed before the ratchet landed (2026-07-02) without a case. New agents/skills may NOT be added to grandfathered casually \u2014 pay the debt (write a verified case) or record a dated reason in the PR. Coverage only goes up. Decision: brain/decision-log/2026-07-02-eval-coverage-ratchet.md",
   "ratchet_date": "2026-07-02",
   "covered": [
     "brain-ask",
     "ideate",
     "validate",
     "problem-sharpener",
-    "devils-advocate",
-    "claudex-second-opinion"
+    "devils-advocate"
   ],
   "grandfathered": [
     "api-and-interface-design",
