@@ -1,6 +1,6 @@
 # Shipping products with Claude Code — the practices ledger
 
-**140 practices · 38 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
+**146 practices · 44 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
 
 Most best-practice lists tell you how to *use* Claude Code. This one is about what comes after: taking a product from idea → MVP → launch → sell → scale with Claude Code as your cofounder — and not dying in the unglamorous parts.
 
@@ -10,7 +10,7 @@ Most best-practice lists tell you how to *use* Claude Code. This one is about wh
 - 🟡 **partially proven** — some of it validated here, the rest still waiting for contact with reality
 - ⏳ **research-baked** — adopted from a named source or established practice; honest status: not yet battle-tested by one of *our* ships
 
-The deep dives live in [`factory/playbooks/`](factory/playbooks/) (44 playbooks) — this page is the index that makes them scannable. For best practices on using Claude Code *itself*, [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) is excellent — this ledger picks up where the code stops.
+The deep dives live in [`factory/playbooks/`](factory/playbooks/) (46 playbooks) — this page is the index that makes them scannable. For best practices on using Claude Code *itself*, [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) is excellent — this ledger picks up where the code stops.
 
 ## ☠️ Never do this — each one cost us something real
 
@@ -46,6 +46,8 @@ The deep dives live in [`factory/playbooks/`](factory/playbooks/) (44 playbooks)
 
 ## 🏗️ Build the MVP
 
+- **supabase-js builders are lazy thenables — a `void insert(...)` sends NOTHING; end every fire-and-forget call in `.then()`.** ThousandWorlds shipped client analytics that never fired a single request (zero fetches to *.supabase.co, confirmed at the network layer); DB-trigger rows masked the dead logger. Verify telemetry with the network tab, never by reading code. — ✅ *proven* · *ThousandWorlds dead client analytics, 2026-07-12* · [the incident](brain/anti-patterns/fire-and-forget-supabase-builder.md)
+- **Gunzip pre-compressed assets by magic bytes (0x1f 0x8b), never by file extension — and verify on both dev-preview and prod-like serving.** vite preview serves `.gz` with Content-Encoding: gzip (browser pre-decompresses → manual gunzip double-decompresses → silent ERR_ABORTED) while Vercel serves the same file raw. — ✅ *proven* · *ThousandWorlds tw-surface.u8.gz, 2026-07-12* · [the incident](brain/anti-patterns/trusting-gz-extension-over-magic-bytes.md)
 - **Run every agent session stateful in writing, stateless in memory — docs are the memory.** Between sessions the agent remembers nothing; without written state Claude re-derives architecture every time and drift compounds until unmaintainable. — ⏳ *research-baked* · *Anthropic Founder's Playbook — MVP chapter on persistent context* · [playbook](factory/playbooks/mvp-stage/ai-native-dev-loop.md)
 - **Give each session one topic; never mix refactors with feature changes.** Mixed intents destroy review-ability and the decision log captures neither change well. — ⏳ *research-baked* · *Anthropic Founder's Playbook — MVP chapter on persistent context* · [playbook](factory/playbooks/mvp-stage/ai-native-dev-loop.md)
 - **Keep a decisions/surprises.md logging anything that behaved differently than CLAUDE.md implied.** Surprise entries accumulate into architecture corrections and expose where your written mental model has drifted from the code. — ⏳ *research-baked* · *factory playbook* · [playbook](factory/playbooks/mvp-stage/ai-native-dev-loop.md)
@@ -71,6 +73,9 @@ The deep dives live in [`factory/playbooks/`](factory/playbooks/) (44 playbooks)
 
 ## 🤖 Build AI-native
 
+- **Fence parallel agents by file ownership, keep them commit-less, and let ONE integrator own git.** Sixteen workflow subagents across 3 same-repo fan-outs held explicit fences perfectly; the integrator inventoried `git status` against reports 1:1 and committed with explicit paths — zero index races. Commit shared data assets BEFORE the fan-out. — ✅ *proven* · *ThousandWorlds phases 0–4 sprint, 2026-07-12* · [playbook](factory/playbooks/ai-native-2026/multi-agent-one-repo.md)
+- **Write numeric gates into build-agent briefs: a self-consistency check, a determinism spec, and a real-UI cross-verification.** "Feed a real row through, expect ~N tolerance" caught a would-be unit bug and separated engine-intrinsic error (median 4.95 K) from mapping bugs (131 K); browser metrics later matched offline runs digit-for-digit. — ✅ *proven* · *ThousandWorlds emulator sync + validation panel, 2026-07-12* · [playbook](factory/playbooks/ai-native-2026/multi-agent-one-repo.md)
+- **Before any architecture decision hinging on a performance guess, dispatch a measure-don't-estimate spike agent.** A 10-minute synthetic-model spike measured 0.78 ms worst-case GP inference in browser WASM (the folk 2–3× WASM penalty measured 1.0–1.5×) and turned a collaboration email from "should be feasible" into tables. — ✅ *proven* · *GP-LFR browser spike, 2026-07-12* · [playbook](factory/playbooks/idea-stage/landscape-research-before-roadmap.md)
 - **Provision production auth before launch traffic — never ship on Clerk's dev instance.** Dev instances hard-cap at ~100 users, watermark the auth UI, and share Clerk's OAuth — the 101st launch signup fails. — ✅ *proven* · *Patently (IP Radar) go-live, 2026-06-09* · [playbook](factory/playbooks/ai-native-2026/auth-go-live.md)
 - **Verify prod auth by the shipped pk_ prefix, never by local .env keys.** Local .env.local held dev keys while prod ran live keys; the stale-state misread cost a real debugging detour. — ✅ *proven* · *Patently (IP Radar) go-live, 2026-06-09* · [playbook](factory/playbooks/ai-native-2026/auth-go-live.md)
 - **Treat auth webhooks as forward-only; they never backfill existing users.** Clerk webhooks fire only on new events — resolve pre-existing users on-demand via clerkClient in admin views. — ✅ *proven* · *Patently (IP Radar) go-live, 2026-06-09* · [playbook](factory/playbooks/ai-native-2026/auth-go-live.md)
@@ -160,6 +165,7 @@ The deep dives live in [`factory/playbooks/`](factory/playbooks/) (44 playbooks)
 
 ## ⚙️ Run the factory — Claude Code ops we learned the hard way
 
+- **GitHub Actions automation needs three non-obvious unlocks: `secrets` is invisible in `if:` (map it into `env:` and test in bash), PRs created by GITHUB_TOKEN never trigger CI (use a fine-grained PAT), and repo auto-merge must be explicitly enabled (`gh api -X PATCH repos/… -f allow_auto_merge=true`).** Each costs a live debugging round-trip when hit blind; ThousandWorlds' weekly data-refresh bot hit all three. — ✅ *proven* · *ThousandWorlds data-refresh Action, 2026-07-12* · [the retro](meta/retros/2026-07-12-thousandworlds-phases-0-4.md)
 - **Paste-contents, not paths: anything the user must relay to an external surface goes in chat as the full file contents in a fenced block.** ThousandWorlds v0.9.0 wrap-up shipped a copyable *path* to the Supabase migration instead of the SQL — one lost round-trip on the release's most visible step (secrets files excepted: those stay `.example` + user-copies). — ✅ *proven* · *ThousandWorlds schema.sql lapse, 2026-07-12* · [the incident](brain/anti-patterns/file-path-instead-of-paste-contents.md)
 - **Give every global-hook git op a timeout, a fail-open exit 0, and a scope gate.** Commit ≤10s, push/pull ≤20s, exit 0 on error, act only on Hamzaish-managed repos — ended the repeated multi-minute hook hangs. — ✅ *proven* · *Hook-hang incident, 2026-06-09 (scored 33/35, PROMOTED)* · [the lesson](brain/learnings/2026-06-09-hook-hang.md)
 - **Validate before irreversible bets, or explicitly record the validation debt.** wp-to-astro shipped six build passes before a single user conversation; the v0.7 punch list was guesswork with zero demand evidence (2026-05-30). — ✅ *proven* · *wp-to-astro validate-before-build miss, 2026-05-30* · [the lesson](brain/learnings/2026-05-30.md)
