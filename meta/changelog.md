@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-12 — v2.14.0 · The ThousandWorlds fold: 12 learnings → 2 anti-patterns, 2 playbooks, 6 practices
+
+**What changed**
+
+- **Anti-patterns** — `brain/anti-patterns/fire-and-forget-supabase-builder.md` (`void insert(...)` sends nothing — lazy thenables; ThousandWorlds' client analytics were dead code from day one) and `brain/anti-patterns/trusting-gz-extension-over-magic-bytes.md` (vite serves `.gz` Content-Encoding'd, Vercel serves it raw — sniff 0x1f 0x8b, verify on both).
+- **Playbooks** — `factory/playbooks/ai-native-2026/multi-agent-one-repo.md` (file-ownership fences, no-commit agents + one git-owning integrator, pre-fan-out asset commits, sync-and-verify for cross-repo copies, numeric brief gates) and `factory/playbooks/idea-stage/landscape-research-before-roadmap.md` (fan-out sweeps + local audit + adversarial critic + measure-don't-estimate spikes).
+- **6 practice lines** across 🏗️/🤖/⚙️ (all ✅ proven, dated 2026-07-12) incl. the GitHub-Actions trio: `secrets` invisible in `if:`, GITHUB_TOKEN PRs never trigger CI, auto-merge needs enabling.
+- **Sprint retro** — `meta/retros/2026-07-12-thousandworlds-phases-0-4.md` (phases 0–4 shipped in a day; v0.9.0 live; 18 learnings captured, Tier 1+2 promoted here).
+
+**Why**
+
+The ThousandWorlds sprint's learnings log (18 entries) was reviewed by Hamza; Tiers 1+2 (incident-proven + twice-used method) promoted same-day so the next build inherits them. Tier 3 (squash-release mechanics, honest-defaults design, curated-data pattern) stays local until a second product confirms.
+
+**What to revisit**
+
+- Route the two new playbooks from CLAUDE.md's playbook table — deferred because CLAUDE.md currently carries another session's uncommitted WIP.
+- Tier 3 entries live in the product's learnings log; promote on second confirmation.
+
+**Retro:** [meta/retros/2026-07-12-thousandworlds-phases-0-4.md](retros/2026-07-12-thousandworlds-phases-0-4.md)
+
+---
+
 ## 2026-07-12 — v2.13.0 · Paste-contents rule (user-relay files go into chat whole)
 
 **What changed**
