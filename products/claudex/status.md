@@ -14,7 +14,7 @@ _Avoid two sessions on the same files. See [`meta/parallel-sessions-protocol.md`
 | ClauDex scaffold session | ~/ClauDex (plugin repo) + this product slot | MVP built, awaiting publish go | 2026-07-12 |
 
 ## Open immediately
-- Run `bun meta/evals/run.ts --skill claudex-second-opinion` in an interactive session — the case is written and its SUT behavior was verified by an independent agent run (2026-07-12), but the blind harness run was blocked by nested `claude -p` auth; verify honest-green before the next `--update-baseline`
+- ~~Eval-verify the factory skill mirror~~ — superseded by decision 0002: the mirror is removed; ClauDex is invocation-only, no default collab in hamzaish
 - Publish `hamza-ali-shahjahan/claudex` (repo name confirmed free)
 - Test install from GitHub: `/plugin marketplace add hamza-ali-shahjahan/claudex` → `/claudex:setup`
 - Record 30s GIF of `/claudex:verdict` catching a real disagreement
