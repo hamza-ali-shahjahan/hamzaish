@@ -10,7 +10,7 @@ Most best-practice lists tell you how to *use* Claude Code. This one is about wh
 - 🟡 **partially proven** — some of it validated here, the rest still waiting for contact with reality
 - ⏳ **research-baked** — adopted from a named source or established practice; honest status: not yet battle-tested by one of *our* ships
 
-The deep dives live in [`factory/playbooks/`](factory/playbooks/) (42 playbooks) — this page is the index that makes them scannable. For best practices on using Claude Code *itself*, [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) is excellent — this ledger picks up where the code stops.
+The deep dives live in [`factory/playbooks/`](factory/playbooks/) (44 playbooks) — this page is the index that makes them scannable. For best practices on using Claude Code *itself*, [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) is excellent — this ledger picks up where the code stops.
 
 ## ☠️ Never do this — each one cost us something real
 
@@ -160,6 +160,7 @@ The deep dives live in [`factory/playbooks/`](factory/playbooks/) (42 playbooks)
 
 ## ⚙️ Run the factory — Claude Code ops we learned the hard way
 
+- **Paste-contents, not paths: anything the user must relay to an external surface goes in chat as the full file contents in a fenced block.** ThousandWorlds v0.9.0 wrap-up shipped a copyable *path* to the Supabase migration instead of the SQL — one lost round-trip on the release's most visible step (secrets files excepted: those stay `.example` + user-copies). — ✅ *proven* · *ThousandWorlds schema.sql lapse, 2026-07-12* · [the incident](brain/anti-patterns/file-path-instead-of-paste-contents.md)
 - **Give every global-hook git op a timeout, a fail-open exit 0, and a scope gate.** Commit ≤10s, push/pull ≤20s, exit 0 on error, act only on Hamzaish-managed repos — ended the repeated multi-minute hook hangs. — ✅ *proven* · *Hook-hang incident, 2026-06-09 (scored 33/35, PROMOTED)* · [the lesson](brain/learnings/2026-06-09-hook-hang.md)
 - **Validate before irreversible bets, or explicitly record the validation debt.** wp-to-astro shipped six build passes before a single user conversation; the v0.7 punch list was guesswork with zero demand evidence (2026-05-30). — ✅ *proven* · *wp-to-astro validate-before-build miss, 2026-05-30* · [the lesson](brain/learnings/2026-05-30.md)
 - **Run a code-gen tool's output in a real consumer environment before shipping.** wp-to-astro 0.6.0 passed 138 tests and astro check, yet its emitted slug field made every page 500 under astro dev (2026-05-30). — ✅ *proven* · *wp-to-astro v0.6.0 slug bug, 2026-05-30* · [the lesson](brain/learnings/2026-05-30.md)

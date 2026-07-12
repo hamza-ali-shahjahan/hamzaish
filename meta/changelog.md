@@ -10,6 +10,47 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-12 — v2.13.0 · Paste-contents rule (user-relay files go into chat whole)
+
+**What changed**
+
+- **AGENTS.md hard rule 13** — anything the user must relay to an external surface (SQL editor, dashboard, web form) is pasted into chat as the FULL file contents in a fenced block; a path is never a substitute. Secrets-file exception stands (`.example` + user-copies).
+- **New anti-pattern** — `brain/anti-patterns/file-path-instead-of-paste-contents.md` (the ThousandWorlds 2026-07-12 schema.sql lapse: a copyable *path* where the SQL belonged).
+- **BEST-PRACTICES.md** — one-liner in ⚙️ Run the factory, linked to the anti-pattern.
+
+**Why**
+
+Hamza had twice universalized "anything I copy goes in a copyable block"; the release wrap-up still shipped a path. For the agent, file ≡ contents; for the user they're a path lookup apart. Encoded so the tool remembers what the sessions forgot.
+
+**What to revisit**
+
+- ThousandWorlds' full 18-entry learnings log is pending Hamza's review — several more entries (supabase lazy-thenable inserts, gz magic-byte sniffing, Actions secrets-in-`if`, no-commit-feature-agents orchestration) are candidates for the same promotion path.
+
+---
+
+## 2026-07-08 — v2.12.0 · The Orca distillation: community flywheel + orchestration discipline
+
+**What changed**
+
+- **Two new playbooks** — `factory/playbooks/launch-stage/community-flywheel.md` (trust as the moat: ride-the-wave positioning, effortless contribution rails, build-in-public, GitHub-as-distribution — anchored to the verified Orca case: ~12.1k stars in ~110 days with zero launches) and `factory/playbooks/ai-native-2026/handoff-vs-supervision.md` (the two modes of dispatching an agent, the 4-part completion contract, the 3-failure circuit breaker). Both routed from `CLAUDE.md`'s playbook table; `release-cadence-as-content.md` amended with the Orca proof point instead of duplicating its lever.
+- **Community rails in `.github/`** — `community-prs.yml` labels + welcomes every external PR on open (no-checkout `pull_request_target`, plain `gh`, idempotent comment); the PR template gains an optional contributor-shoutout field and a reviewed-before-opening checklist line.
+- **`/release` hardened** — a heartbeat trigger (unreleased entries + 7 days since last tag = a boundary), a never-publish-≤-latest gate, and recover-don't-re-cut for tags that lost their Release mid-cut.
+- **Agent-legibility rule 12 in `AGENTS.md`** (+ starter template convention) — concrete file names (never `utils`/`helpers`/`common`), why-only comments.
+- **Routing hygiene** — new meta-rule in `meta/factory-improving-factory.md`: every skill description carries negative routing (name the nearest neighbor and when to use it instead). Applied to `/ship`, `/auto`, `/full-cycle`, `/goal`.
+
+**Why**
+
+stablyai/orca proved (API-verified, not just claimed) that repo growth without launches is a *system*: release heartbeat + community automation + build-in-public. The factory already had the cadence lever; this fills in the community flywheel and imports the one protocol idea their agents run on — handoff vs. supervision stated as routing, not vibes. Everything adopted is a playbook or rail any builder can reuse; the runtime (Electron, terminals, mobile) stayed out deliberately — Claude Code is that layer, and Hamzaish stays the agent OS that keeps builders in builder-mode.
+
+**Revisit**
+
+- First external PR: does `community-prs.yml` fire correctly (label + single comment, no re-comment on reopen)?
+- Next `/release`: do the heartbeat trigger and safety gates read naturally in practice, or over-constrain?
+
+**Retro:** skipped — a study-and-distill session (no product moved stages, no sprint closed); evidence lives in this entry + the 2026-07-08 learning + `brain/decision-log/2026-07-08-adopt-orca-patterns.md`.
+
+---
+
 ## 2026-07-08 — v2.11.0 · Live Path M1: the live gate — /go-live closes on a scorecard, not a claim
 
 **What changed**
