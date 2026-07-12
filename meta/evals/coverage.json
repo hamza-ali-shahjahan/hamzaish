@@ -6,7 +6,8 @@
     "ideate",
     "validate",
     "problem-sharpener",
-    "devils-advocate"
+    "devils-advocate",
+    "claudex-second-opinion"
   ],
   "grandfathered": [
     "api-and-interface-design",

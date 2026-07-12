@@ -1,0 +1,22 @@
+{
+  "slug": "claudex",
+  "name": "ClauDex",
+  "one_liner": "Claude Code plugin that makes Claude and Codex pair program — Claude writes, Codex reviews, ship on consensus.",
+  "created": "2026-07-12",
+  "stage": "mvp",
+  "status": "active · pre-launch",
+  "code_path": null,
+  "aliases": ["code-is-love"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": { "github": "https://github.com/hamza-ali-shahjahan/claudex", "prod_url": null, "staging_url": null },
+  "notes": "Moment-marketing play on OpenAI open-sourcing codex-plugin-cc (GitHub trending Jul 8, 2026). MVP scaffolded and reviewed Jul 12. Next: publish repo, demo GIF, launch posts — hours matter."
+}
