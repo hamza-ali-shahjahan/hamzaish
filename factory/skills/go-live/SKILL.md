@@ -1,7 +1,7 @@
 ---
 name: go-live
 disable-model-invocation: true
-description: Guided, stateful provisioning of a product's production stack — service by service, with deep-links, key-format validation, a secrets backend (fnox recommended, or user-touched .env.local), a resumable ledger, and CLI automation after signup. Hands off to /security-check → /ship. Turns the 25-min SETUP.md into a walked, resumable flow.
+description: Guided, stateful provisioning of a product's production stack — deep-links, key-format validation, a secrets backend (fnox recommended, or user-touched .env.local), a resumable ledger, CLI automation after signup, and a blocking A1–A10 live gate. Hands off to /security-check → /ship. The walked version of SETUP.md.
 ---
 
 # /go-live
@@ -126,4 +126,4 @@ PASS/FAIL/PENDING/MANUAL with remediation. Rules:
 - Never commit a real key. Only `.env.local` (gitignored) or the platform's secret store. The `.env.example` stays placeholders-only.
 - **Secrets files are user-touched only.** Claude edits only `.example` templates; the user copies + pastes their own keys; verification is non-printing (`grep -q/-c`, `test`). Key values never enter chat in either direction. Enforced machine-wide by `~/.claude/hooks/guard-secrets-files.sh`; see `brain/anti-patterns/claude-touched-secrets-file.md` (incident 2026-07-03).
 - Record skips honestly in the ledger; a skipped service is a deliberate choice, not a gap.
-- This command lives at `factory/commands/go-live.md` (symlinked into `.claude/commands/`).
+- This flow lives at `factory/skills/go-live/SKILL.md` — the single source for `/go-live` (user-invoked; `disable-model-invocation` keeps its description out of session context, and CLAUDE.md's command table is the router).

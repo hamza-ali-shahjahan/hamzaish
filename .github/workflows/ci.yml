@@ -8,6 +8,7 @@ name: CI
 #   • check-starter    — a fresh scaffold that won't `bun install` (the dead-dep class)
 #   • check-product-layout — a product's CODE committed inside this public repo (2026-06-23)
 #   • check-counts     — a headline count / a /Users path / a non-null code_path drifted from disk (2026-06-28)
+#   • check-skill-command-collision — one /name defined as both a skill and a command, double-loading context (2026-07-14)
 #   • check-evals      — a new agent/skill shipped without an eval case (the debt rule, ratcheted 2026-07-02)
 #   • check-retro      — a factory change shipped without a retro or a recorded skip (2026-07-02)
 #   • check-sensitive-docs — a security-posture doc (audit/secret inventory/rotation log) tracked in this PUBLIC repo (2026-07-03)
@@ -58,6 +59,9 @@ jobs:
 
       - name: Layout guard — no product code committed inside this public repo
         run: bun run check-product-layout
+
+      - name: Namespace guard — no skill/command name collision (each /name has one home)
+        run: bun run check-skill-command-collision
 
       - name: Counts guard — headline numbers match disk, no /Users leak, code_path null
         run: bun run check-counts

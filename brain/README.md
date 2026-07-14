@@ -44,7 +44,7 @@ bun brain/ask.ts --limit 4 --json "query"   # machine-readable
 
 ### From inside Claude Code
 
-Use the `/brain-ask` skill (`factory/skills/brain-ask/`) — Claude shells out to `bun brain/ask.ts` and gets back markdown citations with paths it can then `Read`.
+Use the `/brain-ask` command (`factory/commands/brain-ask.md`) — Claude shells out to `bun brain/ask.ts` and gets back markdown citations with paths it can then `Read`.
 
 ### When to re-ingest
 
