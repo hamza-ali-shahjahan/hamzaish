@@ -153,18 +153,45 @@ step(5, "Active-sprint state (which product the factory orients on — never com
 // Step 4 — global slash commands -------------------------------------------
 step(6, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work from any folder)");
 {
-  // REAL copies, not symlinks: Claude Code's command/skill loader does not reliably
-  // follow symlinks during discovery, so a symlinked global command can silently show
-  // "Unknown command". Copies are always found. (In-repo /commands still resolve via the
-  // .claude symlinks.)
+  // POINTER STUBS, not full copies or symlinks. Three constraints meet here:
+  //   • Symlinks fail — Claude Code's loader does not reliably follow them ("Unknown command").
+  //   • Full copies rot — the 2026-07-02 staleness incident (brain/learnings/2026-07-02.md).
+  //   • Full copies DOUBLE-LIST — inside the Hamzaish repo, the user-scoped copy and the
+  //     project-scoped command both load, so ~16 descriptions burned context twice per
+  //     session (decision log 2026-07-14). Docs claim user scope shadows project scope,
+  //     but live sessions list both.
+  // A stub is a tiny real file whose BODY defers to the factory file at run time — it
+  // cannot go stale (it carries no protocol), and inside the repo it costs one short line.
+  // CORE commands keep the source's `description` so natural-language routing works from
+  // any folder ("where should I focus today" → /portfolio-pulse); the rest are reached by
+  // being typed or chained by name, so they get a one-line pointer description.
   //
-  // Staleness fix (2026-07-02, brain/learnings/2026-07-02.md): copies rot after factory
-  // upgrades, and "the copy differs" alone can't distinguish "the factory moved ahead"
-  // (safe to refresh) from "you customized it" (never clobber). A manifest of installed
-  // hashes (.hamzaish-installed.json) settles it — the conffile pattern. Scope: the CORE
-  // set installs if missing; ANY ~/.claude/commands/*.md with a factory/commands
+  // The manifest (.hamzaish-installed.json) is still the conffile pattern: dest==manifest
+  // → we installed it, safe to refresh (now: when the stub template or the source's
+  // frontmatter changes); dest!=manifest → user customized it, never clobber. Scope: the
+  // CORE set installs if missing; ANY ~/.claude/commands/*.md with a factory/commands
   // counterpart is refresh-managed (having it there is the opt-in).
   const CORE = ["hamzaish", "builder-mode", "work-on", "portfolio-pulse", "brain-ask", "brain-ingest"];
+  const FACTORY_CMD = "${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/commands";
+  const buildStub = (name: string, srcContent: string): string => {
+    const fm = /^---\n([\s\S]*?)\n---/.exec(srcContent)?.[1] ?? "";
+    const srcDesc = /^description:\s*(.+)$/m.exec(fm)?.[1]?.trim();
+    const hint = /^argument-hint:\s*(.+)$/m.exec(fm)?.[1]?.trim();
+    const desc = CORE.includes(name) && srcDesc ? srcDesc : `Hamzaish global door — runs the factory-current /${name}.`;
+    return [
+      "---",
+      `description: ${desc}`,
+      ...(hint ? [`argument-hint: ${hint}`] : []),
+      "---",
+      "",
+      "<!-- Generated pointer stub (bun run setup) — do not hand-edit; the real command lives in the factory. -->",
+      "",
+      `The user invoked: \`/${name} $ARGUMENTS\``,
+      "",
+      `Read \`${FACTORY_CMD}/${name}.md\` and follow it exactly as if it were this command's body, applying \`$ARGUMENTS\` as it specifies. It always reflects the current factory version — never answer from a stale copy.`,
+      "",
+    ].join("\n");
+  };
   const MANIFEST_PATH = join(CMD_DIR, ".hamzaish-installed.json");
   const forceRefresh = process.argv.includes("--refresh-commands");
   const sha = (s: string) => new Bun.CryptoHasher("sha256").update(s).digest("hex");
@@ -209,17 +236,18 @@ step(6, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
       }
     }
 
-    const srcContent = await readFile(target, "utf8");
-    const srcHash = sha(srcContent);
+    const srcContent = await readFile(target, "utf8"); // dereferences (builder-mode.md -> hamzaish.md content)
+    const stub = buildStub(name, srcContent);
+    const srcHash = sha(stub); // "source" for the conffile decision is what we WOULD install: the stub
     const destExists = existsSync(dest);
     const destHash = destExists ? sha(await readFile(dest, "utf8")) : undefined;
     const action = decideCommandAction({ destExists, destHash, srcHash, manifestHash: manifest[name], force: forceRefresh });
 
     switch (action) {
       case "install":
-        await copyFile(target, dest); // dereferences (builder-mode.md -> hamzaish.md content)
-        manifest[name] = sha(await readFile(dest, "utf8"));
-        ok(`/${name} → installed.`);
+        await writeFile(dest, stub);
+        manifest[name] = srcHash;
+        ok(`/${name} → pointer stub installed.`);
         created++;
         break;
       case "skip":
@@ -228,15 +256,15 @@ step(6, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
         skipped++;
         break;
       case "refresh":
-        await copyFile(target, dest);
-        manifest[name] = sha(await readFile(dest, "utf8"));
-        ok(`/${name} → refreshed to the current factory version (you hadn't customized it).`);
+        await writeFile(dest, stub); // includes migrating a pre-stub full copy we installed → stub
+        manifest[name] = srcHash;
+        ok(`/${name} → refreshed to the current pointer stub (you hadn't customized it).`);
         created++;
         break;
       case "force-refresh":
-        await copyFile(target, dest);
-        manifest[name] = sha(await readFile(dest, "utf8"));
-        ok(`/${name} → overwritten with the factory version (--refresh-commands).`);
+        await writeFile(dest, stub);
+        manifest[name] = srcHash;
+        ok(`/${name} → overwritten with the pointer stub (--refresh-commands).`);
         created++;
         break;
       case "keep-customized":
@@ -246,7 +274,7 @@ step(6, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
     }
   }
   await writeFile(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n");
-  console.log(c.dim("     Real copies (the loader skips symlinks); .hamzaish-installed.json tracks them so upgrades refresh, edits never clobber."));
+  console.log(c.dim("     Pointer stubs (loader skips symlinks; full copies rot + double-list); .hamzaish-installed.json tracks them so upgrades refresh, edits never clobber."));
 }
 
 // Step 5 — build the brain index -------------------------------------------

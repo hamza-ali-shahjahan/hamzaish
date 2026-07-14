@@ -7,9 +7,7 @@ The user invoked: `/portfolio-pulse $ARGUMENTS`
 
 This command works from any cwd. All Hamzaish paths below are absolute.
 
-Run the portfolio-pulse skill (`${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/skills/portfolio-pulse/SKILL.md`).
-
-Short version:
+Steps:
 1. Refresh the brain index so any recent edits to product configs/statuses are visible:
    ```
    bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/brain/ingest.ts
