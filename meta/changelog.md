@@ -28,6 +28,8 @@ Hamzaish's output is skills, so a standard for writing them compounds: every fut
 - Description prunes (6 longest) and two merge candidates (`auto-orchestrator`↔`/auto`, `ideate`↔`idea-refine`) — pending the ClauDex/Codex cross-review.
 - Wayfinder, CONTEXT.md ubiquitous language, and triage/`.out-of-scope/` — the remaining adoptions from the same study, each its own decision.
 
+**Retro:** [meta/retros/2026-07-14-skill-authoring-adoption.md](retros/2026-07-14-skill-authoring-adoption.md) — the misdiagnosis lesson (anti-pattern match ≠ evidence; `readlink` over `ls`) and the dormant `check-changelog` guard bug.
+
 ---
 
 ## 2026-07-12 — v2.14.0 · The ThousandWorlds fold: 12 learnings → 2 anti-patterns, 2 playbooks, 6 practices
