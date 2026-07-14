@@ -40,6 +40,7 @@ See `scope.md`. Bar to add a feature: ≥3 real users blocked without it. Otherw
 
 ## Conventions
 - TypeScript strict; no `any` without comment
+- Name files after the domain concept they contain (`stripe-webhook-verify.ts`), never `utils`/`helpers`/`common`/`misc` — vague names become dumping grounds and are illegible to agents; if no concrete name fits, the file has too many responsibilities
 - Server Actions for mutations; API routes only for webhooks
 - All input validated with zod
 - DB writes RLS-protected (no service role from user-facing code)

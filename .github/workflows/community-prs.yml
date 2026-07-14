@@ -1,0 +1,42 @@
+# Community-PR rail: label + welcome every external PR the moment it opens,
+# so no community contribution ever sits unacknowledged.
+# Pattern distilled from stablyai/orca's track-community-prs workflow
+# (see factory/playbooks/launch-stage/community-flywheel.md, Lever 2).
+#
+# Security note: pull_request_target runs with write perms, so this job must
+# NEVER check out or execute PR code — it only calls gh against the API.
+name: Community PRs
+
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review]
+
+permissions:
+  issues: write # label create/apply lives under the issues scope
+  pull-requests: write
+
+jobs:
+  welcome:
+    if: github.event.pull_request.user.login != github.repository_owner && !endsWith(github.event.pull_request.user.login, '[bot]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Label and welcome
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          gh label create community --repo "$REPO" \
+            --color 0e8a16 --description "PR from a community contributor" \
+            2>/dev/null || true
+          gh pr edit "$PR" --repo "$REPO" --add-label community
+
+          # Comment exactly once per PR (reopen/ready events re-fire this job)
+          if ! gh pr view "$PR" --repo "$REPO" --json comments --jq '.comments[].body' \
+              | grep -q 'hamzaish-community-welcome'; then
+            BODY=$(printf "<!-- hamzaish-community-welcome -->\nThanks for contributing to Hamzaish, @%s! 🛠️\n\nA maintainer will review this soon. If you'd like a public shoutout when it merges, drop your X/Twitter handle in the PR description (there's a field for it in the template).\n" "$AUTHOR")
+            gh pr comment "$PR" --repo "$REPO" --body "$BODY"
+          fi
+        shell: bash
