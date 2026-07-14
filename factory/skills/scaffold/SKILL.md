@@ -1,5 +1,6 @@
 ---
 name: scaffold
+disable-model-invocation: true
 description: One-shot a new product — folders, Next.js starter, product.config.json, CLAUDE.md, scope.md, PRD skeleton, SETUP.md checklist. The Lovable-like ignition.
 ---
 

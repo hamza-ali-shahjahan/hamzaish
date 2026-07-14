@@ -10,6 +10,26 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-14 — v2.15.0 · The skill-authoring standard: ported from mattpocock/skills + first context-load audit
+
+**What changed**
+
+- **Playbook** — `factory/playbooks/ai-native-2026/skill-authoring.md`: the standard every skill/command edit now runs through. Context load vs cognitive load (invocation mode is the first authoring decision), description rules (one trigger per branch + negative routing), leading words, the no-op test, checkable completion criteria, progressive disclosure, and six named failure modes (premature completion, duplication, sediment, sprawl, no-op, negation). Routed from CLAUDE.md's playbook table and linked from `meta/factory-improving-factory.md`. Ported (idea, not text) from mattpocock/skills' `writing-great-skills`.
+- **First context-load audit** — `brain/decision-log/2026-07-14-adopt-skill-authoring-standard.md`: 42 skill + 24 command descriptions measured at ~3.8k tokens loaded into every session. Two skills converted to user-invoked (`go-live`, `scaffold` — deliberate rituals whose door is the CLAUDE.md command table). Duplicate-listing finding: ~10 names load twice per session; verified as skill/command name collisions (`brain-ask` exists as both), NOT symlink drift — dedupe + collision guard queued.
+- **Reference registered** — `references/mattpocock-skills/` (gitignored, re-cloned via `scripts/install-references.sh`), with a what-to-mine section in `references/README.md`: wayfinder's decision maps, CONTEXT.md domain modeling, triage's `.out-of-scope/` KB — each a separately decidable follow-up adoption.
+
+**Why**
+
+Hamzaish's output is skills, so a standard for writing them compounds: every future skill is born sharper, and every session pays less description tax. The audit made the tax visible for the first time — and surfaced a verification lesson (a finding that pattern-matches a known anti-pattern is a hypothesis, not evidence; `readlink` over `ls`).
+
+**What to revisit**
+
+- Skill/command name-collision dedupe + CI guard (queued as its own task).
+- Description prunes (6 longest) and two merge candidates (`auto-orchestrator`↔`/auto`, `ideate`↔`idea-refine`) — pending the ClauDex/Codex cross-review.
+- Wayfinder, CONTEXT.md ubiquitous language, and triage/`.out-of-scope/` — the remaining adoptions from the same study, each its own decision.
+
+---
+
 ## 2026-07-12 — v2.14.0 · The ThousandWorlds fold: 12 learnings → 2 anti-patterns, 2 playbooks, 6 practices
 
 **What changed**

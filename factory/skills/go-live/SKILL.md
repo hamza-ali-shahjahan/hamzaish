@@ -1,5 +1,6 @@
 ---
 name: go-live
+disable-model-invocation: true
 description: Guided, stateful provisioning of a product's production stack — service by service, with deep-links, key-format validation, a secrets backend (fnox recommended, or user-touched .env.local), a resumable ledger, and CLI automation after signup. Hands off to /security-check → /ship. Turns the 25-min SETUP.md into a walked, resumable flow.
 ---
 

@@ -20,6 +20,10 @@ Each arrow is a discrete action with a home in this repo:
 | Update the factory | Patch a skill, write a new playbook, retire an anti-pattern | `factory/skills/`, `factory/playbooks/`, `brain/anti-patterns/` |
 | Reuse | Next invocation uses the improved version | `factory/` |
 
+## Routing hygiene for skills and commands
+
+Every skill/command description must carry **negative routing**: name its nearest-neighbor and when to use *that* instead ("use /pr for repo main; use /ship for product production"). Collision-prone descriptions are the top cause of wrong-skill invocation — an agent picks from descriptions alone, so the description is the router. When adding or editing a skill, ask: *which existing skill could this be confused with?* — and write the disambiguation into both descriptions. (Discipline ported from stablyai/orca's skill format, where every SKILL.md description states what to reach for instead.) Negative routing is one rule of the full skill-authoring standard — the two loads, leading words, the no-op test, completion criteria, failure modes — at `factory/playbooks/ai-native-2026/skill-authoring.md` (ported from mattpocock/skills, 2026-07-14).
+
 ## What counts as "friction worth capturing"
 
 **High signal — capture immediately:**

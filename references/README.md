@@ -162,6 +162,39 @@ already ported); 4–5 are parked levers. **Separately flagged as prior art for
 Muakkil's venture-agent pivot** — that evidence lives in the Muakkil Phase 0 research
 folder, not here.
 
+### mattpocock-skills — github.com/mattpocock/skills
+
+**What it is**: Matt Pocock's daily-driver agent skills — 18 promoted skills plus a
+meta-layer on how to write them. Anti-framework by philosophy (small, composable,
+hackable — explicitly contra GSD/BMAD/Spec-Kit owning the process). Ships as both
+copy-in skills (skills.sh) and a read-only Claude Code plugin — the same dual-door
+pattern as our `factory/plugins/`. Added 2026-07-14 (active, last commit 2026-07-13).
+
+**What to mine**:
+1. **`writing-great-skills`** — the skill-authoring science: context load vs
+   cognitive load, leading words, the no-op test, completion criteria, six named
+   failure modes. → **Ported** to `factory/playbooks/ai-native-2026/skill-authoring.md`
+   (decision log 2026-07-14). → `skills/productivity/writing-great-skills/`.
+2. **`domain-modeling` + `grill-with-docs`** — per-repo `CONTEXT.md` ubiquitous-language
+   glossary with *Avoid:* lists, challenged and updated inline mid-conversation. A
+   zero-infrastructure semantic layer — direct prior art for Phase C
+   (`brain/knowledge/2026-07-03-semantic-layer-is-the-moat.md`). → `skills/engineering/domain-modeling/`.
+3. **`wayfinder`** — multi-session decision maps: decision tickets (resolve a
+   *decision*, not a build slice), fog of war ("Not yet specified"), the frontier,
+   one-ticket-per-session. The shape we lack for foggy bigger-than-one-session efforts.
+   → `skills/engineering/wayfinder/`.
+4. **`triage` + `.out-of-scope/`** — issue/PR state machine with durable agent briefs
+   (behavioral, no file paths) and a rejected-concepts KB that kills re-litigation.
+   Relevant since `community-prs.yml`. → `skills/engineering/triage/`.
+5. **Smaller folds** — tight red-capable loop as a debugging gate (`diagnosing-bugs`),
+   expand–contract for wide refactors (`to-tickets`), design-it-twice parallel
+   subagents (`codebase-design/DESIGN-IT-TWICE.md`), two-axis review separation
+   (`code-review`), the relentless one-question-at-a-time grilling primitive.
+
+**Verdict for Hamzaish**: mine 1 (done) and 2–4 as separately-decidable adoptions;
+5 folds into existing skills. His invocation-axis discipline (`.agents/invocation.md`)
+is the reference for our own user-invoked vs model-invoked audit.
+
 ---
 
 ## Discipline
