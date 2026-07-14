@@ -1,6 +1,6 @@
 # Muakkil — funnel launch kit (buildathon weekend)
 
-> **What this is:** the [funnel/discoverability batch](../../../factory/playbooks/launch-stage/release-cadence-as-content.md) applied to Muakkil's launch. **Factory metadata only** — apply these to the muakkil.app landing / buildathon submission yourself; this file does not touch Muakkil's code (off-limits by hard rule). This is the *first product-execution* of the ingest loop (the funnel lessons get proven here).
+> **What this is:** the [funnel/discoverability batch](../../../factory/playbooks/launch-stage/release-cadence-as-content.md) applied to Muakkil's launch. **Factory metadata only** — apply these to the muakkil.com landing / buildathon submission yourself; this file does not touch Muakkil's code (off-limits by hard rule). This is the *first product-execution* of the ingest loop (the funnel lessons get proven here).
 
 ## Honest fit note
 Incumbent-anchoring ("the open-source X alternative") is a **weak fit** for Muakkil — it's a novel, aesthetic, ritual-UX product with no clean incumbent. So Muakkil's funnel should follow the **AutoGPT pattern, not the AppFlowy pattern**: lead with a *mesmerizing demo*, not a comparison. The Scribe flow is Muakkil's AutoGPT-grade asset.
@@ -18,7 +18,7 @@ Pick one — concrete over mystical for the cold visitor (keep the mystical voic
 The mystical framing ("four spirit agents / charges / ritual UX") is your *differentiator and brand* — keep it, but **below** the line that makes a stranger understand the product.
 
 ## 3. Zero-friction trial
-- One obvious CTA above the fold → live try at **muakkil.app** (no signup wall before the first "wow", if possible).
+- One obvious CTA above the fold → live try at **muakkil.com** (no signup wall before the first "wow", if possible).
 - First 100 sign-ups = beta cohort (already the plan). Make that explicit and scarce ("first 100 charter builders").
 
 ## 4. Release cadence (starts at launch, not after)

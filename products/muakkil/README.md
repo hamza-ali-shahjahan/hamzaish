@@ -12,7 +12,7 @@ Submitted to a Lovable weekend buildathon: GitHub `main` is Lovable's source of 
 
 ## Current state (as of factory onboarding, 2026-05-26)
 
-- **Landing page**: shipped. Live at https://muakkil.app. ~1465 LOC, single route file (`src/routes/index.tsx`).
+- **Landing page**: shipped. Live at https://muakkil.com. ~1465 LOC, single route file (`src/routes/index.tsx`).
 - **Email waitlist**: live, Supabase-backed.
 - **Agent backends**: **none yet** — pitch only. This is the buildathon work.
 - **GA4**: wired (`G-RYWKGMVS7K`).
