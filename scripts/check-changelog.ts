@@ -33,7 +33,7 @@ const FOLDED = new Set(['v1.5', 'v1.6', 'v1.12']);
 // ── changelog headers: ## 2026-… — vX.Y · title ───────────────────────────────
 const changelog = readFileSync(resolve(root, 'meta', 'changelog.md'), 'utf8');
 const headerVersions = new Set(
-  [...changelog.matchAll(/^##\s+\d{4}-\d{2}-\d{2}\s+—\s+(v\d+\.\d+)\s/gm)].map((m) => m[1]),
+  [...changelog.matchAll(/^##\s+\d{4}-\d{2}-\d{2}\s+—\s+(v\d+\.\d+)(?:\.\d+)?\s/gm)].map((m) => m[1]),
 );
 
 // ── commit-subject versions: leading "vX.Y" in any commit subject ──────────────
