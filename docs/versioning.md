@@ -2,7 +2,7 @@
 
 Hamzaish uses **[Semantic Versioning](https://semver.org)** — `MAJOR.MINOR.PATCH` — with **one source of truth** and a CI guard, so the number can't drift across the repo. (It did once: `package.json` said `1.10.0`, this kind of note said `v1.4`, the changelog said `v1.31`, and the last released tag was `v1.2.0` — four different numbers, nothing reconciling them. Never again — that's what the guard is for.)
 
-**Current version: `2.11.0`** — *Live Path M1 — the live gate: `scripts/verify-live.ts` makes the A1–A10 go-live assertions runnable (per-assertion PASS/FAIL/PENDING/MANUAL scorecard, exit-1-on-FAIL, deterministic `--self-test` mocks for CI); `/go-live` now closes only on a passing scorecard instead of a declared "done"; the Next.js starter ships `/api/health` (`ok`/`buildSha`/`probes.db`) so A3/A4/A6 are assertable on every new product. Smoked against ventbox.co. Goal: `meta/goals/live-path.md` (M1 ✅).*
+**Current version: `2.15.0`** — *The skill-authoring standard: `factory/playbooks/ai-native-2026/skill-authoring.md` (context load vs cognitive load, leading words, the no-op test, completion criteria, six failure modes — ported from mattpocock/skills) plus the first context-load audit (~3.8k tokens of descriptions loaded per session; `go-live`/`scaffold` converted to user-invoked; skill/command name-collision dedupe queued). Ships alongside the Orca v2.12.0 completion files, the semantic-layer capture, the security-at-scale fold, and product status updates — entries v2.12.0–v2.14.0 in the changelog cover the in-between labels.*
 
 ## One source of truth
 

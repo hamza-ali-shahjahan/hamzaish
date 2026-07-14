@@ -1,6 +1,6 @@
 ---
-description: Fast security baseline audit of a product — tracked secrets, unpinned/vulnerable GitHub Actions, workflow permission scope, untrusted-input triggers, MCP-config surface, and an RLS reminder. Returns a pass/fail checklist with a verdict.
-argument-hint: <product-slug>
+description: Fast security baseline audit of a product — tracked secrets, unpinned/vulnerable GitHub Actions, workflow permission scope, untrusted-input triggers, MCP-config surface, and an RLS reminder. Add --live to also check the RUNNING system for drift (live RLS status, storage-bucket visibility, Security Advisors, preview protection). Returns a pass/fail checklist with a verdict.
+argument-hint: <product-slug> [--live]
 ---
 
 The user invoked: `/security-check $ARGUMENTS`
@@ -86,6 +86,55 @@ recognize — the scanner can't judge publisher trust; you must.
 - `.no-auto-push` marker present in the code repo (wip snapshots stay local). Missing = **WARN**.
 - Production branch is `production` and Vercel's Production Branch is set to it (confirm with the user if unknown).
 
+## Live mode — `--live` (drift + exposure; the repo checks above verify the code, these verify the RUNNING system)
+
+Ship-time gates decay: a table added in the Supabase dashboard, a policy dropped in a
+hotfix, or a bucket flipped public never touches the repo, so sections 0–7 can't see it.
+Live mode closes that. Run it **quarterly for every Launch+ product**, after any
+dashboard-made schema/storage change, and before a scale push — triggers and the why
+live in `factory/playbooks/scale-stage/security-at-scale.md`.
+
+**Secrets discipline:** the database connection string is a secret. It comes from the
+operator's shell env or password manager — never Read from `.env.local` (hard rule,
+hook-enforced), never echoed into chat or output. Run queries as
+`psql "$DATABASE_URL" -c "…"` with the var already exported by the operator, or via
+`supabase db` on the linked project. If it isn't exported, ask the operator to export
+it themselves — don't fetch it.
+
+### 8. Live RLS drift (query the real database, not the migrations)
+```sql
+select tablename from pg_tables where schemaname = 'public' and rowsecurity = false;
+```
+- Any row = **FAIL** unless the table is a named, justified public reference table
+  (justification recorded in the product's `decisions/`).
+- Also flag RLS-on-but-zero-policies (deny-all — usually a misconfigured feature about
+  to be "fixed" by disabling RLS) = **WARN**:
+```sql
+select t.tablename from pg_tables t
+where t.schemaname = 'public' and t.rowsecurity = true
+  and not exists (select 1 from pg_policies p
+                  where p.schemaname = 'public' and p.tablename = t.tablename);
+```
+
+### 9. Storage-bucket visibility
+```sql
+select id, name, public from storage.buckets;
+```
+- Any `public = true` bucket that holds (or could hold) user content = **FAIL**.
+- Every remaining public bucket must be named and justified = otherwise **WARN**.
+
+### 10. Supabase Security Advisors
+- Walk **Dashboard → Advisors → Security** for the project. Any ERROR-level finding
+  = **FAIL**; WARN-level findings are listed with an owner/date. Done when the panel
+  shows zero unexplained entries.
+
+### 11. External exposure (what the internet sees)
+- **Preview deployments**: an authed app's Vercel preview URLs sit behind Deployment
+  Protection (Vercel → Settings → Deployment Protection). Unprotected previews of an
+  authed app = **FAIL**.
+- **Subdomains/dashboards**: everything DNS resolves to is inventoried; a staging DB
+  UI, `/debug` route, or admin panel reachable without auth = **FAIL**.
+
 ## Output — pass/fail checklist + verdict
 
 Print a checklist (✅ pass / ⚠️ warn / ❌ fail), one line each, with the exact
@@ -94,7 +143,9 @@ file/line for every finding and the one-line fix. Then force a verdict:
 - **❌ BLOCK** — any FAIL (a "static / no backend" claim contradicted by env-gated
   backend code, tracked secret, unpinned/vulnerable action, over-broad
   permissions, untrusted-input trigger, inline credential or wildcard allowlist
-  in an MCP config, missing RLS on user data).
+  in an MCP config, missing RLS on user data; in live mode also: live RLS drift,
+  a public bucket with user content, an ERROR-level advisor finding, or an
+  unprotected exposure surface).
 - **⚠️ CLEAR WITH CAVEATS** — only WARNs; list them with an owner/date.
 - **✅ CLEAR** — all checks pass.
 

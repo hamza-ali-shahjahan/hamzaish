@@ -1,5 +1,5 @@
 ---
-description: Run the full engineering cycle autonomously end-to-end — spec → plan → build → test → review → ship — making reasonable calls without stopping at every gate
+description: Run the full engineering cycle autonomously end-to-end — spec → plan → build → test → review → ship — making reasonable calls without stopping at every gate. Use /full-cycle instead when the user wants to approve each gate; use /goal instead when there's a measurable objective to converge on.
 ---
 
 Invoke the **auto-orchestrator** skill.

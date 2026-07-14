@@ -18,6 +18,8 @@ immich flopped on Hacker News 7+ times (1–6 points each) yet reached 22k+ star
 
 **Anti-pattern:** a dead-looking repo. `smol-ai/developer`'s stars froze the moment pushes stopped (see [stars-are-not-pmf](../../../brain/anti-patterns/stars-are-not-pmf.md) for the inverse trap). Abandonment is visible and costly in public.
 
+**Stronger proof (verified 2026-07-08):** stably ai's Orca hit ~12.1k stars in ~110 days with **no launch at all** — no Show HN, no Product Hunt. Measured off the GitHub API: multiple releases per day, ~46 merged PRs/day, 68% issue-close rate. Cadence + community can replace the launch pulse entirely — see [community-flywheel](community-flywheel.md) for the other half of that engine.
+
 > Caveat from the research: cadence *helps* but **distribution dominates** — karpathy's repos kept compounding stars *after* pushes stopped because the distribution was already there. Cadence is the controllable lever for those of us without a famous name yet.
 
 ## Lever 2 — Incumbent-anchored positioning *as the literal headline*

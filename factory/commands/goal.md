@@ -1,5 +1,5 @@
 ---
-description: Pursue a measurable objective autonomously — score against a rubric, fix the biggest gap, verify, log every run, and stop only when a fresh-eyes agent confirms the goal is met (or the run budget is spent).
+description: Pursue a measurable objective autonomously — score against a rubric, fix the biggest gap, verify, log every run, and stop only when a fresh-eyes agent confirms the goal is met (or the run budget is spent). Use /auto instead for a feature build with no numeric target; use /write-a-goal first if the objective isn't measurable yet.
 ---
 
 You are running a **goal loop**: an autonomous, self-verifying improvement loop that drives an artifact toward a stated objective and **does not stop until the goal is achieved and independently verified** (or the run budget is exhausted).

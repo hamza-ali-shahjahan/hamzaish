@@ -112,6 +112,10 @@ When work needs a framework, read these BEFORE acting:
 | Moat | `factory/playbooks/scale-stage/moat-building.md` |
 | Production ops / incident response / DB-down / backup-DR | `factory/playbooks/scale-stage/production-operations.md` |
 | Rate limiting / abuse / cost-runaway caps | `factory/playbooks/scale-stage/abuse-and-cost-controls.md` |
+| Security at scale / drift re-audit / data breach / retention | `factory/playbooks/scale-stage/security-at-scale.md` |
+| Growing a public repo (cadence, community, build-in-public) | `factory/playbooks/launch-stage/release-cadence-as-content.md` + `community-flywheel.md` |
+| Dispatching subagents (handoff vs. supervised) | `factory/playbooks/ai-native-2026/handoff-vs-supervision.md` |
+| Writing or editing any skill/command | `factory/playbooks/ai-native-2026/skill-authoring.md` |
 
 ## Self-improvement loop — non-negotiable
 

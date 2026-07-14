@@ -1,5 +1,5 @@
 ---
-description: Orchestrate the full engineering cycle — setup → spec → plan → test → build → review → ship — pausing at each gate for approval
+description: Orchestrate the full engineering cycle — setup → spec → plan → test → build → review → ship — pausing at each gate for approval. Use /auto instead when the user says go/just-do-it (no gates); use /goal instead when converging on a measurable objective.
 ---
 
 You are orchestrating the **full development cycle** for the user. Invoke each sub-skill in order, pause at every gate for explicit approval, and do NOT advance until the user says to continue.

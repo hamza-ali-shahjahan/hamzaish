@@ -1,5 +1,5 @@
 ---
-description: Promote reviewed commit(s) from the working branch to the product's `production` branch and push — the single deploy action. Auto-commit wip snapshots stay on the working branch and never reach production.
+description: Promote reviewed commit(s) from the working branch to the product's `production` branch and push — the single deploy action. Auto-commit wip snapshots stay on the working branch and never reach production. For deploying a PRODUCT to production; use /pr instead when shipping a change to a repo's main branch.
 argument-hint: <product-slug> [reviewed-commit-sha]
 ---
 
