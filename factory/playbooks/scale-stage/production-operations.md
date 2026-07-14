@@ -26,6 +26,8 @@ For a solo founder the response *is* you — so the ladder's real job is permiss
 4. **Resolve** — fix forward once the bleeding stops.
 5. **Retro** — every SEV1/2 gets a 15-min postmortem in `meta/retros/` (blameless: what happened, why it wasn't caught, what guardrail prevents a repeat). Promote the guardrail into a playbook or a test.
 
+> **A breach is not an outage.** If data was (or may have been) accessed, this loop is the wrong runbook — switch to the data-breach runbook in [`security-at-scale.md`](security-at-scale.md) (contain → scope → notify → disclose → retro). An outage ends when service resumes; a breach ends when users are safe and informed.
+
 ## The "DB went down" runbook (the most common SEV1)
 
 ```

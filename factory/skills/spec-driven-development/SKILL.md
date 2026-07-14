@@ -96,6 +96,13 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 ## Project Structure
 [Directory layout with descriptions]
 
+## Data Model & Retention
+[Tables/entities. EVERY table that stores user or event data names its retention
+rule — "kept while account active", "purged after N days" (with the scheduled job
+that purges it), or a written reason it's kept forever. Data with no named
+retention rule doesn't get stored. See
+factory/playbooks/scale-stage/security-at-scale.md § Data minimization.]
+
 ## Code Style
 [Example snippet + key conventions]
 

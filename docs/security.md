@@ -15,6 +15,10 @@ The mechanical enforcement lives in:
 - `/scaffold` — wires all of this into new products (`factory/skills/scaffold/SKILL.md`)
 - the deep pass — `factory/agents/mvp/security-reviewer/` +
   `factory/playbooks/mvp-stage/security-checklist.md`
+- the scale layer — `factory/playbooks/scale-stage/security-at-scale.md`
+  (quarterly `/security-check --live` drift re-audit, attack-surface self-scan,
+  data-breach runbook, retention discipline — ship-time gates verify the repo;
+  this layer verifies the *running* system as it drifts)
 
 ---
 
