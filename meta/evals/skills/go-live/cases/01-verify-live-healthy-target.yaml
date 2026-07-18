@@ -3,11 +3,13 @@
 name: verify-live-healthy-target
 skill: go-live
 description: >
-  The A1–A10 live gate (scripts/verify-live.ts) against its built-in healthy
-  mock (--self-test good): health/buildSha/db/auth-gate/prod-key/cron/leak
-  checks all PASS, the two honest human steps (A7b throwaway signup, A8 email
-  domain) stay MANUAL, no FAILs, exit 0. Guards the harness against drifting
-  into false alarms on a good deploy. Verified live 2026-07-07.
+  The A1–A11 live gate (scripts/verify-live.ts) against its built-in healthy
+  mock (--self-test good): health/buildSha/db/auth-gate/prod-key/cron/leak/
+  Sentry-delivery checks all PASS, the two honest human steps (A7b throwaway
+  signup, A8 email domain) stay MANUAL, no FAILs, exit 0. Guards the harness
+  against drifting into false alarms on a good deploy. Verified live
+  2026-07-07; scorecard resynced 2026-07-18 when A11 (errors reach Sentry)
+  joined the ladder (7/9 → 8/10).
 invoke:
   cmd:
     - bun
@@ -29,6 +31,8 @@ checks:
   - type: stdout_matches
     regex: "A7b Auth signup works +MANUAL"
   - type: stdout_matches
-    regex: "EVAL: 7/9"
+    regex: "A11 Errors reach Sentry +PASS"
+  - type: stdout_matches
+    regex: "EVAL: 8/10"
   - type: stdout_matches
     regex: "verdict: LIVE-PENDING"

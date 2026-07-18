@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-18 — v2.17.0 · The starter tells the truth in production: Sentry really initializes, the webhook really persists
+
+**What changed**
+
+- **Observability costume closed** — the pre-2026-07-15 starter shipped `@sentry/nextjs`, `withSentryConfig`, and the DSN env var with **no `Sentry.init()` anywhere**: every scaffolded product presented as instrumented and captured zero errors. Now: `sentry.client.config.ts` / `sentry.server.config.ts` / `sentry.edge.config.ts` + `src/instrumentation.ts` (in `src/` deliberately — this app lives in `src/app/`, so Next.js silently ignores a root-level `instrumentation.ts`; the mocked test stayed green while the fix was wrong, see the 2026-07-15 learning).
+- **The Sentry canary** — `POST /api/debug/sentry-canary`: token-gated (404s when `SENTRY_CANARY_TOKEN` unset — no surface unless deliberately enabled), captures a nonce-tagged exception and `flush()`es, so `scripts/verify-live.ts` **A11 "Errors reach Sentry"** proves against the REAL deploy that errors arrive — scorecard now `EVAL: 8/10` on a healthy target (go-live eval case resynced). Location-contract guarded cheaply every commit by `sentry-instrumentation-location.test.ts`.
+- **Stripe webhook: verify → claim → persist** — the stub that answered `{received:true}` while dropping every event is gone. Two rules now hold: *never 200 an event you didn't persist* (persistence failures → 5xx so Stripe redelivers) and *at-least-once delivery means idempotent writes* (events claimed by PK insert into the new `stripe_webhook_events` ledger — migration `0002` — redeliveries lose the insert race and skip; failed processing releases the claim so retries re-claim). Subscriptions now actually written via the new service-role admin client (`src/lib/supabase/admin.ts`; ledger table is RLS-default-deny, service-role only). Route covered by `route.test.ts`.
+- `env.ts` documents the on-switch semantics (DSN enables capture; AUTH_TOKEN/ORG/PROJECT are source-map upload only) + `SENTRY_CANARY_TOKEN`; `.env.example` updated to match.
+
+**Why**
+
+The 2026-07-15 production assessment's two sharpest findings: observability that *looks solved* is worse than an honest absence, and a webhook that acknowledges what it drops silently loses paying customers' subscription state. Both were mechanisms-not-prose fixes: the canary asserts against the running system because reading source can never prove init ran.
+
+**What to revisit**
+
+- `check-starter` still claims "launch-ready" off `bun install` alone while a pristine scaffold fails `typecheck` and `build` (2026-07-15 learning #2) — wire the starter's own typecheck/build into factory CI.
+- Retry/timeout wrappers for external calls (Stripe/Supabase/Resend) — the remaining reliability gap from the assessment.
+
+**Retro:** skipped — a single-arc fix cycle inside the production-assessment follow-up; the three distilled lessons (mock-verified ≠ verified for convention-over-configuration hooks; a guard's success message must state what it asserted; vendored repos force explicit tool scopes) live in `brain/learnings/2026-07-15.md`, which ships in this entry.
+
+---
+
 ## 2026-07-18 — v2.16.0 · The factory control plane: orders, spend cap, lifecycle gates, /factory-launch
 
 **What changed**

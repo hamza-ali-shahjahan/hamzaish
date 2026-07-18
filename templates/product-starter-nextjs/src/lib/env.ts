@@ -30,11 +30,15 @@ const envSchema = z.object({
   NEXT_PUBLIC_PLAUSIBLE_DOMAIN: optional,
   NEXT_PUBLIC_GSC_VERIFICATION: optional,
 
-  // Sentry
+  // Sentry — DSN is the on-switch (read directly by the sentry.*.config.ts files,
+  // which must not depend on this module booting). AUTH_TOKEN/ORG/PROJECT are
+  // build-time source-map upload only and do NOT enable error capture.
   NEXT_PUBLIC_SENTRY_DSN: optional,
   SENTRY_AUTH_TOKEN: optional,
   SENTRY_ORG: optional,
   SENTRY_PROJECT: optional,
+  // Gate for /api/debug/sentry-canary (verify-live A11). Unset → the route 404s.
+  SENTRY_CANARY_TOKEN: optional,
 
   // AI
   ANTHROPIC_API_KEY: optional,
