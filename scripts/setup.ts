@@ -150,8 +150,36 @@ step(5, "Active-sprint state (which product the factory orients on — never com
   console.log(c.dim("     YOUR portfolio starts empty and fills via /scaffold. /portfolio-pulse keeps the two separate."));
 }
 
+// Step 3c — factory control plane (orders / authority / heartbeat) ----------
+step(6, "Factory control plane (weekly mandate + autonomous-program authority — never committed)");
+{
+  // The three files that make unattended work bounded and auditable:
+  //   FACTORY-ORDERS  — the weekly mandate + budget + stop conditions (allocation flows down)
+  //   STANDING-ORDERS — per-program authority: scope/triggers/approval gates/escalation
+  //   HEARTBEAT       — the weekly batched pulse checklist
+  // autonomy-loop.ts wires ORDERS/STANDING into every unattended session's prompt;
+  // /factory-launch is the guided walkthrough that fills them in.
+  const PLANE = ["FACTORY-ORDERS", "STANDING-ORDERS", "HEARTBEAT"];
+  for (const name of PLANE) {
+    const dst = join(ROOT, `${name}.local.md`);
+    const src = join(ROOT, `${name}.example.md`);
+    if (existsSync(dst)) {
+      skip(`${name}.local.md already exists — leaving your orders untouched.`);
+      skipped++;
+    } else if (existsSync(src)) {
+      await copyFile(src, dst);
+      ok(`Created ${name}.local.md from the template.`);
+      created++;
+    } else {
+      warn(`No ${name}.example.md template found — skipping. (Unusual; check the repo root.)`);
+      warned++;
+    }
+  }
+  console.log(c.dim("     → Run /factory-launch in Claude Code for the guided fill-in (mandate, weekly cap, WIP caps)."));
+}
+
 // Step 4 — global slash commands -------------------------------------------
-step(6, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work from any folder)");
+step(7, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work from any folder)");
 {
   // POINTER STUBS, not full copies or symlinks. Three constraints meet here:
   //   • Symlinks fail — Claude Code's loader does not reliably follow them ("Unknown command").
@@ -278,7 +306,7 @@ step(6, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
 }
 
 // Step 5 — build the brain index -------------------------------------------
-step(7, "Brain index (full-text search over the factory)");
+step(8, "Brain index (full-text search over the factory)");
 {
   const proc = Bun.spawnSync(["bun", join(ROOT, "brain", "ingest.ts")], {
     cwd: ROOT,
@@ -309,6 +337,7 @@ ${c.bold("Next:")}
   2. ${c.gold("See the factory")}      — in Claude Code, run ${c.dim("/portfolio-pulse")}
   3. ${c.gold("Start a product")}      — ${c.dim("/work-on <slug>")}  or scaffold a new one with ${c.dim("/scaffold")}
   4. ${c.gold("Ask the brain")}        — ${c.dim('/brain-ask "what should I focus on"')}
+  5. ${c.gold("Launch the factory")}   — ${c.dim("/factory-launch")} (fill your orders + budget; then ${c.dim("bun run check-gates")})
 
 ${c.dim("Optional power-up: auto-commit + auto-push on every Claude turn —")}
 ${c.dim("see CLAUDE.md → \"Auto-commit safety net\" to enable the hooks.")}

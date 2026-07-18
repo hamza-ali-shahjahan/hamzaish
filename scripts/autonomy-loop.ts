@@ -10,20 +10,30 @@
 // SAFETY (all enforced here):
 //   - Opt-in: refuses unless the target repo has a `.autonomy-ok` marker file.
 //   - Kill switch: stops before a session if a `STOP` file exists in the repo.
-//   - Budget: hard `--max-sessions` cap (default 6).
+//   - Budget: hard `--max-sessions` cap (default 6) AND a hard `--max-spend-usd`
+//     dollar cap (default 25) — sessions are measured via `--output-format json`
+//     (total_cost_usd), appended to meta/telemetry/spend.local.jsonl, and the
+//     loop aborts + escalates the moment the cap is reached. This closes the
+//     old #6 gap ("caps SESSIONS, not tokens/cost").
 //   - Branch-only + no irreversible/outward actions: instructed in every prompt
 //     (no push to main, no deploy, no make-public, no money, no destructive ops).
+//   - FACTORY-ORDERS/STANDING-ORDERS: when the factory's .local control-plane
+//     files exist, every session is instructed to read them FIRST and operate
+//     inside their mandate, authority table, and stop conditions.
 //
 // Usage:
 //   bun scripts/autonomy-loop.ts --repo "<abs path>" --slug <name> \
 //       --goal "<measurable objective>" [--max-sessions 6] [--runs-per-session 4] \
-//       [--model sonnet] [--max-turns 60] [--dry-run]
+//       [--model sonnet] [--max-turns 60] [--max-spend-usd 25] [--stream] [--dry-run]
 //
 // --dry-run prints the prompt + the exact `claude` command and exits (no launch).
+// --stream restores live inherit-stdio output for a watched first run — cost can't
+//   be parsed in that mode, so it requires the .autonomy-spend-ok acknowledgement marker.
 
 import { existsSync } from "node:fs";
-import { readFile, writeFile, mkdir } from "node:fs/promises";
-import { join } from "node:path";
+import { readFile, writeFile, mkdir, appendFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
+import { parseClaudeJson, capReached, recordSession, spendLine, ledgerLine, type SpendState } from "./lib/spend";
 
 function arg(name: string, fallback?: string): string | undefined {
   const i = process.argv.indexOf(`--${name}`);
@@ -43,6 +53,15 @@ const maxTurns = Number(arg("max-turns", "60"));
 // want `bypassPermissions`. Operator chooses consciously — it's the risk knob.
 const permissionMode = arg("permission-mode", "acceptEdits")!;
 const DRY = flag("dry-run");
+const STREAM = flag("stream");
+// Hard dollar cap for the whole run. 0 = explicitly uncapped (requires the same
+// conscious acknowledgement as --stream: the .autonomy-spend-ok marker).
+const maxSpendUsd = Number(arg("max-spend-usd", "25"));
+
+const HAMZAISH_ROOT = resolve(import.meta.dir, "..");
+const LEDGER_PATH = join(HAMZAISH_ROOT, "meta", "telemetry", "spend.local.jsonl");
+const ORDERS_PATH = join(HAMZAISH_ROOT, "FACTORY-ORDERS.local.md");
+const STANDING_PATH = join(HAMZAISH_ROOT, "STANDING-ORDERS.local.md");
 
 function die(msg: string): never {
   console.error(`✗ ${msg}`);
@@ -67,10 +86,27 @@ const goalDir = join(repo!, ".goal", slug!);
 const statePath = join(goalDir, "loop-state.json");
 
 function sessionPrompt(sessionNum: number): string {
+  // Control-plane wiring: when the factory's orders exist, they outrank
+  // everything in this prompt except the safety rules (which only tighten).
+  const orders: string[] = [];
+  if (existsSync(ORDERS_PATH)) {
+    orders.push(
+      `FIRST read ${ORDERS_PATH} — the factory's current mandate, budget, and`,
+      `stop conditions. Operate INSIDE it: if this objective isn't covered by the`,
+      `mandate, or a stop condition is met, write loop-state "blocked" and stop.`,
+    );
+  }
+  if (existsSync(STANDING_PATH)) {
+    orders.push(
+      `Also read ${STANDING_PATH} — the authority table. You are the`,
+      `"overnight-build" program; its scope, approval gates, and escalation rules bind you.`,
+    );
+  }
   return [
     `You are session ${sessionNum} of an UNATTENDED autonomy loop in this repo.`,
     ``,
-    `First, read START-HERE.local.md and CLAUDE.md in the repo root so you respect`,
+    ...(orders.length ? [...orders, ``] : []),
+    `Read START-HERE.local.md and CLAUDE.md in the repo root so you respect`,
     `its rules and current state. Then pursue this objective:`,
     ``,
     `    ${goal}`,
@@ -102,7 +138,7 @@ async function readState(): Promise<{ state: string; note?: string } | null> {
   }
 }
 
-async function runSession(sessionNum: number): Promise<number> {
+async function runSession(sessionNum: number): Promise<{ exitCode: number; costUsd: number; costParsed: boolean; turns?: number }> {
   const prompt = sessionPrompt(sessionNum);
   const cmd = [
     "claude",
@@ -114,21 +150,40 @@ async function runSession(sessionNum: number): Promise<number> {
     String(maxTurns),
     "--permission-mode",
     permissionMode,
+    ...(STREAM ? [] : ["--output-format", "json"]),
   ];
 
   if (DRY) {
     console.log(`\n--- session ${sessionNum} (dry-run) ---`);
     console.log(`cwd: ${repo}`);
     console.log(
-      `cmd: claude -p <prompt> --model ${model} --max-turns ${maxTurns} --permission-mode ${permissionMode}`,
+      `cmd: claude -p <prompt> --model ${model} --max-turns ${maxTurns} --permission-mode ${permissionMode}` +
+        (STREAM ? " (stream)" : " --output-format json"),
     );
     console.log(`prompt:\n${prompt}`);
-    return 0;
+    return { exitCode: 0, costUsd: 0, costParsed: true };
   }
 
-  // Inherit stdio so a watched first run is visible live.
-  const proc = Bun.spawn(cmd, { cwd: repo!, stdout: "inherit", stderr: "inherit" });
-  return await proc.exited;
+  if (STREAM) {
+    // Watched-run mode: live output, but the burn is unmeasured this session.
+    const proc = Bun.spawn(cmd, { cwd: repo!, stdout: "inherit", stderr: "inherit" });
+    return { exitCode: await proc.exited, costUsd: 0, costParsed: false };
+  }
+
+  // Default: capture the JSON result so the spend meter is real. stderr stays
+  // live (progress/errors); stdout is the single result object.
+  const proc = Bun.spawn(cmd, { cwd: repo!, stdout: "pipe", stderr: "inherit" });
+  const stdout = await new Response(proc.stdout).text();
+  const exitCode = await proc.exited;
+  const cost = parseClaudeJson(stdout);
+  if (cost.resultText) {
+    const tail = cost.resultText.length > 600 ? `…${cost.resultText.slice(-600)}` : cost.resultText;
+    console.log(`  session result:\n${tail.replace(/^/gm, "    ")}`);
+  }
+  if (!cost.parsed) {
+    console.warn(`  ! could not parse session cost from output — recording $0 for this session; treat the meter as a FLOOR, not the truth.`);
+  }
+  return { exitCode, costUsd: cost.costUsd, costParsed: cost.parsed, turns: cost.turns };
 }
 
 // Run a command silently, return its exit code (non-secret-printing: we read the
@@ -179,19 +234,31 @@ function checkFloorPreconditions(): void {
     );
   }
 
-  // OBSERVABLE leg (#6) — spend visibility. We don't build it here (efficiency
-  // session owns it); we refuse to run unattended *silently* without it.
-  const spendOk = existsSync(join(repo!, ".autonomy-spend-ok"));
-  if (spendOk) {
-    console.log(`  ✓ spend visibility: .autonomy-spend-ok present`);
+  // OBSERVABLE leg (#6) — spend. The meter is built in now: sessions run with
+  // --output-format json, cost is parsed + ledgered, and --max-spend-usd is a
+  // HARD abort. The unmeasured modes (--stream, or an explicit cap of 0) still
+  // demand the conscious .autonomy-spend-ok acknowledgement.
+  const unmeasured = STREAM || maxSpendUsd <= 0;
+  if (!unmeasured) {
+    console.log(`  ✓ spend: hard cap $${maxSpendUsd.toFixed(2)} — measured per session, ledgered to ${LEDGER_PATH}`);
+  } else if (existsSync(join(repo!, ".autonomy-spend-ok"))) {
+    console.log(`  ⚠ spend UNMEASURED this run (${STREAM ? "--stream" : "cap 0"}) — acknowledged via .autonomy-spend-ok. Watch the burn yourself.`);
   } else {
-    console.log(
-      `  ⚠ NO SPEND VISIBILITY (#6): this loop caps SESSIONS (${maxSessions}), not tokens/cost.\n` +
-        `    An unattended loop with no burn meter is the cost-runaway the factory guards against\n` +
-        `    (factory/playbooks/scale-stage/abuse-and-cost-controls.md). Wire per-run spend and drop\n` +
-        `    a .autonomy-spend-ok marker to silence this. Proceeding — watch the burn yourself.`,
+    die(
+      `refusing an UNMEASURED unattended run (${STREAM ? "--stream disables cost parsing" : "--max-spend-usd 0 disables the cap"}).\n` +
+        `  An unattended loop with no burn meter is the cost-runaway the factory guards against\n` +
+        `  (factory/playbooks/scale-stage/abuse-and-cost-controls.md).\n` +
+        `  Either drop the flag (default: measured, $25 cap) or acknowledge consciously:\n` +
+        `    touch "${repo}/.autonomy-spend-ok"`,
     );
   }
+
+  // Control plane — orders present? (informational; the prompt wires them in)
+  console.log(
+    existsSync(ORDERS_PATH)
+      ? `  ✓ FACTORY-ORDERS.local.md present — sessions operate inside the mandate`
+      : `  • no FACTORY-ORDERS.local.md — sessions run on --goal alone (bun run setup scaffolds the control plane)`,
+  );
 }
 
 // Active escalation — the loop's whole point unattended is that it reaches YOU
@@ -220,24 +287,52 @@ async function main() {
 
   console.log(`▶ autonomy-loop — "${goal}"`);
   console.log(
-    `  repo=${repo}\n  slug=${slug} model=${model} max-sessions=${maxSessions} runs/session=${runsPerSession}${DRY ? " (dry-run)" : ""}`,
+    `  repo=${repo}\n  slug=${slug} model=${model} max-sessions=${maxSessions} runs/session=${runsPerSession} max-spend=$${maxSpendUsd.toFixed(2)}${DRY ? " (dry-run)" : ""}`,
   );
 
   checkFloorPreconditions();
 
+  let spend: SpendState = { spentUsd: 0, capUsd: maxSpendUsd };
   for (let s = 1; s <= maxSessions; s++) {
     if (existsSync(join(repo!, "STOP"))) {
       console.log(`\n■ STOP file present in repo — halting before session ${s}.`);
       return;
     }
-    console.log(`\n=== session ${s}/${maxSessions} ===`);
-    const code = await runSession(s);
+    console.log(`\n=== session ${s}/${maxSessions} · ${spendLine(spend)} ===`);
+    const result = await runSession(s);
     if (DRY) continue;
-    if (code !== 0) {
-      console.warn(`  ! claude exited ${code} — treating as end-of-session.`);
+    if (result.exitCode !== 0) {
+      console.warn(`  ! claude exited ${result.exitCode} — treating as end-of-session.`);
     }
 
     const state = await readState();
+
+    // Spend accounting: record → ledger → enforce. The ledger append is
+    // fail-soft (a full disk must not kill the loop) but the CAP never is.
+    spend = recordSession(spend, result.costUsd);
+    try {
+      await mkdir(join(HAMZAISH_ROOT, "meta", "telemetry"), { recursive: true });
+      await appendFile(
+        LEDGER_PATH,
+        ledgerLine({
+          ts: new Date().toISOString(),
+          slug: slug!,
+          session: s,
+          model,
+          costUsd: result.costUsd,
+          turns: result.turns,
+          state: state?.state,
+        }) + "\n",
+      );
+    } catch (e) {
+      console.warn(`  ! could not write spend ledger (${LEDGER_PATH}): ${e}`);
+    }
+    console.log(`  session cost: $${result.costUsd.toFixed(2)} · run total ${spendLine(spend)}`);
+    if (capReached(spend)) {
+      console.log(`\n■ SPEND CAP reached (${spendLine(spend)}) — hard stop.`);
+      await escalate("spend-cap", `${spendLine(spend)} after ${s} session(s)`);
+      return;
+    }
     if (!state) {
       console.warn(
         `  ! no .goal/${slug}/loop-state.json written this session — cannot tell progress.\n` +

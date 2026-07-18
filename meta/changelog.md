@@ -10,6 +10,29 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-18 — v2.16.0 · The factory control plane: orders, spend cap, lifecycle gates, /factory-launch
+
+**What changed**
+
+- **Operator control plane** — three committed templates (`FACTORY-ORDERS.example.md`, `STANDING-ORDERS.example.md`, `HEARTBEAT.example.md`) scaffolded to gitignored `.local` files by `bun run setup` (new step 6). FACTORY-ORDERS = the weekly mandate + hard budget + stop conditions every unattended session reads FIRST; STANDING-ORDERS = per-program authority (Scope/Triggers/Approval gates/Escalation) with the iron law — *agents research and draft; the operator publishes, sends, pays*; HEARTBEAT = the weekly batched pulse checklist with the `[SILENT]` no-change pattern. Two-plane architecture: allocation/authority live ONCE at factory level; each product's own "orders" are its `status.md` + gates block.
+- **Spend meter + hard cap** (`scripts/lib/spend.ts` + autonomy-loop) — the loop's old `#6` gap closed for real: sessions run `--output-format json`, `total_cost_usd` is parsed (tolerant of the legacy `cost_usd` name; parse failure warns and records $0 — the meter is a floor), appended to `meta/telemetry/spend.local.jsonl`, and `--max-spend-usd` (default **$25**) hard-aborts + escalates the moment it's reached. Unmeasured modes (`--stream`, cap 0) now REFUSE to run without the conscious `.autonomy-spend-ok` marker. FACTORY-ORDERS/STANDING-ORDERS are wired into every session prompt when present.
+- **Lifecycle gates** (`scripts/lib/gates.ts` + `scripts/check-gates.ts`, `bun run check-gates`) — states-and-dates precommitments in `product.config.json` → `gates` (validation/launch/traction/pmf + budgets + verdict), evaluated to PASSED/OVERDUE/DUE/UPCOMING/UNDATED and rendered as the portfolio dashboard. Registered products (code-paths.local.json) without gates FAIL; showcase products are info-only — CI-safe by construction, operator-forcing by design. First live render: 14 registered products, zero gates — the backlog the gate-scored portfolio review now fills.
+- **`/factory-launch`** (`factory/skills/factory-launch/`) — the guided ritual: fill the mandate + weekly cap, confirm the authority table + WIP caps (1 build · 2 GTM · rest autopilot), write gates for every registered product, verify green. Eval-covered from birth (2 deterministic cases, baselined; `coverage.json` → covered) + a contract test (`scripts/control-plane-templates.test.ts`) pinning the templates' load-bearing sections to the code that depends on them.
+
+**Why**
+
+The factory had build machinery (full-cycle, goal, evals) and kill *vocabulary* (quarterly kill-or-keep) but no numeric lifecycle enforcement, no burn meter, and no authority model for unattended work — the exact gap between "runs overnight" and "runs overnight *bounded*". Every component is a port of a proven pattern (versioned loop directive, standing orders, states-and-dates kill criteria), not an invention.
+
+**What to revisit**
+
+- Backfill `gates` for the 14 registered products (gate-scored portfolio review — the CONCENTRATE pick).
+- Phase 2: heartbeat scheduling + weekly pulse report. Phase 3: `gtm/queue/` rails. Phase 4: per-session learning extraction.
+- CLI JSON format drift would zero the meter (warned, floor-semantics) — recheck the field name on CLI upgrades.
+
+**Retro:** [meta/retros/2026-07-18-control-plane.md](retros/2026-07-18-control-plane.md) — study-then-port worked; rendering absence (the gates dashboard) beat exhorting presence.
+
+---
+
 ## 2026-07-14 — v2.15.0 · The skill-authoring standard: ported from mattpocock/skills + first context-load audit
 
 **What changed**

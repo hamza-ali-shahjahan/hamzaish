@@ -56,6 +56,7 @@ code-paths.local.json
 brain/identity/*.local.md
 **/*.local.md
 **/*.local.json
+**/*.local.jsonl
 !**/*.example.local.md  # safety: don't accidentally ignore example files
 
 # Auto-commit/push opt-out markers (operator discipline; not source code)
