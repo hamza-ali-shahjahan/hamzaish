@@ -12,6 +12,14 @@ name: CI
 #   • check-evals      — a new agent/skill shipped without an eval case (the debt rule, ratcheted 2026-07-02)
 #   • check-retro      — a factory change shipped without a retro or a recorded skip (2026-07-02)
 #   • check-sensitive-docs — a security-posture doc (audit/secret inventory/rotation log) tracked in this PUBLIC repo (2026-07-03)
+#   • test             — the factory's OWN unit tests. Four test files existed from
+#                        early on and NO pipeline ever ran them: the appearance of a
+#                        safety net with none behind it. Wired in 2026-07-15.
+#                        Scoped with ./ paths on purpose — a bare `bun test` walks into
+#                        references/ (study-only clones of other people's repos, which
+#                        fail without their own build steps) and into templates/, whose
+#                        vitest suites bun's runner can't execute (no vi.resetModules).
+#                        The starter's tests run in the scaffolded product's own CI.
 
 on:
   push:
@@ -42,6 +50,9 @@ jobs:
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version: latest
+
+      - name: Tests — the factory's own unit tests actually run
+        run: bun run test
 
       - name: Changelog guard — every shipped version has an entry
         run: bun run check-changelog

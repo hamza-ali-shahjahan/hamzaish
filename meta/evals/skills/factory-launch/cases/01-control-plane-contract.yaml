@@ -1,0 +1,18 @@
+# AGENT-BLIND: the skill must never read this file.
+name: control-plane-contract
+skill: factory-launch
+description: >
+  The committed templates must exist with their load-bearing sections, and
+  setup.ts + autonomy-loop.ts must stay wired to them (the skill's A1). Pure
+  bun test — deterministic, no network, no LLM.
+invoke:
+  cmd: ["bun", "test", "./scripts/control-plane-templates.test.ts"]
+  timeout_ms: 30000
+preflight:
+  must_exist:
+    - "FACTORY-ORDERS.example.md"
+    - "STANDING-ORDERS.example.md"
+    - "HEARTBEAT.example.md"
+checks:
+  - type: exit_code
+    equals: 0

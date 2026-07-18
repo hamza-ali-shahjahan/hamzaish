@@ -14,5 +14,7 @@
   "security-check/mcp-scan-flags-seeded-config": "PASS",
   "security-check/mcp-scan-passes-clean-config": "PASS",
   "go-live/verify-live-healthy-target": "PASS",
-  "go-live/verify-live-broken-target-blocks": "PASS"
+  "go-live/verify-live-broken-target-blocks": "PASS",
+  "factory-launch/control-plane-contract": "PASS",
+  "factory-launch/gates-evaluation-selftest": "PASS"
 }

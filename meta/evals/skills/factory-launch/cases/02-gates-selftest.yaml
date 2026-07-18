@@ -1,0 +1,15 @@
+# AGENT-BLIND: the skill must never read this file.
+name: gates-evaluation-selftest
+skill: factory-launch
+description: >
+  check-gates --self-test exercises evaluateGates/nextGate/validateGates on a
+  fixed fixture with a fixed "today" (the skill's A2) — the kill-discipline
+  arithmetic behind the dashboard. Deterministic by construction.
+invoke:
+  cmd: ["bun", "scripts/check-gates.ts", "--self-test"]
+  timeout_ms: 15000
+preflight:
+  must_exist: ["scripts/lib/gates.ts"]
+checks:
+  - type: exit_code
+    equals: 0
