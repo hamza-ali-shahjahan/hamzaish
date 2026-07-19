@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-19 — v2.18.0 · The factory grows senses: session traces + the lesson-to-check ladder
+
+**What changed**
+
+- **Session traces (deep telemetry)** — new committed `.claude/settings.json` ships project-scoped PostToolUse + Stop hooks that feed `scripts/trace-log.ts`: one compact JSONL line per tool call/turn into `meta/telemetry/traces/YYYY-MM-DD.local.jsonl` (gitignored — the hooks ship, the data never does). Works from the **first session on a fresh clone** (one hook-approval prompt, zero setup). Contract, test-pinned in `scripts/trace.test.ts`: **fail-open** (malformed stdin, unwritable disk → exit 0; telemetry can never block a turn), **privacy-capped** (no tool outputs or file contents ever recorded; bash commands truncate at 160 chars, error heads at 200 — this repo is public, traces are local-only), **bounded** (one file per day). `ok=false` only on explicit error signals, so failure counts are an honest floor, never a census.
+- **`bun run trace-report`** (`scripts/trace-report.ts`) — aggregates the traces into the questions the self-improvement loop actually asks: failure rate by tool, top failing bash commands, turns/sessions per window (`--days N`, `--json`). Named eval **trace-capture-fidelity** (25 synthetic events → exact attribution) + the end-to-end pipeline test ship with the slice, per our own feature-slicing rule; 7 tests run in the existing `bun test ./scripts` CI step. Verified live against the real harness: the hooks captured this very build session's tool calls.
+- **Operating principle 15 — a lesson that can be a check becomes a check** (`brain/operating-principles.md`): the promotion ladder hook → CI guard → eval case → prose, with prose as fallback, never default. `/learn-loop` amended: new step 2 grounds every cycle in `trace-report` before gathering prose candidates (a rising failure rate is a candidate even if no learning entry mentions it), and step 6 applies the ladder when promoting. `CLAUDE.md` self-improvement section updated to match; README gains the "senses that record" row.
+
+**Why**
+
+Adopted from the code-as-agent-harness survey (arXiv:2605.18747, UIUC + Meta + Stanford) — specifically §3.5 "Agentic Harness Engineering": harness revision should run on structured traces of what actually happened, not on what a session remembered to write down. The factory already had the loop (learnings → learn-loop → promotion) and already proved the ladder empirically (the three worst incidents each stopped recurring only when the prose rule became a hook); this closes the substrate gap. Deliberately not adopted: §4's multi-agent topology material (current shape is already the surveyed dominant pattern; adding topology without a telemetry-diagnosed reason is the failure mode §3.5 warns about) and auto-promotion (learn-loop's operator-ratification gate stays — the paper itself prescribes governed promotion, §3.5.3).
+
+**What to revisit**
+
+- Dead-telemetry check: if no `/learn-loop` promotion cites traces by the first run after 2026-10-01, remove the hooks (decision log's "wrong if").
+- PreToolUse **guard-fire** events (which guard blocked what, how often) aren't captured yet — the natural v2 signal once the base layer proves itself.
+- Trace-file retention: droppable by design, but no auto-pruning; add a `--prune` if the folder ever matters on disk.
+
+**Retro:** [meta/retros/2026-07-19-session-traces.md](retros/2026-07-19-session-traces.md)
+
+---
+
 ## 2026-07-18 — v2.17.0 · The starter tells the truth in production: Sentry really initializes, the webhook really persists
 
 **What changed**

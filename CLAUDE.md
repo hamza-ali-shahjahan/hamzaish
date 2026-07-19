@@ -122,7 +122,9 @@ When work needs a framework, read these BEFORE acting:
 Every session that produces real work ends with two things:
 
 1. **Append a learning** to `brain/learnings/YYYY-MM-DD.md` — what worked, what didn't, what surprised you. Surprise is the highest-signal entry: it points at a missing playbook or a wrong assumption.
-2. **If a pattern is worth keeping**, distill it into `factory/playbooks/` (new file or amendment) OR into `brain/anti-patterns/` (if it's a thing-not-to-do).
+2. **If a pattern is worth keeping**, distill it up the check ladder (operating principle 15): a hook → a CI guard → an eval case → only then prose in `factory/playbooks/` or `brain/anti-patterns/`. A lesson that can be a check becomes a check.
+
+Ground retros and `/learn-loop` in data, not memory: `bun run trace-report` summarizes the session traces the project hooks record automatically (local-only, gitignored — `scripts/trace-log.ts`).
 
 Triggers that demand a retro entry in `meta/retros/`:
 - A product moves stages

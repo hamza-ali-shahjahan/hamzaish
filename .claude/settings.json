@@ -1,0 +1,27 @@
+{
+  "_comment": "Project-scoped hooks — session traces (deep telemetry) from the first session on a fresh clone. trace-log.ts is fail-open (can never block a turn), records no tool outputs or file contents, and writes only to gitignored meta/telemetry/traces/*.local.jsonl — nothing leaves the machine. Aggregate with `bun run trace-report`. Design: brain/decision-log/2026-07-19-code-as-harness-session-traces.md",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR/scripts/trace-log.ts\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR/scripts/trace-log.ts\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
