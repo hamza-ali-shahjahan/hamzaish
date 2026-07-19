@@ -30,6 +30,8 @@ Adopted from the code-as-agent-harness survey (arXiv:2605.18747, UIUC + Meta + S
 
 **Retro:** [meta/retros/2026-07-19-session-traces.md](retros/2026-07-19-session-traces.md)
 
+**Released:** cut as [v2.18.0](https://github.com/hamza-ali-shahjahan/hamzaish/releases/tag/v2.18.0) same day — bundles the 8 entries since v2.10.0 (v2.11.0–v2.18.0).
+
 ---
 
 ## 2026-07-18 — v2.17.0 · The starter tells the truth in production: Sentry really initializes, the webhook really persists
