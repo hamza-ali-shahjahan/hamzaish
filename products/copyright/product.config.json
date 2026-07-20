@@ -51,7 +51,34 @@
     "admin_url": "https://patently.legal/admin",
     "staging_url": null,
     "domain_chosen": "patently.legal",
-    "domain_shortlist": ["gauntlet.legal", "allrights.app", "allrights.legal", "crucible.legal", "ipradar.app"]
+    "domain_shortlist": [
+      "gauntlet.legal",
+      "allrights.app",
+      "allrights.legal",
+      "crucible.legal",
+      "ipradar.app"
+    ]
   },
-  "notes": "Hamzaish-built proof product. Renamed IP Radar → Patently; LIVE in private beta at https://patently.legal (verified 2026-06-07, tagline \"Ship without blindsiding yourself on IP.\"). Nine-step clearance DAG (extract_facts → parallel gather → claim_similarity + fair_use → synthesize → validate with one auto-correct retry). Citation contract validator rejects unknown IDs and bare Bluebook citations. Hit USPTO ID.me/SSN wall mid-build as a non-US user — pivoted to Google Patents BigQuery in same session (better architecture, no ID.me dependency, effectively free at prototype scale). GCP service-account key stored base64-encoded in Vercel envs after Vercel CLI multi-line stdin truncation bug. Personal-tier daily limits: 50 chat messages + 50 clearance memos per 24h rolling window. All-in cost tracking per clearance run (LLM + embeddings + BigQuery via AsyncLocalStorage). Admin dashboard at /admin (email-gated). Pending: credential rotation (all burned in old chat transcripts), Clerk webhook for digest email delivery, pnpm db:migrate for migration 0001 (cost columns). Built in ~6 weeks of sessions 2026-04-21 to 2026-06-02. Domain picked (was open): patently.legal."
+  "notes": "Hamzaish-built proof product. Renamed IP Radar → Patently; LIVE in private beta at https://patently.legal (verified 2026-06-07, tagline \"Ship without blindsiding yourself on IP.\"). Nine-step clearance DAG (extract_facts → parallel gather → claim_similarity + fair_use → synthesize → validate with one auto-correct retry). Citation contract validator rejects unknown IDs and bare Bluebook citations. Hit USPTO ID.me/SSN wall mid-build as a non-US user — pivoted to Google Patents BigQuery in same session (better architecture, no ID.me dependency, effectively free at prototype scale). GCP service-account key stored base64-encoded in Vercel envs after Vercel CLI multi-line stdin truncation bug. Personal-tier daily limits: 50 chat messages + 50 clearance memos per 24h rolling window. All-in cost tracking per clearance run (LLM + embeddings + BigQuery via AsyncLocalStorage). Admin dashboard at /admin (email-gated). Pending: credential rotation (all burned in old chat transcripts), Clerk webhook for digest email delivery, pnpm db:migrate for migration 0001 (cost columns). Built in ~6 weeks of sessions 2026-04-21 to 2026-06-02. Domain picked (was open): patently.legal.",
+  "gates": {
+    "verdict": "DOUBLE-DOWN",
+    "validation": {
+      "date": "2026-08-16",
+      "state": "5 beta users complete a real chat+clearance flow and give feedback (source: /admin usage + notes)"
+    },
+    "launch": {
+      "date": "2026-08-18",
+      "state": "P0s cleared (credentials rotated, privacy/terms live, cost caps) + 10 activated beta users (source: /admin)"
+    },
+    "traction": {
+      "date": "2026-10-17",
+      "state": "3 paying customers OR >=40% of beta users return in week 2 (source: Stripe + admin usage)",
+      "on_fail": "double_down_test_or_autopilot"
+    },
+    "pmf": {
+      "date": "2027-01-19",
+      "state": "Sean Ellis >=40% AND retention curve flattens (source: survey + usage)",
+      "on_pass": "CONCENTRATE"
+    }
+  }
 }

@@ -45,5 +45,17 @@
     "Monday.com"
   ],
   "icp": "Small agencies, 2-15 people",
-  "notes": "Onboarded into factory 2026-05-26. Substantial codebase already exists. Full spec at docs/SPEC.md and docs/SPEC-README.md. 15 vertical slices. Stage = mvp because architecture + scope are locked but real user validation pending. Next.js 16 specifics: proxy.ts not middleware.ts, all params are Promise<>, server actions for auth'd mutations, Drizzle schema as source of truth."
+  "notes": "Onboarded into factory 2026-05-26. Substantial codebase already exists. Full spec at docs/SPEC.md and docs/SPEC-README.md. 15 vertical slices. Stage = mvp because architecture + scope are locked but real user validation pending. Next.js 16 specifics: proxy.ts not middleware.ts, all params are Promise<>, server actions for auth'd mutations, Drizzle schema as source of truth.",
+  "gates": {
+    "verdict": "AUTOPILOT",
+    "validation": {
+      "date": "2026-08-30",
+      "state": "5 conversations with 2-15-person agencies on scope-creep pain (source: notes)",
+      "on_fail": "autopilot"
+    },
+    "launch": {
+      "date": "2026-09-30",
+      "state": "5 agencies in paid validation (source: Stripe/agreements)"
+    }
+  }
 }

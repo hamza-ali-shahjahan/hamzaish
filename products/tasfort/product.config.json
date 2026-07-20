@@ -24,5 +24,18 @@
     "prod_url": "https://theresasystemforthat.xyz",
     "staging_url": null
   },
-  "notes": "Onboarded 2026-05-19. LIVE at https://theresasystemforthat.xyz (verified 2026-06-07): consumer discovery product — personality assessment (MBTI/Enneagram/chronotype), filterable people+systems database, 'people who think like you' matching, routine-builder. Local source at ~/Claude/TASFORT/ AND ~/Claude/$1F&S/TASFORT/ — reconcile canonical. Listed in README 'Products built with Hamzaish'. Backfill analytics IDs."
+  "notes": "Onboarded 2026-05-19. LIVE at https://theresasystemforthat.xyz (verified 2026-06-07): consumer discovery product — personality assessment (MBTI/Enneagram/chronotype), filterable people+systems database, 'people who think like you' matching, routine-builder. Local source at ~/Claude/TASFORT/ AND ~/Claude/$1F&S/TASFORT/ — reconcile canonical. Listed in README 'Products built with Hamzaish'. Backfill analytics IDs.",
+  "gates": {
+    "verdict": "AUTOPILOT",
+    "validation": {
+      "date": "2026-08-30",
+      "state": "north star defined + analytics live + 25 organic visits/week measured (source: Plausible/GA)",
+      "on_fail": "autopilot"
+    },
+    "traction": {
+      "date": "2026-11-19",
+      "state": "organic impressions curve rising month-over-month (source: GSC — SEO channel gets the long runway)",
+      "on_fail": "autopilot"
+    }
+  }
 }

@@ -48,5 +48,22 @@
     "architecture": "source-adapter (WXR | REST) → versioned Zod IR → emitter (Astro + MDX)"
   },
   "demo_pattern": "User runs `npx wp-to-astro@latest migrate <wxr-or-url> --out <dir>` → gets a clean Astro repo with content as MDX files → opens in Claude Code or Cursor → vibe-codes edits across all posts at once.",
-  "notes": "OSS CLI shipped to npm v0.6.1 (2026-05-30) and GitHub public. 6 passes built end-to-end in 2 sessions: WXR adapter → block mapping → image pipeline → REST adapter → SEO metadata → redirects + verify. v0.6.0 had a `slug` reserved-field bug surfaced by real-world test against Docker WP; v0.6.1 patched. v0.7 punch list: MDX-compat sanitization (br, comments, stray <), --permalink flag for WXR, non-Latin slug fallback, verify --build flag. Now in validation phase per Hamzaish discipline — must do 5 WP-refugee conversations before further build."
+  "notes": "OSS CLI shipped to npm v0.6.1 (2026-05-30) and GitHub public. 6 passes built end-to-end in 2 sessions: WXR adapter → block mapping → image pipeline → REST adapter → SEO metadata → redirects + verify. v0.6.0 had a `slug` reserved-field bug surfaced by real-world test against Docker WP; v0.6.1 patched. v0.7 punch list: MDX-compat sanitization (br, comments, stray <), --permalink flag for WXR, non-Latin slug fallback, verify --build flag. Now in validation phase per Hamzaish discipline — must do 5 WP-refugee conversations before further build.",
+  "gates": {
+    "verdict": "MAINTAIN",
+    "validation": {
+      "date": "2026-08-16",
+      "state": "5 real WP-refugee migrations + 3 'I'd pay $X' signals (source: validation-sprint notes — the recorded debt)"
+    },
+    "launch": {
+      "date": "2026-05-30",
+      "state": "published to npm as wp-to-astro",
+      "passed": "2026-05-30"
+    },
+    "traction": {
+      "date": "2026-10-17",
+      "state": "100 GitHub stars OR 10 unsolicited paid expressions of interest (source: GitHub + inbound — the product's own recorded gate)",
+      "on_fail": "autopilot"
+    }
+  }
 }

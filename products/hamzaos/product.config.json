@@ -25,5 +25,13 @@
     "prod_url": null,
     "staging_url": null
   },
-  "notes": "Onboarded 2026-05-19. Personal OS with numbered folders (00-persona, 01-strategy, 02-calendar, 03-research, 04-content). Internal-use, not currently a product to sell. Treat as durable input source for this factory's brain (`brain/persona.md` may want to draw from here)."
+  "notes": "Onboarded 2026-05-19. Personal OS with numbered folders (00-persona, 01-strategy, 02-calendar, 03-research, 04-content). Internal-use, not currently a product to sell. Treat as durable input source for this factory's brain (`brain/persona.md` may want to draw from here).",
+  "gates": {
+    "verdict": "AUTOPILOT",
+    "validation": {
+      "date": "2026-09-30",
+      "state": "confirm internal-only status at next kill-or-keep (explicitly not a sale product)",
+      "on_fail": "autopilot"
+    }
+  }
 }

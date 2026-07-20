@@ -27,5 +27,13 @@
     "prod_url": null,
     "staging_url": null
   },
-  "notes": "Onboarded 2026-05-19. Folder contains $1 Factory subdir, GTM Framework, Recipes, and a nested TASFORT (reconcile with standalone TASFORT product). This is conceptually a meta-product / studio. Treat it as the precursor to this factory itself — extract learnings, archive what's superseded."
+  "notes": "Onboarded 2026-05-19. Folder contains $1 Factory subdir, GTM Framework, Recipes, and a nested TASFORT (reconcile with standalone TASFORT product). This is conceptually a meta-product / studio. Treat it as the precursor to this factory itself — extract learnings, archive what's superseded.",
+  "gates": {
+    "verdict": "AUTOPILOT",
+    "validation": {
+      "date": "2026-08-30",
+      "state": "learnings extracted to brain + archive decision recorded (internal/meta product)",
+      "on_fail": "archive"
+    }
+  }
 }

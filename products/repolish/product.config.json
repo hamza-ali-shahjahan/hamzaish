@@ -6,7 +6,11 @@
   "stage": "launch",
   "status": "active · LIVE (public GitHub, 2026-06-23)",
   "code_path": null,
-  "aliases": ["readme-up", "readmeup", "repo-polish"],
+  "aliases": [
+    "readme-up",
+    "readmeup",
+    "repo-polish"
+  ],
   "analytics": {
     "stripe_account_id": null,
     "posthog_project_id": null,
@@ -17,6 +21,28 @@
     "gsc_property": null,
     "ahrefs_target": null
   },
-  "links": { "github": "https://github.com/hamza-ali-shahjahan/repolish", "prod_url": null, "staging_url": null },
-  "notes": "Name LOCKED: 'repolish' (tagline: 'repo polish in one command'). LAUNCHED public on GitHub 2026-06-23 (CI green; LICENSE MIT). NOT yet on npm — deliberate: validate honesty recall on >=5 real-world READMEs first (v0 is honestly labelled 'early'). Code lives OUTSIDE this (always-public) repo — absolute path in gitignored code-paths.local.json under slug 'repolish' (code_path null here per path-portability rule). Auto-push stays OFF (.no-auto-push) so pushes remain deliberate. Differentiator vs other README generators: the honesty pass + the real demo recording."
+  "links": {
+    "github": "https://github.com/hamza-ali-shahjahan/repolish",
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Name LOCKED: 'repolish' (tagline: 'repo polish in one command'). LAUNCHED public on GitHub 2026-06-23 (CI green; LICENSE MIT). NOT yet on npm — deliberate: validate honesty recall on >=5 real-world READMEs first (v0 is honestly labelled 'early'). Code lives OUTSIDE this (always-public) repo — absolute path in gitignored code-paths.local.json under slug 'repolish' (code_path null here per path-portability rule). Auto-push stays OFF (.no-auto-push) so pushes remain deliberate. Differentiator vs other README generators: the honesty pass + the real demo recording.",
+  "gates": {
+    "verdict": "AUTOPILOT",
+    "validation": {
+      "date": "2026-08-30",
+      "state": "honesty pass on >=5 real-world READMEs confirms recall (source: run logs — the recorded npm-gate)",
+      "on_fail": "autopilot"
+    },
+    "launch": {
+      "date": "2026-06-23",
+      "state": "public GitHub repo, MIT, CI green",
+      "passed": "2026-06-23"
+    },
+    "traction": {
+      "date": "2026-10-31",
+      "state": "npm published + 50 GitHub stars (source: npm + GitHub)",
+      "on_fail": "autopilot"
+    }
+  }
 }
