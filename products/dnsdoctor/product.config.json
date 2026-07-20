@@ -39,5 +39,17 @@
     "ai": "Anthropic SDK (Claude Sonnet 4.6)",
     "host": "Vercel"
   },
-  "notes": "Onboarded into factory 2026-05-26. Folder name on disk is DNSChecker; product brand is DNSDoctor. Substantial codebase already exists with SPEC.md, decisions log, prompt docs. DNS-specific gotchas in product CLAUDE.md (server-only queries, 5s budget, sha256 cache keys, AI citation post-validation). v1 is free public tool; monetization deferred."
+  "notes": "Onboarded into factory 2026-05-26. Folder name on disk is DNSChecker; product brand is DNSDoctor. Substantial codebase already exists with SPEC.md, decisions log, prompt docs. DNS-specific gotchas in product CLAUDE.md (server-only queries, 5s budget, sha256 cache keys, AI citation post-validation). v1 is free public tool; monetization deferred.",
+  "gates": {
+    "verdict": "MAINTAIN",
+    "launch": {
+      "date": "2026-08-18",
+      "state": "named + domain cleared + deployed + verify-live A1-A10 10/10 (source: verify-live scorecard)"
+    },
+    "traction": {
+      "date": "2026-11-19",
+      "state": "GSC impressions curve rising MoM across /setup pages (source: GSC — SEO channel, revenue gate deferred)",
+      "on_fail": "autopilot"
+    }
+  }
 }

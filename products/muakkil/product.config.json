@@ -49,5 +49,26 @@
     "seeker_per_day": 50,
     "herald_per_day": 20
   },
-  "notes": "Onboarded into factory 2026-05-26. Lovable buildathon submission = beta launch. First 100 sign-ups become beta cohort. Landing page already shipped; agent backends are the buildathon work. Scribe is the demo centerpiece. See status.md for current state."
+  "notes": "Onboarded into factory 2026-05-26. Lovable buildathon submission = beta launch. First 100 sign-ups become beta cohort. Landing page already shipped; agent backends are the buildathon work. Scribe is the demo centerpiece. See status.md for current state.",
+  "gates": {
+    "verdict": "MAINTAIN",
+    "validation": {
+      "date": "2026-08-16",
+      "state": "5 Mom-Test interviews; >=3 raise post-build stall unprompted (source: interview notes — the recorded Phase-0 debt)"
+    },
+    "launch": {
+      "date": "2026-08-30",
+      "state": "slice 7 (import-and-launch) shipped + 25 waitlist signups (source: Supabase waitlist)"
+    },
+    "traction": {
+      "date": "2026-10-17",
+      "state": ">=1 paying concierge client re-engages after the day-7 report (source: Stripe + email — the pivot decision's own gate)",
+      "on_fail": "double_down_test_or_autopilot"
+    },
+    "pmf": {
+      "date": "2027-01-19",
+      "state": "Sean Ellis >=40% AND retention curve flattens",
+      "on_pass": "CONCENTRATE"
+    }
+  }
 }

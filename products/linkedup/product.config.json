@@ -25,5 +25,13 @@
     "prod_url": null,
     "staging_url": null
   },
-  "notes": "Onboarded 2026-05-19. Real Next.js codebase with .git + .env.example present. Check current PR status + last deploy. Stage assessment pending."
+  "notes": "Onboarded 2026-05-19. Real Next.js codebase with .git + .env.example present. Check current PR status + last deploy. Stage assessment pending.",
+  "gates": {
+    "verdict": "AUTOPILOT",
+    "validation": {
+      "date": "2026-08-30",
+      "state": "revive decision + 5 target-founder conversations; else stays autopilot (source: notes)",
+      "on_fail": "autopilot"
+    }
+  }
 }

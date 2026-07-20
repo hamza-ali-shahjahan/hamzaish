@@ -30,6 +30,7 @@ clone_if_missing "bmad-method"  "https://github.com/bmad-code-org/bmad-method.gi
 clone_if_missing "agent-os"     "https://github.com/buildermethods/agent-os.git"
 clone_if_missing "metaharness"  "https://github.com/ruvnet/metaharness.git"
 clone_if_missing "mattpocock-skills" "https://github.com/mattpocock/skills.git"
+clone_if_missing "headroom"     "https://github.com/headroomlabs-ai/headroom.git"
 
 echo ""
 echo "Done. references/README.md explains what to mine from each."

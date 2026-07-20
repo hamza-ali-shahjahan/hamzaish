@@ -25,5 +25,26 @@
     "prod_url": "https://ventbox.co",
     "staging_url": null
   },
-  "notes": "Onboarded into factory 2026-05-19. LIVE at https://ventbox.co (verified 2026-06-07) — pivoted from generic anonymous-vent to B2B HR/employee-feedback wedge: 60s setup, anonymous admin invites, company-domain restriction, AI sentiment analysis, pricing free->$49/mo flat-rate. Codebase at ~/Claude/Ventbox App Clone/. Listed in README 'Products built with Hamzaish'. Backfill analytics IDs + validation/retention evidence."
+  "notes": "Onboarded into factory 2026-05-19. LIVE at https://ventbox.co (verified 2026-06-07) — pivoted from generic anonymous-vent to B2B HR/employee-feedback wedge: 60s setup, anonymous admin invites, company-domain restriction, AI sentiment analysis, pricing free->$49/mo flat-rate. Codebase at ~/Claude/Ventbox App Clone/. Listed in README 'Products built with Hamzaish'. Backfill analytics IDs + validation/retention evidence.",
+  "gates": {
+    "verdict": "MAINTAIN",
+    "validation": {
+      "date": "2026-08-30",
+      "state": "5 conversations with HR leads/founders at 10-100-person companies (source: notes)"
+    },
+    "launch": {
+      "date": "2026-08-18",
+      "state": "analytics live (PostHog/GA IDs filled in config) + 10 measured signups (source: PostHog)"
+    },
+    "traction": {
+      "date": "2026-10-17",
+      "state": "3 paying orgs at $49/mo OR flattening weekly-active-orgs curve (source: Stripe + PostHog)",
+      "on_fail": "double_down_test_or_autopilot"
+    },
+    "pmf": {
+      "date": "2027-01-19",
+      "state": "Sean Ellis >=40% AND retention curve flattens",
+      "on_pass": "CONCENTRATE"
+    }
+  }
 }

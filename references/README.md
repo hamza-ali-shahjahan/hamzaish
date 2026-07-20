@@ -197,6 +197,35 @@ is the reference for our own user-invoked vs model-invoked audit.
 
 ---
 
+## headroom — github.com/headroomlabs-ai/headroom
+
+**What it is**: Context-compression layer for LLM pipelines (Python; ~60k stars, active
+2026-07): compresses tool outputs, logs, files, and RAG chunks *before* they reach the
+model — claims ~20% token reduction for coding agents and 60–95% for JSON, same answers.
+Ships three ways: library, transparent proxy, MCP server. Registered 2026-07-19 (operator
+request) — it targets the exact pair of constraints the control plane made first-class:
+the hard spend cap (fewer tokens = more work per capped dollar) and context rot (smaller
+context = measurably better accuracy; see the Chroma findings in the harness deep-dive).
+
+**What to mine**:
+1. **Compression strategies per payload type** — how it treats JSON vs logs vs prose
+   differently (the 60–95% JSON number implies structural, not generic, compression).
+   Port the *idea* into `factory/runtime/` tool-result handling if traces justify it.
+2. **The proxy pattern** — where it sits relative to the agent loop; what it refuses to
+   compress (safety-relevant content?); failure semantics when compression breaks meaning.
+3. **Their eval method** — "same answers" is a strong claim; how do they verify
+   equivalence post-compression? That verification harness is mineable independently.
+
+**Adoption gate (deliberate, per operating principle 15 / the v2.18.0 no-topology-without-
+telemetry rule)**: do NOT wire it into sessions yet. First let `bun run trace-report`
+accumulate 2+ weeks of tool-call data; if traces show tool-output token bloat as a real
+cost driver, run a measured trial (one week of autonomy-loop sessions through the MCP
+server/proxy, spend ledger before vs after, spot-check output equivalence) and record the
+decision. A compression layer adopted without a measured need is the failure mode the
+factory just wrote a principle against.
+
+---
+
 ## Discipline
 
 - **Never `import` from `references/`** into anything in `factory/`, `brain/`, or `products/`.
