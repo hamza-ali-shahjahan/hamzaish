@@ -108,7 +108,25 @@ bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/scripts/verify-live.ts https://<doma
 It checks A1–A10 (DNS apex+www, TLS on both, `/api/health` ok + buildSha + db
 probe, auth gate 401s, `pk_live_` not dev-mode, cron gated, no server-secret in
 the client payload) and emits a scorecard — `EVAL: n/N`, per-assertion
-PASS/FAIL/PENDING/MANUAL with remediation. Rules:
+PASS/FAIL/PENDING/MANUAL with remediation.
+
+**A11 — Trackable (MANUAL until `verify-live.ts` learns it; blocking like the
+rest).** *A product that isn't trackable isn't shareable* — if nobody can answer
+"which screens do users visit and what do they do there?", user data is being
+lost from the first shared link, and it's the founder who ends up noticing
+(it happened on every product until this gate existed). Check on the LIVE site:
+1. Every screen/tab/mode reports its own path — SPAs need virtual `page_view`s
+   or analytics shows one "/" row forever.
+2. The spec's Trackability events fire on the core flows (dataLayer or GA4
+   Realtime while you click through).
+3. **Every app** in the product carries the tag (grep the measurement id in each
+   deployed `index.html` — main site AND any subpath tool).
+4. Third-party params are registered (GA4 custom dimensions) or the founder has
+   the clickable steps to do it.
+5. The first-party events table receives the same events (the dual-sink helper —
+   `/user-analytics` Recipe F + Definition of Done #7).
+
+Rules:
 
 - **Any FAIL → not live.** Fix, re-run; exit 1 blocks. Never close the ledger or
   tell the user "you're live" over a failing scorecard.

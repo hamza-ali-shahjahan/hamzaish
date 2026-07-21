@@ -109,6 +109,15 @@ factory/playbooks/scale-stage/security-at-scale.md § Data minimization.]
 ## Testing Strategy
 [Framework, test locations, coverage requirements, test levels]
 
+## Trackability
+[How we'll SEE users use this. For every screen/tab/mode: its virtual page_view
+path (SPAs report one "/" forever without this). For every meaningful
+interaction: event name + low-cardinality params — or an explicit "not worth
+tracking: <why>". One track() helper fanning out to the first-party events table
++ any third-party (params registered there, e.g. GA4 custom dimensions).
+A feature nobody can measure post-launch is a guess that shipped — and the live
+gate (A11) blocks sharing an untrackable product. See /user-analytics Recipe F.]
+
 ## Boundaries
 - Always: [...]
 - Ask first: [...]
