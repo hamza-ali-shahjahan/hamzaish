@@ -18,9 +18,10 @@ That's the whole discipline. A slice with no eval is either too vague (sharpen i
 ## The method
 
 1. **Cut vertically, not by layer.** A slice is a thin end-to-end thing a user can actually do — not "the database layer." Aim for the smallest slice that moves the goal's metric.
-2. **For each candidate slice, write two things up front:**
+2. **For each candidate slice, write three things up front:**
    - **Eval** — the measurable check that says this slice meets its bar. Tie it to the goal's metric where you can (reuse the numbers from `/write-a-goal`). Deterministic where possible; an LLM-judge rubric only when the output is genuinely subjective. This is the eval the build is written against, and it joins the project's eval harness.
    - **End-to-end test** — the real user journey that proves it works in the running app, start to finish (not a unit test of one function). For UI, a browser path; for an API, a request→response contract.
+   - **Tracking** — how we'll see real users use it: for a new screen/tab/mode, a virtual `page_view` path; for a new interaction, an event name + low-cardinality params; or an explicit *"not worth tracking — \<why\>"*. Deciding is mandatory, tracking isn't — but a slice whose usage question ("did anyone touch this?") has no answer planned is instrumentation debt the founder pays later (see `/user-analytics` Recipe F). "Events fire" joins the slice's e2e check.
 3. **Apply the selection gate.** Keep a slice only if **both** the eval and the e2e test are defined and runnable. If either is missing: sharpen the slice until they exist, or defer it (write down why) — don't smuggle an unprovable feature into the spec.
 4. **Order by risk-and-value.** Sequence the kept slices riskiest/highest-value first, so the goal's metric moves early and a dead end is found cheap.
 5. **Hand off.** Output the selected slices, each with its eval + e2e test, as the input to `/spec` → `/plan`. In the per-task loop, the eval and e2e test are written **first** (TDD) and are the slice's acceptance gate.
@@ -31,7 +32,7 @@ That's the whole discipline. A slice with no eval is either too vague (sharpen i
 Goal: <the measurable outcome>
 
 Selected (build these):
-1. <slice> — Eval: <measurable check> · E2E: <user journey> · Why first: <risk/value>
+1. <slice> — Eval: <measurable check> · E2E: <user journey> · Track: <event(s)+params | page_view path | "none — why"> · Why first: <risk/value>
 2. ...
 
 Deferred (can't prove yet):
