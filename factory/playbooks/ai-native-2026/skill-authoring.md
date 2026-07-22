@@ -53,6 +53,10 @@ Each new skill costs one of the two loads, so split only when the cut earns it: 
 | **No-op** | a line the model obeys by default | delete it |
 | **Negation** | "don't X" makes X *more* available | state the positive; keep a prohibition only as a hard guardrail, paired with what to do instead |
 
+## Before CREATING any skill — the MECE gate
+
+New skills are the last resort, not the default (a library that grows a one-session skill per lesson degrades into a flat pile the router can't rank). Preference order: (1) patch the skill that was in use when the need appeared, (2) patch an existing umbrella whose triggers overlap, (3) add a support file under an existing home, (4) only then create — and the new skill must be **class-level** (covers the category, named for the capability, never for this week's task), with an explicit overlap check against existing descriptions recorded in the PR/proposal. Quarterly, the curator pass (see `/learn-loop` → Feedback) consolidates drift: pin / consolidate / archive to `factory/skills/_archive/` — never delete.
+
 ## When editing any skill
 
 Before saving: run the no-op test on changed prose, check the description for one-trigger-per-branch + negative routing, confirm each step's completion criterion is checkable, and ask whether the skill's invocation mode still matches who actually fires it.

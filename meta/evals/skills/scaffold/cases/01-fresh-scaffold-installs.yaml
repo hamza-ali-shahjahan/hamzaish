@@ -1,0 +1,15 @@
+# AGENT-BLIND: the system under test must never read this file.
+name: fresh-scaffold-installs
+skill: scaffold
+description: >
+  A fresh scaffold of the starter template must bun-install cleanly (the
+  404-dep class). Install-only here; the full typecheck+build gate runs as
+  the dedicated check-starter CI step.
+invoke:
+  cmd: ["bun", "scripts/check-starter.ts", "--install-only"]
+  timeout_ms: 300000
+preflight:
+  must_exist: ["templates/product-starter-nextjs/package.json"]
+checks:
+  - type: exit_code
+    equals: 0

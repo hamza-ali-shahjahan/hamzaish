@@ -16,5 +16,10 @@
   "go-live/verify-live-healthy-target": "PASS",
   "go-live/verify-live-broken-target-blocks": "PASS",
   "factory-launch/control-plane-contract": "PASS",
-  "factory-launch/gates-evaluation-selftest": "PASS"
+  "factory-launch/gates-evaluation-selftest": "PASS",
+  "goal/autonomy-refuses-without-optin": "PASS",
+  "goal/autonomy-session-contract": "PASS",
+  "ship/ship-command-contract": "PASS",
+  "security-check/security-check-command-contract": "PASS",
+  "scaffold/fresh-scaffold-installs": "PASS"
 }

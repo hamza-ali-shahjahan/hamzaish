@@ -1,0 +1,23 @@
+# AGENT-BLIND: the system under test must never read this file.
+name: security-check-command-contract
+skill: security-check
+description: >
+  Contract pin: factory/commands/security-check.md must keep its check
+  classes — gitleaks scan, action pinning incl. the claude-code-action
+  v1.0.94 advisory floor, MCP-config surface, and the RLS reminder.
+invoke:
+  cmd: ["cat", "factory/commands/security-check.md"]
+  timeout_ms: 5000
+preflight:
+  must_exist: ["factory/commands/security-check.md"]
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: 'gitleaks'
+  - type: stdout_matches
+    regex: 'v1\.0\.94'
+  - type: stdout_matches
+    regex: 'MCP|mcp'
+  - type: stdout_matches
+    regex: 'RLS'

@@ -1,0 +1,42 @@
+# AGENT-BLIND: the system under test must never read this file.
+name: slices-prove-or-drop
+skill: feature-slicing
+description: >
+  Given a pinned goal and three candidate features — two provable, one
+  deliberately unprovable ("users feel more confident") — the skill must
+  select slices that each name an Eval and an E2E test, and must drop or
+  defer the unprovable one with a reason instead of smuggling it through.
+invoke:
+  cmd:
+    - claude
+    - -p
+    - >-
+      Read factory/skills/feature-slicing/SKILL.md and apply its protocol
+      exactly. The goal is already pinned: "Users can export their project
+      data as CSV; metric: 95% of export attempts complete in under 10
+      seconds (measured server-side)." Candidate features: (1) a CSV export
+      button on the project page, (2) an export-history list showing past
+      exports, (3) users feel more confident about their data. You are
+      running headless: never ask questions. Output only the final slice
+      list to stdout. For each SELECTED slice print exactly one line
+      beginning "**Eval:**" and one beginning "**E2E:**". For any candidate
+      you drop or defer, print a line beginning "**Deferred:**" or
+      "**Dropped:**" with the reason. Do not create or modify any files.
+    - --model
+    - sonnet
+    - --allowedTools
+    - Read Glob Grep
+    - --max-turns
+    - "20"
+  timeout_ms: 480000
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_count_min
+    regex: '\*\*Eval:\*\*'
+    min: 2
+  - type: stdout_count_min
+    regex: '\*\*E2E:\*\*'
+    min: 2
+  - type: stdout_matches
+    regex: '\*\*(Deferred|Dropped):\*\*'
