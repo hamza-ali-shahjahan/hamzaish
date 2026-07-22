@@ -1,0 +1,22 @@
+# AGENT-BLIND: the system under test must never read this file.
+name: ship-command-contract
+skill: ship
+description: >
+  Contract pin: factory/commands/ship.md must keep its three load-bearing
+  gates — the security-check BLOCK gate, the wip(auto)-never-deploys rule,
+  and the production-branch deploy model. An edit dropping any of them
+  turns this red.
+invoke:
+  cmd: ["cat", "factory/commands/ship.md"]
+  timeout_ms: 5000
+preflight:
+  must_exist: ["factory/commands/ship.md"]
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: 'security-check'
+  - type: stdout_matches
+    regex: 'wip\(auto\)'
+  - type: stdout_matches
+    regex: 'production'

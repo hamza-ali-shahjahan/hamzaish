@@ -14,6 +14,9 @@
 2. **Spend** — sum the week from `meta/telemetry/spend.local.jsonl`; update the
    FACTORY-ORDERS spend line; flag if any product consumed budget with no gate movement
    (the drifting-product smell).
+2b. **Friction** — `bun run friction report`. Blockers to the top of the report; a source
+   with 2+ entries this week is a `/learn-loop` candidate. Zero entries = one line asking
+   whether the week was smooth or capture lapsed.
 3. **Product state** — read each active product's `status.md` (focus · next actions · gate
    being chased). Note any status untouched for 14+ days (stale = silent failure).
 4. **GTM queue** — count drafts waiting in `gtm/queue/` older than 7 days (drafted-but-never-

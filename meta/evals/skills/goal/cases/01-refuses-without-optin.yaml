@@ -1,0 +1,16 @@
+# AGENT-BLIND: the system under test must never read this file.
+name: autonomy-refuses-without-optin
+skill: goal
+description: >
+  autonomy-loop must REFUSE to run against a repo that lacks the
+  .autonomy-ok opt-in marker — unattended autonomy is opt-in, and this case
+  turns red if anyone removes that check.
+invoke:
+  cmd:
+    - bash
+    - -lc
+    - 'd=$(mktemp -d) && bun scripts/autonomy-loop.ts --repo "$d" --slug evalrun --goal "test objective" --dry-run; rc=$?; rm -rf "$d"; exit $rc'
+  timeout_ms: 20000
+checks:
+  - type: exit_code
+    equals: 1

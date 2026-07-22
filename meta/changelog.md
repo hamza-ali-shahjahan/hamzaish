@@ -10,6 +10,29 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-22 — v2.20.0 · The flywheel tightens: friction instrument + capture doctrine + the eval debt paid down
+
+**What changed**
+
+- **Friction/delight instrument** — `scripts/friction.ts` (+ pure lib, 4 tests): `bun run friction log --severity blocker|error|confused|nit|delight --source <skill> --message "…"` appends structured JSONL to `meta/telemetry/friction.local.jsonl` (gitignored); `bun run friction report` summarizes by severity/source with blockers and delights surfaced. The machine-readable version of "surprise is the highest-signal entry" (ported idea: gbrain's friction protocol). Wired into `/learn-loop` step 2 (grounding now reads traces AND friction) and the HEARTBEAT checklist (2b).
+- **Capture doctrine in `/learn-loop`** (ported: hermes-agent's review doctrine) — active capture stance (zero candidates from a working cycle = look again; promotion stays strict) plus the **do-NOT-capture list** that prevents brain rot: environment-dependent failures, single-failure negative tool claims (they harden into refusals), retry-fixed transients, one-off narratives.
+- **MECE gate + curator** — new-skill creation now has a preference order (patch the skill in use → patch an umbrella → support file → only then create, class-level only, overlap check recorded) in both `/learn-loop` and the skill-authoring playbook; a **quarterly curator pass** rides with `/kill-or-keep`: pin / consolidate / archive to `factory/skills/_archive/` — never delete.
+- **Eval debt: 5 → 8 covered entities, +6 baselined cases** — `scaffold` (install case; full gate stays the check-starter CI step), `feature-slicing` (LLM case: slices must name Eval+E2E and drop the unprovable candidate — authored, live-run pending CLI re-auth, deliberately NOT baselined), `goal` (2 deterministic cases on autonomy-loop: the **opt-in refusal is itself a case** — deleting the safety check turns CI red — and the session contract: loop-state shape, branch-only, spend cap), `/ship` + `/security-check` (honest **contract pins**: the command files keep their load-bearing gates — security-check BLOCK, wip(auto) exclusion, gitleaks, the claude-code-action ≥ v1.0.94 floor, MCP surface, RLS). Hygiene: stale `brain-ask`/`portfolio-pulse` entries pruned, `go-live` promoted to covered (its cases now regression-guard).
+
+**Why**
+
+The learning loop had promotion discipline but no capture instrument and no anti-rot brakes; the eval ratchet stopped new debt but 71 grandfathered entities meant the most load-bearing flows (deploy gate, security audit, autonomy safety) could regress with zero red. Both fixes are the factory's own medicine: instruments + gates, not intentions.
+
+**What to revisit**
+
+- Run the feature-slicing LLM case live after `claude login` (CLI OAuth expired — also blocks autonomy-loop runs until then), then baseline it.
+- The `/ship` + `/security-check` behavioral upgrade path: planted-issue fixture repo cases (named in their rubrics).
+- First real `/learn-loop` with friction data: after a week of capture (heartbeat 2b keeps it honest).
+
+**Retro:** skipped — two backlog items executed to their existing designs (deep-dive Part VII Phase 4 + the eval-debt plan reviewed in-chat 2026-07-22); the one surprise worth keeping is recorded here: the nested-CLI OAuth expiry surfaced by the live eval run — an eval that exercises the real transport finds infrastructure rot the mocked path never would.
+
+---
+
 ## 2026-07-19 — v2.19.0 · A scaffold born green: starter typecheck/build truth + retry doors on every external call
 
 **What changed**
