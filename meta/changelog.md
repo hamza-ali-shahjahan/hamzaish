@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-19 — v2.19.0 · A scaffold born green: starter typecheck/build truth + retry doors on every external call
+
+**What changed**
+
+- **The pristine scaffold now typechecks and builds** — closing the 2026-07-15 learning's open finding ("every scaffolded product's first CI run is red at steps 3 and 5 of 5"). Fixes: explicit `CookieOptions` annotations in `src/lib/supabase/{middleware,server}.ts` (@supabase/ssr 0.5.x overload resolution left `setAll`'s param an implicit any under strict); real **`/privacy` and `/terms` pages** (the footer linked to routes that didn't exist — and a launchable product needs them anyway: they were literally two of Patently's P0 blockers); pricing tiers typed `href: Route` (a renamed route now breaks the build instead of 404ing in prod) with the mailto link demoted to a plain `<a>`.
+- **`check-starter` says what it asserts** — the guard now runs `bun install` + `typecheck` + `build` on the fresh scaffold by default (`--install-only` keeps the quick loop), and its success message states exactly which assertions ran. The old "✓ launch-ready" off `bun install` alone was the claim/assertion gap the learning named. CI cost: ~3–4 min more on the existing check-starter step — the template is the artifact that ships every time; it deserves the ratchet.
+- **Retry doors on every external call** (`templates/…/src/lib/retry.ts` + 7 vitest cases): the documented three-door rule — (1) vendor SDK retries when idempotency-safe: **Stripe** now runs `maxNetworkRetries: 2, timeout: 10s` (the SDK attaches idempotency keys to retried POSTs, so a blip can't double-create); (2) `withRetry()` where retry is provably safe: **Resend** retries once, only on 429/5xx/connection failures (the message was never accepted) and never on ambiguous late timeouts — better a missing email than a double one; (3) a bare `await` with a comment, consciously, for everything else. `withTimeout` bounds every attempt; `isTransient` reads fetch/SDK error shapes.
+
+**Why**
+
+The assessment's two remaining reliability findings, executed: a factory whose scaffold ships broken CI is the vibe-coding meme with extra steps, and a bare `await` on every network call fails permanently on the first transient error. Both fixes are mechanisms (a guard that runs the real commands; a typed wrapper with tests), not prose.
+
+**What to revisit**
+
+- The webhook route's Supabase writes deliberately stay unwrapped — Stripe's redelivery IS their retry layer (5xx → redeliver); double-wrapping would double-process risk. Recorded here so nobody "fixes" it.
+- `--boot` still isn't run in CI (adds ~90s more); consider once CI time budget is re-examined.
+- Structured logging + request IDs remain the starter's next observability gap.
+
+**Retro:** skipped — a bounded fix cycle executing the already-retro'd 2026-07-15 learnings (`brain/learnings/2026-07-15.md` holds the lessons; this entry + the guard's new assertions are the evidence). One new small scar recorded here: `eslint-config-next` 404'd once from the npm registry mid-verification and resolved on retry — registry flakes exist; a single install failure is a retry, not a diagnosis.
+
+---
+
 ## 2026-07-19 — v2.18.0 · The factory grows senses: session traces + the lesson-to-check ladder
 
 **What changed**

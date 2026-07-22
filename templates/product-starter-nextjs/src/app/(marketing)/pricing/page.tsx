@@ -1,6 +1,17 @@
 import Link from 'next/link';
+import type { Route } from 'next';
 
-const tiers = [
+// href is typed as Route so `typedRoutes` validates these against real pages —
+// a renamed route breaks the build here instead of 404ing in production.
+const tiers: Array<{
+  name: string;
+  price: string;
+  cadence: string;
+  features: string[];
+  cta: string;
+  href: Route;
+  highlight?: boolean;
+}> = [
   {
     name: 'Free',
     price: '$0',
@@ -66,9 +77,10 @@ export default function PricingPage() {
       </div>
       <p className="text-center text-sm text-muted-foreground mt-12">
         Annual billing saves 15%. Enterprise pricing is custom —{' '}
-        <Link href="mailto:sales@example.com" className="underline">
+        {/* plain <a>: mailto is not a route; next/link + typedRoutes rightly rejects it */}
+        <a href="mailto:sales@example.com" className="underline">
           talk to us
-        </Link>
+        </a>
         .
       </p>
     </main>

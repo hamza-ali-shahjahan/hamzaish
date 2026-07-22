@@ -69,6 +69,29 @@ if (install.exitCode !== 0) {
 const pkgs = (log.match(/(\d+) packages installed/) ?? [])[1] ?? "?";
 console.log(`✓ fresh scaffold installs cleanly (${pkgs} packages).`);
 
+// ── 3b. typecheck + build — the gap the 2026-07-15 learning named ──────────
+// A scaffold that installs but fails `tsc --noEmit` or `next build` ships every
+// new product with red CI at steps 3 and 5 of its own gate. The claim
+// "launch-ready" must be backed by the same commands the product's CI runs.
+// (--install-only restores the old cheap behavior for a quick local loop.)
+if (!process.argv.includes("--install-only")) {
+  for (const [name, cmd] of [
+    ["typecheck", ["bun", "run", "typecheck"]],
+    ["build", ["bun", "run", "build"]],
+  ] as const) {
+    console.log(`→ running \`${cmd.slice(1).join(" ")}\` on the scaffold…`);
+    const proc = Bun.spawnSync(cmd as unknown as string[], { cwd: dir, stdout: "pipe", stderr: "pipe" });
+    if (proc.exitCode !== 0) {
+      const out = new TextDecoder().decode(proc.stdout) + "\n" + new TextDecoder().decode(proc.stderr);
+      console.error(`✗ scaffold ${name} FAILED — every product born from this template starts red:`);
+      for (const l of out.split("\n").filter((l) => /error|Error|Failed/.test(l)).slice(0, 10)) console.error("    " + l);
+      cleanup();
+      process.exit(1);
+    }
+    console.log(`✓ scaffold ${name} passes.`);
+  }
+}
+
 // ── 4. optional --boot: prove `bun dev` serves HTTP 200 with zero env ──────
 if (boot) {
   console.log("→ --boot: starting `bun dev` (zero env), asserting HTTP 200…");
@@ -94,5 +117,11 @@ if (boot) {
 }
 
 cleanup();
-console.log("✓ starter is launch-ready: a brand-new scaffold works from zero.");
+// Success message states exactly what was asserted — a guard's claim must never be
+// broader than its assertion (the 2026-07-15 "launch-ready off bun install" lesson).
+console.log(
+  process.argv.includes("--install-only")
+    ? "✓ starter check (INSTALL ONLY): dependencies resolve. Typecheck/build NOT asserted — run without --install-only for the full gate."
+    : `✓ starter check: a fresh scaffold installs, typechecks, and builds${boot ? ", and boots to HTTP 200" : ""}.`,
+);
 process.exit(0);
