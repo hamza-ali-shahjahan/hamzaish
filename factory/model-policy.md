@@ -1,6 +1,6 @@
 # Model Policy — right model for the right job, automatically
 
-> **Status: Phase 2 — wired at the spawn boundary (2026-07-02).** Every spawnable agent
+> **Status: Phase 3 — evidence-based routing + cheap→frontier cascade (2026-07-24), on Phase 2's spawn-boundary wiring (2026-07-02).** Every spawnable agent
 > now carries its tier as `model_tier:` frontmatter in its own SKILL.md (the machine-readable
 > source of truth, kept next to the agent it governs); this file is the policy's rationale
 > and the tier table's human view. Resolution code: `factory/runtime/model-policy.ts`
@@ -103,6 +103,25 @@ Static role→tier is the floor; **stakes beat role**, and escalation only goes 
 - **De-escalation to Haiku** (one-line tweaks, renames, lookups, deterministic re-checks)
   stays *manual judgment* — deliberately not automated: a "trivial" auth tweak is the
   classic trap, so nothing automatic ever moves work DOWN a tier.
+
+## Phase 3 escalation rules — evidence-based routing + cascade (2026-07-24)
+
+Static tiers are a hand table; Phase 3 makes routing *measured*. Two additions in
+`factory/runtime/model-policy.ts`, both consumed by the headless runtime (`loop.ts`):
+
+- **Route on the leaderboard.** `bun run bench` runs each eval case across the tier set and
+  records, per skill, the cheapest model that matches the best pass rate
+  (`meta/evals/leaderboard.json`). `routedModel({ skill, agent })` prefers that measured
+  recommendation over the frontmatter tier — *measured beats guessed*. Stakes escalation
+  still applies on top (a high-stakes task ignores a "haiku is enough" recommendation).
+- **Cheap→frontier cascade.** With `cascade: true`, a `FAIL_BUILDABLE` attempt regenerates
+  one tier UP (`nextTierUp`) instead of retrying in place — the cheap tier attempts first,
+  and only the failures pay for a stronger model. The runtime form of "use the cheapest
+  model that clears the bar; escalate only what doesn't."
+
+The leaderboard is opt-in evidence: absent or malformed, routing falls back to the tiers
+above and nothing breaks. Doctrine + rationale:
+`factory/playbooks/ai-native-2026/cost-to-outcome-and-model-independence.md`.
 
 ## How this is used (wired)
 

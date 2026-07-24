@@ -116,6 +116,7 @@ When work needs a framework, read these BEFORE acting:
 | Growing a public repo (cadence, community, build-in-public) | `factory/playbooks/launch-stage/release-cadence-as-content.md` + `community-flywheel.md` |
 | Dispatching subagents (handoff vs. supervised) | `factory/playbooks/ai-native-2026/handoff-vs-supervision.md` |
 | Writing or editing any skill/command | `factory/playbooks/ai-native-2026/skill-authoring.md` |
+| Model routing / cost-to-outcome / model-independence | `factory/playbooks/ai-native-2026/cost-to-outcome-and-model-independence.md` |
 
 ## Self-improvement loop — non-negotiable
 

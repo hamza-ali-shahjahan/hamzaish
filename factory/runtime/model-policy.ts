@@ -11,7 +11,7 @@
 // that touches auth, payments, migrations, RLS/permissions, or data deletion
 // runs on the top tier regardless of the agent's default.
 
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 const ROOT = resolve(import.meta.dir, "..", "..");
@@ -20,6 +20,19 @@ const AGENTS_ROOT = join(ROOT, "factory", "agents");
 export const DEFAULT_MODEL = "sonnet"; // the policy's Tier B workhorse
 export const TOP_TIER = "opus";
 const VALID = new Set(["opus", "sonnet", "haiku"]);
+
+// Cheap → capable. The cascade (factory/runtime/loop.ts) climbs this: a cheap-tier
+// attempt that fails is regenerated one tier UP, not retried in place. This ordered
+// list is also the seam where a non-Claude provider tier would slot in (doctrine:
+// factory/playbooks/ai-native-2026/cost-to-outcome-and-model-independence.md).
+export const TIER_ORDER = ["haiku", "sonnet", "opus"];
+
+/** The next tier up from `model` (cheap→capable). Unknown or already-top → unchanged. */
+export function nextTierUp(model: string): string {
+  const i = TIER_ORDER.indexOf(model);
+  if (i === -1 || i + 1 >= TIER_ORDER.length) return model;
+  return TIER_ORDER[i + 1];
+}
 
 /** Parse a SKILL.md's frontmatter `model_tier:` line. Null if absent/invalid. */
 export function tierFromSkillMd(skillMdPath: string): string | null {
@@ -52,6 +65,50 @@ export function modelForAgent(agentName: string): string {
   const md = findAgentSkillMd(agentName);
   if (!md) return DEFAULT_MODEL;
   return tierFromSkillMd(md) ?? DEFAULT_MODEL;
+}
+
+// ─── evidence-based routing: consult the capability-per-dollar leaderboard ────
+// Doctrine control criterion #2: route on measured evidence, not a hand table.
+// The bench (`bun run bench`) writes meta/evals/leaderboard.json; each skill's
+// `recommended` is the cheapest model that matched the best pass rate. When it
+// exists for a skill, it BEATS the frontmatter tier (measured > guessed). Stakes
+// escalation still applies on top (safety beats cost).
+
+const LEADERBOARD_PATH = join(ROOT, "meta", "evals", "leaderboard.json");
+let _lbCache: any = undefined;
+
+function loadLeaderboard(): any | null {
+  if (_lbCache !== undefined) return _lbCache;
+  try {
+    _lbCache = existsSync(LEADERBOARD_PATH) ? JSON.parse(readFileSync(LEADERBOARD_PATH, "utf8")) : null;
+  } catch {
+    _lbCache = null; // a malformed artifact never breaks routing — fall back to tiers
+  }
+  return _lbCache;
+}
+
+/** Pure: the leaderboard's recommended model for a skill, or null. Unit-testable. */
+export function recommendedFromLeaderboard(lb: any, skill: string): string | null {
+  const rec = lb?.skills?.[skill]?.recommended;
+  return typeof rec === "string" && VALID.has(rec) ? rec : null;
+}
+
+/** Production wrapper: read the committed leaderboard and recommend for a skill. */
+export function leaderboardRecommendation(skill: string): string | null {
+  return recommendedFromLeaderboard(loadLeaderboard(), skill);
+}
+
+/**
+ * The evidence-first base-model resolver. Preference order:
+ *   1. leaderboard `recommended` for the eval skill (measured capability-per-dollar)
+ *   2. the agent's `model_tier` frontmatter (the hand policy)
+ *   3. Tier B default
+ * Stakes escalation is applied by the caller (`escalate()`), on top of this base.
+ * `lb` is injectable so the resolution is unit-testable without touching disk.
+ */
+export function routedModel(opts: { skill?: string; agent?: string }, lb: any = loadLeaderboard()): string {
+  const evidence = opts.skill ? recommendedFromLeaderboard(lb, opts.skill) : null;
+  return evidence ?? (opts.agent ? modelForAgent(opts.agent) : DEFAULT_MODEL);
 }
 
 export type Stakes = "normal" | "high";

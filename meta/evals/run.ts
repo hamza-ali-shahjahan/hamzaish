@@ -38,6 +38,7 @@ import { existsSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { validateCase, runInvocation, runChecks, type CaseSpec, type Verdict } from "./lib/checks";
 import { llmJudge, JUDGE_MODEL } from "./lib/judge";
+import { runSweepMode } from "./lib/sweep";
 
 const ROOT = resolve(import.meta.dir, "..", "..");
 const EVALS_DIR = import.meta.dir;
@@ -54,13 +55,15 @@ let skillFilter: string | null = null;
 let caseFilter: string | null = null;
 let updateBaseline = false;
 let noLlm = false;
+let models: string[] | null = null;
 for (let i = 0; i < args.length; i++) {
   if (args[i] === "--skill") skillFilter = args[++i];
   else if (args[i] === "--case") caseFilter = resolve(args[++i]);
   else if (args[i] === "--update-baseline") updateBaseline = true;
   else if (args[i] === "--no-llm") noLlm = true;
+  else if (args[i] === "--models") models = args[++i].split(",").map((s) => s.trim()).filter(Boolean);
   else if (args[i] === "--help" || args[i] === "-h") {
-    console.log("Usage: bun meta/evals/run.ts [--skill <name>] [--case <path>] [--no-llm] [--update-baseline]");
+    console.log("Usage: bun meta/evals/run.ts [--skill <name>] [--case <path>] [--no-llm] [--models a,b,c] [--update-baseline]");
     process.exit(0);
   }
 }
@@ -197,6 +200,13 @@ async function runWithRetry(path: string): Promise<Verdict> {
 const casePaths = await discoverCases();
 if (casePaths.length === 0) {
   console.log("No cases found (filters too narrow, or meta/evals/skills/*/cases/ empty).");
+  process.exit(0);
+}
+
+// --models: the cross-model bench (additive — leaves the single-model floor below
+// untouched). Runs each LLM case across the tier set and writes leaderboard.json.
+if (models) {
+  await runSweepMode(casePaths, models, ROOT);
   process.exit(0);
 }
 

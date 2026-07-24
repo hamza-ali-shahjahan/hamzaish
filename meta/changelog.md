@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-24 — v2.21.0 · Cost-to-outcome loops: model-independence bench, evidence router + cascade, reward-wired hill-climb
+
+**Retro:** [meta/retros/2026-07-24-cost-to-outcome-loops.md](retros/2026-07-24-cost-to-outcome-loops.md)
+
+A frontier "hill-climbing" post described, almost verbatim, the architecture the factory already chose (externalize harness/memory/context/skills; keep evals hill-climbing even if a model is removed; route to the cheapest model that clears the bar). Rather than a pivot, this closes the three loops that were scaffolded but open.
+
+**What changed**
+
+- **Doctrine + front-door refresh.** New playbook `cost-to-outcome-and-model-independence.md` states the two control criteria — no skill depends on one model; route on measured capability-per-dollar, not a hand table — and the honest boundary (optimize the harness, not model weights). `/hamzaish` guardrails refreshed: trackability, measured model-routing, control-plane, pre-ship `/security-check`; "feed the loop" now grounds retros in `trace-report` + the friction instrument.
+- **Model-independence bench.** `bun run bench` (`eval --models opus,sonnet,haiku`) runs each LLM case across tiers with a FIXED judge, capturing real `total_cost_usd` + latency, and writes a per-skill capability-per-dollar `leaderboard.json` (`recommended` = cheapest model matching the best pass rate; `independent` = passes on ≥2). `check-model-independence` ratchet: a covered skill passing on zero models fails, single-model warns, an absent leaderboard is a clean no-op. Test scope extended to `./meta`.
+- **Cost-to-outcome router.** `routedModel({skill,agent})` prefers the leaderboard's recommendation over the frontmatter tier — measured beats guessed; stakes still escalate up. `Task.cascade` in the headless runtime: a `FAIL_BUILDABLE` attempt climbs one tier (`nextTierUp`) instead of retrying in place — cheap tier first, escalate only the failures. Default behavior unchanged; malformed/absent leaderboard falls back to tiers.
+- **Reward-wired hill-climb.** `bun run reward` ledger records customer-valued outcomes (executed eval / e2e / activation / key_action / …) — the one axis that unifies agent-evals and product metrics. `factory/runtime/eval-score.ts` turns a skill's eval into an objective pass fraction. `/goal` now prefers that executed signal alongside the fresh-eyes rubric. `eval-driven-development.md`: the product RLE = a product's evals + usage tracking as its reward environment.
+
+**Why**
+
+The factory already externalizes harness/memory/context/skills — the frontier's stated architecture — but three loops were open: routing was a static hand table, evals were pinned to one model, and the hill-climb ran on opinion with no reward substrate. These close them with the factory's own medicine: instruments + guards, not intentions.
+
+**What to revisit**
+
+- **Populate a real leaderboard** after `claude login` (headless OAuth expired — same blocker as v2.20.0): `bun run bench` produces real numbers, the router routes on evidence, and `check-model-independence` validates a real artifact. Until then the loops are built, tested, and inert-safe.
+- **First real product RLE:** wire a product's `activated` / `key_action_performed` event into `bun run reward log` for a customer-valued trend, not just eval outcomes.
+
 ## 2026-07-22 — v2.20.0 · The flywheel tightens: friction instrument + capture doctrine + the eval debt paid down
 
 **What changed**

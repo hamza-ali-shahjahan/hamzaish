@@ -71,6 +71,9 @@ meta/research/
 # Eval run reports — derived, regenerable verdicts (the committed contract is baseline.json)
 meta/evals/runs/
 
+# Internal assessments — operator-local by decision (2026-07-22); never committed
+HAMZAISH-PRODUCTION-ASSESSMENT.md
+
 # Security-posture documents (audits, secret inventories, rotation logs) — LOCAL ONLY,
 # this repo is always public. Layer 1 of the gate; scripts/check-sensitive-docs.ts is
 # the enforcing layer (CI + on demand) in case something sensitive lands outside here.
