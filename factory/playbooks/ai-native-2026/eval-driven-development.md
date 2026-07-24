@@ -115,6 +115,8 @@ Each product with AI features should have:
 
 The `agents/mvp/builder/` agent enforces this — any new AI feature gets an eval suite as part of the build.
 
+**The product RLE (the reward channel).** A product's eval suite + its usage tracking are the *reward environment* for that product: the customer-valued outcome — an executed eval pass, an end-to-end pass, an `activated` / `key_action_performed` event — is logged with `bun run reward log --signal <eval|e2e|activation|key_action> --outcome pass|fail --source <product>`. That reward ledger (`meta/telemetry/reward.local.jsonl`) is the one axis that unifies agent-evals and product metrics, and it's what a hill-climb optimizes against. This is the RLE analog Hamzaish *can* run: it optimizes the harness / router / skill selection against real outcomes, never model weights. See `factory/playbooks/ai-native-2026/cost-to-outcome-and-model-independence.md`.
+
 ## Source for follow-up
 
 - Hamel Husain's eval essays (very practical) — eugeneyan.com

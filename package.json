@@ -33,6 +33,7 @@
     "check-sensitive-docs": "bun scripts/check-sensitive-docs.ts",
     "telemetry": "bun scripts/telemetry.ts",
     "friction": "bun scripts/friction.ts",
+    "reward": "bun scripts/reward.ts",
     "trace-report": "bun scripts/trace-report.ts",
     "tidy": "bun scripts/tidy.ts"
   },

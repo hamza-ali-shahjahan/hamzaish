@@ -23,7 +23,7 @@ The frontier labs close this loop by training a model *inside* a product RL envi
 - **Model routing:** `factory/model-policy.md` (policy) + `factory/runtime/model-policy.ts` (resolver — spawn-boundary only; skills run in-context on the borrowed session model).
 - **Model-independence bench:** `bun run eval --models opus,sonnet,haiku[,hermes]` → `meta/evals/leaderboard.json`; guard `scripts/check-model-independence.ts`.
 - **Cheap→frontier cascade:** the verdict router in `factory/runtime/loop.ts` — a `FAIL_BUILDABLE`/`UNCERTAIN` verdict escalates the failing attempt to a higher tier instead of retrying in place.
-- **Reward signal:** product-valued outcomes wired into telemetry feed the `/goal` hill-climb (`factory/commands/goal.md`).
+- **Reward signal:** `bun run reward log` records customer-valued outcomes (an executed eval, an e2e pass, an activation / key-action event) to `meta/telemetry/reward.local.jsonl` — the one axis that unifies agent-evals and product metrics. `factory/runtime/eval-score.ts` turns a skill's eval into an objective pass fraction. Both feed the `/goal` hill-climb (`factory/commands/goal.md`) so it climbs a real signal, not only a rubric.
 
 ## Source for follow-up
 
