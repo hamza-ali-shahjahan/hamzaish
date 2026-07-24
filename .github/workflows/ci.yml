@@ -80,6 +80,9 @@ jobs:
       - name: Eval-coverage guard — no new agent/skill without an eval (ratchet)
         run: bun run check-evals --quiet
 
+      - name: Model-independence ratchet — no skill depends on one model (validates the bench artifact)
+        run: bun run check-model-independence --quiet
+
       - name: Retro guard — post-2026-07-02 changelog entries carry a retro or a recorded skip
         run: bun run check-retro --quiet
 
