@@ -17,6 +17,10 @@
 2b. **Friction** — `bun run friction report`. Blockers to the top of the report; a source
    with 2+ entries this week is a `/learn-loop` candidate. Zero entries = one line asking
    whether the week was smooth or capture lapsed.
+2c. **Defect registry** — `bun run defect report`. Any guard/eval/live-check that caught a
+   real defect this week should have a row (log at catch time: `bun run defect log …`).
+   Criticals to the top of the report; a week with red checks but zero rows = the registry
+   isn't being fed — flag it.
 3. **Product state** — read each active product's `status.md` (focus · next actions · gate
    being chased). Note any status untouched for 14+ days (stale = silent failure).
 4. **GTM queue** — count drafts waiting in `gtm/queue/` older than 7 days (drafted-but-never-

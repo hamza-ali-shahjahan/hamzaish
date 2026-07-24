@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-24 — v2.22.0 · The guard-fire defect registry: which check caught what, recorded at catch time
+
+**What changed**
+
+- **`bun run defect log|report`** (`scripts/defect.ts` + pure lib, 4 tests) — when any check catches a REAL defect (a CI guard going red on a genuine problem, an eval regression, a live assertion failing, a hook block, a review catch), one structured JSONL row records it: catcher · stage (hook/ci/eval/review/pre-launch/live) · target · defect · severity · fixed-by. Local-only (`meta/telemetry/defects.local.jsonl`). Closes the v2.18 revisit item ("PreToolUse guard-fire events aren't captured yet") in its general form: not just hook fires — every catch, every stage.
+- **Wiring**: `/learn-loop` step 2 now grounds in all three instruments (traces + friction + defects); HEARTBEAT gains 2c (criticals to the top; red checks with zero rows = the registry isn't being fed). Explicitly NOT a bug tracker — one line at catch time, no workflow; false alarms are friction, not defects.
+- **Seeded** with the factory's known historical catches (the Sentry-never-initialized and webhook-drop criticals, the born-red scaffold, the go-live eval resync, the count-drift class) so the first report is already useful: `by stage: ci 2 · live 1 · review 1 · eval 1`.
+- Also this cycle, operator hygiene: `_portfolio.md` regenerated + audit cleanup shipped separately (PR #62).
+
+**Why**
+
+"Which guards earn their keep" has been answered from memory every retro; `/kill-or-keep`'s guard-sunset pass and `/learn-loop`'s promotion decisions both want the count, not the anecdote. The registry is the missing third instrument next to traces (what happened) and friction (how it felt): what was *caught*.
+
+**What to revisit**
+
+- Feed discipline: the registry only works if catches are logged at catch time — heartbeat 2c is the check; if rows stay at zero while CI goes red, automate capture from CI logs instead.
+- `/kill-or-keep` guard-sunset pass should cite per-catcher counts from the first quarterly run after 2026-10-01.
+
+**Retro:** skipped — a single-instrument slice completing an already-retro'd design (the v2.18 senses cycle + the v2.20 flywheel cycle); evidence lives in this entry + the seeded registry itself.
+
+---
+
 ## 2026-07-24 — v2.21.0 · Cost-to-outcome loops: model-independence bench, evidence router + cascade, reward-wired hill-climb
 
 **Retro:** [meta/retros/2026-07-24-cost-to-outcome-loops.md](retros/2026-07-24-cost-to-outcome-loops.md)
