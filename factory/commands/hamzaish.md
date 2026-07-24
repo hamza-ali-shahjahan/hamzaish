@@ -59,6 +59,9 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - Next.js 16+: use `proxy.ts`, not `middleware.ts`.
    - Set a noreply git email before the first commit (avoids push rejection).
    - Build locally before any deploy.
+   - Before `/ship`, run `/security-check <slug>` — tracked secrets, unpinned/vulnerable
+     GitHub Actions, workflow permission scope, MCP-config surface, RLS reminder → pass
+     before you promote. Add `--live` to catch runtime drift on the deployed system.
    - **Secrets files are user-touched only.** Claude never Reads/Writes/Edits `.env.local`
      (or any real-secrets file) — a Claude-touched file becomes harness-watched, and the
      user's pasted keys get echoed into the chat transcript (incident 2026-07-03: Muakkil's
@@ -75,6 +78,17 @@ Express Lane. Otherwise ask once, with ① pre-selected:
      build-stage commit swept another repo's uncommitted files under a wrong message.)
    - The starter ships tests + CI (`bun run test`, `bun run test:e2e`,
      `.github/workflows/ci.yml`). Don't strip them — extend them.
+   - **Trackable or it isn't shippable.** Slices name their tracking up front (a
+     `page_view`/event, or an explicit "not worth tracking — why"); specs carry a
+     **Trackability** section and the live-launch gate enforces it. A product you
+     can't measure can't hill-climb.
+   - **Right model per task, measured.** Spawned agents route by `model_tier`
+     (`factory/runtime/model-policy.ts`); stakes escalate up. Route on measured
+     capability-per-dollar and never let a skill depend on one model —
+     `factory/playbooks/ai-native-2026/cost-to-outcome-and-model-independence.md`.
+   - **Autonomous runs obey the control plane.** `/goal` and `/auto` read
+     `FACTORY-ORDERS.local.md` (weekly mandate + hard spend cap) and
+     `STANDING-ORDERS.local.md` first, and stop at the cap. Scaffold them with `/factory-launch`.
    - **Tidy at milestones.** At a launch, before `/ship`, or at the end of a sprint, offer
      a `/tidy` pass: it scans the product — or every repo at once (`bun run tidy --all <dir>`)
      — for rot (broken/gitignored/wrong-case links, committed secrets, dead files,
@@ -103,10 +117,12 @@ single agent above. Don't impose the full sequence.
 
 ## After a build (or a notable mistake) — feed the loop
 
-Update `products/<slug>/learnings.md` (worked / pitfall + fix). If it
-generalizes, promote it to a guardrail in the relevant `factory/` agent and note
-it in `meta/changelog.md`. The promise: *the mistake we made last time is encoded
-into the tool that runs next time.*
+Update `products/<slug>/learnings.md` (worked / pitfall + fix). **Ground the retro in
+data, not memory:** `bun run trace-report` summarizes the session's tool-traces and
+`bun run friction log` captures where the flow snagged. If a lesson generalizes,
+distill it up the check ladder — a hook → a CI guard → an eval case → only then prose
+in a `factory/` playbook or `brain/anti-patterns/` — and note it in `meta/changelog.md`.
+The promise: *the mistake we made last time is encoded into the tool that runs next time.*
 
 ## Tone
 
