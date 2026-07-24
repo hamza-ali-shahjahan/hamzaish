@@ -82,3 +82,28 @@ test("no judge criteria → deterministic floor alone decides PASS", async () =>
   const r = await runTask(baseTask({ judgeCriteria: [] }), { generate: gen("GOOD"), judge: judgeAll("FAIL") });
   expect(r.finalOutcome).toBe("PASS"); // judge never consulted
 });
+
+test("cascade — a FAIL_BUILDABLE climbs one tier each regenerate (cheap→frontier)", async () => {
+  const seen: string[] = [];
+  const generate: Generator = async (_p, model) => {
+    seen.push(model);
+    return { ok: true, output: seen.length === 1 ? "BAD" : "GOOD" };
+  };
+  const r = await runTask(baseTask({ model: "haiku", cascade: true, maxAttempts: 3 }), { generate, judge: judgeAll("PASS") });
+  expect(seen[0]).toBe("haiku"); // cheap tier attempted first
+  expect(seen[1]).toBe("sonnet"); // failed → next attempt climbed a tier (only the failure escalates)
+  expect(r.attempts[0].model).toBe("haiku");
+  expect(r.attempts[1].model).toBe("sonnet");
+  expect(r.finalOutcome).toBe("PASS");
+});
+
+test("no cascade (default) — a FAIL_BUILDABLE retries in place on the same tier", async () => {
+  const seen: string[] = [];
+  const generate: Generator = async (_p, model) => {
+    seen.push(model);
+    return { ok: true, output: "BAD" };
+  };
+  const r = await runTask(baseTask({ model: "haiku", maxAttempts: 2 }), { generate, judge: judgeAll("PASS") });
+  expect(seen).toEqual(["haiku", "haiku"]); // no tier climb without cascade
+  expect(r.finalOutcome).toBe("FAIL_BUILDABLE");
+});

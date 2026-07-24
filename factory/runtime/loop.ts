@@ -23,7 +23,7 @@ import { mkdir } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { runChecks, runInvocation, type CheckSpec, type CheckResult } from "../../meta/evals/lib/checks";
 import { llmJudge, JUDGE_MODEL, type JudgeCriterion, type CriterionVerdict, type JudgeResult } from "../../meta/evals/lib/judge";
-import { modelForAgent, escalate, stakesFromPrompt, DEFAULT_MODEL, type Stakes } from "./model-policy";
+import { routedModel, escalate, stakesFromPrompt, nextTierUp, type Stakes } from "./model-policy";
 
 const ROOT = resolve(import.meta.dir, "..", "..");
 const PROPOSALS_DIR = join(import.meta.dir, "proposals");
@@ -43,10 +43,12 @@ export type Task = {
   maxAttempts: number; // bounded; one regenerate on FAIL_BUILDABLE is maxAttempts: 2
   model?: string; // explicit override; else resolved from agent's model_tier (factory/model-policy.md, wired)
   stakes?: Stakes; // "high" escalates to the top tier regardless of role; default sniffed from the prompt
+  cascade?: boolean; // cheap→frontier: on FAIL_BUILDABLE, the next attempt climbs one tier instead of retrying in place
 };
 
 export type Attempt = {
   n: number;
+  model: string; // the tier this attempt ran on (the cascade may climb it across attempts)
   outcome: RuntimeOutcome;
   reason: string;
   checks: CheckResult[];
@@ -154,8 +156,10 @@ export async function runTask(task: Task, deps: { generate?: Generator; judge?: 
   const judge = deps.judge ?? ((c, o, m) => llmJudge(c, o, m));
   // Model resolution order (factory/model-policy.md, now wired): explicit override →
   // the agent's model_tier frontmatter → Tier B default. Then stakes escalate UP only.
-  const base = task.model ?? (task.agent ? modelForAgent(task.agent) : DEFAULT_MODEL);
-  const model = escalate(base, task.stakes ?? stakesFromPrompt(task.generatePrompt));
+  // Base model: explicit override → leaderboard evidence for the skill → the agent's
+  // frontmatter tier → default. Then stakes escalate UP (safety beats cost).
+  const base = task.model ?? routedModel({ skill: task.skill, agent: task.agent });
+  let model = escalate(base, task.stakes ?? stakesFromPrompt(task.generatePrompt));
   const attempts: Attempt[] = [];
   let feedback = "";
 
@@ -165,7 +169,7 @@ export async function runTask(task: Task, deps: { generate?: Generator; judge?: 
 
     // (2) can't even get an output → UNCERTAIN, escalate now.
     if (!gen.ok) {
-      attempts.push({ n, outcome: "UNCERTAIN", reason: gen.reason, checks: [], output: "" });
+      attempts.push({ n, model, outcome: "UNCERTAIN", reason: gen.reason, checks: [], output: "" });
       return finish(task, attempts, "UNCERTAIN", `escalate — ${gen.reason}`);
     }
     const output = gen.output;
@@ -173,7 +177,7 @@ export async function runTask(task: Task, deps: { generate?: Generator; judge?: 
     // (3) the generator flagged a silent spec → GAP, write a proposal, never guess.
     if (GAP_MARKER.test(output)) {
       const proposalPath = await writeProposalStub(task, output);
-      attempts.push({ n, outcome: "GAP", reason: "generator emitted GAP marker — spec silent", checks: [], output });
+      attempts.push({ n, model, outcome: "GAP", reason: "generator emitted GAP marker — spec silent", checks: [], output });
       return finish(task, attempts, "GAP", `proposal written → ${proposalPath} (awaiting ratification)`, { proposalPath });
     }
 
@@ -181,8 +185,9 @@ export async function runTask(task: Task, deps: { generate?: Generator; judge?: 
     const checks = runChecks(task.deterministicChecks, { stdout: output, stderr: "", exitCode: 0 });
     const failed = checks.filter((c) => !c.ok);
     if (failed.length > 0) {
-      attempts.push({ n, outcome: "FAIL_BUILDABLE", reason: `${failed.length}/${checks.length} deterministic criteria failed`, checks, output });
+      attempts.push({ n, model, outcome: "FAIL_BUILDABLE", reason: `${failed.length}/${checks.length} deterministic criteria failed`, checks, output });
       feedback = buildDeterministicFeedback(failed);
+      if (task.cascade) model = nextTierUp(model); // cheap→frontier: next attempt climbs a tier
       continue;
     }
 
@@ -190,7 +195,7 @@ export async function runTask(task: Task, deps: { generate?: Generator; judge?: 
     if (task.judgeCriteria.length > 0) {
       const judged = await judge(task.judgeCriteria, output, JUDGE_MODEL);
       if (!judged.ok) {
-        attempts.push({ n, outcome: "UNCERTAIN", reason: `judge unavailable: ${judged.reason}`, checks, output });
+        attempts.push({ n, model, outcome: "UNCERTAIN", reason: `judge unavailable: ${judged.reason}`, checks, output });
         return finish(task, attempts, "UNCERTAIN", "escalate — judge unavailable");
       }
       for (const cr of judged.criteria) {
@@ -199,18 +204,19 @@ export async function runTask(task: Task, deps: { generate?: Generator; judge?: 
       const jfail = judged.criteria.filter((c) => c.verdict === "FAIL");
       const junsure = judged.criteria.filter((c) => c.verdict === "UNSURE");
       if (jfail.length > 0) {
-        attempts.push({ n, outcome: "FAIL_BUILDABLE", reason: `judge failed: ${jfail.map((c) => c.id).join(", ")}`, checks, output });
+        attempts.push({ n, model, outcome: "FAIL_BUILDABLE", reason: `judge failed: ${jfail.map((c) => c.id).join(", ")}`, checks, output });
         feedback = buildJudgeFeedback(jfail);
+        if (task.cascade) model = nextTierUp(model); // cheap→frontier: next attempt climbs a tier
         continue;
       }
       if (junsure.length > 0) {
-        attempts.push({ n, outcome: "UNCERTAIN", reason: `judge unsure: ${junsure.map((c) => c.id).join(", ")} — human look needed`, checks, output });
+        attempts.push({ n, model, outcome: "UNCERTAIN", reason: `judge unsure: ${junsure.map((c) => c.id).join(", ")} — human look needed`, checks, output });
         return finish(task, attempts, "UNCERTAIN", "escalate — judge unsure");
       }
     }
 
     // (1) all green → keep.
-    attempts.push({ n, outcome: "PASS", reason: "all criteria green", checks, output });
+    attempts.push({ n, model, outcome: "PASS", reason: "all criteria green", checks, output });
     return finish(task, attempts, "PASS", "kept", { kept: output });
   }
 
