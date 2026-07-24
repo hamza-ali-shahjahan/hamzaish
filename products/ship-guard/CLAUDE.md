@@ -16,8 +16,9 @@ folder holds **metadata only** — never put product code inside the public Hamz
   change adds a dependency or a network call, stop and flag it — it violates the core promise.
 - **Zero-dep.** `package.json` must have empty (or no) `dependencies`. Standard Node
   built-ins only.
-- **HELD LOCAL.** Do not create a public GitHub repo, do not push, do not run
-  `/publish-repo` without explicit operator go-ahead. The name is approved to *use*, not publish.
+- **PUBLIC since 2026-06-25** (github.com/hamza-ali-shahjahan/ship-guard, MIT, CI green —
+  decisions/0002). The old HELD-LOCAL constraint is lifted; normal /pr flow applies.
+  Any future npm publish must use the scoped name `@hamzaali/ship-guard` (plain name taken).
 - **The scanner must not flag itself.** Keep the `ship-guard:ignore-file` sentinel in
   `bin/ship-guard` and the fixture/vendored-dir path ignores intact.
 

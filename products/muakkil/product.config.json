@@ -5,7 +5,7 @@
   "created": "2026-05-23",
   "stage": "mvp",
   "status": "active",
-  "sprint": "buildathon-launch",
+  "sprint": "venture-agent-mvp",
   "code_path": null,
   "aliases": [
     "muakkil app",
@@ -49,7 +49,7 @@
     "seeker_per_day": 50,
     "herald_per_day": 20
   },
-  "notes": "Onboarded into factory 2026-05-26. Lovable buildathon submission = beta launch. First 100 sign-ups become beta cohort. Landing page already shipped; agent backends are the buildathon work. Scribe is the demo centerpiece. See status.md for current state.",
+  "notes": "Onboarded into factory 2026-05-26. PIVOTED 2026-07-02 (decisions/2026-07-02-venture-agent-pivot.md): now a venture agent for non-technical founders — speak an idea, get a built + distributed product. Phase 1 slices 1-6 built (auth, Scribe intake, Seeker validation, thin landing + waitlist, Herald-lite, weekly report); next: slice 7 import-and-launch. Phase-0 validation debt recorded (5 Mom-Test interviews). See status.md.",
   "gates": {
     "verdict": "MAINTAIN",
     "validation": {
