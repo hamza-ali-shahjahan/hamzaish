@@ -1,86 +1,52 @@
 # Portfolio Snapshot
 
-**Last refreshed**: 2026-05-30 · Live state of all products in the factory.
+**Last refreshed**: 2026-07-24 · Live state of all products in the factory.
 
-Refresh by running `/portfolio-pulse` — regenerates this file from each product's `product.config.json` + `status.md`.
-
----
-
-## Active spotlight: **muakkil** (buildathon launch this weekend)
-
-Muakkil is the factory's first proof-of-value. Lovable buildathon submission = beta launch. First 100 sign-ups become the beta cohort. **The Scribe demo (voice → orchestrator → Seeker → Herald → email in <60s) is the demo centerpiece.**
-
-→ See `products/muakkil/status.md` for the 48h timeline and today's recommended action.
+Refresh by running `/portfolio-pulse` — regenerates this file from each product's `product.config.json` + `status.md`. Gate status on demand: `bun run check-gates`.
 
 ---
 
-## All products (15)
+## Active spotlight: the GTM week (2026-07-19 mandate)
 
-| Product | Stage | Status | One-liner |
-|---|---|---|---|
-| **muakkil** | mvp | active · buildathon | Mystical AI-agent platform — four spirit agents collaborate on cross-agent charges. |
-| **scope-intelligence** | mvp | active · vertical-slice-build | Scope enforcement SaaS for small agencies — integrates with ClickUp/Asana/Monday. |
-| **dnsdoctor** | mvp | active | Differentiated DNS toolkit — global propagation across 20+ resolvers + AI diagnosis + setup wizard. |
-| **ventbox** | launch | active · live | Architecturally-anonymous employee-feedback platform — HR sees AI-categorized sentiment, never who said what. [ventbox.co](https://ventbox.co) |
-| linkedup | mvp | active | LinkedIn-native outreach + content tooling for B2B founders. |
-| **copyright** (Patently) | mvp | active · private-beta · live | AI IP-clearance research — research chat + clearance memos + watchlist digests over US case law, patents, copyright. [patently.legal](https://patently.legal) |
-| hamza-health | mvp | active | Personal health intelligence — blood reports + wearables + habits into coaching. |
-| hamzaos | mvp | active | Hamza's personal operating system — persona, strategy, calendar, research, content. |
-| one-dollar-factory | idea | active | Experimental playbook for generating $1-decision micro-products. |
-| ai-growth-engine | idea | active | Systems-agent-driven growth engine for SMB founders. |
-| **tasfort** | launch | active · live | "There's a System for That" — routines & systems of 100+ remarkable people, matched by personality type. [theresasystemforthat.xyz](https://theresasystemforthat.xyz) |
-| **ai-native-cms** | mvp | active · validation | OSS CLI that migrates WordPress sites to clean Astro + MDX codebases — wedge for an AI-native CMS. Shipped to npm as `wp-to-astro@0.6.1`. |
-| **rotscan** | launch | active · live · npm | OSS CLI that finds & clears repo rot (links · secrets · dead files · deps) across one repo or 100 at once. Spun out of Hamzaish. [npm](https://www.npmjs.com/package/@hamzaish/rotscan) · [repo](https://github.com/hamza-ali-shahjahan/rotscan) |
-| formpad | idea | slot_reserved | (slot reserved — needs validation before scaffolding) |
-| calculatrs | idea | slot_reserved | (slot reserved — needs validation before scaffolding) |
-
-Stages: **idea** (validation phase) · **mvp** (building) · **launch** (shipping to first users) · **scale** (post-PMF growth) · **sunset** (winding down).
+The factory's control plane is live (v2.16–v2.21): every registered product carries **lifecycle gates** (states-and-dates), and the weekly mandate concentrates effort instead of spreading it. This week: **Patently** (clear launch-checklist P0s → 5–10 private-beta users through a real clearance flow) and **ventbox** (instrument analytics so next week's push is measurable). Build lane resumes after: muakkil slice 7, dnsdoctor name + deploy.
 
 ---
 
-## Stage distribution
+## All products (19)
 
-- **Launch (live)**: 4 (ventbox → ventbox.co, copyright/Patently → patently.legal [private beta], tasfort → theresasystemforthat.xyz, rotscan → npm `@hamzaish/rotscan`) — shipped, public
-- **MVP**: 7 products (muakkil, scope-intelligence, dnsdoctor, linkedup, hamza-health, hamzaos, ai-native-cms) — building OR (for ai-native-cms) shipped + in validation sprint
-- **Idea (active)**: 2 (one-dollar-factory, ai-growth-engine) — validating
-- **Idea (slot_reserved)**: 2 (formpad, calculatrs) — awaiting validation/details
+Maintainer's showcase products (not in the operator's registered work queue) are marked §.
 
-> _Counts hand-updated 2026-06-07 after Ventbox/TASFORT/Patently confirmed live; rerun `/portfolio-pulse` to fully regenerate._
+| Product | Stage | Verdict | Status | One-liner |
+|---|---|---|---|---|
+| **copyright** (Patently) | mvp | DOUBLE-DOWN | active · private-beta · live | AI IP-clearance research — chat + clearance memos + watchlist digests. [patently.legal](https://patently.legal) |
+| **ventbox** | launch | MAINTAIN | active · live | Architecturally-anonymous employee feedback — HR sees AI-categorized sentiment, never who said what. [ventbox.co](https://ventbox.co) |
+| **muakkil** | mvp | MAINTAIN | active · venture-agent MVP | Venture agent for non-technical founders — speak an idea, get a built + distributed product. [muakkil.com](https://muakkil.com) |
+| **dnsdoctor** | mvp | MAINTAIN | active · code-complete | DNS toolkit — 20+ resolver propagation + AI diagnosis + setup wizard. Needs name + deploy. |
+| **ai-native-cms** | mvp | MAINTAIN | active · validation | OSS CLI migrating WordPress → Astro + MDX; wedge for an AI-native CMS. npm: `wp-to-astro` |
+| **tasfort** | launch | AUTOPILOT | active · live | "There's a System for That" — routines of 100+ remarkable people, matched by personality type. [theresasystemforthat.xyz](https://theresasystemforthat.xyz) |
+| **repolish** | launch | AUTOPILOT | active · public repo | One-command CLI that makes a repo's first impression premium AND honest. [repo](https://github.com/hamza-ali-shahjahan/repolish) |
+| **ship-guard** | launch | AUTOPILOT | active · public repo | One-command "about to get ransacked?" safety check + pre-push hook. [repo](https://github.com/hamza-ali-shahjahan/ship-guard) |
+| **scope-intelligence** | mvp | AUTOPILOT | active | Scope enforcement for small agencies — ClickUp/Asana/Monday layer that prices creep. |
+| **linkedup** | mvp | AUTOPILOT | active | LinkedIn-native outreach + content tooling for B2B founders. |
+| **hamza-health** | mvp | AUTOPILOT | active · internal | Personal health intelligence — blood reports + wearables + habits into coaching. |
+| **hamzaos** | mvp | AUTOPILOT | active · internal | The operator's personal OS — persona, strategy, calendar, research, content. |
+| **ai-growth-engine** | idea | AUTOPILOT | active | Systems-agent-driven growth engine for SMB founders. |
+| **one-dollar-factory** | idea | AUTOPILOT | active · meta | Experimental playbook for $1-decision micro-products. |
+| § **formpad** | launch | — | live | Form builder for indie SaaS founders — auto-generated forms backed by Supabase. [formpad.app](https://formpad.app) |
+| § **rotscan** | launch | — | live · npm | OSS CLI that finds & clears repo rot across one repo or 100. [npm](https://www.npmjs.com/package/@hamzaish/rotscan) |
+| § **local-llm-setup** | launch | — | live | Zero to a running local LLM on Mac/Linux/Windows — one command. |
+| § **claudex** | mvp | — | active | Claude Code plugin: Claude writes, Codex reviews, ship on consensus. |
+| § **calculatrs** | idea | — | slot_reserved | (slot reserved — needs validation before scaffolding) |
 
-**Discipline check**: 7 products in MVP + 3 live simultaneously is *a lot* for a solo operator. The factory was designed for **focused parallelism, not maximum parallelism**. Likely action at next `/portfolio-pulse`: confirm which 1-2 of the 9 MVPs are this quarter's bets (Muakkil this weekend is locked; Scope Intelligence has the most depth of work after that; ai-native-cms is in validation sprint — no further build until 5 WP-refugee conversations land); the others go to "background validation" mode (don't ship until they earn it).
-
----
-
-## Today's recommended actions (per product)
-
-Populated by `/portfolio-pulse` on each invocation.
-
-- **muakkil** → Run Lovable Prompt 1 (auth). Drop API keys into `.env.local`. Then start Block 1. **(THIS WEEKEND)**
-- **scope-intelligence** → `/work-on scope-intelligence` to load full context, then identify the current vertical slice and the 5 customers booked for paid validation.
-- **dnsdoctor** → `/work-on dnsdoctor` to load full context, verify AI-diagnosis citation post-validator is active.
-- **ventbox** → LIVE at ventbox.co (B2B employee-feedback). Backfill analytics IDs + validation/retention evidence; assess real traction before further build.
-- **linkedup** → Read-through needed; status unknown to factory.
-- **copyright (Patently)** → LIVE in private beta at patently.legal. Drive 5–10 target users through chat + clearance; rotate burned credentials; run `pnpm db:migrate` (migration 0001).
-- **hamza-health** → Read-through needed; status unknown to factory.
-- **hamzaos** → Read-through needed; status unknown to factory.
-- **one-dollar-factory** → Validation conversations before any code.
-- **ai-growth-engine** → Validation conversations before any code.
-- **tasfort** → LIVE at theresasystemforthat.xyz. Reconcile the canonical source folder (~/Claude/TASFORT vs ~/Claude/$1F&S/TASFORT); backfill analytics; assess traction.
-- **rotscan** → LIVE on npm (`@hamzaish/rotscan`) + public MIT repo. Watch Discussions/issues for first-run reports; node-native distribution is the next build when a non-Bun user wants it. See `products/rotscan/status.md`.
-- **ai-native-cms** → Record the 90-second screencast (Docker WP → migration → Astro site rendering — env already up at localhost:8080 + localhost:4321). Then post in r/selfhosted offering 5 free migrations in exchange for feedback. NO further build until validation sprint lands real-user signal. See `products/ai-native-cms/status.md`.
-- **formpad** → Validate or release slot.
-- **calculatrs** → Validate or release slot.
+Stages: **idea** (validation) · **mvp** (building) · **launch** (first users) · **scale** (post-PMF) · **sunset**. Verdicts (registered products, from `gates.verdict`): **DOUBLE-DOWN** (the active bet) · **MAINTAIN** (gate being chased) · **AUTOPILOT** (live at ~$0 upkeep, no active effort) · CONCENTRATE (reserved for a PMF-gate pass — none yet).
 
 ---
 
-## Inventory note
+## Stage distribution (registered products)
 
-Hamzaish itself (the factory) is **open-sourced and public under AGPL-3.0** (see [`../LICENSE`](../LICENSE)) and in active development. See `meta/changelog.md` for the current version and full history. Ongoing: deeper test coverage of the factory's load-bearing skills and the full memory-layer evolution.
+- **Launch**: 4 (ventbox, tasfort, repolish, ship-guard) — live/public; autopilot except ventbox
+- **MVP**: 8 (copyright, muakkil, dnsdoctor, ai-native-cms, scope-intelligence, linkedup, hamza-health, hamzaos)
+- **Idea**: 2 (ai-growth-engine, one-dollar-factory)
+- **Scale**: 0 — the honest number; the gate ladder exists so this line changes on evidence, not vibes
 
-## How to refresh this file
-
-```
-/portfolio-pulse
-```
-
-Pulls each `product.config.json` + `status.md`, regenerates the table and the recommended-actions section. Should run automatically at the start of each working day; manual invocation otherwise.
+**Discipline check (2026-07-24)**: WIP caps in force — 1 active build (paused for the GTM week) · 2 active GTM (Patently, ventbox) · everything else AUTOPILOT. First gate deadlines land 2026-08-16–18 (Patently beta cohort + P0s, ventbox measured signups, dnsdoctor deploy, muakkil interviews). Portfolio-wide measured traction is currently **zero** — the next verdict-worthy number is one measured signup, interview, or beta user.

@@ -66,16 +66,17 @@
 
 ## Today's recommended action
 
-(Updated by Hamzaish on every `/product-pulse muakkil` invocation.)
+(Updated by Hamzaish on every `/product-pulse muakkil` invocation. Refreshed 2026-07-24 —
+the old buildathon-era action ("run Lovable Prompt 1") was stale: auth shipped as slice 1.)
 
-→ **Confirm Lovable Prompt 1 (auth) status. If not run yet: paste it. If run: pull, then start Block 1 (migrations + env wiring + /app/charge stub).**
+→ **Pay the Phase-0 validation debt first: recruit + run the 5 Mom-Test interviews (gate:
+validation, due 2026-08-16). Build lane resumes with slice 7 (import-and-launch) per
+FACTORY-ORDERS.**
 
 ## Outstanding decisions for Hamza
 
-- [ ] Run Lovable Prompt 1 (auth)
-- [ ] Drop API keys into `.env.local`: `ANTHROPIC_API_KEY`, `GROQ_API_KEY`, `RESEND_API_KEY`
-- [ ] Create Slack app (Client ID + Secret) before Sunday afternoon
-- [ ] Cloudflare DNS access ready for Resend `muakkil.com` setup
+- [ ] Schedule the 5 Mom-Test interviews (validation gate 2026-08-16; ≥3 must raise the post-build stall unprompted)
+- [ ] Green-light slice 7 (import-and-launch) once the build lane reopens
 
 ## Explicitly deferred to v2+
 

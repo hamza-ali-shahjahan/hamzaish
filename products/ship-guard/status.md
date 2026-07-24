@@ -18,6 +18,5 @@
   mode; `.shipguardignore` support; full YAML parse for Actions; optional gitleaks
   hand-off; entropy detector.
 
-## Hold
-- **Do NOT publish.** No GitHub repo, no push. Name `ship-guard` reserved by operator;
-  name-clearance + `/publish-repo` pending an explicit go-ahead.
+<!-- Stale "Hold — do NOT publish" block removed 2026-07-24: it predated the 2026-06-25
+     publish decision (decisions/0002) and contradicted the LIVE state above. ->
