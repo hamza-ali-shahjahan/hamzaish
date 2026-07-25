@@ -89,6 +89,13 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - **Autonomous runs obey the control plane.** `/goal` and `/auto` read
      `FACTORY-ORDERS.local.md` (weekly mandate + hard spend cap) and
      `STANDING-ORDERS.local.md` first, and stop at the cap. Scaffold them with `/factory-launch`.
+   - **The mandate outranks the menu (interactive too).** If `FACTORY-ORDERS.local.md`
+     exists and names this week's lanes, surface them BEFORE routing an unrelated build —
+     one line ("this week's mandate: X · Y — continue with that, or override?"), then
+     respect the answer; overriding is the operator's right, drifting silently isn't.
+     When a product is named, read its next gate (`bun run check-gates`) and aim the
+     work at that gate. No control plane scaffolded yet → point to `/factory-launch` once,
+     don't block.
    - **Tidy at milestones.** At a launch, before `/ship`, or at the end of a sprint, offer
      a `/tidy` pass: it scans the product — or every repo at once (`bun run tidy --all <dir>`)
      — for rot (broken/gitignored/wrong-case links, committed secrets, dead files,
