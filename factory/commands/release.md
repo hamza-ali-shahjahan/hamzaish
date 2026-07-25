@@ -5,7 +5,7 @@ argument-hint: "[bump: major|minor|patch, or an explicit version like v1.1.0] (o
 
 The user invoked: `/release $ARGUMENTS`
 
-This is the **public-release step** of the factory cycle. It turns the internal `meta/changelog.md` history into a polished GitHub Release that strangers see. It runs at the **same major-cycle boundary** the learning loop does — `/learn-loop` promotes what the cycle taught; `/release` publishes what the cycle shipped. Run `/learn-loop` first if the boundary also produced promotable learnings, so the changelog is current before you cut.
+This is the **public-release step** of the factory cycle. It turns the internal `meta/changelog.md` history into a polished GitHub Release that strangers see — **and a matching Announcement** (Discussions → Announcements) that reaches the people already watching. The Release is discovery; the Announcement is reach — a cut isn't done until both exist. It runs at the **same major-cycle boundary** the learning loop does — `/learn-loop` promotes what the cycle taught; `/release` publishes what the cycle shipped. Run `/learn-loop` first if the boundary also produced promotable learnings, so the changelog is current before you cut.
 
 ## When to run
 
@@ -31,11 +31,17 @@ If none of those fired since the last release, say so and stop — every-session
    - Push it: `git push origin <version>` (background).
    - Create the Release: `gh release create <version> --title "<version> — <headline>" --latest --notes-file <notes>` (background).
 6. **Verify.** `gh release view <version>` / `gh release list` — confirm it published, isn't a draft, and is marked **Latest**. Report the URL.
-7. **Record it.** Append a one-line changelog entry under the dated heading: `/release <version>: cut from <N> changelog entries since <prev>.` Bump the factory version line if it lagged.
+7. **Announce it — recommend, then publish (don't skip this).** A GitHub Release is a page strangers have to go find; an **Announcement** reaches everyone watching. A release that changes what a user *gets* is not fully shipped until it's announced — release notes and the announcement are two surfaces of the same cut. Every user-facing cut:
+   - **Recommend first.** State that an announcement is due and draft it. It's a public post — publish only on the operator's explicit go (the same gate as the Release itself).
+   - **Draft in the announcement voice, not the changelog voice.** Lead with **Builder Mode** (standing rule — never "a factory that doesn't stop at code"), fold the release Highlights into reader-facing prose with concrete `bun run …` commands, keep the "factory improving the factory" story, and close warm — matching the existing posts in the repo's Announcements.
+   - **Publish** to **Discussions → Announcements** (`gh api graphql` `createDiscussion`, the `Announcements` category), and link back to the Release.
+   - **Keep the pinned Welcome current in the same pass.** Re-check the pinned Welcome against `bun run check-counts` — a pinned post with stale counts (practices · agents · playbooks) or off-brand positioning is the first thing a visitor reads; fix drift with `updateDiscussion`.
+8. **Record it.** Append a one-line changelog entry under the dated heading: `/release <version>: cut from <N> changelog entries since <prev>.` Bump the factory version line if it lagged.
 
 ## Notes
 
 - **Tag the public tip, not your branch.** The whole point is that the Release reflects what's actually published. Tagging an unpushed or feature-branch commit makes a Release GitHub can't resolve.
 - **Background the push and `gh release create`** — they're the network ops most likely to hang. If one stalls, the tag may still have gone through; re-check with `gh release list` before retrying.
 - `/learn-loop` (promote learnings) and `/release` (publish the cut) are the two halves of a boundary: internal compounding + external surface. Neither runs every session.
+- **The Announcement is the most common miss.** Cutting the Release and stopping there ships to a page nobody's subscribed to. Step 7 is not optional for user-facing cuts — the Release is discovery, the Announcement is reach. (Learned 2026-07-25: four releases' notes went out with no matching Announcement because the two surfaces weren't wired together.)
 - This command lives at `factory/commands/release.md` (canonical home); `.claude/commands/` symlinks there so Claude Code auto-discovers it as `/release`.
