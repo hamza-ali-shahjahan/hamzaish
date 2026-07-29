@@ -107,6 +107,7 @@ When work needs a framework, read these BEFORE acting:
 | Cold email | `factory/playbooks/launch-stage/cold-outreach-templates.md` |
 | Pricing | `factory/playbooks/launch-stage/pricing-playbook.md` |
 | First 100 customers | `factory/playbooks/launch-stage/first-100-customers.md` |
+| Entering a market with an entrenched API | `factory/playbooks/launch-stage/api-compatibility-as-distribution.md` |
 | 100 → 1000 | `factory/playbooks/scale-stage/100-to-1000-customers.md` |
 | Growth loops | `factory/playbooks/scale-stage/growth-loops-reforge.md` |
 | Moat | `factory/playbooks/scale-stage/moat-building.md` |

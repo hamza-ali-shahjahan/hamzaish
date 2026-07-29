@@ -3,6 +3,7 @@
   "ratchet_date": "2026-07-02",
   "covered": [
     "factory-launch",
+    "repo-scout",
     "feature-slicing",
     "go-live",
     "ideate",

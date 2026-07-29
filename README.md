@@ -52,8 +52,8 @@ Localhost is where products are born, not where they live. Local-first means you
 | | | |
 |---|---|---|
 | 🧠 **A brain that remembers** | learnings, decisions, and anti-patterns — SQLite-indexed, searchable from any session via `/brain-ask` | [`brain/`](brain/) |
-| 🏭 **A factory that acts** | 35 agents + 63 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
-| 📖 **Playbooks with receipts** | 49 playbooks · 146 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
+| 🏭 **A factory that acts** | 35 agents + 64 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
+| 📖 **Playbooks with receipts** | 50 playbooks · 146 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
 | 🔒 **A gate that blocks** | 70-check pre-launch security review (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict | [security checklist](factory/playbooks/mvp-stage/security-checklist.md) |
 | 🧪 **An engine that proves** | eval-gated build cycle — a feature slice without a named eval + an end-to-end test doesn't get built | [`/full-cycle`](factory/commands/full-cycle.md) |
 | 📡 **Senses that record** | session traces from your first session — every tool call and failure logged locally (gitignored, nothing leaves your machine); `bun run trace-report` grounds retros in what happened, not what you remember | [`scripts/trace-report.ts`](scripts/trace-report.ts) |
@@ -133,9 +133,9 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 
 </details>
 
-<details><summary><b>🛠️ The skills & commands (63)</b></summary>
+<details><summary><b>🛠️ The skills & commands (64)</b></summary>
 
-41 skills + 22 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
+42 skills + 22 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
 
 | Invoke | What it does |
 |---|---|
@@ -192,7 +192,7 @@ Backed by **22 engineering skills** under [`factory/skills/`](factory/skills/) �
 
 </details>
 
-<details><summary><b>📖 The playbooks (49) + the practices ledger (146)</b></summary>
+<details><summary><b>📖 The playbooks (50) + the practices ledger (146)</b></summary>
 
 **[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 146 practices for shipping products with Claude Code: **44 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
 

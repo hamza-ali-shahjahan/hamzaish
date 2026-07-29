@@ -25,6 +25,9 @@
    being chased). Note any status untouched for 14+ days (stale = silent failure).
 4. **GTM queue** — count drafts waiting in `gtm/queue/` older than 7 days (drafted-but-never-
    published is wasted work — surface it, don't delete it).
+4b. **Scout backlog** — count `awaiting-review` entries in `meta/repo-scout/backlog.local.md`;
+   flag any older than 7 days (one line each: repo · verdict). Drafted-but-never-reviewed
+   is the same waste as 4 — surface, never auto-promote.
 5. **Escalations** — any `ESCALATION.md` under `.goal/*/` unresolved? Top of report.
 6. **Mandate check** — does FACTORY-ORDERS still name this week's mandate, or is it last
    week's? Stale mandate → flag (the operator rewrites it Monday; the heartbeat never does).

@@ -28,6 +28,11 @@ clone_if_missing "hermes-agent" "https://github.com/nousresearch/hermes-agent.gi
 clone_if_missing "openclaw"     "https://github.com/openclaw/openclaw.git"
 clone_if_missing "bmad-method"  "https://github.com/bmad-code-org/bmad-method.git"
 clone_if_missing "agent-os"     "https://github.com/buildermethods/agent-os.git"
+# 2026-07-30 four-repo assessment (see references/README.md — study-only, never import)
+clone_if_missing "graft"        "https://github.com/NanoNets/Graft.git"
+clone_if_missing "adrian"       "https://github.com/secureagentics/Adrian.git"
+clone_if_missing "agentenv"     "https://github.com/kvcache-ai/AgentENV.git"
+clone_if_missing "openspace"    "https://github.com/HKUDS/OpenSpace.git"
 clone_if_missing "metaharness"  "https://github.com/ruvnet/metaharness.git"
 clone_if_missing "mattpocock-skills" "https://github.com/mattpocock/skills.git"
 clone_if_missing "headroom"     "https://github.com/headroomlabs-ai/headroom.git"

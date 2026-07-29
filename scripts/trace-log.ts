@@ -12,7 +12,8 @@
 //   • FAIL-OPEN. Any error — malformed stdin, unwritable disk — exits 0 silently.
 //     A telemetry hook that can block a turn costs more than it measures.
 //   • PRIVACY. Never records tool outputs, file contents, or prompts. Bash
-//     commands truncate to 160 chars; error heads to 200. Traces are local-only:
+//     commands truncate to 160 chars; error heads to 200; Skill calls record the
+//     skill NAME only (never its args). Traces are local-only:
 //     *.local.jsonl is gitignored repo-wide, and this repo is public.
 //   • BOUNDED. One file per day (meta/telemetry/traces/YYYY-MM-DD.local.jsonl),
 //     so no single file grows without limit and old days are droppable.
@@ -53,6 +54,9 @@ try {
     line.ok = !errSignal;
     if (errHead) line.err = errHead;
     if (p.tool_name === "Bash" && typeof input.command === "string") line.cmd = input.command.slice(0, CMD_MAX);
+    // Skill usage: name only — args can carry operator text, so they never land in a trace.
+    // This one field powers `bun run skill-report` (per-skill usage + trust states).
+    if (p.tool_name === "Skill" && typeof input.skill === "string") line.skill = input.skill.slice(0, 80);
   }
 
   const dir =

@@ -89,6 +89,18 @@ describe("trace pipeline end-to-end", () => {
     expect(JSON.stringify(line)).not.toContain("SECRET-OUTPUT");
   });
 
+  test("Skill calls record the skill name only — args never land in a trace", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "traces-"));
+    await runLogger(
+      postToolUse({ tool_name: "Skill", tool_input: { skill: "repo-scout", args: "OPERATOR-PRIVATE-TEXT" } }),
+      dir,
+    );
+    const [line] = readLines(dir);
+    expect(line.tool).toBe("Skill");
+    expect(line.skill).toBe("repo-scout");
+    expect(JSON.stringify(line)).not.toContain("OPERATOR-PRIVATE-TEXT");
+  });
+
   test("Stop events land as turns; the real report aggregates the real files", async () => {
     const dir = mkdtempSync(join(tmpdir(), "traces-"));
     await runLogger(postToolUse(), dir);

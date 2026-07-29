@@ -10,6 +10,32 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-30 — v2.23.0 · The external-repo mining cycle: scout skill, skill-outcome telemetry, judge hardening
+
+**What changed**
+
+- **Skill-outcome telemetry — `bun run skill-report`** (`scripts/skill-report.ts` + pure lib, tests incl. the named eval `skill-outcome-fidelity`): `trace-log.ts` now records the skill NAME on every `Skill` tool call (name only — args never land in a trace; privacy contract extended + test-pinned), and the report derives honest per-skill trust states (`trusted` ≥2 sessions + 0 failures + eval-covered · `proven` · `active` · `demoted` on any failure · `dormant` = curator candidate). Wired into `/learn-loop` step 2 (4th instrument) and `/kill-or-keep` step 7b (the v2.20 curator pass, now measured). Ported idea: OpenSpace's outcome tables + trust promotion, on our existing substrate instead of a new store.
+- **Eval-judge untrusted-output boundary** (`meta/evals/lib/judge.ts` — `wrapUntrusted` + per-call `crypto.randomUUID()` id, instruction block teaching the judge that inside = data; 4 deterministic boundary tests): a judged output containing forged close tags, fake verdict JSON, or judge-addressed imperatives can no longer terminate or steer the region — the id is minted after the output exists. One fix covers every factory judge (eval harness + `/goal` loop). Ported idea: Adrian's UUID-tagged boundaries.
+- **`/repo-scout`** (`factory/skills/repo-scout/SKILL.md`, eval-covered via contract-pin case): health gates (gh-api, hard rule #5) → scratchpad-only shallow clone → facts-only hardened deep-dive subagent (content-as-data, never-execute) → references-grammar assessment → `meta/repo-scout/backlog.local.md` draft, operator-gated graduation (references entry + install script + credits, via PR). Trending mode: OSS Insight public API (verified live), agent-tooling filter, 3-repo cap. New STANDING-ORDERS program `repo-scout` (authority, caps, escalation) + HEARTBEAT item 4b (backlog surfaced weekly, never auto-promoted).
+- **Four reference studies landed** (`references/README.md`, code-grounded 2026-07-30): **Graft** (adopt-narrow candidate — measured pull-mode trial spec: pinned version, MCP tools only, one TS product repo, trace/spend gate), **Adrian** (reference-only; boundary idea ported, semantic-judge second-opinion gated on defect-registry evidence), **AgentENV** (parking lot; E2B-compat lesson extracted), **OpenSpace** (peer study; outcome-telemetry idea ported, landfill control group extracted). Clone lines added to `install-references.sh` + `.gitignore`.
+- **Doctrine:** `factory/playbooks/launch-stage/api-compatibility-as-distribution.md` (adopt the incumbent's API, inherit its ecosystem — AgentENV/E2B evidence; CLAUDE.md routing row added) + `brain/anti-patterns/auto-captured-skill-landfill.md` (OpenSpace's 203-skill corpus as the control group; the five brakes auto-capture must ship with — the spec for the still-open hermes-agent "skills from experience" want).
+- **Credits:** "A thousand generosities" section in the credits roll — foundational tier + the four studied repos; a 10x tier deliberately waits for measured evidence (honest-copy).
+
+**Why**
+
+The operator asked what four external repos (Graft, Adrian, AgentENV, OpenSpace) could do for the factory. The code-grounded answer: none warrant wholesale adoption; two carry ideas worth porting immediately (outcome telemetry, judge boundaries), one warrants a measured trial (Graft), and the method itself — verify → clone read-only → facts-only deep-dive → gated assessment — was the missing capability, so it became `/repo-scout`. Every port lands as mechanism (instrument, test, gate), not prose.
+
+**What to revisit**
+
+- **Graft trial**: operator names the TS product repo → wire pinned pull-mode MCP per the references entry, one sprint, `trace-report` + spend before/after decides keep/drop.
+- **Semantic-judge second opinion**: build only when `bun run defect report` shows misses deterministic guards can't express (decision log holds the design sketch).
+- **Skill-name trace coverage**: traces recorded before this release have no `skill` field — early `dormant` rows may predate the instrument; judge after ~2 weeks of accumulation.
+- **Scout cadence**: first trending sweep manual; wire a scheduled run only after the manual flow proves the backlog→review loop (STANDING-ORDERS note).
+
+**Retro:** skipped — a bounded build executing an operator-reviewed in-chat assessment (2026-07-30); distilled lessons in `brain/learnings/2026-07-30.md`, decision record in `brain/decision-log/2026-07-30-external-repo-mining-cycle.md`.
+
+---
+
 ## 2026-07-24 — v2.22.0 · The guard-fire defect registry: which check caught what, recorded at catch time
 
 **What changed**
