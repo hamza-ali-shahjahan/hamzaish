@@ -226,6 +226,121 @@ factory just wrote a principle against.
 
 ---
 
+## The 2026-07-30 four-repo assessment
+
+> First run of the `/repo-scout` method (health gates → read-only clone → facts-only
+> deep-dive → this grammar). All four verified healthy and analyzed from CODE, not READMEs.
+> Adoption sequencing approved by the operator 2026-07-30 — decision log:
+> `brain/decision-log/2026-07-30-external-repo-mining-cycle.md`.
+
+### Graft — github.com/NanoNets/Graft
+
+**What it is**: Tree-sitter code-graph indexer + retrieval CLI for coding agents
+(TS/JS/Python/Go ONLY — undocumented). Two layers: $0 offline structural graph
+(BM25 + personalized PageRank + RRF ranking, type-aware call edges); opt-in LLM
+`--deep` prose. Attaches via CLI + hand-rolled MCP server + 5 Claude Code hooks +
+skill. Fully local, zero telemetry (grep-verified), MIT. 4 wks old, 2 effective
+maintainers, weekly breaking changes; published benchmarks unverifiable (the bench
+harness was deliberately deleted in v0.7.0).
+
+**What to mine**:
+1. **`callers --depth all`** — transitive blast-radius over precomputed edges with
+   type-aware receiver binding (`src/graph/bindings.ts`). The one thing an agent
+   can't cheaply fake. → pre-refactor step idea for `/review` / `/code-simplify`.
+2. **`skeleton` + `map`** — signatures-only reads and token-budgeted repo
+   orientation (`src/graph/map.ts`).
+3. **Freshness engineering** — 3ms stat probe → $0 incremental rebuild proven
+   byte-identical, signal-safe locking (`src/graph/refresh.ts`) → prior art for
+   `/brain-ingest`.
+
+**Verdict**: the only near-term third-party **adoption candidate** — as a
+**measured pull-mode trial** in ONE TS product repo: MCP tools only
+(callers/skeleton/map), version PINNED in `.mcp.json` (never `npx -y …@latest` —
+supply-chain hole), config through `/security-check`'s MCP audit. Explicitly NOT
+the hooks (per-prompt latency + a self-promo nudge injected into every retrieval,
+no opt-out) and NOT `--deep`. **Adoption gate (headroom precedent)**: one sprint,
+`trace-report` + spend ledger before/after — keep only on measured drop. **Watch**:
+breaking-change cadence settling; real external users.
+
+### Adrian — github.com/secureagentics/Adrian
+
+**What it is**: Runtime LLM-judge monitor for agent tool calls — Claude Code
+PreToolUse hook ships tool input + prompts + thinking blocks over WS to a Go
+backend, a judge (self-host: quantized Gemma on CUDA; or their cloud) maps a
+severity code to allow/ask/deny, client enforces. The remit idea (judge actions
+against declared purpose, 16-turn window) is real and right; the engineering
+around it isn't ready: zero in-repo detection evals, no CI on the enforcement
+path, benign-biased verdict parser (first M-code anywhere → *"not M0"* parses as
+M0/allow), inert `fail_closed` flag, and the CC integration ships transcripts
+**unredacted** to a cloud marked "(Recommended)". Apache-2.0, open-core.
+
+**What to mine**:
+1. **UUID-tagged untrusted boundaries** for judge prompts (`policy.go:82`) —
+   **PORTED 2026-07-30** into `meta/evals/lib/judge.ts` (`wrapUntrusted` +
+   boundary tests). One fix covers every factory judge (evals + `/goal` loop).
+2. **Remit-relative judging** — STANDING-ORDERS as machine-readable remit for a
+   future native alert-mode PreToolUse second opinion. **Gated**: build only when
+   `bun run defect report` shows misses the deterministic guards can't express.
+3. **Failure catalog** → anti-pattern material for our own LLM-judge features
+   (first-match parsing, fail-open drift, dead security flags).
+
+**Verdict**: reference-only. Deterministic guard hooks stay the hard deny layer;
+a probabilistic judge never fronts them. **Watch**: published detection evals +
+backend CI + tagged releases → revisit self-hosted alert-mode.
+
+### AgentENV — github.com/kvcache-ai/AgentENV
+
+**What it is**: Firecracker-microVM fleet substrate from the Mooncake/KTransformers
+group (built for Kimi agentic-RL training): rootfs AND guest memory as ublk devices
+over a from-scratch Rust overlaybd (48k LOC, heavily tested), sub-second resume,
+fork-a-live-VM-to-100, E2B-compatible API. Linux x86_64 + KVM + kernel 6.8+ ONLY
+(server cannot run on macOS), **no real auth** (any non-empty key passes — literal
+TODO), scheduler self-labeled prototype, RL harness in the README not the code.
+MIT (Apache-attribution question open on ported code). 1 wk public, single-org.
+
+**What to mine**:
+1. **E2B-API-compatibility as distribution** — adopt the incumbent's API, inherit
+   its SDK ecosystem. → `factory/playbooks/launch-stage/api-compatibility-as-distribution.md`.
+2. **Fork-to-explore** — N divergent attempts from one snapshot; our cheap version
+   is git worktrees + parallel subagents (already house pattern).
+3. **Prior-art flag for Muakkil's venture-agent pivot** — if it ever needs VM-grade
+   sandboxing at scale: wrap or rent (E2B/Daytona), never build.
+
+**Verdict**: parking lot (premature scaling incarnate for a solo-Mac factory).
+**Watch**: real auth + ARM support + a hosted offering.
+
+### OpenSpace — github.com/HKUDS/OpenSpace
+
+**What it is**: NOT a management layer — a standalone 186k-LOC Python agent
+harness (a Python port of Claude Code's TS internals, 59 preserved `.ts`
+citations, MIT-relicensed — provenance unresolved) + a skill-lifecycle subsystem
+behind a 6-tool MCP server. Delegation model: evidence only from tasks run in ITS
+loop. Safety gate is theater (one literal-string blocking rule; skill markdown
+executes shell on load, cloud-imported skills included); flagship self-evolution
+inert at stock settings (`passed: False` hardcoded); ~2% tests, zero CI. Cloud
+(open-space.cloud) genuinely opt-in/off-by-default. Its committed output corpus —
+203 auto-generated skills, ~53% harness-workarounds, `-enhanced-enhanced-enhanced`
+chains — is the field's best **control group** for ungoverned auto-capture.
+
+**What to mine**:
+1. **Skill-outcome telemetry** (`skill_engine/store.py`: listed→selected→applied→
+   completed + provisional→trusted on 2 independent successes) — **PORTED
+   2026-07-30** as `bun run skill-report` on the existing trace substrate.
+2. **The landfill as control group** → `brain/anti-patterns/auto-captured-skill-landfill.md`.
+   Hard evidence our MECE gate + curator + eval ratchet are load-bearing.
+3. **Two-stage retrieval** (BM25 → embedding rerank, budgeted listing,
+   `skill_ranker.py`) — parked until the skill library nears ~100; pairs with
+   gbrain RRF notes for Phase C `/brain-ask`.
+4. **Redaction policy design** (`cloud/redaction.py`: allowlist + blocklist +
+   hashed paths, fail-closed) — reference for any future telemetry that leaves a
+   machine.
+
+**Verdict**: peer study, strip-for-parts; never point it at a curated skill
+library (it writes `.skill_id` sidecars + rewrites frontmatter on scan). **Watch**:
+CI + tests + a working replay gate + skill signing → re-look.
+
+---
+
 ## Discipline
 
 - **Never `import` from `references/`** into anything in `factory/`, `brain/`, or `products/`.

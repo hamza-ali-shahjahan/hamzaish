@@ -10,6 +10,10 @@ references/agent-os/
 references/metaharness/
 references/mattpocock-skills/
 references/headroom/
+references/graft/
+references/adrian/
+references/agentenv/
+references/openspace/
 
 # Node / build artifacts
 node_modules/

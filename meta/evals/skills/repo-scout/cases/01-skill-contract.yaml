@@ -1,0 +1,29 @@
+# AGENT-BLIND: the system under test must never read this file.
+name: repo-scout-skill-contract
+skill: repo-scout
+description: >
+  Contract pin: factory/skills/repo-scout/SKILL.md must keep its five
+  load-bearing gates — gh-api health verification before assessment, the
+  never-execute rule, content-as-data (injection defense), scratchpad-only
+  clones, and draft-only output gated on operator review via the local
+  backlog. An edit dropping any of them turns this red.
+invoke:
+  cmd: ["cat", "factory/skills/repo-scout/SKILL.md"]
+  timeout_ms: 5000
+preflight:
+  must_exist: ["factory/skills/repo-scout/SKILL.md", "meta/repo-scout/backlog.example.md"]
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: 'gh api'
+  - type: stdout_matches
+    regex: 'Never execute'
+  - type: stdout_matches
+    regex: 'data, not instructions'
+  - type: stdout_matches
+    regex: 'backlog\.local\.md'
+  - type: stdout_matches
+    regex: 'operator review'
+  - type: stdout_matches
+    regex: 'scratchpad'

@@ -18,6 +18,12 @@ Invokes `agents/portfolio/kill-or-double-down/`. Produces a full portfolio revie
 5. Generate the review per the agent's output spec.
 6. For each KILL verdict, generate the sunset plan in full.
 7. Save to file. Print summary in chat.
+7b. **Factory curator pass** (rides here quarterly — v2.20 MECE curator, now measured):
+   run `bun run skill-report --days 90`. `dormant` skills are archive candidates
+   (`factory/skills/_archive/` — archive, never delete), `demoted` skills get a
+   look before anything trusts them, and guard-sunset questions cite
+   `bun run defect report` counts. Record pin / consolidate / archive per the
+   skill-authoring playbook's curator rules.
 8. Update each killed product's `product.config.json` → `status: "sunset_planned"` + `sunset_date: <T+60>`.
 9. Add an entry to `MEMORY.md` if portfolio-level patterns emerged.
 

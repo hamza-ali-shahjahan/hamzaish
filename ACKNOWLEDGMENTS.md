@@ -36,6 +36,35 @@ built one of these: thank you. You moved us forward, and we're loud about it.
 fake), Rob Fitzpatrick's* The Mom Test, *and Clayton Christensen's
 Jobs-to-be-Done. We didn't invent them; we lean on them daily.*
 
+## 🌱 A thousand generosities
+
+The open repos studied in [`references/`](references/README.md) — cloned to
+learn from, mined with attribution, never imported. Each entry there records
+what we took, what we deliberately didn't, and the gate any adoption must pass.
+
+**Foundational** — the studies that shaped the factory's architecture:
+[gbrain](https://github.com/garrytan/gbrain) ·
+[hermes-agent](https://github.com/nousresearch/hermes-agent) ·
+[openclaw](https://github.com/openclaw/openclaw) ·
+[bmad-method](https://github.com/bmad-code-org/bmad-method) ·
+[agent-os](https://github.com/buildermethods/agent-os) ·
+[metaharness](https://github.com/ruvnet/metaharness) ·
+[mattpocock/skills](https://github.com/mattpocock/skills) ·
+[headroom](https://github.com/headroomlabs-ai/headroom)
+
+**Studied 2026-07, ideas already ported:**
+[Graft](https://github.com/NanoNets/Graft) (NanoNets — blast-radius + freshness
+engineering) ·
+[Adrian](https://github.com/secureagentics/Adrian) (Secure Agentics — the
+untrusted-output boundary now hardening our eval judge) ·
+[AgentENV](https://github.com/kvcache-ai/AgentENV) (kvcache-ai — API-compat-as-
+distribution) ·
+[OpenSpace](https://github.com/HKUDS/OpenSpace) (HKUDS — the skill-outcome
+telemetry behind `bun run skill-report`)
+
+*A 10x tier waits here for the repo that measurably earns it — promotion takes
+evidence from an adoption gate, not enthusiasm.*
+
 ## 🛠️ The stack that carries us
 
 Free tiers and open tools carried a solo builder from zero to shipped. Gratitude
