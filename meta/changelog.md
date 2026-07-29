@@ -34,6 +34,8 @@ The operator asked what four external repos (Graft, Adrian, AgentENV, OpenSpace)
 
 **Retro:** skipped — a bounded build executing an operator-reviewed in-chat assessment (2026-07-30); distilled lessons in `brain/learnings/2026-07-30.md`, decision record in `brain/decision-log/2026-07-30-external-repo-mining-cycle.md`.
 
+**Released:** cut as [v2.23.0](https://github.com/hamza-ali-shahjahan/hamzaish/releases/tag/v2.23.0) same day (one entry since v2.22.0) with announcement [#69](https://github.com/hamza-ali-shahjahan/hamzaish/discussions/69); pinned Welcome counts refreshed in the same pass.
+
 ---
 
 ## 2026-07-24 — v2.22.0 · The guard-fire defect registry: which check caught what, recorded at catch time
