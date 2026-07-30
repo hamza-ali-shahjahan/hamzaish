@@ -98,3 +98,12 @@ Interactive use: this skill, any time. Unattended use: ONLY under the
 `repo-scout` program in STANDING-ORDERS (scope, caps, approval gates,
 escalation live there — the program grants authority, not a timer). Iron law
 unchanged: scouts research and draft; the operator merges, publishes, adopts.
+
+## Standalone distribution
+
+A generalized copy (no factory internals; backlog defaults to
+`.repo-scout/backlog.md`) ships standalone, MIT, plugin-installable:
+https://github.com/hamza-ali-shahjahan/repo-scout — listed in this repo's
+`.claude-plugin/marketplace.json` via a github source. **Keep the five gates in
+sync when either side changes** — both sides pin them mechanically (here: the
+`repo-scout-skill-contract` eval case; there: `.github/workflows/check-contract.sh`).

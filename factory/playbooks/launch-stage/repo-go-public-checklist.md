@@ -79,6 +79,14 @@ A stranger should be able to understand, trust, use, and contribute. The full se
 
 A green badge is trust. Wire the minimum check for the language:
 
+- **SHA-pinning an action? Mind lightweight vs annotated tags.** `gh api
+  repos/<owner>/<action>/git/ref/tags/vX` returns the ref's target SHA; try
+  dereferencing it via `git/tags/<sha>` — a 404 means the tag is *lightweight*
+  and the ref SHA already IS the commit (pin it directly); a hit returns the
+  annotated tag object whose `.object.sha` is the commit you actually pin.
+  Pinning the tag-object SHA of an annotated tag breaks the workflow. (Learned
+  publishing `repo-scout`, 2026-07-30.)
+
 - Shell → `shellcheck` via `ludeeus/action-shellcheck` (set `SHELLCHECK_OPTS: -S error` so style nits don't redden the badge).
 - Node/Py/etc → the project's existing test/lint command.
 
