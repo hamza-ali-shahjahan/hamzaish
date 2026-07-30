@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-07-30 — v2.23.1 · repo-scout goes standalone: public MIT repo, marketplace listing, README sync
+
+**What changed**
+
+- **`repo-scout` extracted to a standalone public repo** — [hamza-ali-shahjahan/repo-scout](https://github.com/hamza-ali-shahjahan/repo-scout) (MIT): generalized SKILL.md (no factory internals; backlog defaults to `.repo-scout/backlog.md`), two install doors (plugin marketplace + copy-in), full community-health set, and the **safety contract as CI** — `.github/workflows/check-contract.sh` greps the five gates, so a PR dropping one turns the badge red (the standalone mirror of our `repo-scout-skill-contract` eval case). Shipped through `/publish-repo` (Step-0 trio clean · noreply identity · secret/posture/home-path scans clean · fresh-clone smoke test ✓ · first CI run green) and polished with **Repolish** — honesty pass zero findings under `--strict` (real-repo dogfood datapoint for Repolish).
+- **Marketplace dual-door**: the factory's `.claude-plugin/marketplace.json` now lists repo-scout via a github source (schema verified against the plugin-marketplaces docs) — Hamzaish users get it natively from `factory/skills/`; everyone else via `claude plugin marketplace add hamza-ali-shahjahan/repo-scout`.
+- **README sync (operator-approved plan)**: the Senses row now names all four instruments (traces · friction · defects · `skill-report`); a new "🔭 A scout that studies" row; a Go-deeper standalone link; the generosities paragraph credits the 2026-07 four-repo study (Graft · Adrian · AgentENV · OpenSpace) and what each port became. Factory SKILL.md carries the standalone pointer + keep-gates-in-sync rule.
+- **Checklist gotcha encoded**: lightweight vs annotated tags when SHA-pinning actions (`git/tags/<sha>` 404 = the ref SHA already IS the commit) → `repo-go-public-checklist.md` Step 4.
+
+**Why**
+
+The operator wants the scout discoverable on its own — the skill is useful to anyone pointing a coding agent at third-party repos, not just this factory. Extraction follows the house dual-door pattern (edit once per side, gates pinned mechanically on both).
+
+**What to revisit**
+
+- If either side's gates change, the other side's pin must move in the same change — the SKILL.md sync rule names both check locations.
+- npm/registry distribution deliberately deferred (oss-publishing-checklist) until the standalone repo shows real pull.
+
+**Retro:** skipped — a distribution slice of the same day's v2.23.0 cycle; no new lessons beyond the encoded checklist gotcha.
+
+---
+
 ## 2026-07-30 — v2.23.0 · The external-repo mining cycle: scout skill, skill-outcome telemetry, judge hardening
 
 **What changed**

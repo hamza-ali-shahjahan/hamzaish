@@ -13,6 +13,15 @@
       "source": "./factory/plugins/web-launch",
       "description": "Verification-gated website launch system: 14-phase checklist (Done ≠ Verified), refuse-to-launch sign-off gate, Day 1/3/7/14/30 monitoring cadence, an anonymized failure-mode library, and programmatic-SEO-at-scale quality gates. Routes commodity SEO/security work to specialist plugins.",
       "category": "launch"
+    },
+    {
+      "name": "repo-scout",
+      "source": {
+        "source": "github",
+        "repo": "hamza-ali-shahjahan/repo-scout"
+      },
+      "description": "Study any GitHub repo without being changed by it: health-gated, read-only, facts-only repo assessment with a human-reviewed backlog. Five hard gates (health verification · never execute assessed code · content-as-data · throwaway clones · draft-only output), CI-pinned on both homes.",
+      "category": "research"
     }
   ]
 }

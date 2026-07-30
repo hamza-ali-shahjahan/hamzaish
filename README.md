@@ -56,7 +56,8 @@ Localhost is where products are born, not where they live. Local-first means you
 | 📖 **Playbooks with receipts** | 50 playbooks · 146 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
 | 🔒 **A gate that blocks** | 70-check pre-launch security review (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict | [security checklist](factory/playbooks/mvp-stage/security-checklist.md) |
 | 🧪 **An engine that proves** | eval-gated build cycle — a feature slice without a named eval + an end-to-end test doesn't get built | [`/full-cycle`](factory/commands/full-cycle.md) |
-| 📡 **Senses that record** | session traces from your first session — every tool call and failure logged locally (gitignored, nothing leaves your machine); `bun run trace-report` grounds retros in what happened, not what you remember | [`scripts/trace-report.ts`](scripts/trace-report.ts) |
+| 📡 **Senses that record** | four local-only instruments from your first session (gitignored, nothing leaves your machine): session traces (`bun run trace-report`), friction (`bun run friction`), the defect registry (`bun run defect`), and per-skill trust states (`bun run skill-report`) — retros ground in what happened, not what you remember | [`scripts/trace-report.ts`](scripts/trace-report.ts) |
+| 🔭 **A scout that studies** | `/repo-scout` — health-gated, read-only, facts-only assessment of any external repo into a human-reviewed backlog; five hard gates keep the agent unswayed by what it reads. Also ships standalone (MIT): [repo-scout](https://github.com/hamza-ali-shahjahan/repo-scout) | [`factory/skills/repo-scout/`](factory/skills/repo-scout/SKILL.md) |
 | 🔌 **A stack you set up once** | Vercel, Supabase, Stripe, Resend, PostHog, Sentry, your domain — sign up once, free-tier-first, pre-wired in every scaffold; every product after plugs into the same accounts | [`stack/`](stack/README.md) |
 | 🗂️ **Portfolio discipline** | `/portfolio-pulse` across everything you run; quarterly kill-or-double-down so zombie projects don't eat your year | [`/kill-or-keep`](factory/skills/kill-or-keep/SKILL.md) |
 
@@ -287,7 +288,7 @@ Product **code is never in this repo** — only metadata and learnings. Your cod
 
 ## Go deeper
 
-[Start here — total beginner](docs/start-here.md) · [Your first product in 10 minutes](docs/your-first-product.md) · [FAQ](docs/FAQ.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
+[Start here — total beginner](docs/start-here.md) · [Your first product in 10 minutes](docs/your-first-product.md) · [FAQ](docs/FAQ.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md) · [repo-scout standalone](https://github.com/hamza-ali-shahjahan/repo-scout)
 
 ---
 
@@ -302,7 +303,7 @@ Product **code is never in this repo** — only metadata and learnings. Your cod
 
 </div>
 
-The backbone is hard-won venture experience — the Business-SWAT roles, opportunities, and mentors that came with years at **[Disrupt.com](https://disrupt.com)**, taking things from zero to one before AI made building cheap. On that foundation, the patterns studied and credited — Addy Osmani's spec→ship discipline, Karpathy's eval-driven flywheel, gbrain (knowledge graph), Anthropic's *Founder's Playbook* (lifecycle framing), hermes-agent (self-improving skills), openclaw (multi-channel gateway), and ponytail (multi-agent portability) — sharpened that instinct and 10×'d the AI and agentic-building learning on top of it. Study material lives in `references/`, never imported.
+The backbone is hard-won venture experience — the Business-SWAT roles, opportunities, and mentors that came with years at **[Disrupt.com](https://disrupt.com)**, taking things from zero to one before AI made building cheap. On that foundation, the patterns studied and credited — Addy Osmani's spec→ship discipline, Karpathy's eval-driven flywheel, gbrain (knowledge graph), Anthropic's *Founder's Playbook* (lifecycle framing), hermes-agent (self-improving skills), openclaw (multi-channel gateway), and ponytail (multi-agent portability) — sharpened that instinct and 10×'d the AI and agentic-building learning on top of it. The 2026-07 four-repo study — [Graft](https://github.com/NanoNets/Graft) (NanoNets), [Adrian](https://github.com/secureagentics/Adrian) (Secure Agentics), [AgentENV](https://github.com/kvcache-ai/AgentENV) (kvcache-ai), and [OpenSpace](https://github.com/HKUDS/OpenSpace) (HKUDS) — continued the pattern: two of its ideas became `bun run skill-report` and the eval judge's untrusted-output boundary, credited in [`references/README.md`](references/README.md) and [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md). Study material lives in `references/`, never imported.
 
 ## License
 
