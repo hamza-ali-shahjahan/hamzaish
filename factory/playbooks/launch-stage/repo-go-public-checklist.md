@@ -74,6 +74,11 @@ A stranger should be able to understand, trust, use, and contribute. The full se
 - [ ] **CODE_OF_CONDUCT.md** — Contributor Covenant 2.1, with a real contact email.
 - [ ] **SECURITY.md** — how to report privately (email, not a public issue) + supported versions.
 - [ ] **.github/workflows/** — at least one CI check (lint/test) so the badge is green and PRs are gated.
+- [ ] **Provenance** — for Hamzaish-born repos: the `built with Hamzaish` badge in the hero
+  (`[![built with Hamzaish](https://img.shields.io/badge/built_with-Hamzaish-d97757.svg)](https://github.com/hamza-ali-shahjahan/hamzaish)`)
+  + a short **"Built with Hamzaish"** section linking home (the rotscan pattern — badge scannable
+  before a single line is read; section says what the repo is to the factory, claims verified only).
+  Every public repo is a discovery door back to the factory. (Swept portfolio-wide 2026-07-31.)
 
 ## Step 4 — CI / lint that actually runs
 
