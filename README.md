@@ -2,9 +2,7 @@
 
 # 🏭 Hamzaish
 
-**Unlock your Builder Mode — build the product, then everything after it.**
-
-**Hamzaish is an open-source agent OS for Claude Code that puts you in Builder Mode — and keeps you there for the whole life of a product.** Type `/builder-mode` with an idea and the factory builds it, launches it, prices it, finds its first hundred customers, and makes the kill-call with you — then carries every lesson into your next product. Your AI already writes the code; Hamzaish runs the company around it. Claude-Code-native; the brain and playbooks travel to **Cursor, Codex & Windsurf** via [`AGENTS.md`](AGENTS.md).
+**Your AI writes the code. Hamzaish runs the company.**
 
 [![🌱 Beginner-Friendly](https://img.shields.io/badge/%F0%9F%8C%B1_Beginner--Friendly-8957e5.svg)](docs/start-here.md)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
@@ -16,12 +14,46 @@
 ## See it work
 
 <p align="center">
-  <img src="docs/assets/hamzaish-hero-card.gif" alt="Hamzaish — puts you in Builder Mode, with a live eval run as proof" width="820">
+  <img src="docs/assets/hamzaish-hero-card.gif" alt="Hamzaish — unlock your Builder Mode, with a live eval run as proof" width="820">
 </p>
 
-<!-- v1 "factory in motion" demo (real command output, reproducible via scripts/hero.tape). Replace with the live idea→scaffold→ship TUI recording when ready. -->
+<p align="center"><b>Unlock your Builder Mode.</b> <em>Shipped through it so far: 6 products with public artifacts — live sites, npm CLIs, OSS tools → <a href="products/SHOWCASE.md">the showcase</a>.</em></p>
 
-Type one sentence. Get a local-first product running in 60 seconds — zero accounts, zero config. Then take it past localhost: `/go-live` wires the stack you set up once, the security gate clears it, and `/ship` puts it on a real URL people can sign up at. *Shipped through it so far: 6 products with public artifacts — live sites, npm CLIs, OSS tools → [the showcase](products/SHOWCASE.md).*
+## What this is
+
+**Hamzaish is an open-source agent OS for Claude Code that puts you in Builder Mode — and keeps you there for the whole life of a product.** Your agent supplies the hands — the model, the sessions, the code. Hamzaish supplies everything that makes those hands a company: **a brain** that carries every ship's lessons into the next one, **a factory** of stage agents and playbooks for the whole product life — **Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down** — and **a judge**: mechanical verification gates, walled off from the builder, that refuse to let "looks done" pass for "done." That last part is the line between Builder Mode and vibe coding, and it's the part the factory is evolving hardest: an honest, automated, blind judge for everything it builds.
+
+One deliberate architectural choice, stated plainly so you're not surprised when you clone: **Hamzaish ships no agent loop and no model of its own.** It is driven by an agent host — Claude Code today — that reads the skills, spawns the sessions, and executes. That's not a missing feature; it's the design. The factory is the part that compounds and stays yours; the engine underneath is swappable. Your host will be replaced by a better one within a year — your brain, your guardrails, and your judge shouldn't be.
+
+**→ [The full mission: Builder Mode](docs/builder-mode.md) · [The philosophy](docs/philosophy.md) · [Where it's evolving](meta/SELF-EVOLUTION.md)**
+
+## The 11pm moment
+
+[![Builder Mode — momentum first, strategy second](docs/assets/builder-mode.png)](docs/builder-mode.md)
+
+**Most AI tools stop when the code is done. Builders' problems start there.**
+
+The old advice — business plan, market sizing, twenty validation interviews *before* you build — was written for a world where building was expensive. That world is gone. Building is cheap, fast, and reversible now, which means **the thing you ship *is* the test.** **Strategy-first kills more builders than bad ideas ever did** — so here it's a rail you pull in when you want it, never a toll you pay to start.
+
+But most solo projects don't die in the build. They die in everything *after* it: the security review, the launch, the pricing call, the first-100-customers grind, knowing when to kill. That's the part Hamzaish runs with you — and the reason it's a lifecycle, not a scaffolder.
+
+## What you get / what you bring
+
+**What you get — the factory, the brain, and the judge:**
+
+- **The factory:** 35 stage agents + 64 skills & commands (42 skills, 22 commands) covering the full lifecycle — idea validation, scaffolding, the eval-gated [`/full-cycle`](factory/commands/full-cycle.md) build engine, security review, go-live provisioning, launch, pricing, first-100-customers, retention, kill-or-double-down. Plus 50 playbooks and a 146-practice ledger where every practice is badged honestly: ✅ proven by a real ship or dated incident (44) · 🟡 partial (3) · ⏳ research-baked (99). No practice gets "proven" by opinion.
+- **The brain:** learnings, decisions, and anti-patterns in markdown, SQLite-indexed, searchable from any session via `/brain-ask`. When a mistake generalizes, it's promoted into a guardrail the next build inherits automatically — your second product starts smarter than your first.
+- **The judge — mechanical gates, runnable today:**
+  - `bun run eval` — the eval harness: deterministic, agent-blind cases per skill (`--no-llm` needs no model or key). The coverage ratchet (`bun run check-evals`) enforces "a new skill without an eval is debt": **9 of 77** skills/agents carry cases today, the other 68 are a visible, grandfathered backlog — coverage can only go up, and deleting a case fails CI. Early and honest about it: the judge covers a handful of skills, not yet every build, and the direction is fixed.
+  - `bun scripts/verify-live.ts <url>` — the go-live proof: read-only A1–A11 assertions against the *real deployed product* (DNS, TLS on apex + www, health endpoint, build-SHA match, authz on protected routes, cron-secret enforcement, Sentry canary). A scorecard, never a bare "done."
+  - [`/security-check`](docs/security.md) — the 70-check pre-launch security review with a forced **BLOCK / CLEAR** verdict.
+  - The fact guards CI runs on every change — `check-counts` (every headline number in this README must match the filesystem or the build fails), `check-evals`, `check-model-independence`, `check-product-layout`, `check-skill-command-collision`, and friends. The honesty is enforced, not promised.
+
+**What you bring — the agent host:**
+
+Hamzaish runs on [Claude Code](https://claude.ai/code) (paid plan) + [Bun](https://bun.sh), with the [GitHub CLI](https://cli.github.com) for git-facing skills. `bun run setup` wires the skills for auto-discovery, and you drive the factory as slash commands — `/builder-mode`, `/full-cycle`, `/go-live`, `/ship`.
+
+The brain and playbooks also travel to **Cursor, Codex, and Windsurf** via [`AGENTS.md`](AGENTS.md) — those hosts read the same markdown as context and follow it. Honest scope of that today: context-level, not a packaged plug-in — no slash-command ergonomics or auto-discovery outside Claude Code yet. The judge, though, is host-agnostic already: every gate script runs under `bun` regardless of which agent produced the work. Verification that doesn't care who built it is the point.
 
 ## Install
 
@@ -58,47 +90,42 @@ Also available: `web-launch@hamzaish` · [repo-scout standalone →](https://git
 
 **Requirements:** [Claude Code](https://claude.ai/code) on a **paid Claude plan** (no free tier — better to know now) · [Bun](https://bun.sh) · [GitHub CLI](https://cli.github.com) for the git-facing skills.
 
-## Use — what you type in Claude Code
+## Quickstart — install to a green gate run
+
+```bash
+# after install: prove the headline numbers in this README match the filesystem
+bun run check-counts
+
+# run the judge — deterministic eval cases, no model or API key needed
+bun run ingest
+bun run eval --no-llm
+
+# run the coverage + structure guards CI runs
+bun run check-evals
+bun run check-model-independence
+bun run check-product-layout
+bun run check-skill-command-collision
+```
+
+Green looks like: `✓ all headline counts match disk`, an eval summary of `PASS=16  SKIP=9` (SKIPs are LLM-only cases held out by `--no-llm`), and silent exit-0 from each guard. You've now watched the factory verify itself — before building anything with it, which is exactly the order Builder Mode runs in.
+
+Then build — open Claude Code in the folder and type:
 
 ```
-/builder-mode a tip calculator for freelancers
+/builder-mode <your idea>
 ```
 
 Watch it scaffold a **local-first product that runs in 60 seconds.** Local is mile one, not the destination: when you're ready, **`/go-live`** wires the accounts you set up once (Supabase, Stripe, Resend, your domain…), **`/security-check`** gates it, and **`/ship`** puts it live on a URL you can share. ([The 10-minute guided version →](docs/your-first-product.md))
 
 Day-to-day: **`/work-on <slug>`** enters a product's workspace · **`/portfolio-pulse`** answers "where should I focus today" · **`/repo-scout <url>`** studies any repo without being changed by it.
 
-**Never used a terminal? You can absolutely do this** — no coding required; you talk to an AI and it does the techie parts.
-
-<a href="docs/start-here.md"><img src="docs/assets/start-here-banner.png" alt="Never used a terminal? Start here — no coding required; you just talk to an AI and it does the techie parts. macOS · Linux · Windows." width="100%"></a>
-
-**→ [The complete click-by-click walkthrough →](docs/start-here.md)** (🍎 Mac · 🐧 Linux · 🪟 Windows — every step with "what you'll see" + a troubleshooting kit).
+**Never used a terminal? You can absolutely do this** — no coding required; you talk to an AI and it does the techie parts. **→ [The complete click-by-click walkthrough](docs/start-here.md)** (🍎 Mac · 🐧 Linux · 🪟 Windows).
 
 **Safety, either door:** scaffolded products run agent-generated code inside a devcontainer, secrets are gitignored from commit zero, and nothing auto-pushes off your machine. ([Full threat model →](docs/security.md))
 
-## The 11pm moment
+## Why it rides on a host instead of being one
 
-[![Builder Mode — momentum first, strategy second](docs/assets/builder-mode.png)](docs/builder-mode.md)
-
-**Most AI tools stop when the code is done. Builders' problems start there.**
-
-Every builder knows the moment: it's 11pm, you have an idea, and your hands are itching to build. Then the "right way" kicks in — business plans, market sizing, twenty validation interviews — and by the time the strategy funnel is done with you, the spark is dead. **Strategy-first kills more builders than bad ideas ever did.**
-
-That advice was written for a world where building was expensive. That world is gone. With AI, building is cheap, fast, and reversible — **the thing you ship *is* the test.** Builder Mode is that flipped calculus made a working mode: build aggressively with instinct, validate iteratively, scale with strategy. Strategy is a rail you pull in — never a toll you pay to start.
-
-But most solo projects don't die in the build. They die in everything *after* it: the security review, the launch, the pricing call, the first-100-customers grind, knowing when to kill. Hamzaish is Builder Mode as a working system — it runs the whole lifecycle, **Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down**, with stage-specific agents, playbooks distilled from real ships, and a brain that carries every lesson into your next product.
-
-**→ [The full mission: Builder Mode](docs/builder-mode.md) · [The philosophy](docs/philosophy.md)**
-
-## What it feels like
-
-> **11:04pm.** You type `/builder-mode` and one sentence about the idea. A minute later a local product is running — no accounts, no config, no business plan demanded first. The strategy funnel never got a vote.
-
-> **Launch morning.** `/go-live` wires the accounts you set up once — database, payments, email, analytics, your domain. The security gate reads the product and says **BLOCK** — seventy concrete checks, a forced verdict — and names why. You fix it, it says **CLEAR**, `/ship` deploys. The link you share isn't `localhost:3000`. It's your domain, live, and people can sign up.
-
-> **Product #2.** Your first product passed 138 tests and still broke in production. That lesson is a guardrail now, not a memory — your second build inherits it automatically, and plugs into the same accounts with no re-setup. This is the part that compounds.
-
-Localhost is where products are born, not where they live. Local-first means you start free and instant — it never means you stay there.
+Because the host is the commodity and the factory is the compounding asset. Models get replaced; agent frameworks get replaced; the lessons from your last four ships, the guardrail that caught the auth bug that passed 138 tests, and the judge that won't let a launch through unverified — those compound for as long as you build. Hamzaish keeps that layer independent so it can ride each generation of agent rather than die with one. It's the verification-and-memory layer for whatever builds next — not a walled tool you have to move into.
 
 ## What's inside
 
@@ -340,3 +367,4 @@ In plain English: use, study, modify, and self-host freely. If you run a *modifi
 *Built in public by [Hamza Ali](https://github.com/hamza-ali-shahjahan) — mail.hamza.ali@gmail.com. The factory's repo runs on the factory's own discipline.*
 
 </div>
+
