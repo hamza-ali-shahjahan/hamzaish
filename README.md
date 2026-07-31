@@ -4,7 +4,7 @@
 
 **Unlock your Builder Mode — build the product, then everything after it.**
 
-Not another AI coding setup. AI already writes your code — nobody's running your launch, your pricing, your first hundred customers, or the kill-call. Hamzaish is an open-source Claude Code setup that runs the whole life of a product, and remembers every lesson for your next one. Works with **Claude Code, Cursor, Codex & Windsurf**.
+**Hamzaish is an open-source agent OS for Claude Code that puts you in Builder Mode — and keeps you there for the whole life of a product.** Type `/builder-mode` with an idea and the factory builds it, launches it, prices it, finds its first hundred customers, and makes the kill-call with you — then carries every lesson into your next product. Your AI already writes the code; Hamzaish runs the company around it. Claude-Code-native; the brain and playbooks travel to **Cursor, Codex & Windsurf** via [`AGENTS.md`](AGENTS.md).
 
 [![🌱 Beginner-Friendly](https://img.shields.io/badge/%F0%9F%8C%B1_Beginner--Friendly-8957e5.svg)](docs/start-here.md)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
@@ -22,6 +22,59 @@ Not another AI coding setup. AI already writes your code — nobody's running yo
 <!-- v1 "factory in motion" demo (real command output, reproducible via scripts/hero.tape). Replace with the live idea→scaffold→ship TUI recording when ready. -->
 
 Type one sentence. Get a local-first product running in 60 seconds — zero accounts, zero config. Then take it past localhost: `/go-live` wires the stack you set up once, the security gate clears it, and `/ship` puts it on a real URL people can sign up at. *Shipped through it so far: 6 products with public artifacts — live sites, npm CLIs, OSS tools → [the showcase](products/SHOWCASE.md).*
+
+## Install
+
+**Option A — the full factory** *(recommended: this is the compounding OS — clone it, it becomes yours)*
+
+One command; installs Bun if missing, clones, sets up ([read it first](install.sh)):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
+```
+
+<details><summary>…or set it up by hand</summary>
+
+You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code).
+
+```bash
+git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
+cd hamzaish
+bun run setup        # idempotent — creates YOUR factory, never touches existing data
+```
+</details>
+
+**Option B — just the plugins** *(pieces of Hamzaish in your own repo, no adoption — the free sample, not the product)*
+
+```bash
+claude plugin marketplace add hamza-ali-shahjahan/hamzaish
+```
+
+```bash
+claude plugin install repo-scout@hamzaish
+```
+
+Also available: `web-launch@hamzaish` · [repo-scout standalone →](https://github.com/hamza-ali-shahjahan/repo-scout)
+
+**Requirements:** [Claude Code](https://claude.ai/code) on a **paid Claude plan** (no free tier — better to know now) · [Bun](https://bun.sh) · [GitHub CLI](https://cli.github.com) for the git-facing skills.
+
+## Use — what you type in Claude Code
+
+```
+/builder-mode a tip calculator for freelancers
+```
+
+Watch it scaffold a **local-first product that runs in 60 seconds.** Local is mile one, not the destination: when you're ready, **`/go-live`** wires the accounts you set up once (Supabase, Stripe, Resend, your domain…), **`/security-check`** gates it, and **`/ship`** puts it live on a URL you can share. ([The 10-minute guided version →](docs/your-first-product.md))
+
+Day-to-day: **`/work-on <slug>`** enters a product's workspace · **`/portfolio-pulse`** answers "where should I focus today" · **`/repo-scout <url>`** studies any repo without being changed by it.
+
+**Never used a terminal? You can absolutely do this** — no coding required; you talk to an AI and it does the techie parts.
+
+<a href="docs/start-here.md"><img src="docs/assets/start-here-banner.png" alt="Never used a terminal? Start here — no coding required; you just talk to an AI and it does the techie parts. macOS · Linux · Windows." width="100%"></a>
+
+**→ [The complete click-by-click walkthrough →](docs/start-here.md)** (🍎 Mac · 🐧 Linux · 🪟 Windows — every step with "what you'll see" + a troubleshooting kit).
+
+**Safety, either door:** scaffolded products run agent-generated code inside a devcontainer, secrets are gitignored from commit zero, and nothing auto-pushes off your machine. ([Full threat model →](docs/security.md))
 
 ## The 11pm moment
 
@@ -212,6 +265,8 @@ Playbooks are short (300–800 words), sourced, stage-gated:
 
 ## How it's different
 
+**Not another AI coding setup.** AI already writes your code — nobody's running your launch, your pricing, your first hundred customers, or the kill-call. Here's where Hamzaish actually sits:
+
 | | build-stage setups<br>(gstack / BMAD / SuperClaude) | AI app builders<br>(Lovable / v0 / Bolt) | agent frameworks<br>(AutoGPT / crewAI) | personal AI OS<br>(assistant runtimes) | **Hamzaish** |
 |---|---|---|---|---|---|
 | Scope | build stage only | build + host a prototype | a framework you assemble | your inbox, tasks, and tools | **a product's whole life** |
@@ -220,45 +275,6 @@ Playbooks are short (300–800 words), sourced, stage-gated:
 | Memory across projects | per-session | per-project | per-run | app-level memory service | **persistent brain + learnings loop** |
 | Runs on | config + tools | their cloud | a Python service | containers + a database stack | **a folder + Claude Code** |
 | Form | config | closed platform | framework | hosted app | **markdown-first method, forkable — yours** |
-
-## Two doors in
-
-### 🚀 Comfortable in a terminal? First win in 5 minutes
-
-**One command** (installs Bun if missing, clones, sets up — [read it first](install.sh)):
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
-```
-
-<details><summary>…or set it up by hand</summary>
-
-You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code).
-
-```bash
-git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
-cd hamzaish
-bun run setup        # idempotent — creates YOUR factory, never touches existing data
-```
-</details>
-
-Then open Claude Code and type:
-
-```
-/builder-mode a tip calculator for freelancers
-```
-
-Watch it scaffold a **local-first product that runs in 60 seconds — zero accounts, zero config.** Local is mile one, not the destination: when you're ready, **`/go-live`** wires the accounts you set up once (Supabase, Stripe, Resend, your domain…), **`/security-check`** gates it, and **`/ship`** puts it live on a URL you can share. ([The 10-minute guided version →](docs/your-first-product.md))
-
-### 🌱 Never used a terminal? You can absolutely do this
-
-<a href="docs/start-here.md"><img src="docs/assets/start-here-banner.png" alt="Never used a terminal? Start here — no coding required; you just talk to an AI and it does the techie parts. macOS · Linux · Windows." width="100%"></a>
-
-No coding required — you talk to an AI and it does the techie parts. **One honest catch first:** Hamzaish runs on **Claude Code**, which needs a **paid Claude plan** — there's **no free tier**. Better to know that now than five steps in. If that's a yes: **get the Claude app → download Hamzaish (a ZIP, no git) → open the folder and type one sentence.**
-
-**→ [The complete click-by-click walkthrough — pick your machine, no jargon →](docs/start-here.md)** (🍎 Mac · 🐧 Linux · 🪟 Windows — every step with "what you'll see" + a troubleshooting kit).
-
-**Safety, either door:** scaffolded products run agent-generated code inside a devcontainer, secrets are gitignored from commit zero, and nothing auto-pushes off your machine. ([Full threat model →](docs/security.md))
 
 ## The discipline
 
