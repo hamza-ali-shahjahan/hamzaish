@@ -121,25 +121,40 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    drifted out of the flow for builds #2–3: see
    `products/mini-minecraft/decisions/0001-factory-stickiness-gap.md`.)
 
-5. **Make the factory VISIBLE — the enablement protocol (Flight Plan + Receipt).**
-   Silent competence is not enablement: a user (especially a new one) must SEE, in every
-   conversation, that Hamzaish ran and which doors it opened — that is how they learn the
-   system exists and how to drive it themselves. Two mandatory lines around every
-   factory-routed task:
-   - **Open with a Factory Flight Plan** (1–2 lines): the lane, the slice, and the factory
-     doors this task will use — named as their real commands, e.g.
-     `🏭 Hamzaish · Express Lane · slice S6 "night zombies" · doors: /work-on mini-minecraft → build → /test → e2e verify`.
-   - **Close with a Factory Receipt** (2–4 lines): which doors/checks actually ran, which
-     factory artifacts were updated (`status.md`, `learnings.md`, ledger), and the **next
-     doors** the user could type themselves next time (e.g. `/work-on <slug>`, `/review`,
-     `/ship`). Also refresh your row in the product's *Active sessions* table — receipts on
-     disk are what make factory usage measurable per product.
-   Keep both SHORT — a legibility layer, never a lecture. Enforced mechanically by the
-   `factory/hooks/factory-session-context.sh` SessionStart hook (registered at install),
-   which injects this protocol into any session opened inside a registered product repo.
-   (Encoded 2026-08-01 — same session as #4: the operator's verdict on invisible factory
-   usage was "not enablement at all." See
-   `products/mini-minecraft/decisions/0002-enablement-protocol.md`.)
+5. **Make the factory VISIBLE — the enablement protocol (plan line + receipt).**
+   Silent competence is not enablement — and jargon-visible is not legible. The user
+   (especially a brand-new one) must SEE what Hamzaish did for them, in words a day-1
+   user understands. Two mandatory bookends around every factory-routed task, both
+   written in the READER'S language — value, never mechanism; if a term needs the
+   codebase to explain it, replace it with what it does:
+   - **Open with the 4-line plan (~80-word cap) — it teaches the levers:**
+     ```
+     🏭 Hamzaish plan
+     - Goal: <what "done" looks like, one plain sentence>
+     - Steps: <the pieces of this task, in order, plain words>
+     - Commands: /command — what it does here · /command — what it does here
+     - Proof before "done": <how the work will be verified, plain words>
+     ```
+     Commands always appear WITH what they do in THIS task — that is how a new user
+     learns `/build` and `/test` are things THEY could type. Steps are the user's
+     mental model of the work (features they recognize), never internal stage names.
+   - **Close with the 3-line receipt (hard cap ~50 words):**
+     ```
+     🏭 Hamzaish receipt
+     - What you got: <the value added to the user's work, one plain sentence>
+     - Checked: <how it was verified before "done" — plus anything deliberately NOT done>
+     - Try next: /command — <what typing it will do for them>
+     ```
+   Rules: numbers only if the user feels them ("64 tests passed" yes; commit hashes no);
+   ONE next command, never a menu; no internal nouns (lanes, slices, tendrils, doors) in
+   either bookend. Also refresh your row in the product's *Active sessions* table —
+   receipts on disk keep factory usage measurable per product.
+   Enforced mechanically by the `factory/hooks/factory-session-context.sh` SessionStart
+   hook (registered at install), which injects this protocol into any session opened
+   inside a registered product repo.
+   (Encoded 2026-08-01; legibility pass approved same day — the first receipts were
+   visible but unreadable to a new user. See
+   `products/mini-minecraft/decisions/0002-enablement-protocol.md` and `0003`.)
 
 ## ② Strategy Lane — opt-in, lite-by-default
 

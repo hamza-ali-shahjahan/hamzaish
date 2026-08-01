@@ -21,11 +21,15 @@ asked (a follow-up is a new slice, not an exit from the factory):
 5. **Feed the loop**: mark the slice shipped in `status.md`, add transferable lessons to
    `learnings.md`, and ground the retro (`bun run trace-report`, `bun run friction log`
    from the factory repo).
-6. **Make it visible (enablement protocol)**: open each task response with a one-line
-   Factory Flight Plan (lane · slice · the factory doors this task will use, named as
-   their real slash commands) and close with a Factory Receipt (doors that ran, factory
-   artifacts updated, and the next doors the user can type themselves). The user must
-   always be able to SEE what Hamzaish did — silent competence is not enablement.
+6. **Make it visible (enablement protocol)** — plain day-1 language, value never
+   mechanism, no factory jargon. Open each task response with the 4-line plan (~80 words):
+   `🏭 Hamzaish plan` · **Goal:** what "done" looks like · **Steps:** the pieces of this
+   task, in order · **Commands:** each `/command` WITH what it does here · **Proof before
+   "done":** how it will be verified. Close with the 3-line receipt (max ~50 words):
+   `🏭 Hamzaish receipt` · **What you got:** the value added to the user's work ·
+   **Checked:** how it was verified (plus anything deliberately not done) · **Try next:**
+   ONE `/command` with what it does. Numbers only if the user feels them — test counts
+   yes, commit hashes no.
 
 ## Session-quality defaults (factory-shipped — apply in every session)
 
