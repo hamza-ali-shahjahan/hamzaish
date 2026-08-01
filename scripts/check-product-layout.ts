@@ -14,7 +14,7 @@
 //
 //   bun run check-product-layout
 // See brain/anti-patterns/product-code-inside-factory-repo.md
-import { readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve, dirname, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -93,6 +93,43 @@ if (violations.length) {
   console.error("  slug, set code_path:null in product.config.json, and keep products/<slug>/ metadata-only.");
   console.error("  Why: brain/anti-patterns/product-code-inside-factory-repo.md");
   process.exit(1);
+}
+
+// ---- Tendril check: every registered code repo should carry the factory CLAUDE.md ----
+// The defect this exists for: on 2026-08-01 a session built three slices of a product but
+// silently dropped the factory flow after slice #1 — the code repo carried no tendril
+// (a CLAUDE.md re-entering the flow), so nothing pulled later sessions back in. See
+// products/mini-minecraft/decisions/0001-factory-stickiness-gap.md
+// Default: WARN (legacy repos predate the rule). --strict-tendrils: fail.
+const strictTendrils = process.argv.includes("--strict-tendrils");
+const tendrilMissing: string[] = [];
+const cpPath = join(root, "code-paths.local.json");
+if (existsSync(cpPath)) {
+  try {
+    const map = JSON.parse(readFileSync(cpPath, "utf8")) as Record<string, string>;
+    for (const [slug, p] of Object.entries(map)) {
+      if (typeof p !== "string" || !existsSync(p)) continue; // placeholder / not on this machine
+      const tendril = join(p, "CLAUDE.md");
+      let ok = false;
+      try {
+        ok = existsSync(tendril) && /hamzaish/i.test(readFileSync(tendril, "utf8"));
+      } catch { /* unreadable file counts as missing */ }
+      if (!ok) tendrilMissing.push(`${slug} → ${p}`);
+    }
+  } catch { /* unreadable registry — layout result above still stands */ }
+}
+if (tendrilMissing.length) {
+  const lines = [
+    `${strictTendrils ? "✗" : "⚠"} ${tendrilMissing.length} registered product repo(s) missing the factory tendril (a CLAUDE.md that re-enters the flow):`,
+    ...tendrilMissing.map((t) => `    • ${t}`),
+    `  Fix: seed <repo>/CLAUDE.md from templates/claude-md-template.md ("Hamzaish-managed product" block, slug filled).`,
+    `  Why: products/mini-minecraft/decisions/0001-factory-stickiness-gap.md`,
+  ].join("\n");
+  if (strictTendrils) {
+    console.error(lines);
+    process.exit(1);
+  }
+  console.warn(lines);
 }
 
 console.log(`✓ product layout clean — all ${products.length} product folders are metadata-only (code lives in their own repos).`);

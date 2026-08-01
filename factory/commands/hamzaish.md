@@ -49,7 +49,12 @@ Express Lane. Otherwise ask once, with ① pre-selected:
 3. **Standing guardrails** (distilled from `products/*/learnings.md` + `meta/`):
    - A new product is its OWN repo. Register it here with
      `cp -r products/_template products/<slug>` and add the slug → local path to
-     `code-paths.local.json`. **Never paste product code into this repo.**
+     `code-paths.local.json`. Then **plant the tendril**: seed the code repo's `CLAUDE.md`
+     from `templates/claude-md-template.md` (at minimum its "Hamzaish-managed product" +
+     "Session-quality defaults" blocks, slug filled in) — that file is what makes every
+     FUTURE session in that repo, including a brand-new user's, re-enter the factory by
+     default. `bun run check-product-layout` warns when a registered repo is missing it.
+     **Never paste product code into this repo.**
    - **Validation speed bump.** Before production code on a NEW product, run
      `bun run check-validation <slug>`. It's a bump, not a wall: either 5 target-user
      conversations are logged in `products/<slug>/validation/README.md`, or you flip the
@@ -102,6 +107,39 @@ Express Lane. Otherwise ask once, with ① pre-selected:
      npm-unresolvable deps), shows the *extent first*, then cleans with confirmation
      (`--fix` plans the de-links, `--apply` writes them). Report-first, never silent. It's the
      cleanup *stage*, distinct from the per-push guards (`check-assets`, `check-changelog`).
+
+4. **Stay in the flow — a follow-up is a new slice, not an exit (session continuation).**
+   Once a session has routed through this command, EVERY later build request for the same
+   product re-enters this flow automatically — the user will not re-invoke `/hamzaish`,
+   and must never need to: new request → pin it as a slice in `products/<slug>/status.md`
+   BEFORE building → build (tests accompany code) → verify end to end → feed the loop
+   (status + learnings + `bun run trace-report` / `bun run friction log`). Silently
+   dropping the factory midway is a defect, not a shortcut. The product-repo tendril
+   (planted at registration, step 3) carries this same contract into every future
+   session — that is what makes a brand-new user leverage the factory by default.
+   (Encoded 2026-08-01 after a live session Express-Laned build #1 correctly, then
+   drifted out of the flow for builds #2–3: see
+   `products/mini-minecraft/decisions/0001-factory-stickiness-gap.md`.)
+
+5. **Make the factory VISIBLE — the enablement protocol (Flight Plan + Receipt).**
+   Silent competence is not enablement: a user (especially a new one) must SEE, in every
+   conversation, that Hamzaish ran and which doors it opened — that is how they learn the
+   system exists and how to drive it themselves. Two mandatory lines around every
+   factory-routed task:
+   - **Open with a Factory Flight Plan** (1–2 lines): the lane, the slice, and the factory
+     doors this task will use — named as their real commands, e.g.
+     `🏭 Hamzaish · Express Lane · slice S6 "night zombies" · doors: /work-on mini-minecraft → build → /test → e2e verify`.
+   - **Close with a Factory Receipt** (2–4 lines): which doors/checks actually ran, which
+     factory artifacts were updated (`status.md`, `learnings.md`, ledger), and the **next
+     doors** the user could type themselves next time (e.g. `/work-on <slug>`, `/review`,
+     `/ship`). Also refresh your row in the product's *Active sessions* table — receipts on
+     disk are what make factory usage measurable per product.
+   Keep both SHORT — a legibility layer, never a lecture. Enforced mechanically by the
+   `factory/hooks/factory-session-context.sh` SessionStart hook (registered at install),
+   which injects this protocol into any session opened inside a registered product repo.
+   (Encoded 2026-08-01 — same session as #4: the operator's verdict on invisible factory
+   usage was "not enablement at all." See
+   `products/mini-minecraft/decisions/0002-enablement-protocol.md`.)
 
 ## ② Strategy Lane — opt-in, lite-by-default
 
