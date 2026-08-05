@@ -20,7 +20,8 @@ committed file without your review here. Promotion authority still belongs to
    ~/.claude/projects/<encoded-cwd>/hamzaish-learnings-queue.json
    ```
    where `<encoded-cwd>` is the cwd with every non-alphanumeric char replaced by
-   `-` (e.g. `/Users/hamza/Claude/Hamzaish` → `-Users-hamza-Claude-Hamzaish`).
+   `-` (e.g. `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}` resolving to
+   `/home/ada/Claude/Hamzaish` encodes as `-home-ada-Claude-Hamzaish`).
    If it is missing or empty, tell the user there's nothing to review and stop.
 
 2. **Show a review table**, highest confidence first (respect `--min-confidence`,

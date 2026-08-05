@@ -50,13 +50,13 @@ test("SKIPS prompts that look like they carry secrets", () => {
 });
 
 test("encodeCwd matches Claude Code's project-dir scheme", () => {
-  expect(encodeCwd("/Users/hamza/Claude")).toBe("-Users-hamza-Claude");
+  expect(encodeCwd("/home/ada/Claude")).toBe("-home-ada-Claude");
 });
 
 test("queuePathFor honors the env override", () => {
   expect(queuePathFor("/x", "/home", "/tmp/q.json")).toBe("/tmp/q.json");
-  expect(queuePathFor("/Users/hamza/Claude", "/home", undefined)).toBe(
-    "/home/.claude/projects/-Users-hamza-Claude/hamzaish-learnings-queue.json",
+  expect(queuePathFor("/home/ada/Claude", "/home", undefined)).toBe(
+    "/home/.claude/projects/-home-ada-Claude/hamzaish-learnings-queue.json",
   );
 });
 
