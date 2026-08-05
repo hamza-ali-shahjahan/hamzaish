@@ -28,6 +28,8 @@ A new user only learns a system they can SEE — and only trusts output they can
 - README section "Your agent stopped speaking human" is drafted and operator-approved locally, held back only until its screenshot lands at `docs/assets/legibility-problem.png`.
 - Port the bookend formats into `/full-cycle` stage handoffs; add legibility cases to the eval judge.
 
+**Retro:** [meta/retros/2026-08-05-enablement-legibility.md](retros/2026-08-05-enablement-legibility.md)
+
 ## 2026-07-30 — v2.23.1 · repo-scout goes standalone: public MIT repo, marketplace listing, README sync
 
 **What changed**
