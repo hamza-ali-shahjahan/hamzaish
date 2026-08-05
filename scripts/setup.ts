@@ -12,6 +12,9 @@
 //   5. Create products/_active.local.md sprint state from the example
 //   6. Install the global slash commands into ~/.claude/commands/ as REAL copies
 //   7. Build the brain index (bun brain/ingest.ts)
+//   8. Offer to register the factory enablement hook (SessionStart) in
+//      ~/.claude/settings.json — the factory announces itself in product sessions
+//      (consent prompt; HAMZAISH_REGISTER_HOOK=yes|no to skip the prompt)
 //   then print what to do next
 //
 // It NEVER overwrites your existing .local files or any command file you've customized.
@@ -320,6 +323,61 @@ step(8, "Brain index (full-text search over the factory)");
     if (lastLines) console.log(c.dim(`     ${lastLines}`));
   } else {
     warn("Brain ingest hit an error — run `bun brain/ingest.ts` manually to see it.");
+    warned++;
+  }
+}
+
+// Step 9 — enablement hook (the factory announces itself) --------------------
+step(9, "Enablement hook (factory Flight Plan/Receipt in every product session)");
+{
+  const settingsPath = join(HOME, ".claude", "settings.json");
+  const hookCmd = join(ROOT, "factory", "hooks", "factory-session-context.sh");
+  type HookEntry = { type: string; command?: string; [k: string]: unknown };
+  type HookGroup = { matcher?: string; hooks?: HookEntry[] };
+  try {
+    let settings: Record<string, any> = {};
+    if (existsSync(settingsPath)) {
+      settings = JSON.parse(await readFile(settingsPath, "utf8"));
+    }
+    const groups: HookGroup[] = settings.hooks?.SessionStart ?? [];
+    const already = groups.some((g) =>
+      (g.hooks ?? []).some((h) => typeof h.command === "string" && h.command.includes("factory-session-context.sh")),
+    );
+    if (already) {
+      skip("SessionStart enablement hook already registered.");
+      skipped++;
+    } else {
+      // Consent, because this edits the user's global Claude Code settings.
+      const forced = process.env.HAMZAISH_REGISTER_HOOK === "yes";
+      const declined = process.env.HAMZAISH_REGISTER_HOOK === "no";
+      const consent = forced
+        ? true
+        : declined
+          ? false
+          : typeof confirm === "function"
+            ? confirm("  Register the factory enablement hook (SessionStart) in ~/.claude/settings.json?")
+            : false;
+      if (!consent) {
+        skip("Not registered. Enable anytime: HAMZAISH_REGISTER_HOOK=yes bun run setup");
+        skipped++;
+      } else {
+        settings.hooks ??= {};
+        settings.hooks.SessionStart ??= [];
+        const bare = settings.hooks.SessionStart.find((g: HookGroup) => (g.matcher ?? "") === "");
+        const entry = { type: "command", command: hookCmd };
+        if (bare) bare.hooks = [...(bare.hooks ?? []), entry];
+        else settings.hooks.SessionStart.push({ matcher: "", hooks: [entry] });
+        await mkdir(join(HOME, ".claude"), { recursive: true });
+        await writeFile(settingsPath, JSON.stringify(settings, null, 2) + "\n");
+        ok("Registered — sessions in tendriled product repos now open with the factory protocol.");
+        created++;
+      }
+    }
+  } catch (e) {
+    warn(
+      `Couldn't safely update ${settingsPath} (${e instanceof Error ? e.message : e}) — ` +
+        "register manually; see factory/hooks/factory-session-context.sh header.",
+    );
     warned++;
   }
 }

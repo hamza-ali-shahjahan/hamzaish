@@ -49,7 +49,12 @@ Express Lane. Otherwise ask once, with ① pre-selected:
 3. **Standing guardrails** (distilled from `products/*/learnings.md` + `meta/`):
    - A new product is its OWN repo. Register it here with
      `cp -r products/_template products/<slug>` and add the slug → local path to
-     `code-paths.local.json`. **Never paste product code into this repo.**
+     `code-paths.local.json`. Then **plant the tendril**: seed the code repo's `CLAUDE.md`
+     from `templates/claude-md-template.md` (at minimum its "Hamzaish-managed product" +
+     "Session-quality defaults" blocks, slug filled in) — that file is what makes every
+     FUTURE session in that repo, including a brand-new user's, re-enter the factory by
+     default. `bun run check-product-layout` warns when a registered repo is missing it.
+     **Never paste product code into this repo.**
    - **Validation speed bump.** Before production code on a NEW product, run
      `bun run check-validation <slug>`. It's a bump, not a wall: either 5 target-user
      conversations are logged in `products/<slug>/validation/README.md`, or you flip the
@@ -102,6 +107,65 @@ Express Lane. Otherwise ask once, with ① pre-selected:
      npm-unresolvable deps), shows the *extent first*, then cleans with confirmation
      (`--fix` plans the de-links, `--apply` writes them). Report-first, never silent. It's the
      cleanup *stage*, distinct from the per-push guards (`check-assets`, `check-changelog`).
+
+4. **Stay in the flow — a follow-up is a new slice, not an exit (session continuation).**
+   Once a session has routed through this command, EVERY later build request for the same
+   product re-enters this flow automatically — the user will not re-invoke `/hamzaish`,
+   and must never need to: new request → pin it as a slice in `products/<slug>/status.md`
+   BEFORE building → build (tests accompany code) → verify end to end → feed the loop
+   (status + learnings + `bun run trace-report` / `bun run friction log`). Silently
+   dropping the factory midway is a defect, not a shortcut. The product-repo tendril
+   (planted at registration, step 3) carries this same contract into every future
+   session — that is what makes a brand-new user leverage the factory by default.
+   (Encoded 2026-08-01 after a live session Express-Laned build #1 correctly, then
+   drifted out of the flow for builds #2–3: see
+   `products/mini-minecraft/decisions/0001-factory-stickiness-gap.md`.)
+
+5. **Make the factory VISIBLE — the enablement protocol (plan line + receipt).**
+   Silent competence is not enablement — and jargon-visible is not legible. The user
+   (especially a brand-new one) must SEE what Hamzaish did for them, in words a day-1
+   user understands. Two mandatory bookends around every factory-routed task, both
+   written in the READER'S language — value, never mechanism; if a term needs the
+   codebase to explain it, replace it with what it does:
+   - **Open with the 4-line plan (~80-word cap) — it teaches the levers:**
+     ```
+     🏭 Hamzaish plan
+     - Goal: <what "done" looks like, one plain sentence>
+     - Steps: <the pieces of this task, in order, plain words>
+     - Commands: /command — what it does here · /command — what it does here
+     - Proof before "done": <how the work will be verified, plain words>
+     ```
+     Commands always appear WITH what they do in THIS task — that is how a new user
+     learns `/build` and `/test` are things THEY could type. Steps are the user's
+     mental model of the work (features they recognize), never internal stage names.
+   - **Close with the 3-line receipt (hard cap ~50 words):**
+     ```
+     🏭 Hamzaish receipt
+     - What you got: <the value added to the user's work, one plain sentence>
+     - Checked: <how it was verified before "done" — plus anything deliberately NOT done>
+     - Try next: /command — <what typing it will do for them>
+     ```
+   **The legibility gate — run on BOTH bookends before sending** (encoded in
+   `bun run check-legibility`; paste the bookend to lint it):
+   1. **Day-1 vocabulary.** Would someone who installed Hamzaish an hour ago understand
+      every word? Internal nouns are BANNED in bookends — lane, slice, tendril, door,
+      artifact, retro, e2e, typecheck, RLE, subagent — say what the thing does instead
+      ("live playthrough", "code checks", "tracked step").
+   2. **Shape complete.** Plan = exactly Goal / Steps / Commands / Proof before "done".
+      Receipt = exactly What you got / Checked / Try next.
+   3. **Caps.** Plan ≤ ~80 words; receipt ≤ ~50.
+   4. **Commands teach.** Exactly ONE command in Try next; every command named anywhere
+      carries what it does here.
+   5. **Numbers the user can feel only** — test counts yes; commit hashes, file paths,
+      token counts no.
+   Also refresh your row in the product's *Active sessions* table — receipts on disk
+   keep factory usage measurable per product.
+   Enforced mechanically by the `factory/hooks/factory-session-context.sh` SessionStart
+   hook (registered at install), which injects this protocol into any session opened
+   inside a registered product repo.
+   (Encoded 2026-08-01; legibility pass approved same day — the first receipts were
+   visible but unreadable to a new user. See
+   `products/mini-minecraft/decisions/0002-enablement-protocol.md` and `0003`.)
 
 ## ② Strategy Lane — opt-in, lite-by-default
 
