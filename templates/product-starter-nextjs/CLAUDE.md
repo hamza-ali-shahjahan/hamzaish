@@ -29,7 +29,9 @@ asked (a follow-up is a new slice, not an exit from the factory):
    `🏭 Hamzaish receipt` · **What you got:** the value added to the user's work ·
    **Checked:** how it was verified (plus anything deliberately not done) · **Try next:**
    ONE `/command` with what it does. Numbers only if the user feels them — test counts
-   yes, commit hashes no.
+   yes, commit hashes no. Gate both bookends before sending: day-1 words only (no
+   insider nouns), exact shapes, caps respected, one Try-next command — `bun run
+   check-legibility` in the factory repo lints a bookend for you.
 
 ## Session-quality defaults (factory-shipped — apply in every session)
 

@@ -10,6 +10,24 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-05 — v2.24.0 · Enablement: the factory announces itself, in language a day-1 user can read
+
+**What changed**
+
+- **The enablement protocol (`hamzaish.md` §4–§5)** — born from a live failure (2026-08-01): a session routed build #1 through the factory correctly, then silently dropped the flow for builds #2–3, and even build #1's factory work was invisible to the operator. Verdict: "not enablement at all." Now every factory-routed task opens with a **4-line plan** (Goal / Steps / Commands each named with what it does / Proof before "done") and closes with a **3-line receipt** (What you got / Checked / Try next — exactly one command). A follow-up request is a new tracked step, never an exit (§4 session continuation).
+- **The legibility gate** — jargon-visible is not legible (the wider July-2026 "agent output reads like another language" discourse made the stakes plain). Both bookends must pass: day-1 vocabulary with a banned insider-noun list, exact shapes, word caps (~80 plan / ~50 receipt), one Try-next command, no commit hashes or file paths. Encoded mechanically as **`bun run check-legibility`** — lints any bookend, calibrated so the operator-approved reference bookends always pass and the pre-fix jargon receipt fails with 5 named reasons.
+- **Tendrils: registration now plants the factory in the product's code repo** — `templates/claude-md-template.md` gains the factory-contract + session-quality blocks (verify-localhost-200, copyable blocks, secrets-files-user-touched-only, previously operator-private rules now factory-shipped); the Next.js starter ships a `CLAUDE.md` so scaffolds are born factory-managed; `check-product-layout` warns on registered repos missing the tendril (`--strict-tendrils` to fail). Five legacy product repos seeded the same day.
+- **SessionStart hook `factory/hooks/factory-session-context.sh`** — detects a tendriled repo by its marker, injects the protocol + command catalog into every session there (silent everywhere else); `bun run setup` step 9 registers it for new users (consent prompt; `HAMZAISH_REGISTER_HOOK=yes|no` for automation; idempotent; tested against a throwaway HOME).
+
+**Why**
+
+A new user only learns a system they can SEE — and only trusts output they can READ. The factory now announces itself in every conversation (mechanically, via hook: this arc proved prose rules get dropped even by well-behaved sessions), and what it says at the bookends is held to plain language by a gate, not a style preference.
+
+**What to revisit**
+
+- README section "Your agent stopped speaking human" is drafted and operator-approved locally, held back only until its screenshot lands at `docs/assets/legibility-problem.png`.
+- Port the bookend formats into `/full-cycle` stage handoffs; add legibility cases to the eval judge.
+
 ## 2026-07-30 — v2.23.1 · repo-scout goes standalone: public MIT repo, marketplace listing, README sync
 
 **What changed**

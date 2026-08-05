@@ -145,10 +145,21 @@ Express Lane. Otherwise ask once, with ① pre-selected:
      - Checked: <how it was verified before "done" — plus anything deliberately NOT done>
      - Try next: /command — <what typing it will do for them>
      ```
-   Rules: numbers only if the user feels them ("64 tests passed" yes; commit hashes no);
-   ONE next command, never a menu; no internal nouns (lanes, slices, tendrils, doors) in
-   either bookend. Also refresh your row in the product's *Active sessions* table —
-   receipts on disk keep factory usage measurable per product.
+   **The legibility gate — run on BOTH bookends before sending** (encoded in
+   `bun run check-legibility`; paste the bookend to lint it):
+   1. **Day-1 vocabulary.** Would someone who installed Hamzaish an hour ago understand
+      every word? Internal nouns are BANNED in bookends — lane, slice, tendril, door,
+      artifact, retro, e2e, typecheck, RLE, subagent — say what the thing does instead
+      ("live playthrough", "code checks", "tracked step").
+   2. **Shape complete.** Plan = exactly Goal / Steps / Commands / Proof before "done".
+      Receipt = exactly What you got / Checked / Try next.
+   3. **Caps.** Plan ≤ ~80 words; receipt ≤ ~50.
+   4. **Commands teach.** Exactly ONE command in Try next; every command named anywhere
+      carries what it does here.
+   5. **Numbers the user can feel only** — test counts yes; commit hashes, file paths,
+      token counts no.
+   Also refresh your row in the product's *Active sessions* table — receipts on disk
+   keep factory usage measurable per product.
    Enforced mechanically by the `factory/hooks/factory-session-context.sh` SessionStart
    hook (registered at install), which injects this protocol into any session opened
    inside a registered product repo.
