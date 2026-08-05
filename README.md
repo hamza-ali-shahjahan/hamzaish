@@ -41,7 +41,7 @@ But most solo projects don't die in the build. They die in everything *after* it
 
 **What you get — the factory, the brain, and the judge:**
 
-- **The factory:** 35 stage agents + 64 skills & commands (42 skills, 22 commands) covering the full lifecycle — idea validation, scaffolding, the eval-gated [`/full-cycle`](factory/commands/full-cycle.md) build engine, security review, go-live provisioning, launch, pricing, first-100-customers, retention, kill-or-double-down. Plus 50 playbooks and a 146-practice ledger where every practice is badged honestly: ✅ proven by a real ship or dated incident (44) · 🟡 partial (3) · ⏳ research-baked (99). No practice gets "proven" by opinion.
+- **The factory:** 35 stage agents + 65 skills & commands (42 skills, 23 commands) covering the full lifecycle — idea validation, scaffolding, the eval-gated [`/full-cycle`](factory/commands/full-cycle.md) build engine, security review, go-live provisioning, launch, pricing, first-100-customers, retention, kill-or-double-down. Plus 50 playbooks and a 146-practice ledger where every practice is badged honestly: ✅ proven by a real ship or dated incident (44) · 🟡 partial (3) · ⏳ research-baked (99). No practice gets "proven" by opinion.
 - **The brain:** learnings, decisions, and anti-patterns in markdown, SQLite-indexed, searchable from any session via `/brain-ask`. When a mistake generalizes, it's promoted into a guardrail the next build inherits automatically — your second product starts smarter than your first.
 - **The judge — mechanical gates, runnable today:**
   - `bun run eval` — the eval harness: deterministic, agent-blind cases per skill (`--no-llm` needs no model or key). The coverage ratchet (`bun run check-evals`) enforces "a new skill without an eval is debt": **9 of 77** skills/agents carry cases today, the other 68 are a visible, grandfathered backlog — coverage can only go up, and deleting a case fails CI. Early and honest about it: the judge covers a handful of skills, not yet every build, and the direction is fixed.
@@ -132,7 +132,7 @@ Because the host is the commodity and the factory is the compounding asset. Mode
 | | | |
 |---|---|---|
 | 🧠 **A brain that remembers** | learnings, decisions, and anti-patterns — SQLite-indexed, searchable from any session via `/brain-ask` | [`brain/`](brain/) |
-| 🏭 **A factory that acts** | 35 agents + 64 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
+| 🏭 **A factory that acts** | 35 agents + 65 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
 | 📖 **Playbooks with receipts** | 50 playbooks · 146 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
 | 🔒 **A gate that blocks** | 70-check pre-launch security review (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict | [security checklist](factory/playbooks/mvp-stage/security-checklist.md) |
 | 🧪 **An engine that proves** | eval-gated build cycle — a feature slice without a named eval + an end-to-end test doesn't get built | [`/full-cycle`](factory/commands/full-cycle.md) |
@@ -214,9 +214,9 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 
 </details>
 
-<details><summary><b>🛠️ The skills & commands (64)</b></summary>
+<details><summary><b>🛠️ The skills & commands (65)</b></summary>
 
-42 skills + 22 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
+42 skills + 23 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
 
 | Invoke | What it does |
 |---|---|
