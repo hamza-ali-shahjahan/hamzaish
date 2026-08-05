@@ -10,6 +10,19 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-06 — v2.24.1 · The per-message bookend reminder — long-lived sessions can't drift
+
+**What changed**
+
+- **`factory-session-context.sh --brief`** — a UserPromptSubmit mode that emits a one-line plan/receipt reminder on EVERY message inside a factory product repo (~260 chars; silent everywhere else). The SessionStart injection only reaches sessions born after registration — a live days-old session that predated the hooks dropped the bookends on 2026-08-06 (operator: "this cannot keep happening"), which is precisely the drift class this closes: per-message context cannot decay.
+- **`setup` step 9 registers both hooks under the one consent** — SessionStart (full protocol, once) + UserPromptSubmit (brief reminder, every message); idempotent with per-event dedupe; fake-HOME tested.
+
+**Why**
+
+Session-start context fades over a days-long session; the smallest mechanical unit that cannot fade is one line per message.
+
+**Retro:** skipped — gap-closure follow-up inside the already-retro'd v2.24.0 arc ([meta/retros/2026-08-05-enablement-legibility.md](retros/2026-08-05-enablement-legibility.md)); the lesson lands there.
+
 ## 2026-08-05 — v2.24.0 · Enablement: the factory announces itself, in language a day-1 user can read
 
 **What changed**

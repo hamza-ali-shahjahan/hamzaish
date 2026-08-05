@@ -362,14 +362,28 @@ step(9, "Enablement hook (factory Flight Plan/Receipt in every product session)"
         skipped++;
       } else {
         settings.hooks ??= {};
-        settings.hooks.SessionStart ??= [];
-        const bare = settings.hooks.SessionStart.find((g: HookGroup) => (g.matcher ?? "") === "");
-        const entry = { type: "command", command: hookCmd };
-        if (bare) bare.hooks = [...(bare.hooks ?? []), entry];
-        else settings.hooks.SessionStart.push({ matcher: "", hooks: [entry] });
+        // Two registrations, one consent: SessionStart carries the full protocol
+        // once; UserPromptSubmit repeats a one-line reminder on every message so
+        // long-lived sessions can't drift out of the bookends.
+        const wanted: [string, string][] = [
+          ["SessionStart", hookCmd],
+          ["UserPromptSubmit", `${hookCmd} --brief`],
+        ];
+        for (const [event, cmd] of wanted) {
+          settings.hooks[event] ??= [];
+          const eventGroups: HookGroup[] = settings.hooks[event];
+          const has = eventGroups.some((g) =>
+            (g.hooks ?? []).some((h) => typeof h.command === "string" && h.command.includes("factory-session-context.sh") && (event !== "UserPromptSubmit" || h.command.includes("--brief"))),
+          );
+          if (has) continue;
+          const bare = eventGroups.find((g) => (g.matcher ?? "") === "");
+          const entry = { type: "command", command: cmd };
+          if (bare) bare.hooks = [...(bare.hooks ?? []), entry];
+          else eventGroups.push({ matcher: "", hooks: [entry] });
+        }
         await mkdir(join(HOME, ".claude"), { recursive: true });
         await writeFile(settingsPath, JSON.stringify(settings, null, 2) + "\n");
-        ok("Registered — sessions in tendriled product repos now open with the factory protocol.");
+        ok("Registered — full protocol at session start + a per-message reminder, in factory product repos.");
         created++;
       }
     }
