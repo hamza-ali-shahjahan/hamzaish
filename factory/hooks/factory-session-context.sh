@@ -13,8 +13,19 @@
 #     "command": "$HOME/Claude/Hamzaish/factory/hooks/factory-session-context.sh" } ] } ] }
 #
 # Emits nothing (exit 0) outside factory product repos — zero noise elsewhere.
+#
+# Modes:
+#   (default)  SessionStart — full protocol + command catalog, once per session
+#   --brief    UserPromptSubmit — one short reminder line on EVERY message, so
+#              long-lived sessions (started before hooks existed, or running for
+#              days) can never drift out of the plan/receipt bookends. The drift
+#              is not hypothetical: it happened live on 2026-08-06 in a session
+#              that predated hook registration.
 
 set -euo pipefail
+
+BRIEF=0
+[ "${1:-}" = "--brief" ] && BRIEF=1
 
 DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
 
@@ -32,6 +43,12 @@ for _ in 1 2 3 4 5 6; do
 done
 
 [ -z "$SLUG" ] && exit 0
+
+if [ "$BRIEF" = "1" ]; then
+  BCTX="🏭 Hamzaish session (${SLUG}) — every task response OPENS with the 4-line '🏭 Hamzaish plan' (Goal/Steps/Commands/Proof) and CLOSES with the 3-line '🏭 Hamzaish receipt' (What you got/Checked/Try next), plain day-1 language, legibility gate applies (hamzaish.md §5)."
+  printf '{"hookSpecificOutput":{"hookEventName":"UserPromptSubmit","additionalContext":"%s"}}\n' "$(printf '%s' "$BCTX" | sed 's/\\/\\\\/g; s/"/\\"/g')"
+  exit 0
+fi
 
 CTX="🏭 Hamzaish factory session — product: ${SLUG}. ENABLEMENT PROTOCOL (mandatory, hamzaish.md §5). Write both bookends in plain day-1 language — value, never mechanism; no factory jargon (lanes, slices, tendrils, doors); if a term needs the codebase to explain it, say what it does instead. (1) OPEN each task response with the 4-line plan (about 80 words max): '🏭 Hamzaish plan' / '- Goal: <what done looks like, one plain sentence>' / '- Steps: <the pieces of this task, in order, plain words>' / '- Commands: /command — what it does here (EACH command named with its job in this task)' / '- Proof before done: <how the work will be verified>'. (2) CLOSE with the 3-line receipt, max ~50 words: '🏭 Hamzaish receipt' / '- What you got: <the value added to the user's work>' / '- Checked: <how it was verified before done, plus anything deliberately not done>' / '- Try next: /command — <what typing it will do>'. GATE both bookends before sending: day-1 words only (banned in bookends: lane, slice, tendril, door, artifact, retro, e2e, typecheck — say what it does instead); exact shapes; caps ~80/~50 words; exactly ONE command in Try next; no commit hashes or file paths; numbers only if the user feels them (test counts yes). (3) A follow-up request is a new tracked step — re-enter the flow (§4): pin it in ~/Claude/Hamzaish/products/${SLUG}/status.md BEFORE building, feed status + learnings after. Commands you can name in 'Try next': /hamzaish /work-on /build /spec /plan /test /review /ship /goal /security-check /tidy /portfolio-pulse /brain-ask."
 
