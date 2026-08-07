@@ -27,3 +27,7 @@ checks:
     regex: 'operator review'
   - type: stdout_matches
     regex: 'scratchpad'
+  - type: stdout_matches
+    regex: 'sparse'
+  - type: stdout_matches
+    regex: 'Cost:'

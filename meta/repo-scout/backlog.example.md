@@ -14,6 +14,8 @@
 - **Date:** YYYY-MM-DD · **Status:** awaiting-review
 - **Health:** ★N · forks N · contributors N · releases N · pushed <date> ·
   license <SPDX> · org <signal>
+  (sub-path targets: record BOTH the parent repo and the sub-path's own history)
+- **Cost:** <deep-dive subagent tokens> · <wall time>
 - **What it actually is:** <from code, not marketing — 2-4 sentences>
 - **What to mine:** <numbered, each with file-path evidence>
 - **Verdict for Hamzaish:** <adopt-narrow / study / park — and why>
