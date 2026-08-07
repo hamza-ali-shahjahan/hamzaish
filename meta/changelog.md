@@ -10,6 +10,19 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-06 — v2.24.2 · Scout sub-path discipline + the factory announces itself at home
+
+**What changed**
+
+- **`repo-scout` learns monorepo sub-paths** (standalone repo already carries the same text — gates unchanged, guidance enriched, both contract pins updated): two-level health verification for sub-path targets (`gh api …/commits?path=` — parent-repo health never stands in for a 2-day-old single-author sample), the sparse-clone recipe in gate 4 (`--filter=blob:none --sparse`), a quote-neutralization rule in the deep-dive brief (a quoted system-reminder-style tag must arrive inert — surfaced live by the 2026-08-05 Horizon deep-dive), a `Cost:` line on every run (single-URL included, counted against FACTORY-ORDERS), and the CLAIM-may-be-a-paraphrase note. Contract eval gains `sparse` + `Cost:` pins; `backlog.example.md` gains the Cost line + both-levels hint.
+- **`factory-session-context.sh` now fires in the factory repo itself** — the walk recognizes the factory by its committed marker + both layer dirs (portable, no hardcoded home path) and injects the same protocol with a factory-flavored step-3 + command catalog; the one shared branch covers both modes (SessionStart + `--brief`). New `factory-session-context.test.ts` pins four behaviors: factory full, factory brief, silent-elsewhere, product-repo regression.
+
+**Why**
+
+The Horizon scout (2026-08-05) hit every one of these gaps in a single run — a sub-path target inside a 292MB monorepo, prompt-shaped quotes needing neutralization at the boundary, an uncounted ~210k-token deep-dive — and the factory-repo session that ran it got zero enablement, the exact invisibility v2.24.0/.1 exist to kill.
+
+**Retro:** [meta/retros/2026-08-06-enablement-gap-factory-repo.md](retros/2026-08-06-enablement-gap-factory-repo.md) (ships in this PR).
+
 ## 2026-08-06 — v2.24.1 · The per-message bookend reminder — long-lived sessions can't drift
 
 **What changed**
