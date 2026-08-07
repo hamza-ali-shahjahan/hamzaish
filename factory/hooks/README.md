@@ -1,4 +1,4 @@
-# factory/hooks — automatic learning capture
+# factory/hooks — session hooks: capture · rescue · nudge · enablement
 
 The one weak link in Hamzaish's learning machine is **capture**: `/learn-loop`
 (5-axis scoring + fresh-eyes verify) and `/kill-or-keep` (outcome-based sunset)
@@ -16,9 +16,12 @@ the `hand-maintained-facts-drift` anti-pattern. See
 ## The pipeline
 
 ```
-user prompt ──▶ capture-learning.ts (UserPromptSubmit hook)
+user prompt ────▶ capture-learning.ts (UserPromptSubmit hook)
                  │  regex-detect correction/guardrail/explicit/praise
                  │  skip if secret-shaped
+pre-compaction ─▶ precompact-rescue.ts (PreCompact hook)
+                 │  same classifier over the transcript's user turns —
+                 │  rescues what live capture missed, dedupes vs the queue
                  ▼
      ~/.claude/projects/<cwd>/hamzaish-learnings-queue.json   (gitignored, off-repo)
                  │
@@ -27,6 +30,10 @@ user prompt ──▶ capture-learning.ts (UserPromptSubmit hook)
                  │
                  ▼   /learn-loop  (unchanged promotion gate: Composite ≥24/35, fresh-eyes)
      guardrail / rule / SKILL.md
+
+session Stop ───▶ session-learning-nudge.ts — if real (non-wip) commits landed
+                 today but neither the queue nor brain/learnings/ saw anything:
+                 ONE nudge to distill a learning before stopping (the floor).
 ```
 
 ## `capture-learning.ts`
@@ -62,8 +69,47 @@ entry to your global hooks in `~/.claude/settings.json` (merge into the existing
 To disable, remove that entry. To watch what it captures without enabling it, run
 the smoke test in the PR description against a temp queue.
 
+## `precompact-rescue.ts` (PreCompact)
+
+Same fail-open + never-capture-secrets rules; reuses the capture classifier and
+the same queue, so `/reflect` stays the single review gate. Exists because live
+capture only sees prompts typed after hook registration — compaction is the
+last exit for everything earlier. Activation (merge into `"hooks"`):
+
+```json
+"PreCompact": [
+  {
+    "hooks": [
+      { "type": "command", "command": "bun \"$HOME/Claude/Hamzaish/factory/hooks/precompact-rescue.ts\"" }
+    ]
+  }
+]
+```
+
+## `session-learning-nudge.ts` (Stop)
+
+The learning rule's mechanical floor: managed repo + real (non-`wip(auto)`)
+commits today + no `brain/learnings/` entry + quiet queue → ONE blocking nudge
+per session (marker-throttled, `stop_hook_active`-guarded, fail-open — never
+traps a session). Activation (merge into `"hooks"`):
+
+```json
+"Stop": [
+  {
+    "hooks": [
+      { "type": "command", "command": "bun \"$HOME/Claude/Hamzaish/factory/hooks/session-learning-nudge.ts\"" }
+    ]
+  }
+]
+```
+
+## `factory-session-context.sh` (SessionStart + UserPromptSubmit `--brief`)
+
+The enablement announcer — registered via `bun run setup` step 9 (consent
+prompt), not hand-pasted; see `meta/changelog.md` v2.24.0–v2.24.2.
+
 ## Tests
 
 ```
-bun test factory/hooks/capture-learning.test.ts
+bun test factory/hooks
 ```
