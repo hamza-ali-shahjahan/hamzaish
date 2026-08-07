@@ -3,8 +3,10 @@ description: Review the auto-captured learning queue and hand survivors to the b
 argument-hint: "[--limit N] [--min-confidence 0.6]"
 ---
 
-Drain and review the automatic capture queue produced by the
-`factory/hooks/capture-learning.ts` `UserPromptSubmit` hook.
+Drain and review the automatic capture queue fed by the `factory/hooks/`
+capture pipeline — `capture-learning.ts` (`UserPromptSubmit`) live during the
+session, `precompact-rescue.ts` (`PreCompact`) rescuing missed turns right
+before compaction.
 
 The user invoked: `/reflect $ARGUMENTS`
 
@@ -42,6 +44,12 @@ committed file without your review here. Promotion authority still belongs to
    lesson.** If the item names a skill/command that was active when the correction
    was given, note `skill_context:` so `/learn-loop` can route the eventual
    guardrail into that `factory/skills/<slug>/SKILL.md`.
+
+   **Distillation guard (ported from Horizon's curator prompt — 2026-08-05
+   scout):** be wary of *negative capability claims* ("X doesn't work", "never
+   use Y") unless the root cause was verified — negative claims harden into
+   refusals the agent cites against itself for months. Prefer "X failed here
+   because Z" over "X doesn't work."
 
 4. **Rewrite the queue** with the processed items removed (keep un-reviewed ones).
    Back up the old queue to `~/.claude/learnings-backups/` first.

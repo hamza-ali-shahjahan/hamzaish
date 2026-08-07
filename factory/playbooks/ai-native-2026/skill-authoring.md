@@ -60,3 +60,7 @@ New skills are the last resort, not the default (a library that grows a one-sess
 ## When editing any skill
 
 Before saving: run the no-op test on changed prose, check the description for one-trigger-per-branch + negative routing, confirm each step's completion criterion is checkable, and ask whether the skill's invocation mode still matches who actually fires it.
+
+## Honesty callouts (docs convention)
+
+Every doc that describes behavior states what is best-effort, gated, or known-broken — placed where the reader decides, not buried in a changelog. Ported from Horizon's docs discipline (2026-08-05 scout: every subsystem doc carries an "Honesty callouts" section); pairs with the honest-copy principle (claim only what's measured).

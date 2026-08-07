@@ -10,6 +10,23 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-06 — v2.25.0 · Memory that survives: pre-compaction rescue + the session-end learning floor
+
+**What changed**
+
+- **`precompact-rescue.ts` (PreCompact hook)** — right before compaction, re-runs the capture classifier over the transcript's user turns and appends anything missed to the SAME queue `/reflect` drains (no new storage, no new review surface); dedupes against the queue across repeated compactions, drops secret-shaped text, caps at 20 rescues/run, fail-open. The deterministic rung of Horizon's pre-compaction flush fork — the LLM rung arrives with `/dream-review` (phase 2).
+- **`session-learning-nudge.ts` (Stop hook)** — the "every session that produces real work ends with a learning" rule (CLAUDE.md) gets a mechanical floor: managed repo + real (non-`wip(auto)`) commits today + no `brain/learnings/` entry today + quiet queue → ONE blocking nudge per session to distill a learning (marker-throttled, `stop_hook_active`-guarded, fail-open).
+- **Both ship INERT** (house pattern, decision-log 2026-07-14: you wire it, nothing auto-enables) — activation snippets in `factory/hooks/README.md`, retitled to cover the four session hooks; 16 new tests alongside the existing 13 (29 total in `factory/hooks`).
+- **`/reflect` gains the distillation guard** — negative capability claims harden into refusals the agent cites against itself for months (Horizon's curator-prompt insight); its intro now names both queue feeders.
+- **`templates/status-template.md`** — the 7-section living summary (Goal / Constraints / Progress / Key Decisions / Next Steps / Critical Context / Relevant Files), update-in-place, merge-don't-rewrite: Horizon's compaction-summary discipline applied to product `status.md` files.
+- **Skill-authoring playbook** — the "Honesty callouts" docs convention (state what's best-effort, gated, or broken where the reader decides).
+
+**Why**
+
+Phase 1 of the operator-approved Horizon way-forward (scout backlog entry, 2026-08-05): compaction stops eating facts, and the learning rule becomes a check instead of a memory. Both hooks deliberately compound the day-old claude-reflect capture machinery — same queue, same human gate, zero new review surfaces.
+
+**Retro:** skipped — planned port from the operator-reviewed scout backlog (phase 1 of 4); lessons accumulate to the phase-2 adoption-gate verdict.
+
 ## 2026-08-06 — v2.24.2 · Scout sub-path discipline + the factory announces itself at home
 
 **What changed**
