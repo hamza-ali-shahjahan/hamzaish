@@ -10,6 +10,26 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-14 — v2.24.3 · The validation gate stops passing on an empty ledger
+
+**What changed**
+
+- **`check-validation` counts evidence in scope, not file-wide.** Dated `###` headings were matched anywhere in `products/<slug>/validation/README.md`, so the `## Validation debt` block — a written record of *not* validating — counted as evidence *for* it. Recording debt honestly raised your evidence count. Counting is now scoped to the `## Evidence` section with HTML comments stripped, so the template's commented example never counts either. Two live products were reporting phantom evidence (muakkil, repolish); both now read 0, and repolish's verdict is unchanged (`debt-accepted` passes without evidence by design).
+- **`in-progress` has to show its work.** It sat in the PASS set with no minimum, so setting the State line and writing nothing else printed "Clear to build" forever. Any state that *claims* validation happened (`validated`, `in-progress`) now needs ≥1 evidence block; `debt-accepted` still passes with zero, because it claims the opposite and saying so out loud is the whole requirement. The failure message names both exits — log a conversation, or accept the debt.
+- **Parsing extracted to `scripts/lib/validation-ledger.ts`** (pure, no filesystem) with `validation-ledger.test.ts` pinning eleven behaviors — including the one that would have caught this on day one: a ledger containing only a debt block reports 0 evidence blocks.
+- **The workaround this forced is no longer needed.** muakkil's ledger had been dodging the miscount by writing its debt heading backwards (`### Building before validation — 2026-07-02`) with a comment explaining why; reverted to the normal template format in the working copy (that ledger is still uncommitted, so it lands with muakkil's own next commit, not this one). Under the fix it correctly reports 0 evidence and blocks — which is the true state: zero interviews, six weeks in.
+
+**Why**
+
+The gate read a *declaration* and treated evidence as decoration — a number to print, never a condition to meet. muakkil sat at `in-progress` with zero conversations for six weeks with the build lane open, and the check said "Clear to build" every time. A guard whose happy path is reachable from an empty file is documentation wearing an exit code.
+
+**What to revisit**
+
+- Ask the same question of every other `check-*` guard: not "does it run?" but "can it pass with nothing behind it?"
+- `debt-accepted` still passes on the State line alone — the debt block's *contents* aren't checked. Deliberate for now (recording the skip is the requirement), but it's the same shape one rung down.
+
+**Retro:** [meta/retros/2026-08-14-validation-gate-passed-on-empty.md](retros/2026-08-14-validation-gate-passed-on-empty.md) (ships in this PR).
+
 ## 2026-08-06 — v2.24.2 · Scout sub-path discipline + the factory announces itself at home
 
 **What changed**
