@@ -6,8 +6,19 @@
 
 [![🌱 Beginner-Friendly](https://img.shields.io/badge/%F0%9F%8C%B1_Beginner--Friendly-8957e5.svg)](docs/start-here.md)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
+[![License AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+[![version](https://img.shields.io/github/package-json/v/hamza-ali-shahjahan/hamzaish?label=version&color=8957e5)](meta/changelog.md)
+[![guards](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml/badge.svg)](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml)
+
+<img src="https://img.shields.io/badge/35-stage_agents-8957e5.svg" alt="35 stage agents">
+<img src="https://img.shields.io/badge/65-skills_%26_commands-d97757.svg" alt="65 skills & commands (42 skills, 23 commands)">
+<img src="https://img.shields.io/badge/50-playbooks-blue.svg" alt="50 playbooks">
+<img src="https://img.shields.io/badge/70-security_checks-success.svg" alt="70 security checks">
+
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
+
+**[Install](#install) · [What you get](#what-you-get--what-you-bring) · [What's inside](#whats-inside) · [Philosophy](docs/philosophy.md) · [Docs](docs/)**
 
 </div>
 
@@ -19,12 +30,9 @@
 
 <p align="center"><b>Unlock your Builder Mode.</b></p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/35-stage_agents-8957e5.svg" alt="35 stage agents">
-  <img src="https://img.shields.io/badge/65-skills_%26_commands-d97757.svg" alt="65 skills & commands (42 skills, 23 commands)">
-  <img src="https://img.shields.io/badge/50-playbooks-blue.svg" alt="50 playbooks">
-  <img src="https://img.shields.io/badge/70-security_checks-success.svg" alt="70 security checks">
-</p>
+Point Hamzaish at an idea — and run the whole company around the code your agent writes: **idea → MVP → launch → sell → scale**, with a brain that remembers every lesson and a judge that refuses to let "looks done" pass for "done."
+
+**The honesty is enforced, not promised → [watch the guards run on every commit](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml).**
 
 ## What this is
 
