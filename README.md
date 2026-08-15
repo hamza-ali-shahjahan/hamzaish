@@ -17,7 +17,14 @@
   <img src="docs/assets/hamzaish-hero-card.gif" alt="Hamzaish — unlock your Builder Mode, with a live eval run as proof" width="820">
 </p>
 
-<p align="center"><b>Unlock your Builder Mode.</b> <em>Shipped through it so far: 6 products with public artifacts — live sites, npm CLIs, OSS tools → <a href="products/SHOWCASE.md">the showcase</a>.</em></p>
+<p align="center"><b>Unlock your Builder Mode.</b></p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/35-stage_agents-8957e5.svg" alt="35 stage agents">
+  <img src="https://img.shields.io/badge/65-skills_%26_commands-d97757.svg" alt="65 skills & commands (42 skills, 23 commands)">
+  <img src="https://img.shields.io/badge/50-playbooks-blue.svg" alt="50 playbooks">
+  <img src="https://img.shields.io/badge/70-security_checks-success.svg" alt="70 security checks">
+</p>
 
 ## What this is
 
@@ -350,11 +357,11 @@ The backbone is hard-won venture experience — the Business-SWAT roles, opportu
 
 ## License
 
-**TL;DR — free for builders. Don't take it closed-source and sell it. Commercial license on request.**
+**TL;DR — free for builders. Don't take it closed-source and sell it.**
 
-**AGPL-3.0** — clean, no added clauses; see [`LICENSE`](LICENSE). Copyright © 2026 Hamza Ali.
+In plain English: use, study, modify, and self-host freely. If you run a *modified* version as a network service, your source must be AGPL too — your work stays open for solo builders and teams; nobody quietly turns it into a closed product.
 
-In plain English: use, study, modify, and self-host freely. If you run a *modified* version as a network service, your source must be AGPL too — the factory stays open for solo builders; nobody quietly turns it into a closed product. **Commercial license available** for closed-source use — contact below.
+**AGPL-3.0** — clean, no added clauses; see [`LICENSE`](LICENSE).
 
 ---
 
