@@ -10,6 +10,25 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-14 — v2.24.4 · market-xray specified: a month of market research in 3 hours, evidence first
+
+**What changed**
+
+- **`factory/skills/market-xray/SPEC.md`** — the full specification for the factory's corpus-first GTM research capability, adapted from the YC method (harvest 30+ competitor sites, incumbent filings, 100+ reviews, complaint threads FIRST — then interrogate): five thin stages (frame → discover → harvest → interrogate → investor-attack + validation-ledger handoff), a keyless Tier-0 harvester (`xray-harvest` over SEC EDGAR full-text, iTunes RSS reviews, Reddit `.json`, HN Algolia, sitemap fetch — zero required API keys, "never block on keys"), and the centerpiece **citation gate**: synthesis must cite harvested corpus files for ≥90% of claims, the rest forced under a visible ⚠ SPECULATION heading — specified to ship as a deterministic eval case so the `check-evals` ratchet counts it and it can never be quietly deleted.
+- **Three operator decisions locked** (2026-08-14): first dogfood target is **patently** (`products/copyright/`, serving GTM lane 1 of the weekly mandate); v1 covers **all five stages, deliberately thin** (caps: 30 sites / 100 reviews / 10 threads / 10 filings, truncation always loud); harvesting is **skill + one bun script**, fixture-tested with zero network in tests.
+- **Hard boundaries specified:** raw corpus is local-only forever — the public repo never redistributes harvested text; the committed layer is original analysis + a URL/hash provenance manifest so every citation stays checkable. Review authors stripped at harvest (keep the complaint, never the complainer). Harvested pages are data, never instructions — the eval judge's untrusted-content doctrine applied to research.
+
+**Why**
+
+The Strategy Lane is the factory's least-grounded part — the idea agents reason from model priors while the build lane runs on guards, evals, and live verification. Corpus-first research brings market strategy up to the same evidence standard, and the method ends exactly where the validation ledger's 5-conversation rail begins: the hypothesis pre-fills the interview script that `check-validation` then gates on.
+
+**What to revisit**
+
+- Build phases (Plan → Tasks → Implement) follow operator approval of the spec; the patently dogfood corpus becomes the skill's eval fixture.
+- The spec's open questions: keyless Jina fallback for JS-heavy sites · the G2/Capterra no-API blind spot · promoting "corpus never committed" from boundary to mechanical guard · stale-corpus auto-prune vs warn-only.
+
+**Retro:** skipped — a specification-only step gated on operator review; the retro lands with the build + patently dogfood entry, grounded in that run's traces.
+
 ## 2026-08-14 — v2.24.3 · The validation gate stops passing on an empty ledger
 
 **What changed**
