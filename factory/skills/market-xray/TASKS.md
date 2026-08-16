@@ -52,3 +52,31 @@
     operator sign-off at CP4; ship PR.
   - Files: `products/copyright/research/*`, `products/copyright/validation/README.md`,
     `meta/changelog.md`, `meta/retros/*`, `docs/versioning.md` + `package.json` (v2.25.0).
+
+---
+
+## Resume state (updated 2026-08-16 — read this first in a fresh session)
+
+- **T1–T4 DONE, CP1–CP3 green** — all on branch `feat/market-xray`, commit `06a5af7`
+  (+ this docs commit). The branch is pushed to origin; any session can
+  `git worktree add <dir> feat/market-xray` and continue. Scratch worktrees are
+  session-temporary — the BRANCH is canonical, not any checkout path.
+- **T5 (patently dogfood) is at stage 1 of 5:** the framing was presented to the
+  operator (target customer: founders fearing IP landmines; seeds: FTO/prior-art/
+  trademark-clearance/legal-AI queries; EDGAR targets: RELX, Thomson Reuters,
+  Clarivate, Wolters Kluwer; app-store source expected thin — a named blind spot).
+  **Awaiting operator "frame approved"** → then stage 2 sweep → operator PRUNE gate
+  → `bun run xray-harvest --slug copyright` (needs `export XRAY_CONTACT="…"` for
+  EDGAR) → cited synthesis (gate: `--check-citations`) → devils-advocate → 
+  `gtm-hypothesis.md` + interview script into the validation ledger.
+- **STANDING OPERATOR RULE (2026-08-16): market-xray output NEVER touches
+  `products/SHOWCASE.md`.** Research artifacts stay in `products/<slug>/research/`
+  and the validation ledger — the showcase is for shipped products only, and a
+  separate operator-led showcase review is queued.
+- **Shared-checkout warning:** the main `~/Claude/Hamzaish` working tree carries
+  OTHER sessions' uncommitted work (README/verify-ledger rewrite, check-limitations,
+  `products/valuable`, muakkil edits) PLUS now-redundant originals of these xray
+  files. Canonical xray = this branch. Do not commit the shared tree wholesale.
+- **Ship plan unchanged:** T5 outputs land on this branch → changelog v2.25.0 +
+  retro → PR → operator merge (CP4). The `products/_smoke/` folder in the main
+  checkout is disposable test residue — delete freely.
