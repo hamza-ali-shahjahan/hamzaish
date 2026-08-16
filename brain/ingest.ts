@@ -226,8 +226,11 @@ if (existsSync(productsAbs)) {
     // Launch / analytics / interviews / learnings / validation docs
     // (learnings + validation added 2026-07-02: product learnings were invisible
     // to the brain — the cross-product synthesis gap from the factory audit.
-    // /learn-loop now gathers them as promotion candidates.)
-    for (const sub of ["launch", "analytics", "interviews", "learnings", "validation"]) {
+    // /learn-loop now gathers them as promotion candidates.
+    // research added 2026-08-16 for market-xray: the walk is recursive, so the
+    // local-only corpus/ under research/ becomes brain-searchable from disk even
+    // though it is gitignored — evidence queryable, never committed.)
+    for (const sub of ["launch", "analytics", "interviews", "learnings", "validation", "research"]) {
       const subDir = `${base}/${sub}`;
       if (existsSync(join(HAMZAISH_ROOT, subDir))) {
         for await (const f of walk(subDir, true)) {

@@ -71,6 +71,10 @@ brain/identity/*.local.md
 
 # Operator-local research (competitive/strategy docs — never committed)
 meta/research/
+# market-xray raw evidence: harvested third-party text stays on this machine
+# forever (the public repo never redistributes it; SPEC §Boundaries). The
+# committed layer is the analysis + sources.md provenance manifest beside it.
+products/*/research/corpus/
 
 # Eval run reports — derived, regenerable verdicts (the committed contract is baseline.json)
 meta/evals/runs/
