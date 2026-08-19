@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-16 — v2.25.0 · the receipt stops taking the session's word for it
+
+**What changed**
+
+- **`bun run verify` + `scripts/lib/verification-ledger.ts`** — a gate runner that spawns each check as a real process, records the true exit code to a hash-chained ledger (`meta/telemetry/verification/*.local.jsonl`, gitignored), and renders the receipt's *Checked* line **from those records** instead of from the session's memory. An empty ledger renders "nothing was verified — no check was run this session"; a tampered chain renders "altered", never success. Named **tamper-evident, not unforgeable** in the code, the README and the evidence folder — a single agent with a shell can still append a record, and claiming a ring-0-style guarantee we cannot deliver would be the exact failure the mechanism exists to prevent.
+- **`bun run check-limitations`** — every skill must declare what it can't do (`## Known limits`). Ratchet: 4 covered, 74 grandfathered; a new skill without the section fails CI. AGENTS.md rule #16.
+- **`bun run check-decisions`** — decision records must carry decision · why · **alternatives** · wrong-if · revisit (CLAUDE.md rule #3, extended). Ratchet: 3 compliant, 28 grandfathered. The measurement that justified it: **26 of 28 existing records were missing only `alternatives`** — the factory records what it chose and never what it beat. AGENTS.md rules #3 and #15.
+- **`factory/skills/trim-session-leakage/`** — finds prose written from the authoring session's vantage rather than the repo's (dead references, change narration, stack vantage, reviewer asides), with the causal-chain exception that stops it deleting defect post-mortems. Ships with a deterministic eval case, so eval coverage moved 9/78 → 10/78.
+- **`evidence/`** — dated artifacts behind the claims, failures included. Seeded with this build's own run, in which `check-counts` genuinely failed on a rule-#12 violation (`products/valuable` carrying an absolute machine path into a permanently-public repo) that had gone unnoticed.
+- **README rewritten** — prose cut ~4,630 → ~2,100 words; a real transcript (including a gate refusing) before any claim; install command at line 66 instead of ~103; the full catalog preserved verbatim but collapsed; a visible **Known weaknesses** section; the comparison table moved to `docs/philosophy.md`.
+- **`docs/host-portability.md`** — what would carry to a second agent host, mapped against `deepseek-ai/deepseek-harness`, explicitly marked **mapped, not tested**.
+
+**Why**
+
+A 2026-08-16 code-grounded study of two external repos (`robiot/fable-os`, `deepseek-ai/deepseek-harness`) found both beating this factory at *inspectable* honesty in opposite ways — one enforcing an unforgeable kernel trace channel and keeping run artifacts whose index leads with failures, the other making candour a lint. Against that, `check-legibility` was auditing the receipt's vocabulary and shape while its truth went unchecked, which made "Checked: gates pass" unfalsifiable narration. Both studied repos also ship **zero agent-capability evaluation** — which reframes the eval layer here (13% coverage, thin against our ambitions) as the differentiated bet rather than the embarrassment.
+
+**What to revisit**
+
+Ledger-usage rate and evidence-folder count at the next `/learn-loop`; whether either new ratchet has moved at all by the next quarterly `/kill-or-keep` — a ratchet that never advances is a dead instrument and gets sunset under the dead-telemetry rule. Neither studied repo has entered `references/` or the credits roll; that stays operator-gated. `fable-os` carries **no license file**, so nothing was copied from it — every idea was reimplemented from a described mechanism.
+
+---
+
 ## 2026-08-14 — v2.24.4 · market-xray specified: a month of market research in 3 hours, evidence first
 
 **What changed**

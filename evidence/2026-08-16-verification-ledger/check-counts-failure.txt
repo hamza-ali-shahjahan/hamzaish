@@ -1,0 +1,17 @@
+$ bun scripts/check-counts.ts
+derived from disk:
+  agents=35  skills=43  commands=23  (skills+commands=66)
+  playbooks=50  practices=146 (✅44 🟡3 ⏳99)  security-checks=70
+
+✗ 6 fact(s) drifted from disk:
+
+  • README.md:265  skills (+ commands=23) "42" → should be 43
+  • README.md:263  skills & commands header "65" → should be 66
+  • README.md:14  skills & commands badge "65" → should be 66
+  • README.md:90  skills & commands badge "65" → should be 66
+  • README.md:181  skills & commands badge "65" → should be 66
+  • products/valuable/product.config.json — code_path must be null (got "<a folder on the operator's machine>")
+
+  Fix the doc to match disk, or update the count if the disk changed.
+  Why: brain/anti-patterns/hand-maintained-facts-drift.md
+error: script "check-counts" exited with code 1

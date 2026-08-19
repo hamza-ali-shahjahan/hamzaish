@@ -1,6 +1,6 @@
 {
   "name": "hamzaish",
-  "version": "2.24.4",
+  "version": "2.25.0",
   "private": true,
   "type": "module",
   "description": "The AI Co-builder & Startup OS — a brain + orchestrator for builders to run a portfolio of products from idea to scale.",
@@ -29,6 +29,9 @@
     "check-skill-command-collision": "bun scripts/check-skill-command-collision.ts",
     "check-counts": "bun scripts/check-counts.ts",
     "check-evals": "bun scripts/check-evals.ts",
+    "check-limitations": "bun scripts/check-limitations.ts",
+    "check-decisions": "bun scripts/check-decisions.ts",
+    "verify": "bun scripts/verify.ts",
     "check-model-independence": "bun scripts/check-model-independence.ts",
     "check-retro": "bun scripts/check-retro.ts",
     "check-sensitive-docs": "bun scripts/check-sensitive-docs.ts",
@@ -38,7 +41,8 @@
     "skill-report": "bun scripts/skill-report.ts",
     "reward": "bun scripts/reward.ts",
     "trace-report": "bun scripts/trace-report.ts",
-    "tidy": "bun scripts/tidy.ts"
+    "tidy": "bun scripts/tidy.ts",
+    "xray-harvest": "bun scripts/xray-harvest.ts"
   },
   "_note": "Zero runtime dependencies — everything uses Bun + Node built-ins (bun:sqlite, node:fs, etc.). No `bun install` needed. Just `bun run setup`."
 }

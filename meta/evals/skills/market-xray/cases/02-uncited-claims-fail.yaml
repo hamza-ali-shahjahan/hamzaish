@@ -1,0 +1,26 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: uncited-claims-fail
+skill: market-xray
+description: >
+  The gate must fail loudly on the two dishonesty shapes: a claim with no
+  citation, and a claim citing a corpus file that does not exist (worse than
+  none — it fakes the texture of evidence). Both must be named on stdout so
+  the operator sees exactly which sentences to fix. Deterministic.
+invoke:
+  cmd:
+    - bun
+    - scripts/xray-harvest.ts
+    - --check-citations
+    - meta/evals/skills/market-xray/cases/fixtures/synthesis-fail.md
+    - --corpus
+    - meta/evals/skills/market-xray/cases/fixtures/corpus
+checks:
+  - type: exit_code
+    equals: 1
+  - type: stdout_matches
+    regex: 'CITATION GATE: FAIL'
+  - type: stdout_matches
+    regex: 'uncited: - Everyone is moving upmarket'
+  - type: stdout_matches
+    regex: 'broken ref: file-that-does-not-exist\.md'
