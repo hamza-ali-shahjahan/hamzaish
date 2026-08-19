@@ -23,6 +23,8 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 Two lessons, one shape. Patently's bill was not a traffic spike — it was two crons spending for nobody, past four guards that all bounded how big a call could be and none of which bounded whether the call should happen at all. Then opening this repo to publish that lesson found ~3 weeks and 6,080 lines of finished factory work uncommitted, on a branch silently diverged from origin. Both are failures of what gets measured: the factory checked whether code was correct and could not see that correct code was billing for nobody, or that good work existed in only one place. When adding a guard, ask what it *cannot* see.
 
+**Retro:** [meta/retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md](retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md) (ships in this PR).
+
 **What to revisit**
 
 Whether `check-work-at-risk` ever fires in anger — if a month passes with it silent, either the habit took or the thresholds (2 days / 20 files / 3 unpushed commits) are too loose. Whether the spend playbook's entitlement pattern generalises past BigQuery to LLM and email spend, or stays a scan-billed-warehouse rule. The starter template does **not** yet ship the guard as code; that is the highest-leverage follow-up and is deliberately not bundled here.
@@ -44,6 +46,8 @@ Whether `check-work-at-risk` ever fires in anger — if a month passes with it s
 **Why**
 
 A 2026-08-16 code-grounded study of two external repos (`robiot/fable-os`, `deepseek-ai/deepseek-harness`) found both beating this factory at *inspectable* honesty in opposite ways — one enforcing an unforgeable kernel trace channel and keeping run artifacts whose index leads with failures, the other making candour a lint. Against that, `check-legibility` was auditing the receipt's vocabulary and shape while its truth went unchecked, which made "Checked: gates pass" unfalsifiable narration. Both studied repos also ship **zero agent-capability evaluation** — which reframes the eval layer here (13% coverage, thin against our ambitions) as the differentiated bet rather than the embarrassment.
+
+**Retro:** skipped — this entry was written across ~3 weeks of sessions and never committed; there was no sprint boundary to retro at the time. What there is to learn from it is the *rescue*, recorded in [meta/retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md](retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md) — reconstructing a timeline three weeks late would be invention, not a retro.
 
 **What to revisit**
 
