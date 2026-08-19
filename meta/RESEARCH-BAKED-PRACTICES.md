@@ -18,7 +18,7 @@
 | **Test scaffolding in the starter** (Vitest unit/component + Playwright e2e + example tests) | `templates/product-starter-nextjs/` (`vitest.config.ts`, `playwright.config.ts`, `src/**/*.test.*`, `e2e/`) | Standard Next.js testing stack; closes the "no test harness" gap | A scaffolded product actually writes real tests against it and CI catches a real regression | ⏳ unproven |
 | **CI/CD pipeline template** (typecheck → lint → test → build → e2e on push/PR, Bun-based) | `templates/product-starter-nextjs/.github/workflows/ci.yml` | GitHub Actions + `oven-sh/setup-bun`; placeholder-env build so it's green on clone | A product pushes to GitHub and the pipeline runs end-to-end without hand-editing | ⏳ unproven — *risk: per-product env-var names; needs a real `bun.lockb` committed for `--frozen-lockfile`* |
 | **Production-ops playbook** (severity ladder, incident loop, DB-down runbook, backup/DR) | `factory/playbooks/scale-stage/production-operations.md` | Google SRE Book, PagerDuty IR, Supabase prod checklist | A real SEV1/2 incident is handled with it and the retro confirms (or corrects) the runbook | ⏳ unproven |
-| **Abuse & cost controls** (rate limiting, bot defense, LLM/scan-billed cost caps, kill switch) | `factory/playbooks/scale-stage/abuse-and-cost-controls.md` | Standard practice + the IP Radar BigQuery cost lesson (partially proven) | A product enforces these and either survives an abuse/cost spike or learns where the defaults were wrong | 🟡 partially proven (cost-runaway rows draw on a real lesson; rate-limit/abuse rows do not) |
+| **Abuse & cost controls** (rate limiting, bot defense, LLM/scan-billed cost caps, kill switch) | `factory/playbooks/scale-stage/abuse-and-cost-controls.md` | Standard practice + the IP Radar BigQuery cost lesson | *(validated 2026-08-20 — see Graduated)* | ✅ **tested; the cost rows were found insufficient and are corrected.** Rate-limit/abuse rows remain unproven |
 | **Security at scale** (quarterly `/security-check --live` drift re-audit, attack-surface self-scan, data-breach runbook, retention rules in the spec template) | `factory/playbooks/scale-stage/security-at-scale.md`, `factory/commands/security-check.md` § Live mode, `factory/skills/spec-driven-development/SKILL.md` § Data Model & Retention | OWASP CheatSheetSeries, GDPR Art. 33/34, Supabase Security Advisors; prompted by the 2026-07 7TB/11B-record open-server disclosure | A live run catches real drift (an RLS-less table, a public bucket) that the ship-time gate missed — or a breach is handled with the runbook and the retro confirms it | ⏳ unproven |
 | **Validation enforcement** (the `check-validation` speed bump + ledger) | `scripts/check-validation.ts`, `products/_template/validation/README.md`, wired in `/scaffold` + `/hamzaish` | Designed response to the wp-to-astro violation (build-before-validate) | The next new product hits the gate and it actually changes behavior — validation happens, or the debt is recorded instead of skipped silently | ⏳ unproven — *the violation it's meant to prevent is itself the proof case* |
 
@@ -28,7 +28,11 @@
 
 | Practice | Proven by | Date | Now lives as |
 |---|---|---|---|
-| _none yet_ | | | |
+| **Cost-runaway safeguards** (the scan-billed / metered-API rows) | Patently (`products/copyright`) — followed the playbook and was **still** billed $93.91 in 17 days with zero users. Every guard bounded call *size*; none bounded call *authority*. Decision `0005`. | 2026-08-20 | Corrected in place, plus a new first-layer playbook: [`spend-belongs-to-a-customer.md`](../factory/playbooks/mvp-stage/spend-belongs-to-a-customer.md) |
+
+> **Note on this row.** It graduated by *failing*, not by surviving. That is still
+> validation — the practice met reality, reality corrected it, and the correction is
+> written down. A ledger that only records wins is a marketing page.
 
 ---
 

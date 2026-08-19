@@ -1,9 +1,9 @@
 {
   "name": "hamzaish",
-  "version": "2.25.0",
+  "version": "2.26.0",
   "private": true,
   "type": "module",
-  "description": "The AI Co-builder & Startup OS — a brain + orchestrator for builders to run a portfolio of products from idea to scale.",
+  "description": "The AI Co-builder & Startup OS \u2014 a brain + orchestrator for builders to run a portfolio of products from idea to scale.",
   "license": "AGPL-3.0-or-later",
   "engines": {
     "bun": ">=1.0.0"
@@ -42,7 +42,8 @@
     "reward": "bun scripts/reward.ts",
     "trace-report": "bun scripts/trace-report.ts",
     "tidy": "bun scripts/tidy.ts",
-    "xray-harvest": "bun scripts/xray-harvest.ts"
+    "xray-harvest": "bun scripts/xray-harvest.ts",
+    "check-work-at-risk": "bun scripts/check-work-at-risk.ts"
   },
-  "_note": "Zero runtime dependencies — everything uses Bun + Node built-ins (bun:sqlite, node:fs, etc.). No `bun install` needed. Just `bun run setup`."
+  "_note": "Zero runtime dependencies \u2014 everything uses Bun + Node built-ins (bun:sqlite, node:fs, etc.). No `bun install` needed. Just `bun run setup`."
 }

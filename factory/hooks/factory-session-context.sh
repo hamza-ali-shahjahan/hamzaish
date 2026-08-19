@@ -142,6 +142,15 @@ fi
 
 CTX="🏭 Hamzaish factory session — ${LABEL}. ENABLEMENT PROTOCOL (mandatory, hamzaish.md §5). Write both bookends in plain day-1 language — value, never mechanism; no factory jargon (lanes, slices, tendrils, doors); if a term needs the codebase to explain it, say what it does instead. (1) OPEN each task response with the 4-line plan (about 80 words max): '🏭 Hamzaish plan' / '- Goal: <what done looks like, one plain sentence>' / '- Steps: <the pieces of this task, in order, plain words>' / '- Commands: /command — what it does here (EACH command named with its job in this task)' / '- Proof before done: <how the work will be verified>'. (2) CLOSE with the 3-line receipt, max ~50 words: '🏭 Hamzaish receipt' / '- What you got: <the value added to the user's work>' / '- Checked: <how it was verified before done, plus anything deliberately not done>' / '- Try next: /command — <what typing it will do>'. GATE both bookends before sending: day-1 words only (banned in bookends: lane, slice, tendril, door, artifact, retro, e2e, typecheck — say what it does instead); exact shapes; caps ~80/~50 words; exactly ONE command in Try next; no commit hashes or file paths; numbers only if the user feels them (test counts yes). ${STEP3}"
 
+# Surface unprotected work once per session — the question no other gate asks:
+# would this survive the machine dying? Fail-open and best-effort; a hook must
+# never block a session over a git state it merely observed.
+RISK=""
+if command -v bun >/dev/null 2>&1 && [ -f "$ROOT/scripts/check-work-at-risk.ts" ]; then
+  RISK=$( (cd "$ROOT" && bun scripts/check-work-at-risk.ts --brief 2>/dev/null) | grep '^⚠' || true)
+fi
+[ -n "$RISK" ] && CTX="$CTX  FACTORY REPO STATE: ${RISK} Say so in the receipt if it is still true at the end of the task."
+
 # JSON-escape the context string (quotes are already avoided above; escape backslashes defensively).
 ESCAPED=$(printf '%s' "$CTX" | sed 's/\\/\\\\/g; s/"/\\"/g')
 

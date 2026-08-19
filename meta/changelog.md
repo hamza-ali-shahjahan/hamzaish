@@ -10,6 +10,25 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-20 — v2.26.0 · spending money now requires a customer, and finished work has to exist
+
+**What changed**
+
+- **`factory/playbooks/mvp-stage/spend-belongs-to-a-customer.md`** — the first-layer cost playbook, filed in mvp-stage rather than scale-stage on purpose. The principle: *metered spend belongs to a paying customer, not to a code path.* Attach the right to spend to a person, carried at runtime and checked at the leaf where money leaves; a scheduled job can name itself but has no payer, so it is refused before the provider is contacted. Eleven rules, each paid for by a real incident — measure cost with a free dry run and date the claim; a ceiling calibrated by guess is not a ceiling; fail closed on money while failing open on access; count outputs, not executions; the operator escape hatch must be un-acquirable by a server.
+- **`abuse-and-cost-controls.md` corrected, and demoted to second layer.** Its status line now reads *tested, and found insufficient* — Patently followed it and was still billed $93.91 in 17 days with zero users. Its scan-billed row asserted that partitioning and `maximumBytesBilled` bound the cost; on a table you don't own a date filter may prune nothing, and a cap set above real cost never fires. Both corrected in place with the measurement that disproved them.
+- **`meta/RESEARCH-BAKED-PRACTICES.md`** — the cost rows moved to Graduated, with a note that they graduated by **failing**, not by surviving. A ledger that only records wins is a marketing page.
+- **`bun run check-work-at-risk`** — the durability gate. Reports uncommitted paths and the age of the oldest, unpushed commits, branch divergence, and missing upstreams. Warn-only by default (`--strict` for hooks, `--brief` for banners), and surfaced once per session by the SessionStart hook. AGENTS.md rule #17 and `brain/anti-patterns/work-that-exists-only-on-one-machine.md` carry the rule: *finishing a thing means committing it — not pushing it, committing it*, and *when you find a backlog, protect it before you improve it.*
+
+**Why**
+
+Two lessons, one shape. Patently's bill was not a traffic spike — it was two crons spending for nobody, past four guards that all bounded how big a call could be and none of which bounded whether the call should happen at all. Then opening this repo to publish that lesson found ~3 weeks and 6,080 lines of finished factory work uncommitted, on a branch silently diverged from origin. Both are failures of what gets measured: the factory checked whether code was correct and could not see that correct code was billing for nobody, or that good work existed in only one place. When adding a guard, ask what it *cannot* see.
+
+**What to revisit**
+
+Whether `check-work-at-risk` ever fires in anger — if a month passes with it silent, either the habit took or the thresholds (2 days / 20 files / 3 unpushed commits) are too loose. Whether the spend playbook's entitlement pattern generalises past BigQuery to LLM and email spend, or stays a scan-billed-warehouse rule. The starter template does **not** yet ship the guard as code; that is the highest-leverage follow-up and is deliberately not bundled here.
+
+---
+
 ## 2026-08-16 — v2.25.0 · the receipt stops taking the session's word for it
 
 **What changed**
