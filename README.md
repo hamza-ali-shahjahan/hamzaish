@@ -2,7 +2,8 @@
 
 # 🏭 Hamzaish
 
-**Your AI writes the code. Hamzaish runs the company.**
+**Claude Code setup that builds, launches, and learns.**
+Your AI writes the code. Hamzaish runs the company.
 
 [![🌱 Beginner-Friendly](https://img.shields.io/badge/%F0%9F%8C%B1_Beginner--Friendly-8957e5.svg)](docs/start-here.md)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
