@@ -53,3 +53,32 @@ This is the **learning flywheel** in Andrej Karpathy's sense — eval-driven
 iteration where each cycle's output (what worked, what broke) becomes the next
 cycle's input. Hamzaish applies it to *building products*, not just training
 models: ship → capture the lesson → harden the tool → ship faster and safer.
+
+## How it compares
+
+**Not another AI coding setup.** AI already writes your code — nobody's running
+your launch, your pricing, your first hundred customers, or the kill call.
+
+| | build-stage setups<br>(gstack / BMAD / SuperClaude) | AI app builders<br>(Lovable / v0 / Bolt) | agent hosts<br>(Claude Code / DeepSeek Harness) | agent frameworks<br>(AutoGPT / crewAI) | **Hamzaish** |
+|---|---|---|---|---|---|
+| Scope | build stage only | build + host a prototype | the session and its tools | a framework you assemble | **a product's whole life** |
+| The output | code | an app on their platform | a running agent | an agent run | **a live product on your domain** |
+| After "code is done" | you're on your own | hosting, then you're on your own | not its job | you're on your own | **launch, sell, scale, kill rails** |
+| Memory across projects | per-session | per-project | per-session | per-run | **persistent brain + learnings loop** |
+| Measures agent success | no | no | no | no | **eval-gated, and honest that it's early** |
+| Runs on | config + tools | their cloud | itself | a Python service | **a folder + whichever host you use** |
+| Form | config | closed platform | a runtime | framework | **markdown-first, forkable — yours** |
+
+The row that matters most is *measures agent success*. A 2026-08-16 study of two
+serious projects — a from-scratch OS driven entirely by a model, and a
+corporate-funded agent host with a 100%-coverage merge gate and 961 test files —
+found that **neither ships any way to measure whether its agent succeeds at
+tasks.** Both prove their machinery is correct. Neither shows it is good.
+
+That gap is where the judge here lives. It is early — 10 of 78 skills carry eval
+cases — and the README says so in its own weaknesses section. But it is the
+differentiated bet, and the reason the factory is not just a nicer prompt folder.
+
+**Hamzaish rides a host rather than being one** because the host is the commodity
+and the factory is the compounding asset. See
+[Running on another host](./host-portability.md) for what that actually costs.

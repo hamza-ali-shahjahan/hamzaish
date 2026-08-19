@@ -1,0 +1,29 @@
+{
+  "slug": "new-one",
+  "name": "New One",
+  "one_liner": "One billion builders and founders in a single company that holds a share of an ecosystem of companies \u2014 you own what you build, plus a sliver of everything else built beside it.",
+  "created": "2026-08-17",
+  "stage": "idea",
+  "status": "active",
+  "code_path": null,
+  "aliases": [
+    "newone",
+    "the new one"
+  ],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Sibling to foundernees, deliberately separate. Foundernees makes builders; New One is what they build into. Local dev on port 3211 (foundernees holds 3210). No domain yet \u2014 site.url is a placeholder. Same standing no-launch rule applies until the operator says otherwise."
+}

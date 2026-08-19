@@ -2,11 +2,13 @@
 
 An AI-native product has a failure mode the old SaaS playbook didn't: a single abusive user (or a bug in a loop) can run up a real bill in hours, because every request costs money downstream — LLM tokens, metered APIs, scan-billed queries. This playbook is the cheap insurance.
 
-> **Status: research-baked, not yet scar-tissue.** Adapted from standard practice + the IP Radar BigQuery cost lesson (`brain/learnings/2026-06-04.md`). Tracked in [`meta/RESEARCH-BAKED-PRACTICES.md`](../../../meta/RESEARCH-BAKED-PRACTICES.md).
+> **Status: tested, and found insufficient.** Patently followed this playbook and was still billed $93.91 in 17 days with zero users (2026-08-20). Everything below bounds *how big a call is*; nothing here bounds *whether the call should happen at all* — which is what actually failed. Read [`spend-belongs-to-a-customer.md`](../mvp-stage/spend-belongs-to-a-customer.md) first; this page is the second layer. Tracked in [`meta/RESEARCH-BAKED-PRACTICES.md`](../../../meta/RESEARCH-BAKED-PRACTICES.md).
 
 ## The principle
 
 **Every metered downstream call needs a ceiling that a single actor cannot exceed.** Default-open is how you wake up to a $4,000 bill. Bound spend at three layers: per-request, per-user, and per-account.
+
+**But a ceiling is not a gate.** Ceilings assume a human actor whose usage you want to bound. A scheduled job has no user, spends right up to every ceiling you set, and does it forever for nobody — so start by deciding *who is allowed to spend at all*. See [`spend-belongs-to-a-customer.md`](../mvp-stage/spend-belongs-to-a-customer.md).
 
 ## Rate limiting (per-user / per-IP)
 
@@ -28,7 +30,7 @@ An AI-native product has a failure mode the old SaaS playbook didn't: a single a
 |---|---|
 | LLM token blowup | Cap `max_tokens` per call; cap calls/user/day; use the cheapest model that passes evals (Haiku before Sonnet before Opus) — see `stack/agent-stack.md` |
 | Retry storms | Bounded retries with backoff; never retry a 4xx; circuit-break a failing provider |
-| Scan-billed queries (BigQuery et al.) | **`LIMIT` does not bound cost — it bills on bytes scanned, not rows returned.** Partition/cluster, select only needed columns, set a per-query `maximumBytesBilled`. (IP Radar, 2026-06-04) |
+| Scan-billed queries (BigQuery et al.) | **`LIMIT` does not bound cost — it bills on bytes scanned, not rows returned.** Select only needed columns. **Do not assume a date filter prunes anything** — on a table you don't own it may prune nothing at all, and Patently paid a flat 231 GiB per query for months on that assumption (2026-08-20). **Dry-run every query** (free, exact) and set `maximumBytesBilled` *from that measurement*, below expected normal — a cap set above real cost never fires. (IP Radar 2026-06-04; corrected 2026-08-20) |
 | Metered search APIs | Local-first cache (seed once, search free); enforce batch limits inside the provider wrapper, not at the call site |
 | Background-job loops | Idempotent upserts + a max-iterations guard; per-item try/catch must *record* failures, not swallow them |
 

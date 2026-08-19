@@ -12,12 +12,12 @@ Your AI writes the code. Hamzaish runs the company.
 [![guards](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml/badge.svg)](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml)
 
 <img src="https://img.shields.io/badge/35-stage_agents-8957e5.svg" alt="35 stage agents">
-<img src="https://img.shields.io/badge/65-skills_%26_commands-d97757.svg" alt="65 skills & commands (42 skills, 23 commands)">
-<img src="https://img.shields.io/badge/50-playbooks-blue.svg" alt="50 playbooks">
+<img src="https://img.shields.io/badge/67-skills_%26_commands-d97757.svg" alt="67 skills & commands (44 skills, 23 commands)">
+<img src="https://img.shields.io/badge/51-playbooks-blue.svg" alt="51 playbooks">
 <img src="https://img.shields.io/badge/70-security_checks-success.svg" alt="70 security checks">
 
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](docs/contributing.md)
+[![AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 
 **[Install](#install) · [What you get](#what-you-get--what-you-bring) · [What's inside](#whats-inside) · [Philosophy](docs/philosophy.md) · [Docs](docs/)**
 
@@ -39,51 +39,62 @@ Point Hamzaish at an idea — and run the whole company around the code your age
 
 **Hamzaish is an open-source agent OS for Claude Code that puts you in Builder Mode — and keeps you there for the whole life of a product.** Your agent supplies the hands — the model, the sessions, the code. Hamzaish supplies everything that makes those hands a company: **a brain** that carries every ship's lessons into the next one, **a factory** of stage agents and playbooks for the whole product life — **Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down** — and **a judge**: mechanical verification gates, walled off from the builder, that refuse to let "looks done" pass for "done." That last part is the line between Builder Mode and vibe coding, and it's the part the factory is evolving hardest: an honest, automated, blind judge for everything it builds.
 
-One deliberate architectural choice, stated plainly so you're not surprised when you clone: **Hamzaish ships no agent loop and no model of its own.** It is driven by an agent host — Claude Code today — that reads the skills, spawns the sessions, and executes. That's not a missing feature; it's the design. The factory is the part that compounds and stays yours; the engine underneath is swappable. Your host will be replaced by a better one within a year — your brain, your guardrails, and your judge shouldn't be.
+**Unlock your Builder Mode.**
 
-**→ [The full mission: Builder Mode](docs/builder-mode.md) · [The philosophy](docs/philosophy.md) · [Where it's evolving](meta/SELF-EVOLUTION.md)**
+</div>
 
-## The 11pm moment
+## What it looks like
 
-[![Builder Mode — momentum first, strategy second](docs/assets/builder-mode.png)](docs/builder-mode.md)
+Every task opens with a plan in plain words and closes with a receipt. The
+receipt's **Checked** line is not written by the session — it's rendered from
+recorded exit codes, so it can report a failure the narration would have glossed.
 
-**Most AI tools stop when the code is done. Builders' problems start there.**
+Here is a real run from this repo:
 
-The old advice — business plan, market sizing, twenty validation interviews *before* you build — was written for a world where building was expensive. That world is gone. Building is cheap, fast, and reversible now, which means **the thing you ship *is* the test.** **Strategy-first kills more builders than bad ideas ever did** — so here it's a rail you pull in when you want it, never a toll you pay to start.
+```
+🏭 Hamzaish plan
+- Goal: prove the honesty gates work on the factory's own code
+- Steps: run every gate · record what really happened · render the receipt
+- Commands: /checkpoint — a named save-point before anything changes
+- Proof before done: the gates' own exit codes, not my summary of them
+```
 
-But most solo projects don't die in the build. They die in everything *after* it: the security review, the launch, the pricing call, the first-100-customers grind, knowing when to kill. That's the part Hamzaish runs with you — and the reason it's a lifecycle, not a scaffolder.
+```console
+$ bun run verify --all
+✓ check-evals                    (exit 0, 18ms) → recorded
+✓ check-model-independence       (exit 0, 16ms) → recorded
+✓ check-product-layout           (exit 0, 18ms) → recorded
+✓ check-skill-command-collision  (exit 0, 14ms) → recorded
+✓ check-limitations              (exit 0, 17ms) → recorded
+✓ check-decisions                (exit 0, 19ms) → recorded
+✗ check-counts                   (exit 1, 63ms) → recorded
 
-## What you get / what you bring
+Checked: check-decisions, check-evals, check-limitations, check-model-independence,
+check-product-layout, check-skill-command-collision were run and passed;
+check-counts was run and FAILED
+```
 
-**What you get — the factory, the brain, and the judge:**
+That failure was real: a product config carried a machine path where the rules
+require none, and five numbers in this README had gone stale. **A hand-written
+receipt would have said "gates pass."** The whole run — including the failing
+gate's output — is kept in [`evidence/`](evidence/2026-08-16-verification-ledger/).
 
-- **The factory:** 35 stage agents + 65 skills & commands (42 skills, 23 commands) covering the full lifecycle — idea validation, scaffolding, the eval-gated [`/full-cycle`](factory/commands/full-cycle.md) build engine, security review, go-live provisioning, launch, pricing, first-100-customers, retention, kill-or-double-down. Plus 50 playbooks and a 146-practice ledger where every practice is badged honestly: ✅ proven by a real ship or dated incident (44) · 🟡 partial (3) · ⏳ research-baked (99). No practice gets "proven" by opinion.
-- **The brain:** learnings, decisions, and anti-patterns in markdown, SQLite-indexed, searchable from any session via `/brain-ask`. When a mistake generalizes, it's promoted into a guardrail the next build inherits automatically — your second product starts smarter than your first.
-- **The judge — mechanical gates, runnable today:**
-  - `bun run eval` — the eval harness: deterministic, agent-blind cases per skill (`--no-llm` needs no model or key). The coverage ratchet (`bun run check-evals`) enforces "a new skill without an eval is debt": **9 of 77** skills/agents carry cases today, the other 68 are a visible, grandfathered backlog — coverage can only go up, and deleting a case fails CI. Early and honest about it: the judge covers a handful of skills, not yet every build, and the direction is fixed.
-  - `bun scripts/verify-live.ts <url>` — the go-live proof: read-only A1–A11 assertions against the *real deployed product* (DNS, TLS on apex + www, health endpoint, build-SHA match, authz on protected routes, cron-secret enforcement, Sentry canary). A scorecard, never a bare "done."
-  - [`/security-check`](docs/security.md) — the 70-check pre-launch security review with a forced **BLOCK / CLEAR** verdict.
-  - The fact guards CI runs on every change — `check-counts` (every headline number in this README must match the filesystem or the build fails), `check-evals`, `check-model-independence`, `check-product-layout`, `check-skill-command-collision`, and friends. The honesty is enforced, not promised.
+Honest about the ceiling: the ledger is **tamper-evident, not unforgeable**. The
+records hash-chain, so an edit is detectable and an empty ledger reads *"nothing
+was verified"* instead of reading as success. A session with a shell can still
+append a lie — that's the real limit of a single-agent design, and the code says
+so where it lives.
 
-**What you bring — the agent host:**
+## Quick start
 
-Hamzaish runs on [Claude Code](https://claude.ai/code) (paid plan) + [Bun](https://bun.sh), with the [GitHub CLI](https://cli.github.com) for git-facing skills. `bun run setup` wires the skills for auto-discovery, and you drive the factory as slash commands — `/builder-mode`, `/full-cycle`, `/go-live`, `/ship`.
-
-The brain and playbooks also travel to **Cursor, Codex, and Windsurf** via [`AGENTS.md`](AGENTS.md) — those hosts read the same markdown as context and follow it. Honest scope of that today: context-level, not a packaged plug-in — no slash-command ergonomics or auto-discovery outside Claude Code yet. The judge, though, is host-agnostic already: every gate script runs under `bun` regardless of which agent produced the work. Verification that doesn't care who built it is the point.
-
-## Install
-
-**Option A — the full factory** *(recommended: this is the compounding OS — clone it, it becomes yours)*
-
-One command; installs Bun if missing, clones, sets up ([read it first](install.sh)):
+You need [Claude Code](https://claude.ai/code) on a paid plan, [Bun](https://bun.sh),
+and the [GitHub CLI](https://cli.github.com) for the git-facing skills.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
 ```
 
 <details><summary>…or set it up by hand</summary>
-
-You need [Bun](https://bun.sh) and [Claude Code](https://claude.ai/code).
 
 ```bash
 git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
@@ -92,64 +103,100 @@ bun run setup        # idempotent — creates YOUR factory, never touches existi
 ```
 </details>
 
-**Option B — just the plugins** *(pieces of Hamzaish in your own repo, no adoption — the free sample, not the product)*
+Watch it check itself before you build anything with it:
 
 ```bash
-claude plugin marketplace add hamza-ali-shahjahan/hamzaish
+bun run verify --all
 ```
 
-```bash
-claude plugin install repo-scout@hamzaish
-```
-
-Also available: `web-launch@hamzaish` · [repo-scout standalone →](https://github.com/hamza-ali-shahjahan/repo-scout)
-
-**Requirements:** [Claude Code](https://claude.ai/code) on a **paid Claude plan** (no free tier — better to know now) · [Bun](https://bun.sh) · [GitHub CLI](https://cli.github.com) for the git-facing skills.
-
-## Quickstart — install to a green gate run
-
-```bash
-# after install: prove the headline numbers in this README match the filesystem
-bun run check-counts
-
-# run the judge — deterministic eval cases, no model or API key needed
-bun run ingest
-bun run eval --no-llm
-
-# run the coverage + structure guards CI runs
-bun run check-evals
-bun run check-model-independence
-bun run check-product-layout
-bun run check-skill-command-collision
-```
-
-Green looks like: `✓ all headline counts match disk`, an eval summary of `PASS=16  SKIP=9` (SKIPs are LLM-only cases held out by `--no-llm`), and silent exit-0 from each guard. You've now watched the factory verify itself — before building anything with it, which is exactly the order Builder Mode runs in.
-
-Then build — open Claude Code in the folder and type:
+Then open Claude Code in the folder and type:
 
 ```
 /builder-mode <your idea>
 ```
 
-Watch it scaffold a **local-first product that runs in 60 seconds.** Local is mile one, not the destination: when you're ready, **`/go-live`** wires the accounts you set up once (Supabase, Stripe, Resend, your domain…), **`/security-check`** gates it, and **`/ship`** puts it live on a URL you can share. ([The 10-minute guided version →](docs/your-first-product.md))
+You get a **local-first product running in 60 seconds.** Local is mile one:
+**`/go-live`** wires the accounts you set up once, **`/security-check`** gates it,
+and **`/ship`** puts it on a URL you can share.
+([The 10-minute guided version →](docs/your-first-product.md) · [never used a terminal? →](docs/start-here.md))
 
-Day-to-day: **`/work-on <slug>`** enters a product's workspace · **`/portfolio-pulse`** answers "where should I focus today" · **`/repo-scout <url>`** studies any repo without being changed by it.
+**Just want the pieces?** `claude plugin marketplace add hamza-ali-shahjahan/hamzaish`
+installs `repo-scout` or `web-launch` into your own repo.
 
-**Never used a terminal? You can absolutely do this** — no coding required; you talk to an AI and it does the techie parts. **→ [The complete click-by-click walkthrough](docs/start-here.md)** (🍎 Mac · 🐧 Linux · 🪟 Windows).
+## What it is
 
-**Safety, either door:** scaffolded products run agent-generated code inside a devcontainer, secrets are gitignored from commit zero, and nothing auto-pushes off your machine. ([Full threat model →](docs/security.md))
+**An open-source agent OS that puts you in Builder Mode and keeps you there for
+the whole life of a product.** Your agent supplies the hands. Hamzaish supplies
+what makes those hands a company:
 
-## Why it rides on a host instead of being one
+- **A brain** — learnings, decisions, and anti-patterns in markdown, SQLite-indexed,
+  searchable from any session. When a mistake generalizes it becomes a guardrail
+  the next build inherits, so your second product starts smarter than your first.
+- **A factory** — 35 stage agents and 44 skills + 23 commands across
+  Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down. Most AI tools stop
+  when the code is done; solo projects die *after* that — in the security review,
+  the launch, the pricing call, the kill decision.
+- **A judge** — mechanical gates, walled off from the builder, that refuse to let
+  "looks done" pass for "done." That line is the difference between Builder Mode
+  and vibe coding, and it's the part evolving hardest.
 
-Because the host is the commodity and the factory is the compounding asset. Models get replaced; agent frameworks get replaced; the lessons from your last four ships, the guardrail that caught the auth bug that passed 138 tests, and the judge that won't let a launch through unverified — those compound for as long as you build. Hamzaish keeps that layer independent so it can ride each generation of agent rather than die with one. It's the verification-and-memory layer for whatever builds next — not a walled tool you have to move into.
+**Build is the default.** The old advice — plan, size the market, twenty
+interviews *before* you build — was written for when building was expensive.
+Building is cheap and reversible now, so the thing you ship *is* the test.
+Strategy is a rail you pull in when you want it, never a toll you pay to start.
 
+**One deliberate choice:** Hamzaish ships no agent loop and no model of its own.
+It rides an agent host — Claude Code today. That's the design, not a gap. Hosts
+get replaced; your brain, your guardrails, and your judge shouldn't be.
+([why →](docs/philosophy.md) · [running on other hosts →](docs/host-portability.md))
+
+## What's verified, and how
+
+The honesty is enforced, not promised. Every claim below has a command you can run.
+
+| Claim | How it's checked | Run it |
+|---|---|---|
+| Headline numbers match the filesystem | every count in this README is derived from disk; drift fails the build | `bun run check-counts` |
+| Skills behave as specified | deterministic, agent-blind eval cases (no model or key needed) | `bun run eval --no-llm` |
+| New skills carry evals | coverage ratchet — it can only go up, deleting a case fails CI | `bun run check-evals` |
+| New skills state their limits | every new skill declares what it can't do | `bun run check-limitations` |
+| Decisions record what they beat | decision · why · alternatives · wrong-if · revisit | `bun run check-decisions` |
+| A deployed product is really live | read-only assertions against the real URL — DNS, TLS, authz, build-SHA | `bun scripts/verify-live.ts <url>` |
+| Nothing ships unreviewed | 70-check security review with a forced BLOCK/CLEAR verdict | `/security-check` |
+| What was actually checked | exit codes recorded to a hash-chained ledger, rendered into the receipt | `bun run verify --show` |
+
+Green looks like `✓ all headline counts match disk`, an eval summary of
+`PASS=17 SKIP=9`, and silent exit-0 from each guard.
+
+## Known weaknesses
+
+Stated plainly here rather than buried, because a factory that hides its edges
+teaches you to trust the wrong things.
+
+- **The judge covers a handful of skills, not every build.** 10 of 78 skills and
+  agents carry eval cases; the other 68 are a visible, grandfathered backlog.
+  The ratchet means coverage only rises — but today it's thin.
+- **The same is true of the new honesty gates.** 4 of 78 skills declare their
+  limits; 3 of 31 decision records carry all five elements. Both are backlogs in
+  the open, not finished work.
+- **The verification ledger is tamper-evident, not unforgeable.** See above. A
+  ring-0 boundary is not available to a single agent with a shell.
+- **Other hosts are context-level only.** Cursor, Codex, and Windsurf read
+  [`AGENTS.md`](AGENTS.md) and follow it. No slash-command ergonomics or
+  auto-discovery outside Claude Code yet.
+- **`/full-cycle` is gated but not autonomous-safe.** `/auto` still pauses for
+  anything irreversible or outward-facing, by design.
+- **Evidence is young.** [`evidence/`](evidence/) holds one artifact. Most
+  "proven" badges still rest on the ledger of ships, not on files you can open.
+
+## What's inside
 ## What's inside
 
 | | | |
 |---|---|---|
 | 🧠 **A brain that remembers** | learnings, decisions, and anti-patterns — SQLite-indexed, searchable from any session via `/brain-ask` | [`brain/`](brain/) |
-| 🏭 **A factory that acts** | 35 agents + 65 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
-| 📖 **Playbooks with receipts** | 50 playbooks · 146 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
+| 🏭 **A factory that acts** | 35 agents + 67 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
+| 📖 **Playbooks with receipts** | 51 playbooks · 146 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
 | 🔒 **A gate that blocks** | 70-check pre-launch security review (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict | [security checklist](factory/playbooks/mvp-stage/security-checklist.md) |
 | 🧪 **An engine that proves** | eval-gated build cycle — a feature slice without a named eval + an end-to-end test doesn't get built | [`/full-cycle`](factory/commands/full-cycle.md) |
 | 📡 **Senses that record** | four local-only instruments from your first session (gitignored, nothing leaves your machine): session traces (`bun run trace-report`), friction (`bun run friction`), the defect registry (`bun run defect`), and per-skill trust states (`bun run skill-report`) — retros ground in what happened, not what you remember | [`scripts/trace-report.ts`](scripts/trace-report.ts) |
@@ -158,7 +205,6 @@ Because the host is the commodity and the factory is the compounding asset. Mode
 | 🗂️ **Portfolio discipline** | `/portfolio-pulse` across everything you run; quarterly kill-or-double-down so zombie projects don't eat your year | [`/kill-or-keep`](factory/skills/kill-or-keep/SKILL.md) |
 
 **Every count real, every item linked, every claim badged.** The full catalog, expanded:
-
 <details><summary><b>🤖 The agents (35) — lifecycle + engineering</b></summary>
 
 One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory/agents/`](factory/agents/). Each is a markdown SKILL.md your session invokes by intent — the routing table lives in [`CLAUDE.md`](CLAUDE.md).
@@ -230,9 +276,9 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 
 </details>
 
-<details><summary><b>🛠️ The skills & commands (65)</b></summary>
+<details><summary><b>🛠️ The skills & commands (67)</b></summary>
 
-42 skills + 23 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
+44 skills + 23 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
 
 | Invoke | What it does |
 |---|---|
@@ -289,7 +335,7 @@ Backed by **22 engineering skills** under [`factory/skills/`](factory/skills/) �
 
 </details>
 
-<details><summary><b>📖 The playbooks (50) + the practices ledger (146)</b></summary>
+<details><summary><b>📖 The playbooks (51) + the practices ledger (146)</b></summary>
 
 **[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 146 practices for shipping products with Claude Code: **44 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
 
@@ -305,49 +351,49 @@ Playbooks are short (300–800 words), sourced, stage-gated:
 | **🤖 AI-native (10)** | [Eval-Driven Development](factory/playbooks/ai-native-2026/eval-driven-development.md) · [Cost-to-Outcome & Model-Independence](factory/playbooks/ai-native-2026/cost-to-outcome-and-model-independence.md) · [Founder's Playbook distilled](factory/playbooks/ai-native-2026/founders-playbook-distilled.md) · [Auth Go-Live](factory/playbooks/ai-native-2026/auth-go-live.md) · [Go-Live Provisioning](factory/playbooks/ai-native-2026/go-live-provisioning.md) · [MCP Servers per Product](factory/playbooks/ai-native-2026/mcp-servers.md) · [Hermes & Fallback Models](factory/playbooks/ai-native-2026/hermes-and-fallback-models.md) · [Skill Authoring](factory/playbooks/ai-native-2026/skill-authoring.md) · [Handoff vs Supervision](factory/playbooks/ai-native-2026/handoff-vs-supervision.md) · [Multi-Agent, One Repo](factory/playbooks/ai-native-2026/multi-agent-one-repo.md) |
 
 </details>
-
-## How it's different
-
-**Not another AI coding setup.** AI already writes your code — nobody's running your launch, your pricing, your first hundred customers, or the kill-call. Here's where Hamzaish actually sits:
-
-| | build-stage setups<br>(gstack / BMAD / SuperClaude) | AI app builders<br>(Lovable / v0 / Bolt) | agent frameworks<br>(AutoGPT / crewAI) | personal AI OS<br>(assistant runtimes) | **Hamzaish** |
-|---|---|---|---|---|---|
-| Scope | build stage only | build + host a prototype | a framework you assemble | your inbox, tasks, and tools | **a product's whole life** |
-| The output | code | an app on their platform | an agent run | a tidier day | **a live product on your domain** |
-| After "code is done" | you're on your own | hosting, then you're on your own | you're on your own | not its job | **launch, sell, scale, kill rails** |
-| Memory across projects | per-session | per-project | per-run | app-level memory service | **persistent brain + learnings loop** |
-| Runs on | config + tools | their cloud | a Python service | containers + a database stack | **a folder + Claude Code** |
-| Form | config | closed platform | framework | hosted app | **markdown-first method, forkable — yours** |
-
-## The discipline
-
-1. **Build is the default — validate before irreversible bets.** Cheap, fast, reversible ships *are* validation. Before expensive moves: ~5 target-profile conversations. The hard rule: never skip it *silently* — `bun run check-validation <slug>` records the debt.
-2. **Scope is the moat.** Every product's `scope.md` says what it does AND deliberately doesn't.
-3. **Persistent context.** Every product gets a `CLAUDE.md`; every decision is logged in `decisions/`.
-4. **Measurement before launch.** North-star, activation, retention — defined before the first user.
-5. **The factory is a product.** If it can't ship product #1 through, fix the factory before adding slots.
-6. **Honest copy.** Every outward-facing word is true and verifiable when it ships; aspiration is labelled, never present-tense. Proven vs. promising is tracked in [the honest ledger](meta/RESEARCH-BAKED-PRACTICES.md).
-
-## The self-improvement loop
-
-Every working session appends learnings to [`brain/learnings/`](brain/learnings/). At major-cycle boundaries, `/learn-loop` scores candidates on five axes ([rubric](meta/learning-loop-rubric.md)) and promotes only the top few into load-bearing guardrails — a skill rule, a playbook step, an anti-pattern, a line in [the practices ledger](BEST-PRACTICES.md). Quarterly, `/kill-or-keep` runs on Hamzaish itself and re-checks each promoted guardrail: deliver the predicted gain, or get sunset. The factory compounds; it doesn't ossify.
-
 ## Architecture
 
 ```
 brain/        — identity, principles, learnings, anti-patterns, decisions, ingested knowledge
 factory/      — agents (idea/ mvp/ launch/ scale/ portfolio/), skills, commands, playbooks
 products/     — one folder per product: metadata + learnings ONLY (code stays in private repos)
+evidence/     — dated artifacts behind the claims, failures included
 meta/         — changelog, retros, evals, the self-improvement loop
 stack/        — tech defaults + the set-up-once accounts guide
 templates/    — Next.js starter + doc templates
 ```
 
-Product **code is never in this repo** — only metadata and learnings. Your code (the moat) stays private; locations are wired via a git-ignored `code-paths.local.json`. So the repo is safe to share without exposing anyone's secret sauce. ([the public/private boundary →](docs/architecture.md#the-publicprivate-boundary--protecting-your-secret-sauce))
+Product **code is never in this repo** — only metadata and learnings. Your code
+(the moat) stays private; locations are wired via a git-ignored
+`code-paths.local.json`, so the repo is safe to share without exposing anyone's
+secret sauce. ([the public/private boundary →](docs/architecture.md#the-publicprivate-boundary--protecting-your-secret-sauce))
+
+## The discipline
+
+1. **Build is the default — validate before irreversible bets.** Cheap, reversible
+   ships *are* validation. Before expensive moves: ~5 target-profile conversations.
+   Never skip it *silently* — `bun run check-validation <slug>` records the debt.
+2. **Scope is the moat.** Every product's `scope.md` says what it does AND deliberately doesn't.
+3. **Persistent context.** Every product gets a `CLAUDE.md`; every decision logged in `decisions/`.
+4. **Measurement before launch.** North-star, activation, retention — defined before the first user.
+5. **The factory is a product.** If it can't ship product #1 through, fix the factory before adding slots.
+6. **Honest copy.** Every outward-facing word is true when it ships; aspiration is
+   labelled, never present-tense. ([the honest ledger](meta/RESEARCH-BAKED-PRACTICES.md))
+
+## The self-improvement loop
+
+Every working session appends learnings to [`brain/learnings/`](brain/learnings/).
+At cycle boundaries `/learn-loop` scores candidates on five axes and promotes only
+the top few into load-bearing guardrails — a skill rule, a playbook step, an
+anti-pattern, a ledger line. Quarterly, `/kill-or-keep` runs on Hamzaish itself and
+re-checks each guardrail: deliver the predicted gain, or get sunset.
+
+**The ladder matters more than the lesson:** a hook, then a CI guard, then an eval
+case — and only then prose. A lesson that can be a check becomes a check.
 
 ## Go deeper
 
-[Start here — total beginner](docs/start-here.md) · [Your first product in 10 minutes](docs/your-first-product.md) · [FAQ](docs/FAQ.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md) · [repo-scout standalone](https://github.com/hamza-ali-shahjahan/repo-scout)
+[Start here — total beginner](docs/start-here.md) · [Your first product in 10 minutes](docs/your-first-product.md) · [FAQ](docs/FAQ.md) · [Architecture](docs/architecture.md) · [Philosophy](docs/philosophy.md) · [How it compares](docs/philosophy.md#how-it-compares) · [Running on other hosts](docs/host-portability.md) · [Where it's heading](meta/SELF-EVOLUTION.md) · [Security model](docs/security.md) · [Contributing](docs/contributing.md) · [Changelog](meta/changelog.md)
 
 ---
 
@@ -380,7 +426,6 @@ In plain English: use, study, modify, and self-host freely. If you run a *modifi
 
 **`/builder-mode <your idea>` — get into yours.**
 
-*Built in public by [Hamza Ali](https://github.com/hamza-ali-shahjahan) — mail.hamza.ali@gmail.com. The factory's repo runs on the factory's own discipline.*
+*Built in public by [Hamza Ali](https://github.com/hamza-ali-shahjahan). The factory's repo runs on the factory's own discipline.*
 
 </div>
-

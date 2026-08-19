@@ -1,0 +1,43 @@
+# AGENT-BLIND: the system under test must never read this file.
+name: trim-session-leakage-skill-contract
+skill: trim-session-leakage
+description: >
+  Contract pin: factory/skills/trim-session-leakage/SKILL.md must keep the
+  parts that make it usable rather than merely well-intentioned — the single
+  reader-at-HEAD test, all four leak classes, the causal-chain exception that
+  stops it deleting the most valuable comments in the codebase, the no-autofix
+  rule, and a stated-limits section. An edit dropping any of them turns this red.
+invoke:
+  cmd: ["cat", "factory/skills/trim-session-leakage/SKILL.md"]
+  timeout_ms: 5000
+preflight:
+  must_exist: ["factory/skills/trim-session-leakage/SKILL.md"]
+checks:
+  - type: exit_code
+    equals: 0
+  # the one test the whole skill reduces to
+  - type: stdout_matches
+    regex: 'reader at HEAD'
+  - type: stdout_matches
+    regex: 'no access to any session transcript'
+  # the four leak classes
+  - type: stdout_matches
+    regex: 'Dead references'
+  - type: stdout_matches
+    regex: 'Change narration'
+  - type: stdout_matches
+    regex: 'Stack vantage'
+  - type: stdout_matches
+    regex: 'Reviewer-addressed'
+  # the exception that prevents this skill from destroying defect post-mortems
+  - type: stdout_matches
+    regex: 'causal chain'
+  # proposes, never rewrites unattended
+  - type: stdout_matches
+    regex: 'No autofix'
+  # the skill must obey the rule it enforces on everything else (AGENTS.md #16)
+  - type: stdout_matches
+    regex: '## Known limits'
+  # it must not present itself as a replacement for the absolute invariant
+  - type: stdout_matches
+    regex: 'conversations-never-in-a-repo'

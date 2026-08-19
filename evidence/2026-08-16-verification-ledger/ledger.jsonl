@@ -1,0 +1,7 @@
+{"ts":"2026-08-16T02:14:59.340Z","gate":"check-counts","cmd":"bun run check-counts","exitCode":1,"durationMs":63,"prev":"genesis","hash":"84580aebf0553b5d"}
+{"ts":"2026-08-16T02:14:59.358Z","gate":"check-evals","cmd":"bun run check-evals","exitCode":0,"durationMs":18,"prev":"84580aebf0553b5d","hash":"503f4a0df377718c"}
+{"ts":"2026-08-16T02:14:59.374Z","gate":"check-model-independence","cmd":"bun run check-model-independence","exitCode":0,"durationMs":16,"prev":"503f4a0df377718c","hash":"18333adc3ef0445f"}
+{"ts":"2026-08-16T02:14:59.393Z","gate":"check-product-layout","cmd":"bun run check-product-layout","exitCode":0,"durationMs":18,"prev":"18333adc3ef0445f","hash":"f5fcb64cb0a1d49c"}
+{"ts":"2026-08-16T02:14:59.407Z","gate":"check-skill-command-collision","cmd":"bun run check-skill-command-collision","exitCode":0,"durationMs":14,"prev":"f5fcb64cb0a1d49c","hash":"78f0d460bdc307aa"}
+{"ts":"2026-08-16T02:14:59.424Z","gate":"check-limitations","cmd":"bun run check-limitations","exitCode":0,"durationMs":17,"prev":"78f0d460bdc307aa","hash":"61d68c24238304ba"}
+{"ts":"2026-08-16T02:14:59.443Z","gate":"check-decisions","cmd":"bun run check-decisions","exitCode":0,"durationMs":19,"prev":"61d68c24238304ba","hash":"18fdc2117d15af84"}

@@ -1,0 +1,22 @@
+{
+  "slug": "mini-minecraft",
+  "name": "Mini Minecraft",
+  "one_liner": "A kid-friendly, browser-based mini Minecraft — walk, jump, build and break colorful blocks in a tiny voxel world. Built for Hamza's daughter; local-only, no login, no tracking.",
+  "created": "2026-08-01",
+  "stage": "build",
+  "status": "active",
+  "code_path": null,
+  "aliases": ["minecraft-game", "kidcraft"],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": { "github": "https://github.com/hamza-ali-shahjahan/mini-minecraft", "prod_url": null, "staging_url": null },
+  "notes": "Personal product for one known user (operator's daughter). Local-play-only by design; analytics deliberately N/A (kid privacy — no tracking of a child, nothing to hill-climb). Not part of the weekly GTM mandate; built on explicit operator directive 2026-08-01. Code backed up to a PRIVATE GitHub repo (operator-approved 2026-08-02; born private, never public — going public requires the full /publish-repo flow)."
+}

@@ -1,0 +1,11 @@
+ledger: <repo>/meta/telemetry/verification/build-2026-08-16.local.jsonl
+records: 7 · chain: intact
+  ✗ check-counts                   exit=1 63ms  2026-08-16T02:14:59.340Z
+  ✓ check-evals                    exit=0 18ms  2026-08-16T02:14:59.358Z
+  ✓ check-model-independence       exit=0 16ms  2026-08-16T02:14:59.374Z
+  ✓ check-product-layout           exit=0 18ms  2026-08-16T02:14:59.393Z
+  ✓ check-skill-command-collision  exit=0 14ms  2026-08-16T02:14:59.407Z
+  ✓ check-limitations              exit=0 17ms  2026-08-16T02:14:59.424Z
+  ✓ check-decisions                exit=0 19ms  2026-08-16T02:14:59.443Z
+
+Checked: check-decisions, check-evals, check-limitations, check-model-independence, check-product-layout, check-skill-command-collision were run and passed; check-counts was run and FAILED

@@ -10,6 +10,51 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-20 — v2.26.0 · spending money now requires a customer, and finished work has to exist
+
+**What changed**
+
+- **`factory/playbooks/mvp-stage/spend-belongs-to-a-customer.md`** — the first-layer cost playbook, filed in mvp-stage rather than scale-stage on purpose. The principle: *metered spend belongs to a paying customer, not to a code path.* Attach the right to spend to a person, carried at runtime and checked at the leaf where money leaves; a scheduled job can name itself but has no payer, so it is refused before the provider is contacted. Eleven rules, each paid for by a real incident — measure cost with a free dry run and date the claim; a ceiling calibrated by guess is not a ceiling; fail closed on money while failing open on access; count outputs, not executions; the operator escape hatch must be un-acquirable by a server.
+- **`abuse-and-cost-controls.md` corrected, and demoted to second layer.** Its status line now reads *tested, and found insufficient* — Patently followed it and was still billed $93.91 in 17 days with zero users. Its scan-billed row asserted that partitioning and `maximumBytesBilled` bound the cost; on a table you don't own a date filter may prune nothing, and a cap set above real cost never fires. Both corrected in place with the measurement that disproved them.
+- **`meta/RESEARCH-BAKED-PRACTICES.md`** — the cost rows moved to Graduated, with a note that they graduated by **failing**, not by surviving. A ledger that only records wins is a marketing page.
+- **`bun run check-work-at-risk`** — the durability gate. Reports uncommitted paths and the age of the oldest, unpushed commits, branch divergence, and missing upstreams. Warn-only by default (`--strict` for hooks, `--brief` for banners), and surfaced once per session by the SessionStart hook. AGENTS.md rule #17 and `brain/anti-patterns/work-that-exists-only-on-one-machine.md` carry the rule: *finishing a thing means committing it — not pushing it, committing it*, and *when you find a backlog, protect it before you improve it.*
+
+**Why**
+
+Two lessons, one shape. Patently's bill was not a traffic spike — it was two crons spending for nobody, past four guards that all bounded how big a call could be and none of which bounded whether the call should happen at all. Then opening this repo to publish that lesson found ~3 weeks and 6,080 lines of finished factory work uncommitted, on a branch silently diverged from origin. Both are failures of what gets measured: the factory checked whether code was correct and could not see that correct code was billing for nobody, or that good work existed in only one place. When adding a guard, ask what it *cannot* see.
+
+**Retro:** [meta/retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md](retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md) (ships in this PR).
+
+**What to revisit**
+
+Whether `check-work-at-risk` ever fires in anger — if a month passes with it silent, either the habit took or the thresholds (2 days / 20 files / 3 unpushed commits) are too loose. Whether the spend playbook's entitlement pattern generalises past BigQuery to LLM and email spend, or stays a scan-billed-warehouse rule. The starter template does **not** yet ship the guard as code; that is the highest-leverage follow-up and is deliberately not bundled here.
+
+---
+
+## 2026-08-16 — v2.25.0 · the receipt stops taking the session's word for it
+
+**What changed**
+
+- **`bun run verify` + `scripts/lib/verification-ledger.ts`** — a gate runner that spawns each check as a real process, records the true exit code to a hash-chained ledger (`meta/telemetry/verification/*.local.jsonl`, gitignored), and renders the receipt's *Checked* line **from those records** instead of from the session's memory. An empty ledger renders "nothing was verified — no check was run this session"; a tampered chain renders "altered", never success. Named **tamper-evident, not unforgeable** in the code, the README and the evidence folder — a single agent with a shell can still append a record, and claiming a ring-0-style guarantee we cannot deliver would be the exact failure the mechanism exists to prevent.
+- **`bun run check-limitations`** — every skill must declare what it can't do (`## Known limits`). Ratchet: 4 covered, 74 grandfathered; a new skill without the section fails CI. AGENTS.md rule #16.
+- **`bun run check-decisions`** — decision records must carry decision · why · **alternatives** · wrong-if · revisit (CLAUDE.md rule #3, extended). Ratchet: 3 compliant, 28 grandfathered. The measurement that justified it: **26 of 28 existing records were missing only `alternatives`** — the factory records what it chose and never what it beat. AGENTS.md rules #3 and #15.
+- **`factory/skills/trim-session-leakage/`** — finds prose written from the authoring session's vantage rather than the repo's (dead references, change narration, stack vantage, reviewer asides), with the causal-chain exception that stops it deleting defect post-mortems. Ships with a deterministic eval case, so eval coverage moved 9/78 → 10/78.
+- **`evidence/`** — dated artifacts behind the claims, failures included. Seeded with this build's own run, in which `check-counts` genuinely failed on a rule-#12 violation (`products/valuable` carrying an absolute machine path into a permanently-public repo) that had gone unnoticed.
+- **README rewritten** — prose cut ~4,630 → ~2,100 words; a real transcript (including a gate refusing) before any claim; install command at line 66 instead of ~103; the full catalog preserved verbatim but collapsed; a visible **Known weaknesses** section; the comparison table moved to `docs/philosophy.md`.
+- **`docs/host-portability.md`** — what would carry to a second agent host, mapped against `deepseek-ai/deepseek-harness`, explicitly marked **mapped, not tested**.
+
+**Why**
+
+A 2026-08-16 code-grounded study of two external repos (`robiot/fable-os`, `deepseek-ai/deepseek-harness`) found both beating this factory at *inspectable* honesty in opposite ways — one enforcing an unforgeable kernel trace channel and keeping run artifacts whose index leads with failures, the other making candour a lint. Against that, `check-legibility` was auditing the receipt's vocabulary and shape while its truth went unchecked, which made "Checked: gates pass" unfalsifiable narration. Both studied repos also ship **zero agent-capability evaluation** — which reframes the eval layer here (13% coverage, thin against our ambitions) as the differentiated bet rather than the embarrassment.
+
+**Retro:** skipped — this entry was written across ~3 weeks of sessions and never committed; there was no sprint boundary to retro at the time. What there is to learn from it is the *rescue*, recorded in [meta/retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md](retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md) — reconstructing a timeline three weeks late would be invention, not a retro.
+
+**What to revisit**
+
+Ledger-usage rate and evidence-folder count at the next `/learn-loop`; whether either new ratchet has moved at all by the next quarterly `/kill-or-keep` — a ratchet that never advances is a dead instrument and gets sunset under the dead-telemetry rule. Neither studied repo has entered `references/` or the credits roll; that stays operator-gated. `fable-os` carries **no license file**, so nothing was copied from it — every idea was reimplemented from a described mechanism.
+
+---
+
 ## 2026-08-14 — v2.24.4 · market-xray specified: a month of market research in 3 hours, evidence first
 
 **What changed**

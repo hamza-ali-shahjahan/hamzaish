@@ -1,0 +1,30 @@
+{
+  "slug": "foundernees",
+  "name": "Foundernees",
+  "one_liner": "A movement that walks people who have never built anything \u2014 starting in Pakistan \u2014 from first prototype to founder, using AI as the lever.",
+  "created": "2026-08-16",
+  "stage": "build",
+  "status": "active",
+  "code_path": null,
+  "aliases": [
+    "the foundernees",
+    "foundernee",
+    "foundership"
+  ],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": "foundernees.com",
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": "https://foundernees.com/",
+    "ahrefs_target": "foundernees.com"
+  },
+  "links": {
+    "github": null,
+    "prod_url": "https://foundernees.com",
+    "staging_url": null
+  },
+  "notes": "Two builds in sequence: (1) marketing site \u2014 mission + signup capture, (2) the platform \u2014 Stage One/Two learning and building. Domain foundernees.com is registered on Cloudflare (created 2026-07-07), currently parked with no A record. Year One clock: 14 Aug 2026 -> 14 Aug 2027."
+}

@@ -31,6 +31,7 @@ description: Map a product's competitive landscape — direct + adjacent competi
    - Positioning white-space — angles/wording nobody owns.
    - The **collision baseline** — the exact names/roots a new name must avoid (hand this to `name-clearance`).
 5. **Persist.** Write/merge `products/<slug>/competitors.md` with a dated section. Dedupe against prior entries; note what's new.
+6. **Machine-readable twin (added for market-xray, 2026-08-16).** Also write/refresh `products/<slug>/research/competitors.csv` — columns `name,url,type,notes` (`type`: direct/adjacent) — the same deduped set. market-xray's stage 2 reads it to build `targets.json` after the operator prunes; standalone runs of this skill keep it current too.
 
 ## Output format
 

@@ -1,0 +1,27 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: cited-synthesis-passes
+skill: market-xray
+description: >
+  The citation gate is the capability's trust rule made mechanical. Given a
+  synthetic corpus and a synthesis whose claims all cite real corpus files
+  (with honest speculation quarantined under its own heading), the gate must
+  pass on the exact production code path — the same --check-citations command
+  the skill's stage 4 runs. Deterministic: no model, no network.
+invoke:
+  cmd:
+    - bun
+    - scripts/xray-harvest.ts
+    - --check-citations
+    - meta/evals/skills/market-xray/cases/fixtures/synthesis-pass.md
+    - --corpus
+    - meta/evals/skills/market-xray/cases/fixtures/corpus
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: 'CITATION GATE: PASS'
+  - type: stdout_matches
+    regex: '3/3 claims cited \(100%\)'
+  - type: stdout_matches
+    regex: '1 under ⚠ SPECULATION'

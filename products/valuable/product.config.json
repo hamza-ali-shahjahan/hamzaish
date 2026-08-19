@@ -1,0 +1,29 @@
+{
+  "slug": "valuable",
+  "name": "Valuable",
+  "one_liner": "Real-time valuation intelligence \u2014 what a country, a city, a company or your startup is actually worth, and which decisions moved the number.",
+  "created": "2026-08-14",
+  "stage": "build",
+  "status": "active",
+  "code_path": null,
+  "aliases": [
+    "valuation",
+    "valuable-engine"
+  ],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": null,
+    "staging_url": null
+  },
+  "notes": "Origin: Musk's 'How much is it?' re the UK (12 Aug 2026). Headline national net-worth numbers are commodity (journalists derived GBP 13.31tn from the free ONS bulletin same-day). The moat is the event-annotation layer: leadership, parties and policy decisions tied to movements in the valuation series. Slice 1 = UK vertical slice end-to-end (UK + London + one public company + one startup simulator) on one shared engine and schema. Data: DuckDB build layer -> Postgres serve layer."
+}
