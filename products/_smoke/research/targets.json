@@ -1,0 +1,5 @@
+{
+  "sites": ["https://example.com/"],
+  "edgarQueries": ["\"document intelligence\""],
+  "hnQueries": ["pdf extraction"]
+}
