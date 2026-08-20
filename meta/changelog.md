@@ -10,6 +10,30 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-20 — v2.27.0 · the guards ship with the repo
+
+**What changed**
+
+- **`factory/hooks/guardhooks/`** — the four `PreToolUse` guards, moved out of the maintainer's home directory and into the repo. They block un-publishing a public repo, rewriting or deleting history on a protected branch, recursive-force deletes aimed at a root (`/`, a home directory, a system dir, `.`, `..`, a bare glob), and any read, write, copy, or print of a real-secrets file. The mechanism that matters is *where* the decision happens: a shell process evaluates the tool call before it runs, so the model never weighs the rule against the task. Two tiers of escape hatch — one-shot tokens for three guards, and a never-private repo list with **no override at all**, because a tier with an override is a speed bump with extra steps.
+- **`guardhooks.conf.example`** — every knob documented; the guards run on safe defaults when the file is absent.
+- **58 tests** (`factory/hooks/guardhooks/guardhooks.test.ts`) — each guard asserts both halves of its contract: it blocks the unrecoverable action, *and* it fails open on ordinary work. The second half is load-bearing; a guard that interrupts real work gets uninstalled, and an uninstalled guard protects nothing. Mutation-checked: neutering one guard fails exactly its nine blocking cases and no others.
+- **`bun run setup` step 10** — consent-gated, idempotent registration of all four, following step 9's precedent (`HAMZAISH_REGISTER_GUARDS=yes|no`). Verified end-to-end against a throwaway `HOME` so no real settings file was touched during the build.
+- **`docs/agent-governance.md`** — the four enforcement layers (guards · verification ledger · blind eval judge · brain), each named with the file it lives in and the command that exercises it, and an explicit **what isn't built** section: the `entities`/`edges` tables are empty stubs, there is no canonical-definitions layer, and the brain is not served to any agent outside this repo.
+
+**Why**
+
+The factory's README claims its honesty is enforced rather than promised. Until this entry, the enforcement layer that best supports that claim — policy the agent cannot argue with — existed only in one person's `~/.claude/`. A reader who cloned the repo got the claim without the mechanism, which is the same defect as a hand-written *Checked* line, one level up: unverifiable narration. v2.25.0 fixed that for gate results; this fixes it for policy.
+
+The cost was low for an unglamorous reason: the guards were already portable. A first pass read two superseded copies sitting at the top level of `~/.claude/hooks/` and scoped real generalization work that turned out to be unnecessary — the live set under `guardhooks/` was already config-driven and name-neutral. The build also produced its own best test case: writing the visibility guard's source tripped the visibility guard, because a script *containing* a guarded command reads exactly like *running* one. That false positive is now recorded in the folder's *Known limits* rather than quietly worked around.
+
+**Decision:** [brain/decision-log/2026-08-20-guardhooks-shipped-in-repo.md](../brain/decision-log/2026-08-20-guardhooks-shipped-in-repo.md).
+
+**Retro:** [meta/retros/2026-08-20-guards-shipped-and-the-mirror-that-drifted.md](retros/2026-08-20-guards-shipped-and-the-mirror-that-drifted.md) (ships in this PR).
+
+**What to revisit**
+
+Whether any guard ever fires in anger, and whether any fires wrongly — the fail-open discipline is the whole reason these stay installed. Whether anyone outside this machine accepts the consent prompt; an opt-in nobody opts into is a dead instrument and gets sunset under the same rule as dead telemetry. Whether the one-shot override tokens hold up in a real approved-exception moment or prove too clumsy to use. Separately, the maintainer's machine currently registers both the superseded top-level guards and the `guardhooks/` set, so two copies of two guards fire on every matching call — harmless, redundant, and deliberately left alone rather than changed without asking.
+
 ## 2026-08-20 — v2.26.0 · spending money now requires a customer, and finished work has to exist
 
 **What changed**

@@ -15,6 +15,9 @@
 //   8. Offer to register the factory enablement hook (SessionStart) in
 //      ~/.claude/settings.json — the factory announces itself in product sessions
 //      (consent prompt; HAMZAISH_REGISTER_HOOK=yes|no to skip the prompt)
+//   9. Offer to register the four guard hooks (PreToolUse) in ~/.claude/settings.json
+//      — they block unrecoverable actions before the tool call runs
+//      (consent prompt; HAMZAISH_REGISTER_GUARDS=yes|no to skip the prompt)
 //   then print what to do next
 //
 // It NEVER overwrites your existing .local files or any command file you've customized.
@@ -391,6 +394,93 @@ step(9, "Enablement hook (factory Flight Plan/Receipt in every product session)"
     warn(
       `Couldn't safely update ${settingsPath} (${e instanceof Error ? e.message : e}) — ` +
         "register manually; see factory/hooks/factory-session-context.sh header.",
+    );
+    warned++;
+  }
+}
+
+// Step 10 — guard hooks (policy the agent doesn't get a vote on) -------------
+step(10, "Guard hooks (block unrecoverable actions before they run)");
+{
+  const settingsPath = join(HOME, ".claude", "settings.json");
+  const guardDir = join(ROOT, "factory", "hooks", "guardhooks");
+  type HookEntry = { type: string; command?: string; [k: string]: unknown };
+  type HookGroup = { matcher?: string; hooks?: HookEntry[] };
+
+  // Each guard runs on the tools it can actually see its action through.
+  // Only the secrets guard needs the file tools; the rest are shell-only.
+  const GUARDS: [file: string, matcher: string, what: string][] = [
+    ["guard-repo-visibility.sh", "Bash", "un-publishing a public repo"],
+    ["guard-force-push.sh", "Bash", "rewriting a protected branch"],
+    ["guard-mass-delete.sh", "Bash", "recursive deletes aimed at a root"],
+    ["guard-secrets-files.sh", "Read|Write|Edit|NotebookEdit|Bash", "reading real-secrets files"],
+  ];
+
+  try {
+    let settings: Record<string, any> = {};
+    if (existsSync(settingsPath)) {
+      settings = JSON.parse(await readFile(settingsPath, "utf8"));
+    }
+    const existing: HookGroup[] = settings.hooks?.PreToolUse ?? [];
+    const isRegistered = (file: string) =>
+      existing.some((g) =>
+        (g.hooks ?? []).some((h) => typeof h.command === "string" && h.command.includes(file)),
+      );
+    const missing = GUARDS.filter(([file]) => !isRegistered(file));
+
+    if (missing.length === 0) {
+      skip(`All ${GUARDS.length} guard hooks already registered.`);
+      skipped++;
+    } else {
+      // Consent, because this installs hooks that can BLOCK the agent's tool
+      // calls in every session on this machine — not just in this repo.
+      const forced = process.env.HAMZAISH_REGISTER_GUARDS === "yes";
+      const declined = process.env.HAMZAISH_REGISTER_GUARDS === "no";
+      console.log(c.dim(`     ${missing.length} not yet installed: ${missing.map(([, , w]) => w).join(", ")}`));
+      console.log(c.dim(`     They fail open — a guard only ever blocks on a clear match.`));
+      const consent = forced
+        ? true
+        : declined
+          ? false
+          : typeof confirm === "function"
+            ? confirm(`  Register ${missing.length} guard hook(s) in ~/.claude/settings.json?`)
+            : false;
+      if (!consent) {
+        skip("Not registered. Enable anytime: HAMZAISH_REGISTER_GUARDS=yes bun run setup");
+        skipped++;
+      } else {
+        settings.hooks ??= {};
+        settings.hooks.PreToolUse ??= [];
+        const groups: HookGroup[] = settings.hooks.PreToolUse;
+        for (const [file, matcher] of missing) {
+          const entry = { type: "command", command: join(guardDir, file) };
+          const group = groups.find((g) => (g.matcher ?? "") === matcher);
+          if (group) group.hooks = [...(group.hooks ?? []), entry];
+          else groups.push({ matcher, hooks: [entry] });
+        }
+        await mkdir(join(HOME, ".claude"), { recursive: true });
+        await writeFile(settingsPath, JSON.stringify(settings, null, 2) + "\n");
+        ok(`Registered ${missing.length} guard hook(s).`);
+        created++;
+      }
+    }
+
+    // The config is optional — the guards ship with safe defaults — but the
+    // never-private repo list is empty until someone fills it in.
+    const confPath = join(HOME, ".claude", "guardhooks.conf");
+    if (existsSync(confPath)) {
+      skip("guardhooks.conf present — your settings are in use.");
+      skipped++;
+    } else {
+      console.log(
+        c.dim(`     Optional config (defaults are safe without it):`) +
+          `\n       ${c.dim(`cp ${join(guardDir, "guardhooks.conf.example")} ${confPath}`)}`,
+      );
+    }
+  } catch (e) {
+    warn(
+      `Couldn't safely update ${settingsPath} (${e instanceof Error ? e.message : e}) — ` +
+        "register manually; see factory/hooks/guardhooks/README.md.",
     );
     warned++;
   }
