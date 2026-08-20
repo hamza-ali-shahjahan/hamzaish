@@ -46,13 +46,37 @@ bun brain/ask.ts --limit 4 --json "query"   # machine-readable
 
 Use the `/brain-ask` command (`factory/commands/brain-ask.md`) — Claude shells out to `bun brain/ask.ts` and gets back markdown citations with paths it can then `Read`.
 
-### When to re-ingest
+### Freshness — you don't re-ingest by hand any more
 
-- After writing a new learning, decision, or playbook entry
-- After registering a new product or shipping a sprint
-- Before opening a fresh Claude Code session if files have changed since the last run
+`ask.ts` checks the corpus before every query and rebuilds only if something
+moved, so recall always describes the markdown as it is right now:
 
-Ingest is idempotent and change-detected (mtime + content hash). Re-running is free if nothing changed.
+```bash
+bun brain/freshness.ts        # drift report: fresh or stale, exit 1 if stale
+bun brain/ask.ts "..."        # refreshes first, then answers
+bun brain/ask.ts --no-refresh "..."   # answer from the index exactly as it is
+BRAIN_NO_REFRESH=1            # same, for every call
+BRAIN_REFRESH=hash            # compare file contents instead of size+mtime
+```
+
+The check is stat-only — ~15ms across ~475 files, no reads, no hashing — which is
+what makes it affordable on every single query. The rebuild behind it is
+idempotent and change-detected (content hash), so it costs nothing when nothing
+changed.
+
+**Why this exists:** `ask.ts` used to answer from whatever the last manual ingest
+left behind, and only mentioned re-ingesting in its *no-hits* footer — i.e. in the
+one case that wasn't dangerous. A stale index doesn't return no hits; it returns
+confident, out-of-date ones. (Freshness-probe design studied from Graft, 2026-07-30
+— `references/README.md`.)
+
+**Known limit:** stat mode compares size + mtime, so an edit that preserves both
+(a same-length change with a restored timestamp) reads as clean. `BRAIN_REFRESH=hash`
+closes that at the cost of reading every file. Both behaviours are pinned in
+`brain/freshness.test.ts`.
+
+Still run `bun brain/ingest.ts` directly whenever you want the rebuild to happen
+now rather than at the next query — it is the single writer either way.
 
 ## What's NOT in the index
 
@@ -63,10 +87,11 @@ Ingest is idempotent and change-detected (mtime + content hash). Re-running is f
 
 ## Schema
 
-See [`schema.sql`](schema.sql). Three live tables, two stub tables, one audit log:
+See [`schema.sql`](schema.sql). Four live tables, two stub tables, one audit log:
 
 - `documents` — one row per ingested file (path, source tag, product scope, title, body, mtime, content hash)
 - `docs_fts` — FTS5 mirror (kept in sync by triggers)
+- `brain_meta` — key/value facts about the index itself; holds `corpus_fingerprint`, the hash the freshness probe compares against
 - `ingest_runs` — audit log of every ingest pass
 - `entities` (stub, Phase C)
 - `edges` (stub, Phase C)

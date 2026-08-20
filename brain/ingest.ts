@@ -5,60 +5,18 @@
 // Run a full rebuild:  `bun brain/ingest.ts --rebuild`
 
 import { Database } from "bun:sqlite";
-import { readdir, readFile, stat } from "node:fs/promises";
-import { join, relative, dirname } from "node:path";
+import { readFile, stat } from "node:fs/promises";
+import { join } from "node:path";
 import { existsSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { corpusFiles, HAMZAISH_ROOT } from "./corpus.ts";
+import { computeFingerprint, writeStoredFingerprint } from "./freshness.ts";
 
-const HAMZAISH_ROOT = join(import.meta.dir, "..");
 const DB_PATH = join(import.meta.dir, "brain.db");
 const SCHEMA_PATH = join(import.meta.dir, "schema.sql");
 
 const REBUILD = process.argv.includes("--rebuild");
 const VERBOSE = process.argv.includes("--verbose") || process.argv.includes("-v");
-
-// What we ingest. Each rule: { root: relative path, source: tag, ext: allowed extensions, recurse }
-type IngestRule = {
-  root: string;
-  source: string;
-  exts: string[];
-  recurse: boolean;
-};
-
-const INGEST_RULES: IngestRule[] = [
-  // Top-level brain docs
-  { root: "", source: "root", exts: [".md"], recurse: false }, // CLAUDE.md, README.md, MEMORY.md
-  // Brain layer
-  { root: "brain/identity", source: "brain/identity", exts: [".md"], recurse: true },
-  { root: "brain/learnings", source: "brain/learnings", exts: [".md"], recurse: true },
-  { root: "brain/anti-patterns", source: "brain/anti-patterns", exts: [".md"], recurse: true },
-  { root: "brain/decision-log", source: "brain/decision-log", exts: [".md"], recurse: true },
-  { root: "brain/knowledge", source: "brain/knowledge", exts: [".md"], recurse: true },
-  // Standalone brain files (persona, operating-principles)
-  { root: "brain", source: "brain", exts: [".md"], recurse: false },
-  // Factory layer
-  { root: "factory/playbooks", source: "factory/playbooks", exts: [".md"], recurse: true },
-  { root: "factory/skills", source: "factory/skills", exts: [".md"], recurse: true },
-  { root: "factory/agents", source: "factory/agents", exts: [".md"], recurse: true },
-  { root: "factory/commands", source: "factory/commands", exts: [".md"], recurse: true },
-  { root: "factory/workflows", source: "factory/workflows", exts: [".md"], recurse: true },
-  // Meta layer
-  { root: "meta", source: "meta", exts: [".md"], recurse: true },
-  // Stack defaults
-  { root: "stack", source: "stack", exts: [".md"], recurse: true },
-  // Products — handled specially so we can scope by slug
-];
-
-// Folders we never traverse into (matched by name, any depth)
-const SKIP_DIRS = new Set([
-  "_archive", "references", "node_modules", ".git", ".next", "dist", ".wrangler", ".turbo", "build"
-]);
-
-// Paths we never traverse into (matched by repo-relative prefix).
-// AGENT-BLIND RULE: the judged system must never retrieve its own eval
-// fixtures, rubrics, or verdicts via /brain-ask. Selection trusts separation,
-// not re-checking (meta/SELF-EVOLUTION.md, meta/evals/README.md).
-const SKIP_PATHS = ["meta/evals/skills", "meta/evals/runs"];
 
 // ─── DB setup ──────────────────────────────────────────────────────────────
 
@@ -96,25 +54,6 @@ function extractTitle(body: string, fallbackPath: string): string {
 function productFromPath(relPath: string): string | null {
   const m = relPath.match(/^products\/([^/_][^/]*)\//);
   return m ? m[1] : null;
-}
-
-async function* walk(dir: string, recurse: boolean): AsyncGenerator<string> {
-  const absDir = join(HAMZAISH_ROOT, dir);
-  if (!existsSync(absDir)) return;
-  const entries = await readdir(absDir, { withFileTypes: true });
-  for (const e of entries) {
-    const full = join(absDir, e.name);
-    if (e.isDirectory()) {
-      if (!recurse) continue;
-      if (SKIP_DIRS.has(e.name)) continue;
-      if (e.name.startsWith(".")) continue;
-      const rel = relative(HAMZAISH_ROOT, full);
-      if (SKIP_PATHS.some((p) => rel === p || rel.startsWith(p + "/"))) continue;
-      yield* walk(rel, recurse);
-    } else if (e.isFile()) {
-      yield relative(HAMZAISH_ROOT, full);
-    }
-  }
 }
 
 // ─── prepared statements ───────────────────────────────────────────────────
@@ -171,7 +110,7 @@ async function ingestFile(relPath: string, source: string) {
     $product: product,
     $title: title,
     $body: body,
-    $mtime: st.mtimeMs | 0,
+    $mtime: Math.floor(st.mtimeMs),
     $content_hash: hash,
     $ingested_at: Date.now(),
   });
@@ -187,62 +126,8 @@ async function ingestFile(relPath: string, source: string) {
 
 console.log("→ ingest start");
 
-for (const rule of INGEST_RULES) {
-  for await (const relPath of walk(rule.root, rule.recurse)) {
-    if (!rule.exts.some((e) => relPath.endsWith(e))) continue;
-    // root rule only picks top-level files (no subfolders)
-    if (rule.root === "" && relPath.includes("/")) continue;
-    // brain (non-recursive) rule only picks files directly in brain/
-    if (rule.root === "brain" && relPath.split("/").length > 2) continue;
-    await ingestFile(relPath, rule.source);
-  }
-}
-
-// Products are walked specially so we can scope each by slug
-const productsAbs = join(HAMZAISH_ROOT, "products");
-if (existsSync(productsAbs)) {
-  const productDirs = (await readdir(productsAbs, { withFileTypes: true }))
-    .filter((e) => e.isDirectory() && !e.name.startsWith("_"));
-  for (const p of productDirs) {
-    const slug = p.name;
-    const base = `products/${slug}`;
-    // Config JSON
-    const cfgPath = `${base}/product.config.json`;
-    if (existsSync(join(HAMZAISH_ROOT, cfgPath))) {
-      await ingestFile(cfgPath, "products/config");
-    }
-    // README and status
-    for (const f of ["README.md", "status.md", "scope.md", "prd.md", "metrics.md"]) {
-      const fp = `${base}/${f}`;
-      if (existsSync(join(HAMZAISH_ROOT, fp))) await ingestFile(fp, "products/docs");
-    }
-    // Decisions
-    const decDir = `${base}/decisions`;
-    if (existsSync(join(HAMZAISH_ROOT, decDir))) {
-      for await (const f of walk(decDir, true)) {
-        if (f.endsWith(".md")) await ingestFile(f, "products/decisions");
-      }
-    }
-    // Launch / analytics / interviews / learnings / validation docs
-    // (learnings + validation added 2026-07-02: product learnings were invisible
-    // to the brain — the cross-product synthesis gap from the factory audit.
-    // /learn-loop now gathers them as promotion candidates.
-    // research added 2026-08-16 for market-xray: the walk is recursive, so the
-    // local-only corpus/ under research/ becomes brain-searchable from disk even
-    // though it is gitignored — evidence queryable, never committed.)
-    for (const sub of ["launch", "analytics", "interviews", "learnings", "validation", "research"]) {
-      const subDir = `${base}/${sub}`;
-      if (existsSync(join(HAMZAISH_ROOT, subDir))) {
-        for await (const f of walk(subDir, true)) {
-          if (f.endsWith(".md")) await ingestFile(f, `products/${sub}`);
-        }
-      }
-    }
-  }
-
-  // _portfolio.md
-  const port = "products/_portfolio.md";
-  if (existsSync(join(HAMZAISH_ROOT, port))) await ingestFile(port, "products/portfolio");
+for await (const entry of corpusFiles()) {
+  await ingestFile(entry.path, entry.source);
 }
 
 // Prune deleted files
@@ -264,6 +149,13 @@ insertRun.run({
   $skipped: skipped,
   $notes: REBUILD ? "rebuild" : "incremental",
 });
+
+// Stamp what the corpus looked like at this instant. `/brain-ask` recomputes
+// this before every query and rebuilds only when it moved — so the index can
+// never silently lag the markdown. Written AFTER the prune so it describes the
+// state the index actually reached.
+const { fingerprint } = await computeFingerprint();
+writeStoredFingerprint(db, fingerprint);
 
 const totalRows = (db.prepare(`SELECT COUNT(*) AS n FROM documents`).get() as { n: number }).n;
 

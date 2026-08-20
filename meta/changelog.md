@@ -10,6 +10,27 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-20 — v2.28.0 · recall stops answering from yesterday, and the receipt makes a call
+
+**What changed**
+
+- **`/brain-ask` refreshes itself.** A stat-only probe (`brain/freshness.ts`) fingerprints every indexed file's path, size and mtime and compares it against a `corpus_fingerprint` stamped at the end of each ingest. Moved → rebuild, then answer. ~15ms across 475 files, which is what makes it affordable on *every* query rather than on a schedule. `bun run brain-freshness` reports drift on its own (exit 1 when stale, never auto-fixes — reporting and fixing are separate jobs). Escape hatches: `--no-refresh`, `BRAIN_NO_REFRESH=1`, `BRAIN_REFRESH=hash`.
+- **`brain/corpus.ts`** — the walk deciding *what* the brain indexes, extracted out of `ingest.ts` so the indexer and the probe read one list. Two copies would drift, and a file the probe doesn't watch is a file that goes stale unnoticed.
+- **A latent bug fixed in passing:** `documents.mtime` stored `st.mtimeMs | 0` — epoch-ms truncated to int32, so the column documented "for change detection" held negative garbage. Nothing depended on it yet, which is exactly why it was worth fixing before something did.
+- **The receipt carries a `Recommendation` line** — the one call to make, or the literal word `NA`. Landed in all five places the shape is defined: the protocol (`hamzaish.md` §5), the session hook in both modes, and both product templates. `bun run check-legibility` fails a receipt missing the line *and* one that hedges the decision back to the reader; cap raised ~50 → ~65 words to pay for it.
+- **First tests for `brain/`** (`brain/freshness.test.ts`, now in the `bun test` sweep) — including the probe's blind spot asserted rather than assumed: a same-length edit with a restored mtime is invisible to stat mode, and hash mode catches it. Three new hook tests pin the injected receipt shape, one of which builds a receipt to the hook's own instructions and runs it through the gate — so the factory can't tell users to write something its own check rejects.
+
+**Why**
+
+Both halves are the same defect at different altitudes: the system knew something and failed to put it where the reader would see it.
+
+`ask.ts` answered from whatever the last manual ingest left behind, and mentioned re-ingesting only in its *no-hits* footer — in the one case that wasn't dangerous. A stale index doesn't return no hits; it returns confident, out-of-date ones. The freshness design is the idea worth taking from Graft (assessed 2026-07-30, `references/README.md`), taken as a port. Nothing was installed: the gated trial from that study still stands on its original trigger, and two of its watch conditions have since fired without the third.
+
+The receipt line came from a live miss the same day — a proposal whose recommendation was real but buried under its own supporting analysis, until the operator asked for it outright. The standing "always lead with a recommendation" rule already existed in prose, and prose decayed. It is shape and gate now, which is the check ladder working as designed.
+
+**Decision:** [brain/decision-log/2026-08-20-recall-refreshes-itself.md](../brain/decision-log/2026-08-20-recall-refreshes-itself.md).
+**Retro:** [meta/retros/2026-08-20-recall-that-lagged-and-the-buried-call.md](retros/2026-08-20-recall-that-lagged-and-the-buried-call.md).
+
 ## 2026-08-20 — v2.27.0 · the guards ship with the repo
 
 **What changed**

@@ -9,6 +9,11 @@
 // with a legibility gate; this script encodes that gate so it is checkable in evals
 // and CI, not just remembered.
 //
+// The receipt gained a Recommendation line on 2026-08-20, after a proposal whose
+// recommendation was present but buried in the body — the operator had to ask for it
+// outright. The receipt is the part that gets read, so the call has to live there.
+// "NA" is a valid recommendation; a missing line and a hedge are not.
+//
 //   bun run check-legibility "<bookend text>"     # or pipe it on stdin
 //   exit 0 = passes the gate · exit 1 = violations listed
 //
@@ -47,7 +52,7 @@ if (isPlan) {
   }
 }
 if (isReceipt) {
-  for (const line of ["what you got:", "checked:", "try next:"]) {
+  for (const line of ["what you got:", "checked:", "recommendation:", "try next:"]) {
     if (!lower.includes(line)) problems.push(`receipt is missing its "${line}" line`);
   }
 }
@@ -55,17 +60,33 @@ if (!isPlan && !isReceipt) {
   problems.push('no "🏭 Hamzaish plan" or "🏭 Hamzaish receipt" header found');
 }
 
-// 3. Word caps. Targets are ~80 (plan) and ~50 (receipt); the gate FAILS well above
+// 3. Word caps. Targets are ~80 (plan) and ~65 (receipt); the gate FAILS well above
 //    them — it exists to catch runaway bookends, not to bean-count rich-but-readable
 //    ones. Calibrated so the operator-approved reference bookends pass with headroom.
 if (isPlan && !isReceipt && words.length > 130) {
   problems.push(`plan is ${words.length} words — target is ~80, and past 130 it stops being a glance`);
 }
-if (isReceipt && !isPlan && words.length > 70) {
-  problems.push(`receipt is ${words.length} words — target is ~50, and past 70 it stops being a glance`);
+if (isReceipt && !isPlan && words.length > 85) {
+  problems.push(`receipt is ${words.length} words — target is ~65, and past 85 it stops being a glance`);
 }
 
-// 4. Receipt teaches exactly ONE next command.
+// 4. The recommendation must actually make a call. An empty line, or a hedge that
+//    defers the decision back to the reader, is the failure this line was added to
+//    prevent — "NA" is the honest way to say there is no call to make.
+if (isReceipt) {
+  const rec = (text.split(/recommendation:/i)[1] ?? "").split(/\n/)[0].trim();
+  const bare = rec.replace(/[^a-z0-9]/gi, "").toLowerCase();
+  // "NA" / "N/A" / "not applicable" all normalize to an honest no-call and pass.
+  const NO_CALL = ["na", "notapplicable"];
+  const HEDGES = ["tbd", "todo", "none", "unclear", "uptoyou", "yourcall", "youdecide", "depends"];
+  if (bare.length === 0) {
+    problems.push('Recommendation is empty — name the one thing to do next, or write exactly "NA"');
+  } else if (!NO_CALL.includes(bare) && HEDGES.includes(bare)) {
+    problems.push(`Recommendation "${rec}" defers the decision back to the reader — make the call, or write exactly "NA"`);
+  }
+}
+
+// 5. Receipt teaches exactly ONE next command.
 if (isReceipt) {
   const tryNext = text.split(/try next:/i)[1] ?? "";
   const commands = tryNext.match(/\/[a-z][a-z0-9-]*/gi) ?? [];
@@ -73,7 +94,7 @@ if (isReceipt) {
   if (commands.length > 1) problems.push(`Try next lists ${commands.length} commands — exactly one, never a menu`);
 }
 
-// 5. Machine noise the user can't feel: commit hashes and file paths.
+// 6. Machine noise the user can't feel: commit hashes and file paths.
 if (/\b[0-9a-f]{7,40}\b/.test(text.replace(/https?:\S+/g, ""))) {
   problems.push("looks like a commit hash — users can't feel hashes; drop it");
 }

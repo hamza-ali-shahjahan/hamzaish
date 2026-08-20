@@ -47,6 +47,17 @@ CREATE TRIGGER IF NOT EXISTS documents_au AFTER UPDATE ON documents BEGIN
   VALUES (new.rowid, new.title, new.body, new.source, new.product);
 END;
 
+-- brain_meta: small key/value facts about the index itself (not about documents).
+-- Holds `corpus_fingerprint` — one hash over every indexed file's path+size+mtime,
+-- written at the end of each ingest. `/brain-ask` recomputes it before every query
+-- (stat-only, no reads) and rebuilds only when it moved, so recall can never
+-- silently lag the markdown. See brain/freshness.ts.
+CREATE TABLE IF NOT EXISTS brain_meta (
+  key        TEXT    PRIMARY KEY,
+  value      TEXT    NOT NULL,
+  updated_at INTEGER NOT NULL
+);
+
 -- entities: extracted in Phase C (gbrain-style). Empty stub for now.
 CREATE TABLE IF NOT EXISTS entities (
   id        INTEGER PRIMARY KEY AUTOINCREMENT,

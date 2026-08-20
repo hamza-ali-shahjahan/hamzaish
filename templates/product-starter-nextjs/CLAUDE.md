@@ -25,10 +25,11 @@ asked (a follow-up is a new slice, not an exit from the factory):
    mechanism, no factory jargon. Open each task response with the 4-line plan (~80 words):
    `🏭 Hamzaish plan` · **Goal:** what "done" looks like · **Steps:** the pieces of this
    task, in order · **Commands:** each `/command` WITH what it does here · **Proof before
-   "done":** how it will be verified. Close with the 3-line receipt (max ~50 words):
+   "done":** how it will be verified. Close with the 4-line receipt (max ~65 words):
    `🏭 Hamzaish receipt` · **What you got:** the value added to the user's work ·
-   **Checked:** how it was verified (plus anything deliberately not done) · **Try next:**
-   ONE `/command` with what it does. Numbers only if the user feels them — test counts
+   **Checked:** how it was verified (plus anything deliberately not done) ·
+   **Recommendation:** the ONE thing you'd do next and why, or exactly `NA` — never a
+   menu · **Try next:** ONE `/command` with what it does. Numbers only if the user feels them — test counts
    yes, commit hashes no. Gate both bookends before sending: day-1 words only (no
    insider nouns), exact shapes, caps respected, one Try-next command — `bun run
    check-legibility` in the factory repo lints a bookend for you.
