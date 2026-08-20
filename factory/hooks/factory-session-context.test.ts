@@ -137,3 +137,40 @@ describe("session that ENTERED the factory but is rooted nowhere near a product"
     expect(JSON.parse(inFactory.out).hookSpecificOutput.additionalContext).toContain("factory repo");
   });
 });
+
+// The hook is the ONLY mechanism that reaches an existing user's sessions without
+// them changing anything — it ships the receipt shape itself. If a line silently
+// drops out of the injected text, every session loses it and nothing else notices.
+describe("the injected receipt shape", () => {
+  const receiptLines = ["What you got", "Checked", "Recommendation", "Try next"];
+
+  test("SessionStart injection names every receipt line", () => {
+    const { out } = runHook(FACTORY_ROOT);
+    const ctx = JSON.parse(out).hookSpecificOutput.additionalContext as string;
+    for (const line of receiptLines) expect(ctx).toContain(line);
+    expect(ctx).toContain("4-line receipt");
+    // "NA" has to survive too — without it, a turn with no real call has no honest out.
+    expect(ctx).toContain("NA");
+  });
+
+  test("--brief reminder names every receipt line", () => {
+    const { out } = runHook(FACTORY_ROOT, "--brief");
+    const ctx = JSON.parse(out).hookSpecificOutput.additionalContext as string;
+    for (const line of receiptLines) expect(ctx).toContain(line);
+  });
+
+  test("the shape the hook injects is the shape the gate enforces", () => {
+    const { out } = runHook(FACTORY_ROOT);
+    const ctx = JSON.parse(out).hookSpecificOutput.additionalContext as string;
+    // A receipt built to the hook's instructions must pass check-legibility, or the
+    // factory is telling users to write something its own gate rejects.
+    const receipt = receiptLines
+      .map((l) => `- ${l}: ${l === "Try next" ? "/brain-ask — search your notes" : "plain words here"}`)
+      .join("\n");
+    const proc = Bun.spawnSync(
+      ["bun", join(FACTORY_ROOT, "scripts", "check-legibility.ts"), `🏭 Hamzaish receipt\n${receipt}`],
+    );
+    expect(proc.exitCode).toBe(0);
+    for (const line of receiptLines) expect(ctx).toContain(line);
+  });
+});

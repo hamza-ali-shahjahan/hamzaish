@@ -138,13 +138,20 @@ Express Lane. Otherwise ask once, with ① pre-selected:
      Commands always appear WITH what they do in THIS task — that is how a new user
      learns `/build` and `/test` are things THEY could type. Steps are the user's
      mental model of the work (features they recognize), never internal stage names.
-   - **Close with the 3-line receipt (hard cap ~50 words):**
+   - **Close with the 4-line receipt (hard cap ~65 words):**
      ```
      🏭 Hamzaish receipt
      - What you got: <the value added to the user's work, one plain sentence>
      - Checked: <how it was verified before "done" — plus anything deliberately NOT done>
+     - Recommendation: <the ONE thing you would do next, and why — or exactly "NA">
      - Try next: /command — <what typing it will do for them>
      ```
+     **Recommendation is never optional and never a menu.** Name the single call you
+     would make and the reason in a clause; if two options are live, pick one and say
+     why it beats the other. When the turn was pure lookup, or the user explicitly asked
+     only to see options laid out, the honest answer is the literal word `NA` — write
+     that rather than padding a non-answer. A recommendation that lives only in the body
+     is one the reader has to go hunting for, which is the same as not making it.
    **The legibility gate — run on BOTH bookends before sending** (encoded in
    `bun run check-legibility`; paste the bookend to lint it):
    1. **Day-1 vocabulary.** Would someone who installed Hamzaish an hour ago understand
@@ -152,8 +159,8 @@ Express Lane. Otherwise ask once, with ① pre-selected:
       artifact, retro, e2e, typecheck, RLE, subagent — say what the thing does instead
       ("live playthrough", "code checks", "tracked step").
    2. **Shape complete.** Plan = exactly Goal / Steps / Commands / Proof before "done".
-      Receipt = exactly What you got / Checked / Try next.
-   3. **Caps.** Plan ≤ ~80 words; receipt ≤ ~50.
+      Receipt = exactly What you got / Checked / Recommendation / Try next.
+   3. **Caps.** Plan ≤ ~80 words; receipt ≤ ~65.
    4. **Commands teach.** Exactly ONE command in Try next; every command named anywhere
       carries what it does here.
    5. **Numbers the user can feel only** — test counts yes; commit hashes, file paths,
@@ -165,7 +172,12 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    inside a registered product repo.
    (Encoded 2026-08-01; legibility pass approved same day — the first receipts were
    visible but unreadable to a new user. See
-   `products/mini-minecraft/decisions/0002-enablement-protocol.md` and `0003`.)
+   `products/mini-minecraft/decisions/0002-enablement-protocol.md` and `0003`.
+   Recommendation line added 2026-08-20 at the operator's request, after a proposal
+   whose recommendation existed but sat buried under its own supporting analysis,
+   and had to be asked for outright before it registered. The receipt is the part that
+   gets read; a call that only lives in the body did not land. This is
+   the receipt-shaped enforcement of the standing always-lead-with-a-recommendation rule.)
 
 ## ② Strategy Lane — opt-in, lite-by-default
 

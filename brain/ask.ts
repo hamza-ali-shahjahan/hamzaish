@@ -7,20 +7,26 @@
 //   bun brain/ask.ts --product muakkil "scribe demo plan"
 //   bun brain/ask.ts --source brain/learnings "what surprised me"
 //   bun brain/ask.ts --limit 5 --json "query"
+//   bun brain/ask.ts --no-refresh "query"        # answer from the index exactly as it is
 //
 // Output: markdown citations with snippets. Cite by path so the caller can open the file.
+//
+// FRESHNESS: every query stats the corpus first (~20ms, no reads) and rebuilds the
+// index only if a file moved — so recall describes the markdown as it is right now,
+// never as it was at the last manual ingest. Before this, ask/ answered from whatever
+// the last ingest left behind and only NAGGED about re-ingesting in its no-hits
+// footer — i.e. in the one case that wasn't dangerous. A stale index does not return
+// no hits; it returns confident, out-of-date ones.
+// Escape hatches: --no-refresh (this call) or BRAIN_NO_REFRESH=1 (every call).
+// Set BRAIN_REFRESH=hash to compare file contents instead of size+mtime.
 
 import { Database } from "bun:sqlite";
 import { join } from "node:path";
 import { existsSync } from "node:fs";
+import { checkFreshness } from "./freshness.ts";
 
 const HAMZAISH_ROOT = join(import.meta.dir, "..");
 const DB_PATH = join(import.meta.dir, "brain.db");
-
-if (!existsSync(DB_PATH)) {
-  console.error("× brain.db doesn't exist yet. Run `bun brain/ingest.ts` first.");
-  process.exit(1);
-}
 
 // ─── arg parsing ───────────────────────────────────────────────────────────
 
@@ -30,6 +36,7 @@ let product: string | null = null;
 let source: string | null = null;
 let asJson = false;
 let asContext = false; // --context: a compact, ready-to-inject session briefing block
+let refresh = process.env.BRAIN_NO_REFRESH !== "1";
 const queryParts: string[] = [];
 
 for (let i = 0; i < args.length; i++) {
@@ -39,9 +46,11 @@ for (let i = 0; i < args.length; i++) {
   else if (a === "--source" || a === "-s") { source = args[++i]; }
   else if (a === "--json") { asJson = true; }
   else if (a === "--context") { asContext = true; }
+  else if (a === "--no-refresh") { refresh = false; }
   else if (a === "--help" || a === "-h") {
     console.log(`Usage: bun brain/ask.ts [--product slug] [--source path] [--limit N] [--json|--context] "<query>"`);
-    console.log(`  --context  emit a compact recall block for injecting into a session (anti-patterns first)`);
+    console.log(`  --context     emit a compact recall block for injecting into a session (anti-patterns first)`);
+    console.log(`  --no-refresh  skip the freshness check and answer from the index as-is`);
     process.exit(0);
   }
   else { queryParts.push(a); }
@@ -50,6 +59,43 @@ for (let i = 0; i < args.length; i++) {
 const query = queryParts.join(" ").trim();
 if (!query) {
   console.error("× missing query. `bun brain/ask.ts \"your question\"`");
+  process.exit(1);
+}
+
+// ─── freshness: refresh before reading ────────────────────────────────────
+//
+// Stat-only, so it is cheap enough to run on EVERY query; the rebuild behind it
+// only happens when the corpus actually moved. Ingest stays the single writer —
+// we shell out to it rather than duplicating its logic here.
+
+if (refresh) {
+  const report = await checkFreshness();
+  if (report.stale) {
+    const proc = Bun.spawnSync([process.execPath, join(import.meta.dir, "ingest.ts")], {
+      cwd: HAMZAISH_ROOT,
+      stdout: "pipe",
+      stderr: "pipe",
+    });
+    // Notes go to stderr on purpose: stdout is the answer, parsed as markdown by
+    // /brain-ask and as JSON by --json. A chatty stdout would corrupt both.
+    if (proc.exitCode === 0) {
+      console.error(
+        report.reason === "no-index"
+          ? "⟳ built the brain index (first run)"
+          : `⟳ index was behind the files — refreshed (${report.files} docs, probed in ${report.elapsedMs}ms)`,
+      );
+    } else {
+      // Fail open. A rebuild that breaks must not take recall down with it —
+      // stale answers beat no answers, as long as the staleness is announced.
+      console.error("⚠ refresh failed — answering from the index as it stands, which may be behind the files");
+      const err = new TextDecoder().decode(proc.stderr).trim();
+      if (err) console.error(err.split("\n").slice(-3).join("\n"));
+    }
+  }
+}
+
+if (!existsSync(DB_PATH)) {
+  console.error("× no brain index, and it could not be built. Run `bun brain/ingest.ts` to see why.");
   process.exit(1);
 }
 
@@ -137,7 +183,11 @@ if (asContext) {
   ];
   console.log(`### 🧠 Brain recall — ${query}\n`);
   if (rows.length === 0) {
-    console.log(`_No recall hits. Either genuinely new territory, or re-run \`bun brain/ingest.ts\` if files are fresh._`);
+    console.log(
+      refresh
+        ? `_No recall hits against a just-refreshed index — genuinely new territory._`
+        : `_No recall hits. Refresh was skipped, so the index may be behind the files._`,
+    );
     process.exit(0);
   }
   const used = new Set<string>();
@@ -158,7 +208,11 @@ if (asContext) {
 if (rows.length === 0) {
   console.log(`No hits for: ${query}`);
   console.log(`(parsed as FTS5: ${ftsQ})`);
-  console.log(`\nTry: broader terms, --source brain/, or re-run \`bun brain/ingest.ts\` if the file is new.`);
+  console.log(
+    refresh
+      ? `\nThe index is up to date, so this is genuinely uncharted. Try broader terms or --source brain/.`
+      : `\nTry broader terms or --source brain/ — and note refresh was skipped, so the index may be behind.`,
+  );
   process.exit(0);
 }
 
