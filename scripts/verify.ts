@@ -25,6 +25,13 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 
 // ── the standard set: the guards CI runs, in the order a reader would want them ──
+// Kept in step with .github/workflows/ci.yml, minus check-starter: that one
+// installs and builds the whole starter template, and a multi-minute job in the
+// default sweep is how a pre-ship habit dies of friction. Everything here runs
+// in well under a second.
+// Drift is not hypothetical — this list claimed to mirror CI while missing five
+// of its gates, so a green local sweep twice let a red CI through in one day
+// (meta/retros/2026-08-20-guards-shipped-and-the-mirror-that-drifted.md).
 const STANDARD = [
   "check-counts",
   "check-evals",
@@ -33,6 +40,10 @@ const STANDARD = [
   "check-skill-command-collision",
   "check-limitations",
   "check-decisions",
+  "check-changelog",
+  "check-retro",
+  "check-sensitive-docs",
+  "check-assets",
 ] as const;
 
 // ── self-test: deterministic anchor, touches no repo state ──────────────────────

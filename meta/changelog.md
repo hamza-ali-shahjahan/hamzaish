@@ -28,6 +28,8 @@ The cost was low for an unglamorous reason: the guards were already portable. A 
 
 **Decision:** [brain/decision-log/2026-08-20-guardhooks-shipped-in-repo.md](../brain/decision-log/2026-08-20-guardhooks-shipped-in-repo.md).
 
+**Retro:** [meta/retros/2026-08-20-guards-shipped-and-the-mirror-that-drifted.md](retros/2026-08-20-guards-shipped-and-the-mirror-that-drifted.md) (ships in this PR).
+
 **What to revisit**
 
 Whether any guard ever fires in anger, and whether any fires wrongly — the fail-open discipline is the whole reason these stay installed. Whether anyone outside this machine accepts the consent prompt; an opt-in nobody opts into is a dead instrument and gets sunset under the same rule as dead telemetry. Whether the one-shot override tokens hold up in a real approved-exception moment or prove too clumsy to use. Separately, the maintainer's machine currently registers both the superseded top-level guards and the `guardhooks/` set, so two copies of two guards fire on every matching call — harmless, redundant, and deliberately left alone rather than changed without asking.
