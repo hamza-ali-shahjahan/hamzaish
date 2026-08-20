@@ -1,0 +1,52 @@
+# guardhooks.conf — configuration for the guard hooks.
+#
+# Copy this to ~/.claude/guardhooks.conf and edit. Every setting is optional:
+# with no config file at all, the guards still run with the safe defaults below.
+# Point somewhere else with the GUARDHOOKS_CONF environment variable.
+#
+#   cp factory/hooks/guardhooks/guardhooks.conf.example ~/.claude/guardhooks.conf
+#
+# This file is sourced by /bin/sh. Keep it to plain KEY="value" lines — no logic.
+
+# ── guard-repo-visibility ────────────────────────────────────────────────────
+# Repos that may NEVER be made private or archived. Space-separated names,
+# matched case-insensitively against both the command and the working directory.
+# This tier has NO override token: once a repo is listed here, the only way past
+# the guard is to edit this file by hand. Use it for repos whose public status is
+# a standing commitment you don't want an agent reasoning its way around.
+# Default: empty (no repo is in the never-private tier).
+GUARDHOOKS_NEVER_PRIVATE=""
+
+# Every repo NOT on that list is still blocked from being made private/archived
+# until a human double-confirms. Leave this unset — it exists so a human can set
+# it for one command after confirming out loud, not as a standing setting.
+# GUARDHOOKS_CONFIRM_PRIVATE="yes-twice"
+
+# ── guard-force-push ─────────────────────────────────────────────────────────
+# Branches whose published history must not be rewritten or deleted.
+# Force-pushing a feature branch stays allowed; these are the shared ones.
+# Default if unset: "main master production"
+GUARDHOOKS_PROTECTED_BRANCHES="main master production"
+
+# Standing escape hatch for force-push. Leave unset; prefer the one-shot token
+# I-CONFIRM-FORCE-PUSH in a single command instead of disabling the guard.
+# GUARDHOOKS_ALLOW_FORCE_PUSH="yes"
+
+# ── guard-mass-delete ────────────────────────────────────────────────────────
+# Recursive-force deletes aimed at dangerous roots (/, a home directory, a system
+# dir, ".", "..", or a bare glob) are blocked. Targeted deletes like
+# `rm -rf node_modules` or `rm -rf ./dist` are always allowed. No list to tune.
+# Leave unset; prefer the one-shot token I-CONFIRM-MASS-DELETE.
+# GUARDHOOKS_ALLOW_MASS_DELETE="yes"
+
+# ── guard-secrets-files ──────────────────────────────────────────────────────
+# Extra filename patterns to treat as real-secrets files, on top of the built-in
+# set (.env.local, .env.*.local, .dev.vars, id_rsa*, *.pem, credentials.json,
+# secrets.{json,yml,yaml,toml}). Extended regex, joined with the built-ins by "|".
+# Example: also protect a vault file and any .kdbx database.
+# GUARDHOOKS_EXTRA_SECRET_PATTERNS="vault\.txt|\.kdbx"
+
+# Standing escape hatch for secrets files. Leave unset — the whole point is that
+# an agent cannot read these; prefer the one-shot token
+# I-CONFIRM-SECRETS-FILE-ACCESS after you approve it out loud.
+# GUARDHOOKS_ALLOW_SECRETS="yes"
