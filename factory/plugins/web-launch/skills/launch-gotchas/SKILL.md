@@ -148,3 +148,83 @@ description: A library of real, hard-won website-launch failure modes — each w
 ## How to extend this library
 
 After every launch (Day 7/30 lessons-learned step in the `web-launch` monitoring cadence), add any new failure mode here in the same shape: **What happened · Root cause · Prevent.** Keep specifics as illustrative examples; lead with the transferable principle. A gotcha that cost you a week is worth more than a generic best practice.
+
+
+---
+
+## Wiring & go-live traps *(added 2026-08-22, bids.town first ship)*
+
+### Zeros read as success
+**What happened:** A live health probe returned `{online: 0, heat: {}}` and was declared proof the database was wired. In truth the schema had never been installed — the route swallowed the error and built its response from nulls. The real state was "nothing there," reported as "quiet."
+**Root cause:** Absence of data and absence of *installation* are indistinguishable when a probe only reads. Empty is what both success-with-no-traffic and total failure look like.
+**Prevent:** A wiring check must use a POSITIVE signal: read a version/marker you know the install writes, or write-then-read a row. Never accept zero/empty/no-error as proof of a live connection.
+
+### The demo fallback that hides the outage
+**What happened:** The production site silently served built-in demo content when database queries failed. It looked healthy for hours while completely unwired.
+**Root cause:** Graceful degradation without a visible marker converts an outage into a cosmetic difference nobody checks for.
+**Prevent:** Fallbacks must announce themselves — loud server log plus a detectable marker (header, banner, or distinctive content) that the live-check explicitly greps for. The live-check asserts REAL data, not a 200.
+
+### Custom schema, invisible permission wall
+**What happened:** Two products sharing one Supabase project via a second Postgres schema: RPC calls worked, but every table read failed with permission denied — masked by the fallback above.
+**Root cause:** Supabase's automatic `service_role` table grants are default-privileges on the `public` schema ONLY. A custom schema starts with no table grants for anyone; granting EXECUTE on functions does nothing for `.from()` reads.
+**Prevent:** Any custom-schema migration set ends with `grant all on all tables/sequences in schema X to service_role` plus matching `alter default privileges`. Principle: in any managed platform, per-schema magic does not follow you out of the default schema.
+
+### The dashboard URL that answers with a webpage
+**What happened:** A build died with the data layer returning HTML — the operator had pasted the browser's dashboard address into the API-URL env var, so every "query" fetched the Supabase Studio homepage.
+**Root cause:** Two URLs look equally official; only one is an API endpoint. Docs said "copy the URL" without showing its shape.
+**Prevent:** Env-var instructions always show the expected SHAPE of the value (`https://<ref>.supabase.co`). Apps should sanity-check at boot (host pattern) and fail with a named-variable message.
+
+### Write-only secrets, and where keys actually live
+**What happened:** The runbook said "Reveal the value in Vercel" — but variables stored as Sensitive are write-only forever; no reveal exists. The operator stalled mid-wiring.
+**Root cause:** Assuming a platform can display what it stored. Many secret stores are intentionally one-way.
+**Prevent:** Source every key from the dashboard that OWNS it (Supabase shows its keys anytime; Stripe mints additional secret keys on the same account; webhook signing secrets are per-endpoint and cannot be reused across sites). Never build a runbook step on re-revealing a stored secret.
+
+### The clipboard is a single register
+**What happened:** The operator copied a long SQL install, then copied an error message to report it — erasing the install. The next paste ran the error text; the "still failing" loop was the clipboard, not the database.
+**Root cause:** Multi-step copy-paste runbooks silently break the moment anything else is copied, and nothing tells you.
+**Prevent:** Runbooks that depend on the clipboard say "go straight there, copy nothing in between," tell the user what the FIRST LINE of a correct paste looks like, and re-issue the copy command on any failure. Better: verify with `pbpaste | head -1` before declaring the paste ready.
+
+
+---
+
+## Database & payments wiring traps *(added 2026-08-22, from the bids.town launch)*
+
+### Zeros are not proof of wiring
+**What happened:** A live health endpoint returned `{online:0, heat:{}}` and this was read as "database connected, just empty." In truth the schema had never been installed — the route swallowed the error and empty-shaped output looked identical to healthy-but-quiet.
+**Root cause:** Absence of data and absence of infrastructure produce the same response when errors are absorbed. A zero can mean "nothing yet" or "nothing exists."
+**Prevent:** A wiring check must use a POSITIVE signal: write a marker row and read it back, or call a health endpoint that returns the schema version. Never declare wiring verified from empty-but-no-error output.
+
+### Custom-schema service_role trap (Supabase)
+**What happened:** Two products shared one Supabase project, the second in its own schema. RPCs worked, but every table read silently failed and the site served fallback content — looking fine while broken.
+**Root cause:** Supabase's automatic service_role table grants exist ONLY in the `public` schema (its default privileges). A custom schema starts with nothing; granting EXECUTE on functions does not grant SELECT on tables.
+**Prevent:** Any custom-schema migration set ends with `grant all on all tables/sequences in schema X to service_role` plus matching `alter default privileges`. And the schema must be added to the dashboard's Exposed Schemas list or the API refuses to serve it.
+
+### Silent fallback masks broken production
+**What happened:** The app's demo-mode fallback (good for resilience) kept rendering demo content in production while the real database was misconfigured — every probe "looked fine."
+**Root cause:** Graceful degradation without a visible signal is indistinguishable from health.
+**Prevent:** When production serves fallback content, say so loudly: error log with the cause, and check for the fallback's fingerprints (known demo names) in live checks.
+
+### Dashboard URL is not the API URL
+**What happened:** `NEXT_PUBLIC_SUPABASE_URL` was set to the browser's dashboard address. The build failed bizarrely: queries returned the Supabase Studio homepage as HTML.
+**Root cause:** Both are "the Supabase URL" to a first-time user. The API URL is `https://<ref>.supabase.co`, found under Project Settings -> API -> Project URL.
+**Prevent:** Env docs show the exact value shape. Better: validate at boot (host must end `.supabase.co`) and fail with a plain message.
+
+### Vercel Sensitive variables are write-only forever
+**What happened:** The runbook said "Reveal the value from the sibling project" — no Reveal exists for Sensitive vars; the operator stalled.
+**Root cause:** Sensitive vars are sealed at creation by design.
+**Prevent:** Collect keys from each service's home dashboard (Supabase shows its keys anytime; Stripe can mint ADDITIONAL secret keys on the same account — never roll the old one, that breaks the sibling; webhook signing secrets are per-endpoint and always freshly created).
+
+### The clipboard is a single register
+**What happened:** Operator copied the SQL install, then copied an error message to report it — which erased the install. The "paste and run" then ran the error text; the schema never got created and the same error looped.
+**Root cause:** Multi-step copy-paste runbooks silently break the moment anything else is copied.
+**Prevent:** Order runbook steps so the paste happens IMMEDIATELY after the copy, say "don't copy anything else in between," and when a step mysteriously repeats an old error, verify the clipboard's first line before re-diagnosing.
+
+### Prerender throws kill whole deploys
+**What happened:** A build-time page query hit the misconfigured database, threw, and the entire production deploy failed — for a decorative leaderboard read.
+**Root cause:** Any route that throws during prerender/ISR fails the build; data faults become deploy outages.
+**Prevent:** Server data helpers degrade (cached/demo/empty + loud log), never throw, on infrastructure errors. A broken database should never be able to stop shipping code.
+
+### Shared payment account cross-talk
+**What happened (near-miss):** Two products on one Stripe account — every webhook endpoint receives EVERY event. Product A's webhook would 404/500 on product B's sessions, and Stripe retries until it disables the endpoint.
+**Root cause:** Stripe events are account-wide, not per-product.
+**Prevent:** Tag every Checkout Session with `metadata.product`; every webhook 200-acks foreign or unknown sessions (log loudly, never error); treat untagged sessions as the legacy product's own. Both sides ship BEFORE the second product takes money.

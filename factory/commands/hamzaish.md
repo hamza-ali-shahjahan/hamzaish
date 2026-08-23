@@ -138,14 +138,29 @@ Express Lane. Otherwise ask once, with ① pre-selected:
      Commands always appear WITH what they do in THIS task — that is how a new user
      learns `/build` and `/test` are things THEY could type. Steps are the user's
      mental model of the work (features they recognize), never internal stage names.
-   - **Close with the 4-line receipt (hard cap ~65 words):**
+   - **Close with the 5-line receipt (hard cap ~80 words):**
      ```
      🏭 Hamzaish receipt
      - What you got: <the value added to the user's work, one plain sentence>
      - Checked: <how it was verified before "done" — plus anything deliberately NOT done>
+     - Stage: <the stage you are in now> → next: <the stage that follows, and what it needs>
      - Recommendation: <the ONE thing you would do next, and why — or exactly "NA">
      - Try next: /command — <what typing it will do for them>
      ```
+     **Stage is never optional.** A user who cannot see where they are cannot see
+     what is missing — they discover the gap when something breaks in front of a
+     customer, and then they have to ask for it. Name the current stage AND what
+     the next one needs from them, so nothing waits on the user knowing to ask.
+
+     **The stage ladder** (plain words, in order — name the one you're in and the
+     one that comes next; skip any the product genuinely doesn't need):
+     `idea → spec → build → checks → wiring → safety check → deploy → live check`
+     - **idea** deciding what to build · **spec** writing down what it must do
+     - **build** making it work on your machine · **checks** tests and code review
+     - **wiring** connecting the real services (database, payments, email)
+     - **safety check** security + launch readiness, before anyone can see it
+     - **deploy** putting it on the domain · **live check** proving it's really live
+
      **Recommendation is never optional and never a menu.** Name the single call you
      would make and the reason in a clause; if two options are live, pick one and say
      why it beats the other. When the turn was pure lookup, or the user explicitly asked
@@ -159,8 +174,8 @@ Express Lane. Otherwise ask once, with ① pre-selected:
       artifact, retro, e2e, typecheck, RLE, subagent — say what the thing does instead
       ("live playthrough", "code checks", "tracked step").
    2. **Shape complete.** Plan = exactly Goal / Steps / Commands / Proof before "done".
-      Receipt = exactly What you got / Checked / Recommendation / Try next.
-   3. **Caps.** Plan ≤ ~80 words; receipt ≤ ~65.
+      Receipt = exactly What you got / Checked / Stage / Recommendation / Try next.
+   3. **Caps.** Plan ≤ ~80 words; receipt ≤ ~80.
    4. **Commands teach.** Exactly ONE command in Try next; every command named anywhere
       carries what it does here.
    5. **Numbers the user can feel only** — test counts yes; commit hashes, file paths,

@@ -1,0 +1,40 @@
+{
+  "slug": "bids-town",
+  "name": "bids.town",
+  "one_liner": "A Minecraft-style voxel city that is also an auction \u2014 $1 claims a plot, ad spend grows your building and buys advertising surfaces across the town.",
+  "created": "2026-08-22",
+  "stage": "live",
+  "status": "active",
+  "code_path": "/Users/hamza/Claude/Bid Town",
+  "aliases": [
+    "bidstown",
+    "bids town",
+    "blocktown"
+  ],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": "https://bids.town",
+    "staging_url": null
+  },
+  "stack": {
+    "framework": "Next.js 16.3.1 (App Router, typed routes)",
+    "runtime": "React 19.2.8 (pinned exactly for the r3f peer range)",
+    "ui": "Tailwind v4, @theme inline tokens, zero dark: variants",
+    "3d": "three 0.185 + @react-three/fiber 9 + @react-three/drei 10",
+    "backend": "Supabase (Postgres, service-role only, RLS with zero policies)",
+    "payments": "Stripe Checkout \u2014 SHARED ACCOUNT with productbids, see learnings",
+    "host": "Vercel"
+  },
+  "forked_from": "productbids.lol \u2014 auction mechanics, scoring, anti-abuse and design tokens reused wholesale",
+  "notes": "LIVE 2026-08-22 on https://bids.town \u2014 shared Supabase (own bidstown schema) + shared Stripe (metadata.product guard both sides). Payment round-trip pending first $1 claim."
+}

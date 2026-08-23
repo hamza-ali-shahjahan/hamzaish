@@ -105,10 +105,69 @@ bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/scripts/verify-live.ts https://<doma
   --sha <deployed short-sha> [--authed-route </api/…>] [--resend-domain <domain>]
 ```
 
-It checks A1–A10 (DNS apex+www, TLS on both, `/api/health` ok + buildSha + db
-probe, auth gate 401s, `pk_live_` not dev-mode, cron gated, no server-secret in
-the client payload) and emits a scorecard — `EVAL: n/N`, per-assertion
+It checks A1–A15 and emits a scorecard — `EVAL: n/N`, per-assertion
 PASS/FAIL/PENDING/MANUAL with remediation.
+
+**A1–A11 — does it RUN?** DNS apex+www, TLS on both, `/api/health` ok + buildSha
++ db probe, auth gate 401s, `pk_live_` not dev-mode, cron gated, no server-secret
+in the client payload, errors reach Sentry.
+
+**A12–A15 — can anyone REACH, INDEX, CITE and READ it?** The failure class where
+every command returns 0, the page renders perfectly for whoever deployed it, and
+the product is still invisible:
+
+- **A12 Publicly reachable.** Platform auth walls (Vercel Deployment Protection /
+  SSO, Netlify Identity, password protection) default to ON in some project
+  configurations. Deploy succeeds, DNS resolves, TLS is valid — and every visitor
+  is 302'd to a login. Only an unauthenticated request from outside catches it.
+  Fix: `vercel project protection disable <project> --sso`.
+- **A13 Canonical is production.** One unset public-site-URL env var and every
+  `canonical`, `og:url` and sitemap `<loc>` silently says `http://localhost:3000`.
+  The page looks perfect; Google cannot index it and every social preview
+  resolves to nothing. Set the env var and **redeploy** — env changes need one.
+- **A14 Machine-readable.** JSON-LD on the home page, robots.txt that doesn't
+  disallow everything, a sitemap, and `/llms.txt`. Answer engines decide what a
+  page *is* from structured data before deciding whether to cite it; a page with
+  none gets described however they guess, if at all.
+- **A15 No placeholder text.** `lorem ipsum`, `example.com`, `TODO`, "Your
+  Company", `hello@yourdomain` — scaffolds ship with these and they read as real
+  until a customer emails an address that bounces. Grep the LIVE html, not the repo.
+
+**A16 — Engagement mechanics are honest (MANUAL; only if the product has
+likes, shares, votes, or any earned score).** Blocking, because a score people
+can manufacture is worse than no score — it silently misprices everything built
+on top of it. Check:
+
+1. **Dedupe on IP alone, never IP + user-agent.** Including the UA lets one
+   machine mint a fresh identity per browser, which is exactly what a farm does.
+   Shared-NAT false negatives are the cheaper error.
+2. **A rate needs a scale term, and a count needs a rate term.** A pure rate
+   (engagement ÷ views) punishes reach — many people liking you scores below a
+   few, purely because more saw you. A pure count compounds for whoever is
+   already on top. Use both, with the count log-scaled and the whole thing capped.
+3. **Whatever sits in the denominator is an attack surface.** If quality is
+   engagement ÷ views, anyone who can inflate a *rival's* views drives their
+   score down. Dedupe the denominator too.
+4. **A share button press is not a share.** The native sheet resolving only means
+   the OS sheet opened; the desktop clipboard fallback is free. If shares are
+   weighted above likes, that is the softest input in the model. Count *delivery*:
+   pending share + token in the URL, confirmed only when a different visitor
+   arrives through it.
+5. **Votes must be undoable; shares must not.** A vote you cannot take back is
+   not a vote, and a stuck one makes people stop pressing anything. A share
+   already happened in the world — there is nothing to undo.
+6. **The counter and the explanation must share one state.** A modal reading
+   server props while the button holds live state shows "0" right after the user
+   pressed it — the exact number it exists to explain.
+7. **Bot + cross-origin checks on EVERY engagement endpoint**, not just the
+   obvious one, and refuse silently (`counted: false`, never a 4xx) so a scraper
+   learns nothing.
+
+**A17 — Payment identity matches (MANUAL; only if the product charges).** The
+name on the customer's card statement is the legal entity, not the product. An
+unrecognised descriptor is a top cause of chargebacks. Name the operating company
+on the site — in Terms, and ideally next to checkout — before taking a first
+payment.
 
 **A11 — Trackable (MANUAL until `verify-live.ts` learns it; blocking like the
 rest).** *A product that isn't trackable isn't shareable* — if nobody can answer

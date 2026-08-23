@@ -142,21 +142,29 @@ describe("session that ENTERED the factory but is rooted nowhere near a product"
 // them changing anything — it ships the receipt shape itself. If a line silently
 // drops out of the injected text, every session loses it and nothing else notices.
 describe("the injected receipt shape", () => {
-  const receiptLines = ["What you got", "Checked", "Recommendation", "Try next"];
+  const receiptLines = ["What you got", "Checked", "Stage", "Recommendation", "Try next"];
 
   test("SessionStart injection names every receipt line", () => {
     const { out } = runHook(FACTORY_ROOT);
     const ctx = JSON.parse(out).hookSpecificOutput.additionalContext as string;
     for (const line of receiptLines) expect(ctx).toContain(line);
-    expect(ctx).toContain("4-line receipt");
+    expect(ctx).toContain("5-line receipt");
     // "NA" has to survive too — without it, a turn with no real call has no honest out.
     expect(ctx).toContain("NA");
+    // Stage is only useful if the ladder travels with it — a stage name the user
+    // can't place on a sequence tells them nothing about what comes next.
+    for (const rung of ["idea", "spec", "build", "checks", "wiring", "safety check", "deploy", "live check"]) {
+      expect(ctx).toContain(rung);
+    }
   });
 
   test("--brief reminder names every receipt line", () => {
     const { out } = runHook(FACTORY_ROOT, "--brief");
     const ctx = JSON.parse(out).hookSpecificOutput.additionalContext as string;
     for (const line of receiptLines) expect(ctx).toContain(line);
+    // the per-message reminder is what rescues long-lived sessions, so the
+    // ladder has to ride along with it too — not just at SessionStart
+    expect(ctx).toContain("live check");
   });
 
   test("the shape the hook injects is the shape the gate enforces", () => {
