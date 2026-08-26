@@ -1,0 +1,32 @@
+# AGENT-BLIND: the system under test must never read this file.
+name: design-sense-rules-are-checkable
+skill: design-sense
+description: >
+  The skill is only useful if its rules can be CHECKED rather than admired.
+  This case turns red if the composition rules, the build order, or the review
+  checklist are removed — each is a thing somebody can verify against a real
+  component, and a design doc without them is a mood board.
+invoke:
+  cmd:
+    - bash
+    - -lc
+    - |
+      f=factory/skills/design-sense/SKILL.md
+      test -f "$f" || { echo "missing $f"; exit 1; }
+      # The build order — structure before decoration, which is the spine.
+      for phrase in "Skeleton" "Rhythm" "Hierarchy" "Theme"; do
+        grep -qi "$phrase" "$f" || { echo "missing build phase: $phrase"; exit 1; }
+      done
+      # The composition rules each came from a real defect.
+      grep -qi "One alignment per row" "$f" || { echo "missing: one alignment per row"; exit 1; }
+      grep -qi "same mechanism" "$f"       || { echo "missing: size siblings the same way"; exit 1; }
+      grep -qi "Containers assign meaning" "$f" || { echo "missing: containers assign meaning"; exit 1; }
+      # A checklist is what makes it usable at review time rather than at read time.
+      grep -qi "checklist" "$f" || { echo "missing review checklist"; exit 1; }
+      # And the line that catches the rest: rendering is not seeing.
+      grep -qi "not verifying that a person can see it" "$f" || { echo "missing the verification rule"; exit 1; }
+      exit 0
+  timeout_ms: 20000
+checks:
+  - type: exit_code
+    equals: 0
