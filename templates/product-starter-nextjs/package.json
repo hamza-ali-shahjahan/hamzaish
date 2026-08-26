@@ -11,7 +11,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "stripe:check": "tsx scripts/stripe-wire.ts",
+    "stripe:wire": "tsx scripts/stripe-wire.ts --wire"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.0",

@@ -20,6 +20,27 @@ Before adding any keys, choose where secrets live. Two options:
 
 **B — `.env.local` (fallback).** `cp .env.example .env.local` and paste keys in your own editor. Never let an AI agent read/write it; it's gitignored. This is the manual path the steps below assume.
 
+**C — Vercel as the source of truth (best version of B, once you're deploying).** Add each key **once** in the Vercel dashboard (or `vercel env add <NAME>`), scoped to **all environments**, then pull it down wherever you need it:
+
+```bash
+vercel env pull .env.local
+```
+
+You never hand-type a key into a local file again, and there is exactly one place to look when something is missing. Every "→ `.env.local`" step below becomes "→ add in Vercel, then pull". Four things that bite, all silent:
+
+- `pull` reads the **Development** environment — a Production-only variable never arrives. Scope to all environments, or `--environment=production`.
+- `pull` **overwrites** the file. Hand-edits vanish on the next pull; that's the point.
+- Variables marked **Sensitive** can't be pulled back at all. Leave that off while local dev needs the value.
+- A **storage integration names the variable from a prefix box** — leave it blank and you may get `STORAGE_URL` while your code reads `DATABASE_URL`. Set the prefix, then check the resulting name.
+
+Check a key arrived without printing it:
+
+```bash
+grep -c '^DATABASE_URL=.' .env.local
+```
+
+`1` = present, `0` = missing. (fnox is still the safest option — it leaves no plaintext file at all. C is the best you can do when you keep one.)
+
 ## 1. Supabase (auth + DB)
 - Go to https://supabase.com/dashboard → New project
 - Project name: `{{PRODUCT_SLUG}}`
@@ -133,3 +154,18 @@ Don't bolt these on during an incident. Read before your first real users:
 - SOC 2 (start with Vanta/Drata when first enterprise asks)
 - Status page (BetterStack free tier when you have paying customers)
 - Custom support tool (use email + PostHog for now)
+
+## Payments (Stripe)
+
+Do this the moment the product will take money — **the webhook endpoint must
+exist before any payment is possible**, or payments are taken with nowhere to
+deliver the confirmation.
+
+```
+STRIPE_TARGET_URL=https://your-staging-url \
+STRIPE_SECRET_KEY=sk_test_… npm run stripe:wire -- --env preview
+```
+
+Then redeploy, then `npm run stripe:check`. It refuses to pass until a real
+payment has actually settled. Full order and the traps:
+`factory/playbooks/launch-stage/stripe-wiring-runbook.md`.
