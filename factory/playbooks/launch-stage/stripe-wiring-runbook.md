@@ -80,3 +80,54 @@ the runbook, not a fact of life.**
 - **Check what the product actually charges before recommending a test
   payment.** A "$1 test" was recommended for a product where entry is free
   while founding spots last. There was no such payment to make.
+
+## Replacing a key — Stripe never shows an old one again
+
+An existing secret key cannot be revealed after creation. The row's menu offers
+**Rotate**, which replaces it — and rotating leaves the live site running on a
+dead key until it is redeployed.
+
+**Create a second standard key instead.** The old one keeps working throughout,
+so there is no window where anything is broken. Then, in this order:
+
+1. Create the new key, name it for the product, copy it (shown once).
+2. `stripe:wire` with the new key — it writes the key AND a matching signing
+   secret to the host.
+3. Redeploy.
+4. `stripe:check` to confirm.
+5. **Only now** expire the old key.
+
+**Never delete a key showing recent use.** "Last used: today" means it is what
+production is running on. Tidying up before step 3 is the one move that turns a
+working site into a broken one.
+
+## What a checker must never do
+
+Two false STOPs on this tool's first real run, both its own fault. A checker
+that cries wolf is worse than no checker, because it burns trust at the exact
+moment somebody needs to believe it.
+
+- **Never default an environment.** It defaulted to `preview` when none was
+  given, so a live key checked against the production URL was reported as
+  "a LIVE key aimed at preview — this charges real cards". The key was fine;
+  the comparison was against an environment nobody asked for. **Fail closed on
+  ambiguity — ask which one, do not guess.**
+- **Never read account-wide state as if it were yours.** It counted every
+  payment in the Stripe account. One account commonly serves several products
+  — this one serves six — so another product's failed delivery was reported as
+  this product's money taken and nothing granted. Filter by something only your
+  own checkouts carry, such as your intent id in the metadata.
+- **Detect your own placeholders.** The command is handed over to be copied and
+  run, so it WILL be run with the placeholder still in it. Stripe's answer —
+  "Invalid API Key provided: sk_live_xxx" — reads like the key is broken rather
+  than absent. Catch it before contacting anything and say where the real one
+  lives.
+
+## The note that should remain, and is not a failure
+
+With several products in one Stripe account, every product's endpoint receives
+the others' confirmations and rejects them. Nothing breaks — each ignores what
+is not its own — but every dashboard accumulates permanent delivery failures
+from the rest. **Do not unsubscribe another product's endpoint; it needs that
+event.** The real fix is an account per product. What matters day to day is
+that the noise is explained, so a genuine failure is not lost inside it.
