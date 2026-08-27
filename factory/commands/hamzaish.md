@@ -64,6 +64,13 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - Next.js 16+: use `proxy.ts`, not `middleware.ts`.
    - Set a noreply git email before the first commit (avoids push rejection).
    - Build locally before any deploy.
+   - **Payment inside a modal = Anchored Checkout, always.** Embedded Payment Element,
+     never hosted Checkout (it redirects); the intent carries
+     `allow_redirects: 'never'` and confirm uses `redirect: 'if_required'`; the pay
+     button lives OUTSIDE the scroll area so it never scrolls off. Full pattern +
+     the three platform traps (React's onClose never fires on `<dialog>`, Tailwind
+     preflight kills its centering, `min-height: 0` is what makes the footer stick):
+     `factory/playbooks/mvp-stage/anchored-checkout.md`.
    - **A copyable command must run in the state the user is actually in.** If the prose says
      *restart / reset / re-run*, a single pasteable command must perform it — `bun run dev`
      handed to someone whose server is already up fails with `EADDRINUSE`, and a day-1 user

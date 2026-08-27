@@ -10,6 +10,36 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-28 — v2.31.0 · Anchored Checkout: a name, a playbook, a guardrail
+
+**What changed.** New playbook `factory/playbooks/mvp-stage/anchored-checkout.md`,
+a standing guardrail in `factory/commands/hamzaish.md`, and a proven entry in
+BEST-PRACTICES. Payment inside a modal now has one house pattern instead of being
+re-decided per product: embedded Payment Element (never hosted Checkout, which
+redirects), `allow_redirects: 'never'` on the intent, `redirect: 'if_required'` on
+confirm, and the action bar outside the scroll container.
+
+**Why.** dinorun.lol, 2026-08-28. The product's whole promise is that no page ever
+opens another page, and payment is where that promise is hardest to keep. Four
+defects surfaced building it, none of them obvious, all of them repeatable:
+1. React's `onClose` never fires on `<dialog>` — `close` does not bubble — so ESC
+   closed the box and left `body.overflow: hidden`, locking the page silently.
+2. Tailwind's preflight zeroes margin, killing `dialog:modal { margin: auto }` and
+   pinning the modal to the top-left.
+3. `min-height: 0` on the flex child is the entire reason a sticky footer sticks;
+   without it the dialog grows past its max-height and the footer scrolls away.
+4. Plain `automatic_payment_methods` admits redirect-based methods, so the one
+   promise breaks for whoever picks iDEAL.
+
+The operator named the pattern and asked for it to be the default everywhere.
+
+**What to revisit.** Prose plus a guardrail today. The mechanical version is a
+check that flags `stripe.checkout.sessions.create` or a `return_url` in a product
+that declares the no-navigation contract, and a `<dialog>` whose primary button
+sits inside `.modal__body`. Both are greppable; worth building if this bites twice.
+
+---
+
 ## 2026-08-28 — v2.30.0 · Copyable commands must run from the user's actual state
 
 **What changed.** New standing guardrail in `factory/commands/hamzaish.md` (Express Lane
