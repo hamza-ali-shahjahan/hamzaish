@@ -23,6 +23,8 @@ _(append as discovered)_
 
 _(append as sessions produce them; newest first)_
 
+- 2026-08-25 — **A Stripe test key is part of going live, not part of testing later.** GetHired reached its domain with only a live key, scoped to all three environments — so no payment had ever been proven, and every staging click was a real charge. Same shape as the Clerk dev-instance lesson. Provision both keys at once, scope them apart, and gate the domain on one payment proven **locally AND on staging**. → `brain/learnings/2026-08-25-stripe-test-key-gate.md`, `factory/playbooks/ai-native-2026/payments-go-live.md`, `/go-live` stage 5.5 + assertions A11–A13.
+
 ## Anti-patterns
 
 _(append as we decide what not to do)_
@@ -41,3 +43,4 @@ When you (Hamzaish) write a memory:
 3. Use `[[file-name]]` syntax to link related memories
 
 When you reference memory: read the index here first, then load only the files relevant to the current task.
+- [2026-08-26 — pulled host files reach git](brain/learnings/2026-08-26-pulled-env-files-reach-git.md) — never invent a filename for pulled credentials; an ignore rule is a convention, a commit hook is a wall.

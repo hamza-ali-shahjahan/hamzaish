@@ -41,6 +41,29 @@ asked (a follow-up is a new slice, not an exit from the factory):
   templates with placeholders; the user copies (`cp x.example x`) and pastes real keys
   themselves. Verify with non-printing checks (`grep -c`, `test -s`) — never print,
   cat, or open a real-secrets file.
+- **On Vercel: add a secret ONCE in Vercel, then pull it everywhere.** Never hand-paste
+  the same key into a local file on every machine — that is how local and production
+  drift apart, and how "works on my laptop" starts. The user adds it in the Vercel
+  dashboard (or `vercel env add`), then:
+
+  ```bash
+  vercel env pull .env.local
+  ```
+
+  Vercel is the single source of truth; the local file is a derived copy. The user runs
+  the pull, and Claude still never reads the file — the two rules compose. Three things
+  that bite, all of them silent:
+  - **It pulls the _Development_ environment.** A variable scoped Production-only never
+    arrives, and the app fails locally as if it were never set. Scope to all
+    environments, or pass `--environment=production`.
+  - **It OVERWRITES the file.** Anything hand-typed there vanishes on the next pull —
+    which is the real argument for keeping Vercel as the only source.
+  - **Variables marked Sensitive cannot be pulled back**, by design. Leave Sensitive off
+    while local development still needs the value.
+  - **A storage integration may not name the variable what the app reads.** Vercel's
+    marketplace integrations build the name from a prefix box; leave it blank and you
+    can get `STORAGE_URL` while the code wants `DATABASE_URL`. Set the prefix, then
+    confirm the resulting name before doing anything else.
 
 ## What this product is
 {{ONE_LINER}}

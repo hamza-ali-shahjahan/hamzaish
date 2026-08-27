@@ -201,6 +201,9 @@ The badge discipline above is enforced, not aspirational:
 
 When a ⏳ practice survives its first real-world test, it gets re-badged with the ship and date. When a ✅ practice stops earning its keep, it gets sunset. The page you're reading is regenerated from those sources — it can't drift into flattery.
 
+- **A Stripe Checkout that is a name and a figure reads as a scam — ship the ITEMIZED order summary.** 2026-08-26 (productbids/bids.town): the checkout showed one line of text and an amount; the operator's words were "it looks scammy". Three things turn it into a receipt: `product_data.images` (a thumbnail), a product name trimmed to the BRAND (a raw `<title>` wraps three lines in Stripe's narrow column and pushes the amount out of view), and **`allow_promotion_codes: true`** — Stripe only draws Subtotal / Total due when the order can be adjusted. **Know the trade:** removing the promotion row to reduce distraction collapses the summary back to the bare figure. If you want the summary without the promo field, you need another adjustable element (`automatic_tax`, `adjustable_quantity`) — there is no flag for "summary, no promo". — ✅ *proven* · *Incident 2026-08-26 (checkout legibility)*
+- **Never gate the pay button on fetching the CUSTOMER'S website.** 2026-08-26 (bids.town/productbids): the Claim CTA waited on scraping the buyer's own site for its name and logo. `relvehq.com` did not answer the scraper, so verification hung — 34s, then forever — and nobody could buy on either product. A slow third party became an outage in our checkout. Enable payment as soon as the input LOOKS like a link, let the scrape enrich the listing if it wins a short race, and fall back to the hostname. Ask of anything added to a checkout path: *if this third party is down, can they still pay?* — ✅ *proven* · *Incident 2026-08-26 (URL verification outage)*
+
 ---
 
 *Part of [Hamzaish](README.md) — the Claude Code setup that doesn't stop at code. AGPL-3.0.*

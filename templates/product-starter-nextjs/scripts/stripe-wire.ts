@@ -1,5 +1,4 @@
 /**
-
  * Stripe wiring: check it, or do it — without a single copy-paste.
  *
  *   npm run stripe:check                    # read-only. Safe. Run it often.
@@ -7,8 +6,8 @@
  *
  * WHY THIS EXISTS
  * ---------------
- * Wiring Stripe by hand cost one product a full afternoon and one payment that
- * took money and delivered nothing. Every minute of it was avoidable: creating a webhook
+ * Wiring Stripe by hand cost a full afternoon and one payment that took money
+ * and delivered nothing. Every minute of it was avoidable: creating a webhook
  * endpoint through the API RETURNS the signing secret, and `vercel env add`
  * reads a value from stdin. One pipes into the other. Nobody ever needs to
  * look at a `whsec_`, pick the right row out of three identically-named ones,
@@ -38,10 +37,38 @@ import { execFileSync } from "node:child_process";
 const KEY = process.env.STRIPE_SECRET_KEY;
 const args = process.argv.slice(2);
 const WIRE = args.includes("--wire");
-const ENV = (args[args.indexOf("--env") + 1] ?? "preview") as "preview" | "production";
+// No default. Defaulting to "preview" once made a live key look like a
+// catastrophe — the key was fine, the comparison was against the wrong
+// environment. A tool that guesses which environment you meant will
+// eventually guess wrong and report a disaster that is not happening.
+const ENV = args[args.indexOf("--env") + 1] as "preview" | "production";
+if (ENV !== "preview" && ENV !== "production") {
+  console.error("\n  Say which environment: --env production  or  --env preview\n");
+  process.exit(1);
+}
 
 if (!KEY) {
   console.error("Set STRIPE_SECRET_KEY in your shell. Never in a file, never as an argument.");
+  process.exit(1);
+}
+
+// A placeholder run verbatim is the most likely first failure, because the
+// command is handed over as something to copy and run. Stripe's own answer to
+// it — "Invalid API Key provided: sk_live_xxx" — reads like the key is broken
+// rather than absent, so catch it here and say what to actually do.
+if (/^sk_(live|test)_(x+|your|key|here|xxx.*)$/i.test(KEY) || KEY.length < 20) {
+  console.error(`
+  That is the placeholder, not a real key — nothing was contacted.
+
+  Get the real one:
+    1. https://dashboard.stripe.com/apikeys   (LIVE mode: the "Test mode"
+       toggle at the top right must be OFF)
+    2. "Secret key" → Reveal → copy
+    3. Run the command again with that value in place of the placeholder
+
+  It starts sk_live_ and is about 107 characters. Keep it out of files and
+  out of chat — it belongs in this command and nowhere else.
+`);
   process.exit(1);
 }
 
@@ -95,12 +122,23 @@ async function main() {
 
   /* ------------------------------------------------------- deliverability */
   // The only honest proof the signing secret matches: did a real event land?
-  const events = await stripe.events.list({ limit: 30 });
-  const completed = events.data.filter((e) => e.type === "checkout.session.completed");
+  const events = await stripe.events.list({ limit: 60 });
+  // Ours only. One Stripe account commonly serves several products, and every
+  // one of their payments appears in this list too. Attributing another
+  // product's failure to this one sends somebody hunting a fault they do not
+  // have — which is exactly what happened the first time this ran.
+  //
+  // Our own checkouts always carry `intentId` in metadata; nobody else's do.
+  const completed = events.data.filter(
+    (e) =>
+      e.type === "checkout.session.completed" &&
+      Boolean((e.data.object as { metadata?: Record<string, string> }).metadata?.intentId),
+  );
   const stuck = completed.filter((e) => e.pending_webhooks > 0);
 
   if (!completed.length) {
-    warn("No payment has EVER completed in this mode, so the signing secret is unproven. " +
+    warn("No payment from THIS product has ever completed in this mode, so the signing " +
+         "secret is unproven. " +
          "A wrong one takes money and delivers nothing, and the refund safeguard does not " +
          "catch it — settlement never runs. Make one real payment before launch.");
   } else if (stuck.length === completed.length) {
@@ -119,12 +157,7 @@ async function main() {
 function targetUrl(): string {
   const explicit = process.env.STRIPE_TARGET_URL;
   if (explicit) return explicit.replace(/\/$/, "");
-  // No default. A wrong URL here creates an endpoint that silently never
-  // receives anything, which is the exact failure this tool exists to stop.
-  throw new Error(
-    "Set STRIPE_TARGET_URL to this environment's deployment URL, e.g.\n" +
-    "  STRIPE_TARGET_URL=https://yourproduct.com STRIPE_SECRET_KEY=sk_live_… npm run stripe:wire -- --env production",
-  );
+  throw new Error("Set STRIPE_TARGET_URL to this environment's deployment URL.");
 }
 
 /**

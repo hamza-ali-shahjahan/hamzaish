@@ -80,9 +80,47 @@ Group services into **required-to-deploy** first, **optional** second. For each 
 
 Account creation is manual; everything after the key exists, automate — **with explicit confirmation before each mutation**:
 
-- **Vercel**: `vercel link`, then push the local env up: `vercel env add <NAME> production` (or `vercel env pull`/`add` in a loop). `vercel domains add <domain>`.
+- **Vercel**: `vercel link`, then `vercel domains add <domain>`. For env vars, prefer
+  **add once in Vercel, pull everywhere** over pushing a local file up (see below).
 - **GitHub**: `gh secret set <NAME>` for CI secrets.
 - **Cloudflare**: DNS records via API if a token is provided.
+
+### Vercel env vars: add once, pull everywhere
+
+The direction matters. Pushing a local file up (`vercel env add` per key) leaves two
+copies that drift. Going the other way gives one source of truth:
+
+1. The **user** adds the value once — Vercel dashboard, or `vercel env add <NAME>`.
+   Scope it to **all environments** unless there is a reason not to.
+2. The user pulls it down wherever they need it:
+
+   ```bash
+   vercel env pull .env.local
+   ```
+
+This composes with the user-touched rule rather than fighting it: the user still owns
+the file, Claude still never reads it, and there is no key pasted into chat in either
+direction. Note it is a middle option — **fnox is still the recommendation** because it
+leaves no plaintext secrets file on disk at all. Pull is the best version of the
+`.env.local` fallback, not a replacement for fnox.
+
+Four failure modes, every one of them silent (all four hit a real session, 2026-08-25,
+wiring Neon to GetHired):
+
+| What happens | Why | Fix |
+| --- | --- | --- |
+| Pulled file is missing a var | `pull` reads the **Development** environment only | scope it to all environments, or `--environment=production` |
+| A hand-added line disappears | `pull` **overwrites** the whole file | keep Vercel as the only source; never hand-edit |
+| A var can never be pulled | it is marked **Sensitive** (write-only by design) | leave Sensitive off while local dev needs it |
+| App says the var is unset, but it is right there | a marketplace integration named it from a **prefix box** — blank gives e.g. `STORAGE_URL`, code wants `DATABASE_URL` | set the prefix at install time; verify the resulting name before anything else |
+
+Verify without printing, always:
+
+```bash
+grep -c '^DATABASE_URL=.' .env.local
+```
+
+`1` = present and non-empty, `0` = missing. Same shape for every required key.
 
 State plainly what you can't do: you can't sign the user up, accept their ToS, or enter their card.
 

@@ -77,6 +77,14 @@ A new factory skill (`factory/skills/go-live/`) that runs the pipeline for a sca
                    own social OAuth, pk_live/sk_live → Production env only, webhook secret.
                    Full checklist + gotchas: → auth-go-live.md. NEVER launch on a dev
                    instance (100-user cap, "Development mode" watermark, shared OAuth).
+  5.5 payments   — IF the product takes money: stripe TEST key → Development +
+                   Preview, LIVE key → Production ONLY. Two webhook endpoints
+                   (test-mode → staging, live-mode → prod) with separate
+                   secrets. HARD GATE: one payment proven end-to-end locally
+                   AND on staging on the test key BEFORE the domain goes live.
+                   Full checklist: → payments-go-live.md. A single
+                   STRIPE_SECRET_KEY scoped to all three environments means
+                   every staging click charges a real card.
   6. email       — resend.domain_add ; dns_record_set the SPF/DKIM/DMARC ; poll verify
   7. deploy      — vercel deploy --prod ; poll until buildSha matches HEAD
   8. EVAL        — run the go-live eval harness (below) ; emit a scorecard
@@ -106,6 +114,9 @@ Every stage is idempotent and resumable (re-running skips completed stages — s
 | A8 | Email verified | resend domain status | "verified" (or flagged pending w/ ETA) |
 | A9 | Cron gated | `GET /api/cron/*` no secret | 401 |
 | A10 | No secret leakage | scan deployed env for values in client bundle | none |
+| A11 | Payments are LIVE mode in prod, TEST elsewhere | `vercel env ls` scopes + key prefix (never the value) | `sk_live_` in Production **only**; `sk_test_` in Preview + Development. One key across all three = FAIL. |
+| A12 | A payment was proven before launch | evidence of one settled test payment locally **and** on staging | both recorded. Unproven payment path = **BLOCKS the domain**, not a warning. |
+| A13 | Webhook refuses an unsigned body | POST the endpoint with no/bad `stripe-signature` | 400, and nothing granted |
 
 ### The scorecard + the loop
 

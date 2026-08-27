@@ -10,6 +10,33 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-25 — v2.29.0 · Vercel env vars: add once, pull everywhere
+
+**What changed.** The `.env.local` fallback now has a documented best form: the user adds
+each secret **once in Vercel** and runs `vercel env pull` wherever they need it, instead of
+hand-pasting the same key on every machine. Written into three places a user actually meets:
+`factory/skills/go-live/SKILL.md` (new section, replacing the line that told you to push the
+local file *up* — the wrong direction), `templates/claude-md-template.md` (so every scaffolded
+product repo carries it into future sessions), and the starter's `SETUP.md` as option C.
+
+**Why.** Live session wiring Neon to GetHired, 2026-08-25. Four failure modes surfaced, and
+every one of them is silent — the app just behaves as though the variable was never set:
+1. `pull` reads the **Development** environment; a Production-only var never arrives.
+2. `pull` **overwrites** the file, so hand-added lines disappear next time.
+3. **Sensitive** variables can't be pulled back at all, by design.
+4. A marketplace storage integration builds the variable name from a **prefix box** — blank
+   gives `STORAGE_URL` while the code reads `DATABASE_URL`. That one cost the most: the
+   deploy is green, the variable is visibly present, and every page still fails.
+
+This composes with the user-touched secrets rule rather than competing with it — the user
+still owns the file and Claude still never reads it, but nobody types a key twice. **fnox
+remains the recommendation**; this is the best version of the fallback, not a replacement.
+
+**What to revisit.** Failure mode 4 is mechanically checkable: a guard could read a product's
+`.env.example` for required names and diff it against `vercel env ls`, catching a prefix
+mismatch before deploy rather than after. Worth building if it bites a second time.
+
+
 ## 2026-08-20 — v2.28.0 · recall stops answering from yesterday, and the receipt makes a call
 
 **What changed**

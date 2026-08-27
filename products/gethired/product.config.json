@@ -1,0 +1,51 @@
+{
+  "slug": "gethired",
+  "name": "GetHired",
+  "one_liner": "A public job marketplace run as a live auction \u2014 candidates and companies bid for the top spot in their category, starting at $1.",
+  "created": "2026-08-24",
+  "stage": "build",
+  "status": "active",
+  "code_path": null,
+  "aliases": [
+    "gethire",
+    "indeed.lol",
+    "gethired.lol"
+  ],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": "https://github.com/hamza-ali-shahjahan/gethired",
+    "prod_url": "https://gethired.lol",
+    "staging_url": null
+  },
+  "notes": "Re-homed 2026-08-24 from the claude/indeed-lol-job-auction-gzzsnr branch of hamza-s-digital-twin into its own private repo. Next: Postgres migration (SQLite will not survive Vercel serverless) + full mobile pass, then deploy to gethired.lol.",
+  "gates": {
+    "verdict": "TEST",
+    "launch": {
+      "date": "2026-09-01",
+      "state": "gethired.lol live on Neon + Stripe, one real paid bid placed end to end from a phone (source: bid_events where amount_paid_cents > 0)"
+    },
+    "validation": {
+      "date": "2026-09-08",
+      "state": "first bid from someone who is not Hamza \u2014 that person is validation conversation #1 (source: bid_events joined to users)"
+    },
+    "traction": {
+      "date": "2026-10-06",
+      "state": "10 paid bids from >=5 distinct accounts, OR one category where the top spot changes hands twice (source: bid_events)",
+      "on_fail": "run the 5 validation conversations as a post-mortem, then kill or re-aim"
+    },
+    "pmf": {
+      "date": "2027-01-05",
+      "state": "a category stays contested without prompting \u2014 >=8 paid bids/month for 3 straight months (source: bid_events)",
+      "on_pass": "CONCENTRATE"
+    }
+  }
+}

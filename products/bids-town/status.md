@@ -242,17 +242,19 @@ In `src/components/city/` (pattern: BannerPlane in LaunchPad.tsx — orbit refs 
 - Hero widget still says "$6,001 puts you at the top" — auction-era copy. The $1-claim
   hero lands with the checkout revamp.
 
-## Open immediately — ALL operator-owned
-1. Create the Supabase project, run the 5 migrations in order, copy the env
-   example to the local env file and paste keys yourself (fresh VISITOR_SALT —
-   never productbids').
-2. Stripe test-mode end-to-end: $1 claim → cart appears; webhook replay banks
-   once, emails once; moon trip queues.
-3. **Go-ahead needed:** productbids' webhook must 200-ack foreign
-   `metadata.product` sessions before bids.town takes real money (its own
-   sessions carry no product tag today — treat untagged as its own).
-4. Vercel: point the bids.town project at the Bid Town folder, set env,
-   deploy, then Lighthouse + share-preview checks on the live URL.
+## Open immediately
+1. **Mobile walk mode — needs a real phone.** The entry button is now the
+   primary gold action on touch; the thumbstick + look-half already worked.
+   Unverified because the preview pane cannot render or measure WebGL.
+2. **The $1 claim has never been made.** Everything else is proven; the
+   payment round-trip is the one wire that has never carried current.
+3. Stripe payee still reads the legal entity for both products (account-level
+   setting; separate identities would need Connect or a second account).
+
+## Done (was listed as open — corrected 2026-08-24)
+Database installed in its own `bidstown` schema, keys set, domain live,
+both webhooks guarded for the shared Stripe account, productbids' board
+carries a bids.town listing, DataFast + public stats wired.
 
 ## Blocking decision
 Stripe is to be shared with productbids. A single Stripe account delivers **every** event to
