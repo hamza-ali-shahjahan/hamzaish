@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "stop": "kill $(lsof -ti:3000) 2>/dev/null || true",
+    "restart": "bun run stop && bun run dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

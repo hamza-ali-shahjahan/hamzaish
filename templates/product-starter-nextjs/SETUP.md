@@ -131,6 +131,7 @@ On the fnox backend, inject secrets into the supervised server by setting `run =
 The starter ships a test harness so "testing" isn't left to you:
 
 ```bash
+bun run restart        # free port 3000, then start dev — works whether or not one is running
 bun run test           # Vitest — unit + component (jsdom)
 bun run test:watch     # Vitest in watch mode while you build
 bun run test:coverage  # coverage report

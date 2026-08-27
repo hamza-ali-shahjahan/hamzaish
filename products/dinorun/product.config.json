@@ -1,0 +1,26 @@
+{
+  "slug": "dinorun",
+  "name": "dinorun.lol",
+  "one_liner": "A Chrome-dino-style endless runner where a builder rides the dino, themes are swappable, and builders list their products on a decaying board.",
+  "created": "2026-08-27",
+  "stage": "build",
+  "status": "active",
+  "code_path": null,
+  "aliases": [],
+  "analytics": {
+    "stripe_account_id": null,
+    "posthog_project_id": null,
+    "ga4_measurement_id": null,
+    "plausible_domain": null,
+    "sentry_org": null,
+    "sentry_project": null,
+    "gsc_property": null,
+    "ahrefs_target": null
+  },
+  "links": {
+    "github": null,
+    "prod_url": "https://dinorun.lol",
+    "staging_url": null
+  },
+  "notes": "Phase 1 skeleton + art direction built and under review. Phase 2 = listing board + payments (SPEC-LISTINGS.md). Phase 3 = the game. Code path is registered in code-paths.local.json."
+}

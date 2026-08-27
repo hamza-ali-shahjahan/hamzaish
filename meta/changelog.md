@@ -10,6 +10,30 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-28 — v2.30.0 · Copyable commands must run from the user's actual state
+
+**What changed.** New standing guardrail in `factory/commands/hamzaish.md` (Express Lane
+step 3) and a new anti-pattern, `brain/anti-patterns/command-that-assumes-a-clean-state.md`.
+The rule: a command in a copy-button block has to work in the state the user is sitting in —
+not on a hypothetically clean machine. If the prose says *restart*, a single pasteable
+command must perform the restart. And if the session itself started a background process,
+the agent says so or stops it before handing over a command that collides with it.
+
+**Why.** Live session on dinorun.lol, 2026-08-28. The agent started a dev server with
+`nohup`, then later told the operator to run `bun run dev` to pick up new Stripe keys. The
+port was still held by the agent's own process; the operator got `EADDRINUSE` and had to come
+back and ask. The copy-button rule exists precisely so a beginner never has to translate
+prose into a working action — an incomplete command hands that translation straight back, to
+the person least equipped for it. The fix at product level is a `restart` script; the fix at
+factory level is this guardrail, so the next session ships the script instead of the stall.
+
+**Also shipped.** `templates/product-starter-nextjs/package.json` now carries `stop` and
+`restart`, so every scaffolded product is born able to restart itself instead of learning
+this the same way. **What to revisit:** the remaining mechanical check would flag bare start
+commands (`npm run dev`, `bun run dev`, `next dev`) appearing under restart-shaped prose.
+
+---
+
 ## 2026-08-25 — v2.29.0 · Vercel env vars: add once, pull everywhere
 
 **What changed.** The `.env.local` fallback now has a documented best form: the user adds

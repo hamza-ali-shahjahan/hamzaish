@@ -64,6 +64,13 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - Next.js 16+: use `proxy.ts`, not `middleware.ts`.
    - Set a noreply git email before the first commit (avoids push rejection).
    - Build locally before any deploy.
+   - **A copyable command must run in the state the user is actually in.** If the prose says
+     *restart / reset / re-run*, a single pasteable command must perform it — `bun run dev`
+     handed to someone whose server is already up fails with `EADDRINUSE`, and a day-1 user
+     reads that as "broken", not as "kill the old one first". Ship the verb as a script
+     (`stop` + `restart`), and if THIS session started something in the background, say so or
+     stop it before handing over a command that collides with it.
+     See `brain/anti-patterns/command-that-assumes-a-clean-state.md`.
    - Before `/ship`, run `/security-check <slug>` — tracked secrets, unpinned/vulnerable
      GitHub Actions, workflow permission scope, MCP-config surface, RLS reminder → pass
      before you promote. Add `--live` to catch runtime drift on the deployed system.
