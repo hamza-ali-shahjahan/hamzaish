@@ -10,6 +10,38 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-30 — v2.30.0 · the brain-core goes portable
+
+**What changed**
+
+- **`templates/brain-starter/`** — Hamzaish's own `brain/ingest.ts`/`ask.ts`/
+  `freshness.ts`/`schema.sql`, ported and stripped of every Hamzaish-specific
+  folder assumption, so any product repo can copy it in as `brain/` and get
+  its own independent FTS5 search — own database, own markdown, never shared
+  with Hamzaish's own. Ships with the freshness-refresh and gap-line patterns
+  already built in, so a new adopter starts one step ahead of where
+  Hamzaish's own brain began two days ago.
+- **Deliberately thinner, not just copied**: dropped the unused Phase-C stub
+  tables, the products-aware corpus walk, and `--context` mode — all
+  Hamzaish-specific weight, not general to the pattern. `check-status-staleness`
+  was left as a worked example to port by hand rather than genericized in.
+- **`brain/README.md`** now points to the starter, so a future session
+  doesn't have to rediscover it.
+- Verified end-to-end against a scratch fake repo (ingest, query, `--source`
+  scoping, freshness detection, `--rebuild`) before landing, not just read
+  through.
+
+**Why**
+
+Phase 2 of the Company Brain plan — the shared-core piece named in
+`brain/decision-log/2026-08-29-company-brain-phase-1.md`, first candidate
+Muakkil's founder-brain (each venture's idea/decisions/build-state currently
+has nowhere searchable). A shared core doesn't mean a shared brain: the
+starter's README states the separation as its one hard rule.
+
+**Decision:** [brain/decision-log/2026-08-30-brain-core-extracted-as-starter.md](../brain/decision-log/2026-08-30-brain-core-extracted-as-starter.md).
+**Retro:** [meta/retros/2026-08-30-brain-core-extracted-as-starter.md](retros/2026-08-30-brain-core-extracted-as-starter.md).
+
 ## 2026-08-29 — v2.29.0 · the brain states its own gaps, and notices when a status page goes quiet
 
 **What changed**
