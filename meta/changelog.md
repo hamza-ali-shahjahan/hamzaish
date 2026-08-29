@@ -10,6 +10,35 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-29 — v2.29.0 · the brain states its own gaps, and notices when a status page goes quiet
+
+**What changed**
+
+- **`/brain-ask` ends every answer with what it didn't cover.** A `coverageGaps()`
+  helper reports the folders never indexed (`references/`, `_archive/`) and, when
+  `--product`/`--source` scoped the query, what that scoping excluded — across all
+  three output modes (default, `--context`, `--json`). Mechanical disclosure, not
+  an LLM narrating blind spots: `ask.ts` has no LLM step, so this is a smaller,
+  honest claim rather than a literal port of gbrain's version of the pattern.
+- **`bun run check-status-staleness`** — flags a product staged mvp/launch/scale
+  claiming active work whose `status.md` hasn't been touched past a threshold
+  (git-log based, 21d default, `--days`/`--json`/`--strict` flags). Products with
+  a portfolio verdict of `AUTOPILOT` are excluded — the portfolio already decided
+  not to touch those, so going quiet is the intended state, not decay. Logic
+  extracted to `scripts/lib/staleness.ts` (11 pinned tests), thin CLI wrapper
+  matches the `check-gates.ts` shape. Report-first, not a CI gate.
+
+**Why**
+
+Scored `brain/` against Slite's Company Brain research ebook (9 real memory
+systems decomposed into 4 shared components — getting signals, remembering,
+dreaming & pruning, speaking & searching). Two of the plan's three items shipped
+as scoped; the third didn't survive contact with real data — see the decision log
+for what got dropped and what got swapped in instead.
+
+**Decision:** [brain/decision-log/2026-08-29-company-brain-phase-1.md](../brain/decision-log/2026-08-29-company-brain-phase-1.md).
+**Retro:** [meta/retros/2026-08-29-company-brain-phase-1.md](retros/2026-08-29-company-brain-phase-1.md).
+
 ## 2026-08-20 — v2.28.0 · recall stops answering from yesterday, and the receipt makes a call
 
 **What changed**

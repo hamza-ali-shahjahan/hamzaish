@@ -128,6 +128,25 @@ function buildFtsQuery(q: string): string {
 
 const ftsQ = buildFtsQuery(query);
 
+// ─── coverage gaps ─────────────────────────────────────────────────────────
+//
+// "State your own gaps" (Phase C blueprint, brain/knowledge/2026-06-20-phase-c-brain-design.md,
+// pattern 2, ported from gbrain). gbrain's version is an LLM narrating blind spots
+// discovered while synthesizing an answer — this script has no LLM step to do that.
+// What it CAN do honestly is disclose the structural blind spots that are always
+// true of this search: folders that never get indexed, and any scoping flag that
+// excluded other docs from THIS query. Deterministic, not synthesized — a smaller
+// claim than gbrain's, but one that can't hallucinate a gap that isn't there.
+
+function coverageGaps(): string[] {
+  const gaps: string[] = [
+    "`references/` (study material) and `_archive/` (superseded) are never indexed.",
+  ];
+  if (product) gaps.push(`scoped to product \`${product}\` — other products' docs were excluded from this search.`);
+  if (source) gaps.push(`scoped to source \`${source}\` — other sources were excluded from this search.`);
+  return gaps;
+}
+
 // ─── search ────────────────────────────────────────────────────────────────
 
 const db = new Database(DB_PATH, { readonly: true });
@@ -167,7 +186,7 @@ try {
 // ─── output ────────────────────────────────────────────────────────────────
 
 if (asJson) {
-  console.log(JSON.stringify({ query, fts_query: ftsQ, count: rows.length, results: rows }, null, 2));
+  console.log(JSON.stringify({ query, fts_query: ftsQ, count: rows.length, results: rows, coverage_gaps: coverageGaps() }, null, 2));
   process.exit(0);
 }
 
@@ -188,6 +207,7 @@ if (asContext) {
         ? `_No recall hits against a just-refreshed index — genuinely new territory._`
         : `_No recall hits. Refresh was skipped, so the index may be behind the files._`,
     );
+    console.log(`\n_What this search didn't cover: ${coverageGaps().join(" ")}_`);
     process.exit(0);
   }
   const used = new Set<string>();
@@ -202,6 +222,7 @@ if (asContext) {
     console.log();
   }
   console.log(`_Recalled from the brain index (FTS5, point-in-time). Verify against the live file before relying on any of it._`);
+  console.log(`_What this search didn't cover: ${coverageGaps().join(" ")}_`);
   process.exit(0);
 }
 
@@ -213,6 +234,7 @@ if (rows.length === 0) {
       ? `\nThe index is up to date, so this is genuinely uncharted. Try broader terms or --source brain/.`
       : `\nTry broader terms or --source brain/ — and note refresh was skipped, so the index may be behind.`,
   );
+  console.log(`\nWhat this search didn't cover: ${coverageGaps().join(" ")}`);
   process.exit(0);
 }
 
@@ -225,4 +247,5 @@ for (const r of rows) {
   console.log(`  ${(r.snippet as string).replace(/\n+/g, " ").trim()}`);
   console.log();
 }
+console.log(`What this search didn't cover: ${coverageGaps().join(" ")}`);
 console.log(`Refine: \`bun brain/ask.ts --product <slug> "..."\` or \`--source brain/learnings "..."\``);

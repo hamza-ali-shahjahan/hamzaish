@@ -1,6 +1,6 @@
 {
   "name": "hamzaish",
-  "version": "2.28.0",
+  "version": "2.29.0",
   "private": true,
   "type": "module",
   "description": "The AI Co-builder & Startup OS \u2014 a brain + orchestrator for builders to run a portfolio of products from idea to scale.",
@@ -37,6 +37,7 @@
     "check-retro": "bun scripts/check-retro.ts",
     "check-sensitive-docs": "bun scripts/check-sensitive-docs.ts",
     "telemetry": "bun scripts/telemetry.ts",
+    "check-status-staleness": "bun scripts/check-status-staleness.ts",
     "friction": "bun scripts/friction.ts",
     "defect": "bun scripts/defect.ts",
     "skill-report": "bun scripts/skill-report.ts",
