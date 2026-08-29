@@ -78,6 +78,14 @@ closes that at the cost of reading every file. Both behaviours are pinned in
 Still run `bun brain/ingest.ts` directly whenever you want the rebuild to happen
 now rather than at the next query — it is the single writer either way.
 
+## Want this for another product?
+
+This core (`ingest.ts`/`ask.ts`/`freshness.ts`/`schema.sql`) is ported, stripped
+of Hamzaish-specific folder assumptions, at `templates/brain-starter/` — copy
+it into any product repo as `brain/` for a separate, independent index. Never
+point it at Hamzaish's own data; each product's brain is its own instance.
+See its README for the cuts made and why (`brain/decision-log/2026-08-30-brain-core-extracted-as-starter.md`).
+
 ## What's NOT in the index
 
 - `_archive/` — preserved old state, deliberately invisible to search
