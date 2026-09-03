@@ -1,0 +1,13 @@
+{
+  "_comment": "Architectural invariants enforced by `bun run check-boundaries`. A boundary here is a decision someone made for safety, cost, or portability — recorded so the build holds it instead of a reviewer having to remember. Changing one should feel like changing a decision, because it is.",
+  "boundaries": [
+    {
+      "name": "the factory root runs with zero installed dependencies",
+      "forbidden": ["zod", "react", "next", "express", "lodash", "axios", "chalk", "commander", "dotenv"],
+      "roots": ["scripts/**/*.ts", "brain/**/*.ts"],
+      "allow": [],
+      "includeTypeOnly": false,
+      "why": "package.json promises 'Zero runtime dependencies — everything uses Bun + Node built-ins. No bun install needed. Just bun run setup.' That promise IS the install story for a new user: a stray value-import in scripts/ or brain/ breaks a fresh clone, and the author would never see it because their own node_modules is populated. dashboard/ is deliberately out of scope — it is a separate Next.js app with its own package.json and its own install. Type-only edges are ignored because they are erased at compile time and cannot break an install; scripts/telemetry.ts reaching dashboard types is exactly that case, and it is fine."
+    }
+  ]
+}

@@ -10,6 +10,30 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-08-20 — v2.31.0 · deleting a capability is not removing it
+
+**What changed**
+
+- **`bun run check-boundaries`** (`scripts/check-import-boundaries.ts` + `.import-boundaries.json`) — declares architectural invariants and enforces them on the real import graph. Globs its roots so a file added next week is covered without anyone remembering; names exceptions in config so an exception is a decision rather than a hole; carries a written `why` so the next person can tell "you are violating this" from "this boundary moved". Distinguishes **value imports from type-only ones**, because `import type` is erased and a dependency boundary that counts it reports failures that cannot happen.
+- **`factory/playbooks/mvp-stage/enforce-the-invariant.md`** — the method. When you remove a capability for safety or cost, add a check that fails if it comes back. Three things that look like enforcement and are not: an env var defaulted to off, deleted call sites, and comments. Plus: prove the check can go red before trusting it.
+- **Three anti-patterns** — `env-var-as-an-architectural-boundary` (a switch a server can flip is not a wall), `silence-as-a-failure-mode` (three bugs in one build that passed 140 assertions, because the channel that would have reported them was muted), `a-metric-that-cannot-discriminate` (a rank-fusion score reads 0.0148 for an excellent match and 0.0115 for a poor one — the detection layer was about to be built on a signal carrying no information about what it detected).
+- **`measurement-framework.md` § Calibrating a constant** — run the cheapest experiment that separates your classes before hard-coding the number; write the measurements into the source beside it; record the raw signal so it can be recalibrated from real traffic.
+- **AGENTS.md rule #18**, and `products/copyright/decision 0006` recording the shipped architecture.
+
+**Why**
+
+Patently removed a metered API from every user-facing path. Every call site was deleted, comments updated, review passed — and the SDK was still in the module graph through a type-only import in a module the clearance pipeline used. Erased at runtime, so not a live path, but one keystroke from one and invisible to any diff review. A deletion is a state; a check is a property, and only one survives a growing codebase.
+
+The check was dogfooded against the factory's own "zero runtime dependencies" promise and **found two errors in its own configuration within ten minutes** — it followed type-only edges (nine impossible failures) and its roots included `dashboard/`, a separate app with its own `package.json`. Both fixed, and the fix verified by planting a deliberate violation and watching the check go red. A checker that cries wolf is worse than no checker; you only find out by trying to make it cry.
+
+**Retro:** [meta/retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md](retros/2026-08-20-cost-guard-and-the-uncommitted-backlog.md) — the same cycle; this entry is its second half.
+
+**What to revisit**
+
+Whether `check-boundaries` is adopted by any product other than Patently — an instrument with one user is a script, not a capability. Whether the type-only default (value-only) turns out to be right, or whether adjacency boundaries become common enough to flip it. Also noted while working: `check-decisions` is **not wired into CI**, and `main` currently fails it on two records from a different session — a ratchet nobody runs is a ratchet that drifts.
+
+---
+
 ## 2026-08-30 — v2.30.0 · the brain-core goes portable
 
 **What changed**
