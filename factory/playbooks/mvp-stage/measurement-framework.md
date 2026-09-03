@@ -83,6 +83,42 @@ At your survey moment (typically 40+ activated users), ask:
 - Not a one-shot test — run quarterly and watch the trend
 - The Sean Ellis ≥40% number is correlated with growth, not causal. Use it as one of several signals.
 
+## Calibrating a constant (instead of picking one)
+
+Products are full of numbers someone chose because they sounded reasonable: a
+similarity threshold, a confidence cut-off, a "too few results" boundary. Each
+one silently decides product behaviour, and almost none are ever measured.
+
+**Run the cheapest experiment that separates the classes you care about, before
+you hard-code the number.** Patently needed a threshold splitting "we lack this
+data" from "we have it and ranked it badly". Six probe queries against the live
+index, about a minute:
+
+| probe | top cosine |
+|---|---|
+| in-domain (3 queries) | 0.581 – 0.662 |
+| genuinely absent (2 queries) | 0.457 – 0.491 |
+| nonsense (1 query) | 0.390 |
+
+The classes separate with a gap between 0.491 and 0.581, so the threshold went
+at **0.55 — the middle of a measured gap**, not a round number. The nonsense
+probe scoring *below* the absent ones also revealed a second boundary worth
+having: a floor under which a query is malformed rather than uncovered.
+
+Three habits make this stick:
+
+- **Write the measurements into the source, next to the constant**, with the
+  date and how to reproduce them. A number with no provenance is re-guessed by
+  the next person.
+- **Say it is provisional, in the code.** Six probes is a starting point, not a
+  law. Patently's config says so explicitly.
+- **Record the raw signal on every event** so the constant can be recalibrated
+  from real traffic later. Without that, you are stuck with your six probes
+  forever.
+
+And before any of it: confirm the metric can actually tell your classes apart —
+see [`a-metric-that-cannot-discriminate`](../../../brain/anti-patterns/a-metric-that-cannot-discriminate.md).
+
 ## False-positive shapes
 
 For each product, list 3 patterns that would *look like* PMF but aren't.
