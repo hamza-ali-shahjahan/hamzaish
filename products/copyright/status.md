@@ -16,6 +16,25 @@ Private beta live on patently.legal → drive 5–10 target users through chat +
   - **Mandate hard rule:** no beta outreach until this rotation is *verified*, not just done.
 
 ## In flight
+- [x] **SHIPPED 2026-09-04 — the local index is the only search source.** Live on
+  patently.legal via PR #18 (`159bb92`). Decision `0006`.
+  Patent search and detail now run **entirely** on the local pgvector index; BigQuery is
+  an approval-gated *acquisition* layer that only an explicitly approved, scope-bounded
+  request can reach. `get_patent_detail` was the real hole — two BigQuery queries per
+  call, no gate of its own. `PATENT_BQ_FALLBACK` **deleted**, not defaulted off.
+  Enforced by an import-graph test that fails the build if any user-facing path can
+  reach the SDK — which caught a type-only import keeping the SDK adjacent to the
+  clearance pipeline after every call site was gone.
+  Also new: `search_events` + `search_feedback` + `data_expansion_requests`; a three-state
+  relevance control on chat and the memo; a coverage detector that can only ever *propose*
+  a purchase; and an admin approval screen. The acquisition runner is **deliberately
+  unbuilt**.
+  Verified in production: **0 billed BigQuery calls**, $0.00 month-to-date, an attributed
+  clearance `search_event` written and read back, memo feedback idempotent, claims
+  honestly reported unavailable. 140 assertions across 8 suites.
+  **Open follow-ups (backlog, agreed):** dynamic import-boundary roots · split the pure
+  scope helpers out of the acquisition module · an immutable `approvedScope` snapshot.
+
 - [x] **SHIPPED 2026-08-20 — spending money now requires a paying customer.**
   Live on patently.legal via PR #17 (`dab5e72`); `/api/health` confirms the new build
   serves production. Decision `0005`.

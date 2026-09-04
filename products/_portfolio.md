@@ -1,46 +1,99 @@
 # Portfolio Snapshot
 
-**Last refreshed**: 2026-08-29 · Live state of all products in the factory.
+**Last refreshed**: 2026-09-04 · Live state of all products in the factory.
 
 Refresh by running `/portfolio-pulse` — regenerates this file from each product's `product.config.json` + `status.md`. Gate status on demand: `bun run check-gates`. Status-freshness on demand: `bun run check-status-staleness`.
 
 ---
 
-## Telemetry is blind (still, 2026-08-20 → 2026-08-29)
+## The number that reframes this refresh (new, 2026-09-04)
 
-Every connector — Stripe · PostHog · Sentry — still reads `not_connected` across all 23 products it can see (bids-town isn't visible to telemetry at all — see the note below the table). No keys are set, so every metric is `—`. Nothing has changed here since the last refresh; this is a structural constant, not new news.
+**Patently has had 0 chat messages in the last 14 days.** Queried directly from its own
+database, not inferred from a missing connector.
 
-## Status pages are going quiet too (new, 2026-08-29)
+That single fact reorders everything below. Patently's infrastructure is now in excellent
+shape — $0 Google spend, the architecture enforced by the build rather than by discipline,
+a feedback layer live in production as of today. And nobody is using it. Cost was never
+the real problem; it was the visible symptom of a product with no traffic. From here,
+every hour of infrastructure work has a worse return than an hour spent getting one
+person to run a clearance memo.
 
-First run of `bun run check-status-staleness` (git-log based, 21-day threshold, AUTOPILOT-verdict products excluded since the portfolio already decided not to touch those). Three **registered** products are flagged — worth a look, not yet a verdict:
+## The rotation has been #1 for three consecutive refreshes
 
-- **ai-native-cms** — 91 days since `status.md` moved (last touched 2026-05-30), *and* its validation gate has been OVERDUE since 2026-08-16. Two independent signals agreeing is the strongest kind of stale.
-- **dnsdoctor** — 45 days quiet; its launch gate has been OVERDUE since 2026-08-18. Code-complete since 2026-07-09 and hasn't moved since.
-- **ventbox** — 39 days quiet, and its own status.md still says "Gate being chased: launch (by 2026-08-18)" while `check-gates` shows the launch gate has already resolved and the next gate is validation, due 2026-08-30. The doc is describing a target that's moved on.
+2026-08-20, 2026-08-29, and today. An item that stays at the top and never moves is not a
+priority — it is a blocked decision wearing a priority's clothes. It has now gated all
+beta outreach since **June**, which is the direct cause of the zero above.
 
-(claudex, formpad, local-llm-setup, rotscan also flagged stale, but they're maintainer's showcase — not the operator's queue — so they're informational only, not prioritized below. repolish is stale by the numbers too but excluded as AUTOPILOT, same as the registered set.)
+So the useful move is no longer "do the rotation." It is to pick one of three and record
+it:
 
-## One sentence (2026-08-29)
+- **Commit a date.** Put it in the calendar this week; the task is ~1h of dashboard work.
+- **Narrow the mandate.** Rotate only the keys that were genuinely exposed, verify those,
+  and lift the hold. The blanket "all six, verified" phrasing may be doing more damage
+  than the risk it guards.
+- **Lift the hold deliberately**, with the risk written down. Outreach to 5 people is a
+  small blast radius; three months of silence is not.
 
-Rotate Patently's credentials today — it's still the single named blocker on all beta outreach, open since June, and the only item nobody but the operator can close.
+Any of the three beats a fourth refresh saying the same thing.
+
+## Telemetry is blind (unchanged, 2026-08-20 → 2026-09-04)
+
+Every connector — Stripe · PostHog · Sentry — still reads `not_connected` across all 23
+products it can see. Structural constant, not news. Patently is now the one exception in
+practice: its own database answers usage questions directly, which is how the zero above
+was measured.
+
+## Status pages still going quiet
+
+`bun run check-status-staleness` now flags **seven** (was three): ai-native-cms (96d),
+claudex (54d), dnsdoctor (51d), formpad (63d), local-llm-setup (75d), rotscan (75d),
+ventbox (45d). The registered ones — ai-native-cms, dnsdoctor, ventbox — carry the same
+overdue gates called out on 2026-08-29 and have not moved since.
+
+## One sentence (2026-09-04)
+
+Decide what happens to Patently's credential-rotation hold today — not because rotating
+is urgent, but because three months of it blocking outreach has produced a finished
+product with zero users.
 
 ## Top 3 priorities
 
-1. **copyright — verify the credential rotation** (~1h). Still open. `status.md`'s own mandate: *no beta outreach until this rotation is verified, not just done.* Everything else on this product is downstream of it. (Unchanged from the last refresh — this has now sat open long enough that it's worth asking whether "today" needs a hard deadline attached.)
-2. **ai-native-cms — a verdict conversation, not a build task** (~15m to decide, more if it proceeds). Validation gate OVERDUE 13 days, status page untouched 91 days. Nobody has said this is paused, but nothing says it's active either. Decide: kill, pause explicitly (so the gate stops reading as broken), or restart the 5-WP-site validation sprint that's currently `## Definition of done` with zero boxes checked.
-3. **dnsdoctor — ship the launch gate that's been code-complete for 7 weeks** (~2–4h, mostly naming + deploy per the product's own one-liner). Launch gate OVERDUE 11 days. 185 unit/integration tests + 48 e2e already passing; the work is prep, not build.
+1. **copyright — resolve the rotation hold** (~1h, operator-only). Commit a date, narrow
+   the mandate, or lift it with the risk recorded. Pick one; do not carry it to a fourth
+   refresh. Everything else on this product is downstream, and the product is otherwise
+   finished and free to run.
+2. **foundernees — draft the P1 partner list, 20 named institutional targets** (~2h).
+   **Due 14 Sep — 10 days.** Decision `0001` calls it the load-bearing assumption of the
+   whole year: *the product is not the risk — the signature is*. The only dated external
+   commitment in the portfolio, and the window has gone from comfortable to short.
+3. **copyright — merge PR #16** (~15m + a rebase). Pricing copy and the public-beta label
+   have been green and unmerged for **19 days**; `main` has moved twice under it (PRs #17,
+   #18). Cheap, finishes something already done, and it is the copy a first visitor reads.
+
+ai-native-cms and dnsdoctor from the last refresh are deliberately displaced, not
+resolved — both are still overdue and still need a verdict conversation. They lose to
+foundernees only because foundernees has a real external date.
 
 ## On fire
 
-**Nothing visible** — same as last refresh, phrased deliberately: with zero connectors wired, an empty fire list is what a blind portfolio looks like, not what a healthy one looks like.
+**Nothing burning, but one thing rotting.** Patently is fully built, costs nothing to run,
+and has no users — a state that looks calm on every dashboard and is the most expensive
+one to stay in.
 
 ## Don't touch today
 
-- **Hamzaish itself.** Two brain-upgrade checks shipped today (`v2.29.0`); the conductor's rule is factory work on Sundays unless it's broken. It isn't.
-- **mini-minecraft.** Its status reads "Ship the playable world locally... hand over the localhost link." Respect it; no gates block means no gate is broken, either.
-- **new-one, valuable, foundernees.** All three are REGISTERED products with **no gates block at all** (`check-gates` fails on this) — that's a documentation gap, not today's fire. Worth a `/factory-launch` pass when there's room, not urgent enough to bump the Top 3.
-- **repolish, ship-guard, rotscan, tasfort, scope-intelligence, ai-growth-engine, hamza-health, hamzaos, linkedup, one-dollar-factory.** All `AUTOPILOT` verdict — the portfolio already decided not to touch these. Several show `validation DUE 2026-08-30` (tomorrow) on `check-gates`, but that date looks batch-set across the AUTOPILOT group rather than a real per-product signal — worth confirming once, not chasing individually.
-- **muakkil.** Validation gate OVERDUE since 2026-08-16, but its status page is fresh (9 days) — this is being actively worked, just hasn't cleared the gate yet. Different shape from ai-native-cms's silence; give it more runway before forcing a verdict.
+- **Patently's infrastructure.** It shipped twice today (PRs #17, #18) and is verified in
+  production. Its three agreed backlog items — dynamic import-boundary roots, splitting
+  the pure scope helpers out of the acquisition module, an immutable `approvedScope`
+  snapshot — are all real and none of them produce a user.
+- **The BigQuery acquisition runner.** Deliberately unbuilt, by instruction.
+- **Hamzaish itself.** `v2.31.0` shipped today. Factory work on Sundays unless broken.
+- **mini-minecraft.** Its status reads "Ship the playable world locally." Respect it.
+- **new-one, valuable.** Blocked on questions that are not build tasks.
+- **The AUTOPILOT set.** repolish, ship-guard, rotscan, tasfort, scope-intelligence,
+  ai-growth-engine, hamza-health, hamzaos, linkedup, one-dollar-factory — the portfolio
+  already decided not to touch these.
+- **muakkil.** Gate overdue but the status page is fresh; being worked, just not cleared.
 
 ---
 
