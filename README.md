@@ -124,7 +124,7 @@ Green looks like `✓ all headline counts match disk`, an eval summary of
 |---|---|---|
 | 🧠 **A brain that remembers** | learnings, decisions, and anti-patterns — SQLite-indexed, searchable from any session via `/brain-ask` | [`brain/`](brain/) |
 | 🏭 **A factory that acts** | 35 agents + 68 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
-| 📖 **Playbooks with receipts** | 53 playbooks · 146 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
+| 📖 **Playbooks with receipts** | 53 playbooks · 148 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
 | 🔒 **A gate that blocks** | 70-check pre-launch security review (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict | [security checklist](factory/playbooks/mvp-stage/security-checklist.md) |
 | 🧪 **An engine that proves** | eval-gated build cycle — a feature slice without a named eval + an end-to-end test doesn't get built | [`/full-cycle`](factory/commands/full-cycle.md) |
 | 📡 **Senses that record** | four local-only instruments from your first session (gitignored, nothing leaves your machine): session traces (`bun run trace-report`), friction (`bun run friction`), the defect registry (`bun run defect`), and per-skill trust states (`bun run skill-report`) — retros ground in what happened, not what you remember | [`scripts/trace-report.ts`](scripts/trace-report.ts) |
@@ -263,9 +263,9 @@ Backed by **22 engineering skills** under [`factory/skills/`](factory/skills/) �
 
 </details>
 
-<details><summary><b>📖 The playbooks (53) + the practices ledger (146)</b></summary>
+<details><summary><b>📖 The playbooks (53) + the practices ledger (148)</b></summary>
 
-**[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 146 practices for shipping products with Claude Code: **44 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
+**[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 148 practices for shipping products with Claude Code: **46 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
 
 Playbooks are short (300–800 words), sourced, stage-gated:
 

@@ -143,6 +143,7 @@ The factory improves the factory. If you find yourself doing the same orchestrat
 - Never `import` from `references/`.
 - Never symlink their internal modules into our tree.
 - When porting a pattern, port the idea; write our own implementation in `factory/` with a one-line comment pointing back.
+- When extracting anything portable — a starter, template, or plugin — prove it end-to-end in a scratch repo before landing; reading the ported code is not verification (2026-08-30, brain-starter).
 - See `references/README.md` for what to mine from each.
 
 ## Currently active product

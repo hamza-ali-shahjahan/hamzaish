@@ -1,6 +1,6 @@
 # Shipping products with Claude Code — the practices ledger
 
-**146 practices · 44 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
+**148 practices · 46 proven by real ships and incidents · 3 partially proven · 99 research-baked — every one sourced and linked.**
 
 Most best-practice lists tell you how to *use* Claude Code. This one is about what comes after: taking a product from idea → MVP → launch → sell → scale with Claude Code as your cofounder — and not dying in the unglamorous parts.
 
@@ -165,6 +165,8 @@ The deep dives live in [`factory/playbooks/`](factory/playbooks/) (53 playbooks)
 
 ## ⚙️ Run the factory — Claude Code ops we learned the hard way
 
+- **Verify a file deliverable at its destination path, by content, after every write.** A concurrent session's merge-and-sync silently reverted a modified-but-uncommitted GIF back to the old version mid-goal-loop; only an md5 + re-read at the destination caught it — pre-extracted intermediates all looked right. — ✅ *proven* · *hero-GIF goal loop, 2026-09-04 (/learn-loop 26/35 + fresh-eyes 26/35, PROMOTED → /goal verify step)* · [the lesson](brain/learnings/2026-09-04.md)
+- **Prove anything portable — a starter, template, or plugin — end-to-end in a scratch repo before landing it.** The brain-starter extraction looked complete on paper; running ingest/ask/freshness/rebuild in a throwaway repo surfaced a design question reading the code never would have. — ✅ *proven* · *brain-starter extraction, 2026-08-30 (/learn-loop 26/35 + fresh-eyes 25/35, PROMOTED → CLAUDE.md porting discipline)* · [the lesson](brain/learnings/2026-08-30.md)
 - **GitHub Actions automation needs three non-obvious unlocks: `secrets` is invisible in `if:` (map it into `env:` and test in bash), PRs created by GITHUB_TOKEN never trigger CI (use a fine-grained PAT), and repo auto-merge must be explicitly enabled (`gh api -X PATCH repos/… -f allow_auto_merge=true`).** Each costs a live debugging round-trip when hit blind; ThousandWorlds' weekly data-refresh bot hit all three. — ✅ *proven* · *ThousandWorlds data-refresh Action, 2026-07-12* · [the retro](meta/retros/2026-07-12-thousandworlds-phases-0-4.md)
 - **Paste-contents, not paths: anything the user must relay to an external surface goes in chat as the full file contents in a fenced block.** ThousandWorlds v0.9.0 wrap-up shipped a copyable *path* to the Supabase migration instead of the SQL — one lost round-trip on the release's most visible step (secrets files excepted: those stay `.example` + user-copies). — ✅ *proven* · *ThousandWorlds schema.sql lapse, 2026-07-12* · [the incident](brain/anti-patterns/file-path-instead-of-paste-contents.md)
 - **Give every global-hook git op a timeout, a fail-open exit 0, and a scope gate.** Commit ≤10s, push/pull ≤20s, exit 0 on error, act only on Hamzaish-managed repos — ended the repeated multi-minute hook hangs. — ✅ *proven* · *Hook-hang incident, 2026-06-09 (scored 33/35, PROMOTED)* · [the lesson](brain/learnings/2026-06-09-hook-hang.md)
