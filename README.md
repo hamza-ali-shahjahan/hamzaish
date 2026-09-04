@@ -26,7 +26,7 @@ Your AI writes the code. Hamzaish runs the company.
 ## See it work
 
 <p align="center">
-  <img src="docs/assets/hamzaish-hero-card.gif" alt="Hamzaish — unlock your Builder Mode, with a live eval run as proof" width="820">
+  <img src="docs/assets/hamzaish-hero-card.gif" alt="Hamzaish — every task opens with a plan and closes with a receipt; you only ever type the Try next command, gate to gate, until it's built and the learning is saved" width="820">
 </p>
 
 <p align="center"><b>Unlock your Builder Mode.</b></p>
