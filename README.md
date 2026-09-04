@@ -35,56 +35,6 @@ Point Hamzaish at an idea — and run the whole company around the code your age
 
 **The honesty is enforced, not promised → [watch the guards run on every commit](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml).**
 
-## What this is
-
-**Hamzaish is an open-source agent OS for Claude Code that puts you in Builder Mode — and keeps you there for the whole life of a product.** Your agent supplies the hands — the model, the sessions, the code. Hamzaish supplies everything that makes those hands a company: **a brain** that carries every ship's lessons into the next one, **a factory** of stage agents and playbooks for the whole product life — **Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down** — and **a judge**: mechanical verification gates, walled off from the builder, that refuse to let "looks done" pass for "done." That last part is the line between Builder Mode and vibe coding, and it's the part the factory is evolving hardest: an honest, automated, blind judge for everything it builds.
-
-**Unlock your Builder Mode.**
-
-</div>
-
-## What it looks like
-
-Every task opens with a plan in plain words and closes with a receipt. The
-receipt's **Checked** line is not written by the session — it's rendered from
-recorded exit codes, so it can report a failure the narration would have glossed.
-
-Here is a real run from this repo:
-
-```
-🏭 Hamzaish plan
-- Goal: prove the honesty gates work on the factory's own code
-- Steps: run every gate · record what really happened · render the receipt
-- Commands: /checkpoint — a named save-point before anything changes
-- Proof before done: the gates' own exit codes, not my summary of them
-```
-
-```console
-$ bun run verify --all
-✓ check-evals                    (exit 0, 18ms) → recorded
-✓ check-model-independence       (exit 0, 16ms) → recorded
-✓ check-product-layout           (exit 0, 18ms) → recorded
-✓ check-skill-command-collision  (exit 0, 14ms) → recorded
-✓ check-limitations              (exit 0, 17ms) → recorded
-✓ check-decisions                (exit 0, 19ms) → recorded
-✗ check-counts                   (exit 1, 63ms) → recorded
-
-Checked: check-decisions, check-evals, check-limitations, check-model-independence,
-check-product-layout, check-skill-command-collision were run and passed;
-check-counts was run and FAILED
-```
-
-That failure was real: a product config carried a machine path where the rules
-require none, and five numbers in this README had gone stale. **A hand-written
-receipt would have said "gates pass."** The whole run — including the failing
-gate's output — is kept in [`evidence/`](evidence/2026-08-16-verification-ledger/).
-
-Honest about the ceiling: the ledger is **tamper-evident, not unforgeable**. The
-records hash-chain, so an edit is detectable and an empty ledger reads *"nothing
-was verified"* instead of reading as success. A session with a shell can still
-append a lie — that's the real limit of a single-agent design, and the code says
-so where it lives.
-
 ## Quick start
 
 You need [Claude Code](https://claude.ai/code) on a paid plan, [Bun](https://bun.sh),
@@ -168,28 +118,6 @@ The honesty is enforced, not promised. Every claim below has a command you can r
 Green looks like `✓ all headline counts match disk`, an eval summary of
 `PASS=17 SKIP=9`, and silent exit-0 from each guard.
 
-## Known weaknesses
-
-Stated plainly here rather than buried, because a factory that hides its edges
-teaches you to trust the wrong things.
-
-- **The judge covers a handful of skills, not every build.** 10 of 78 skills and
-  agents carry eval cases; the other 68 are a visible, grandfathered backlog.
-  The ratchet means coverage only rises — but today it's thin.
-- **The same is true of the new honesty gates.** 4 of 78 skills declare their
-  limits; 3 of 31 decision records carry all five elements. Both are backlogs in
-  the open, not finished work.
-- **The verification ledger is tamper-evident, not unforgeable.** See above. A
-  ring-0 boundary is not available to a single agent with a shell.
-- **Other hosts are context-level only.** Cursor, Codex, and Windsurf read
-  [`AGENTS.md`](AGENTS.md) and follow it. No slash-command ergonomics or
-  auto-discovery outside Claude Code yet.
-- **`/full-cycle` is gated but not autonomous-safe.** `/auto` still pauses for
-  anything irreversible or outward-facing, by design.
-- **Evidence is young.** [`evidence/`](evidence/) holds one artifact. Most
-  "proven" badges still rest on the ledger of ships, not on files you can open.
-
-## What's inside
 ## What's inside
 
 | | | |
