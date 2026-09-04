@@ -10,6 +10,12 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-09-04 — /learn-loop: hero-GIF + README-trim cycle
+
+`/learn-loop` scored 5 candidates (+1 found already promoted), promoted 2 — both dual-scored ≥24/35 by an independent fresh-context scorer: **verify-a-deliverable-at-its-destination-by-content** → a guardrail line in `/goal`'s verify step (after a concurrent session's sync silently reverted the uncommitted hero GIF mid-loop, caught only by md5 at the destination), and **prove-a-portable-starter-in-a-scratch-repo** → the porting discipline in `CLAUDE.md` (from the 2026-08-30 brain-starter extraction). Ledger updated: 148 practices, 46 proven. Modal-not-page default logged below threshold (fresh-eyes: situational); same-output-path tapes and the self-paced replay pattern logged. Feedback check for both promotions: 2026-12-04.
+
+---
+
 ## 2026-08-20 — v2.31.0 · deleting a capability is not removing it
 
 **What changed**

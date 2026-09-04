@@ -63,7 +63,7 @@ Also append the matching JSONL line to `runs.jsonl`.
 1. **Fresh-eyes assessment.** Spawn a *subagent that has not seen the prior runs* (Explore/general-purpose). Give it only the rubric and access to the artifact (running app, files). It returns: per-criterion scores, weighted total, and the **single highest-impact gap** with a concrete suggestion. Using a fresh agent each time prevents grading on a curve / self-justification.
 2. **Check the bar.** If weighted ≥ bar AND this is the 2nd consecutive run at-bar AND no criterion < floor → **achieved**: log it and exit the loop to the final report. (One at-bar run is not enough — require sustained.)
 3. **Fix the top gap.** Make **one focused change** that targets that gap. Resist scope creep — a run does one thing well. Reuse existing patterns/components in the codebase.
-4. **Verify.** Prove the change works and broke nothing: typecheck/build, relevant tests, and for UI, load it in the preview and check console + snapshot/screenshot. Record the evidence.
+4. **Verify.** Prove the change works and broke nothing: typecheck/build, relevant tests, and for UI, load it in the preview and check console + snapshot/screenshot. Record the evidence. **If the run produces a file deliverable, verify it at its destination path by content (hash or re-read) — not via an intermediate copy:** an uncommitted tracked file can be silently reverted by a concurrent session's merge-and-sync, and only destination-level verification catches it (observed live 2026-09-04, hero-GIF goal loop).
 5. **Re-score** (quick self-estimate is fine here; the *authoritative* score is the fresh-eyes one at the top of the next run).
 6. **Log the run** (the non-negotiable). Update the scoreboard row. Only now may run K+1 begin.
 
