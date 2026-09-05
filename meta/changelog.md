@@ -10,6 +10,31 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-09-06 — v2.32.0 · the gate that separates "rejected" from "never tested"
+
+**What changed**
+
+- **`/idea-gate`** (`factory/commands/idea-gate.md`) — the gate an idea passes before it earns a validation attempt. Six items, and the thing it scores is **testability, not quality**: a named ICP *plus a reachable watering hole*, three verbatim quotes with sources, the current workaround and its cost, a demand hypothesis carrying a real number, a falsifiable kill condition, and the cheapest test with its **qualified-reach denominator**. Installed as a CORE global command, so it works from any folder.
+- **`bun run check-idea-gate <slug>`** (`scripts/check-idea-gate.ts` + a pure `scripts/lib/idea-gate.ts`, 21 pinned tests) — scores the form at `products/<slug>/validation/idea-gate.md`, seeded from `products/_template/validation/idea-gate.md`. `--all` renders the portfolio and **separates "ungated" from "failing"**, because a product nobody ever gated and a product that failed its gate are different states and collapsing them is how a backlog goes invisible (first run: 25 ungated).
+- **The denominator, made structural.** Every threshold is a rate against a minimum qualified reach, never an absolute count. 12 signups from 60 is 20% — a traffic problem; 12 from 6,000 is 0.2% — a wrong message or wrong ICP. Same numerator, opposite actions, and without the denominator "no demand" is an unfalsifiable claim. Free-tier keepalive is therefore a *precondition* in the form, not hygiene: a paused DB mid-attempt doesn't just lose signups, it counts reach that hit a broken form and makes every verdict computed from it fiction.
+- **The freshness notice** (`factory/hooks/factory-freshness.sh`, registered by `setup` step 9.5 under its own consent) + **`bun run update`**. The global commands are pointer stubs that read the live clone, which is what makes updates cheap — and is exactly why a stale clone was invisible. Checks at most once per 24h (cached), fetches under a hard timeout, prints one line naming how far behind and how to fix it, and **never pulls**. Two opt-outs, named in the notice itself so declining is informed. Registered separately from the enablement hook on purpose: that block short-circuits when already present, so bundling would have meant every existing install never gets the notice.
+
+**Why**
+
+Twenty-six products, and the honest state is that none has reached MVP-with-users. The factory already had a gate ladder (`gates.ts`, `check-gates`, and the full PART IV policy in a research doc) — what it didn't have was a gate that could read the number it gates on, so twelve products sat OVERDUE and nothing happened. A date can't tell "the market said no" apart from "we never did the work," and those demand opposite responses.
+
+So this gate scores the one thing knowable *before* spending reach: would a null result mean anything? An untestable idea burns a whole cycle and produces no learning, because a wrong idea and an unspecifiable test look identical afterward. The known-bad case is our own: muakkil got real LinkedIn signal and is not validated — one shot, one channel, one message, one ICP, denominator unrecorded. Under this gate it reads as *untested*, which is the truth, and the next action falls out of the form instead of out of a judgment call.
+
+Built to go red on plausible input, not just blank input — `check-validation` shipped two false-greens (2026-08-14) for exactly that reason. The shipped template must fail all six items, pinned by a test; vague answers ("small businesses", "if it doesn't feel promising") fail with the reason named; and one item's text can never satisfy another's. The freshness hook was likewise proven red before being trusted: run against a clone rewound three commits, it printed the count, the age, the fix, and the silence flag.
+
+**Retro:** skipped — single-session capability addition with no incident behind it. The learning worth keeping is already encoded as the check itself (operating principle 15's ladder: this is a CI-shaped guard, not prose), and the gate's own known-limitations section records what it cannot do.
+
+**What to revisit**
+
+Whether the ideation gate is applied to any product beyond muakkil — an instrument with one user is a script, not a capability. Whether three channels and three quotes survive contact with a real attempt, or need to be channel-matched the way the traction gate already is. `check-idea-gate` is deliberately **not in CI** (it reads operator-local product state, same reason as `check-gates`), so it is a heartbeat check, not a build gate — a ratchet nobody runs is a ratchet that drifts, and this one is currently run by hand. Still open and unrelated: `main` fails `check-counts` on two untracked product folders carrying machine paths in `code_path`.
+
+---
+
 ## 2026-09-04 — /learn-loop: hero-GIF + README-trim cycle
 
 `/learn-loop` scored 5 candidates (+1 found already promoted), promoted 2 — both dual-scored ≥24/35 by an independent fresh-context scorer: **verify-a-deliverable-at-its-destination-by-content** → a guardrail line in `/goal`'s verify step (after a concurrent session's sync silently reverted the uncommitted hero GIF mid-loop, caught only by md5 at the destination), and **prove-a-portable-starter-in-a-scratch-repo** → the porting discipline in `CLAUDE.md` (from the 2026-08-30 brain-starter extraction). Ledger updated: 148 practices, 46 proven. Modal-not-page default logged below threshold (fresh-eyes: situational); same-output-path tapes and the self-paced replay pattern logged. Feedback check for both promotions: 2026-12-04.

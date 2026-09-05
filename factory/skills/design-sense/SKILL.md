@@ -205,3 +205,26 @@ Run before calling a component done:
 
 **And the one that catches most of it:** open the real page at the real width.
 Verifying that the code renders is not verifying that a person can see it.
+
+---
+
+## Known limits
+
+- **It is composition, not visual design.** Nothing here chooses a palette, a
+  typeface, or a brand voice. A layout can pass every rule above and still look
+  generic — structural consistency is the floor, not taste.
+- **It cannot see the render.** Every rule is checkable by reading code except
+  the one that matters most (open the real page at the real width). The
+  checklist can be walked honestly and still miss what a screenshot would show
+  in a second.
+- **No accessibility coverage beyond tap targets.** Contrast ratios, focus
+  order, screen-reader semantics, motion sensitivity and keyboard traps are out
+  of scope — use the accessibility review path for those.
+- **The numbers are conventions, not measurements.** 44px targets and the
+  375/768/1280/1440 widths are defaults that held up in practice, not
+  thresholds derived from this project's own analytics. A product whose real
+  traffic sits elsewhere should use its real widths.
+- **It assumes a spacing scale exists.** On a codebase with no scale, "every gap
+  is a step on it" is advice about work that hasn't been done yet.
+- **Silent on animation, and on data-dense surfaces** — tables, dashboards and
+  charts have their own alignment economics that these rules only partly reach.
