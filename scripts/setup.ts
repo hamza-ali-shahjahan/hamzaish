@@ -205,7 +205,7 @@ step(7, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
   // frontmatter changes); dest!=manifest → user customized it, never clobber. Scope: the
   // CORE set installs if missing; ANY ~/.claude/commands/*.md with a factory/commands
   // counterpart is refresh-managed (having it there is the opt-in).
-  const CORE = ["hamzaish", "builder-mode", "work-on", "portfolio-pulse", "brain-ask", "brain-ingest"];
+  const CORE = ["hamzaish", "builder-mode", "work-on", "portfolio-pulse", "brain-ask", "brain-ingest", "idea-gate"];
   const FACTORY_CMD = "${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/commands";
   const buildStub = (name: string, srcContent: string): string => {
     const fm = /^---\n([\s\S]*?)\n---/.exec(srcContent)?.[1] ?? "";
@@ -394,6 +394,70 @@ step(9, "Enablement hook (factory Flight Plan/Receipt in every product session)"
     warn(
       `Couldn't safely update ${settingsPath} (${e instanceof Error ? e.message : e}) — ` +
         "register manually; see factory/hooks/factory-session-context.sh header.",
+    );
+    warned++;
+  }
+}
+
+// Step 9b — freshness notice (a stale factory is invisible otherwise) ---------
+step(9.5, "Freshness notice (tells you when your clone has gone stale — never auto-pulls)");
+{
+  // Deliberately its OWN consent and its OWN already-check rather than riding along with
+  // step 9: that block short-circuits when the enablement hook is present, so bundling
+  // this into it would mean every existing install never gets the notice — which is the
+  // exact staleness problem it exists to solve.
+  //
+  // The global commands are pointer stubs reading the live clone, so a pull updates
+  // everything at once. The cost of that design is that a stale clone looks identical to
+  // a fresh one. This hook is the only thing that makes staleness visible; it informs and
+  // never acts (see factory/hooks/factory-freshness.sh).
+  const settingsPath = join(HOME, ".claude", "settings.json");
+  const hookCmd = join(ROOT, "factory", "hooks", "factory-freshness.sh");
+  type HookEntry = { type: string; command?: string; [k: string]: unknown };
+  type HookGroup = { matcher?: string; hooks?: HookEntry[] };
+  try {
+    let settings: Record<string, any> = {};
+    if (existsSync(settingsPath)) {
+      settings = JSON.parse(await readFile(settingsPath, "utf8"));
+    }
+    const groups: HookGroup[] = settings.hooks?.SessionStart ?? [];
+    const already = groups.some((g) =>
+      (g.hooks ?? []).some((h) => typeof h.command === "string" && h.command.includes("factory-freshness.sh")),
+    );
+    if (already) {
+      skip("SessionStart freshness hook already registered.");
+      skipped++;
+    } else {
+      const forced = process.env.HAMZAISH_REGISTER_HOOK === "yes";
+      const declined = process.env.HAMZAISH_REGISTER_HOOK === "no";
+      const consent = forced
+        ? true
+        : declined
+          ? false
+          : typeof confirm === "function"
+            ? confirm("  Register the freshness notice (SessionStart, checks once/24h, never pulls)?")
+            : false;
+      if (!consent) {
+        skip("Not registered — you won't be told when the factory is out of date. Enable anytime: HAMZAISH_REGISTER_HOOK=yes bun run setup");
+        skipped++;
+      } else {
+        settings.hooks ??= {};
+        settings.hooks.SessionStart ??= [];
+        const eventGroups: HookGroup[] = settings.hooks.SessionStart;
+        const bare = eventGroups.find((g) => (g.matcher ?? "") === "");
+        const entry = { type: "command", command: hookCmd };
+        if (bare) bare.hooks = [...(bare.hooks ?? []), entry];
+        else eventGroups.push({ matcher: "", hooks: [entry] });
+        await mkdir(join(HOME, ".claude"), { recursive: true });
+        await writeFile(settingsPath, JSON.stringify(settings, null, 2) + "\n");
+        ok("Registered — one line at session start when your clone is behind. Silence: HAMZAISH_NO_UPDATE_CHECK=1");
+        created++;
+      }
+    }
+  } catch (e) {
+    warn(
+      `Couldn't safely update ${settingsPath} (${e instanceof Error ? e.message : e}) — ` +
+        "register manually; see factory/hooks/factory-freshness.sh header.",
     );
     warned++;
   }
