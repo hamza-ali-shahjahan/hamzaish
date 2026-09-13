@@ -37,6 +37,14 @@ New product = `cp -r products/_template products/<slug>`. The dashboard's
 `registry.ts` loads every folder that has a `product.config.json` and isn't
 prefixed with `_`, so `_template/` is ignored automatically.
 
+> **Your products are yours — they are never committed here.** `products/*` is
+> gitignored except the factory's own fixtures (`_template/`, `_smoke/`,
+> `_community/`). This repo is the TOOL and it is permanently public; your
+> roadmap, decisions and validation notes are your data and stay on your machine.
+> That holds for the maintainer exactly as it holds for anyone who installs
+> Hamzaish — on any machine, the person using the factory is a *user* of it.
+> `bun run check-user-state` enforces this in CI.
+
 > **Why a dedicated `scope.md` instead of folding it into the README?** For a
 > system meant to grow into a community (and a hosted product), one-file-per-
 > concern is the better trade: predictable structure beats a lean README when

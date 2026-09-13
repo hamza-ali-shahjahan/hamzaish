@@ -71,10 +71,37 @@ brain/identity/*.local.md
 
 # Operator-local research (competitive/strategy docs — never committed)
 meta/research/
-# market-xray raw evidence: harvested third-party text stays on this machine
-# forever (the public repo never redistributes it; SPEC §Boundaries). The
-# committed layer is the analysis + sources.md provenance manifest beside it.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# USER PRODUCTS ARE NOT PART OF THE FACTORY  (added 2026-09-13)
+#
+# This repo is the TOOL, and it is permanently public. A person's product
+# portfolio — roadmap, scope, learnings, decisions, customer-validation notes —
+# is THEIR data, not the factory's, and must never be committed here. That holds
+# for the maintainer exactly as it holds for a stranger who installs Hamzaish:
+# on any machine, the person using the factory is a USER of it.
+#
+# So: ignore every products/<slug>/ and re-include only the TOOL's own fixtures
+# (the template a user copies, the smoke fixtures CI runs, community examples).
+# scripts/check-user-state.ts enforces this in CI.
+#
+# Pre-existing check-product-layout.ts covers a narrower case (product CODE in
+# this repo). This block covers the rest: product STATE.
+products/*
+!products/_template/
+!products/_smoke/
+!products/_community/
+!products/README.md
+!products/SHOWCASE.md
+!products/_portfolio.md
+!products/_active.example.md
+
+# ...but market-xray raw evidence stays local even inside the re-included
+# fixtures: harvested third-party text is never redistributed by this public
+# repo (SPEC §Boundaries). The committed layer is the analysis + sources.md
+# provenance manifest beside it. MUST stay after the negations above to win.
 products/*/research/corpus/
+# ─────────────────────────────────────────────────────────────────────────────
 
 # Eval run reports — derived, regenerable verdicts (the committed contract is baseline.json)
 meta/evals/runs/

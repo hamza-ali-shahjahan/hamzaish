@@ -48,7 +48,7 @@ Express Lane. Otherwise ask once, with ① pre-selected:
    - tiny change → `/build`
 3. **Standing guardrails** (distilled from `products/*/learnings.md` + `meta/`):
    - A new product is its OWN repo. Register it here with
-     `cp -r products/_template products/<slug>` and add the slug → local path to
+     `cp -r products/_template products/<slug>` (this folder is USER-LOCAL — `products/*` is gitignored and `check-user-state` keeps it that way; a user's portfolio is never committed to the public factory repo) and add the slug → local path to
      `code-paths.local.json`. Then **plant the tendril**: seed the code repo's `CLAUDE.md`
      from `templates/claude-md-template.md` (at minimum its "Hamzaish-managed product" +
      "Session-quality defaults" blocks, slug filled in) — that file is what makes every
