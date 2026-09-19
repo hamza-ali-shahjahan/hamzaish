@@ -10,7 +10,7 @@
 #
 # Register in ~/.claude/settings.json (install/setup offers this):
 #   "hooks": { "SessionStart": [ { "hooks": [ { "type": "command",
-#     "command": "$HOME/Claude/Hamzaish/factory/hooks/factory-session-context.sh" } ] } ] }
+#     "command": "<your Hamzaish folder>/factory/hooks/factory-session-context.sh" } ] } ] }
 #
 # Emits nothing (exit 0) outside factory-managed surfaces — a registered product
 # repo or the factory repo itself (2026-08-06: factory-repo sessions are a primary
@@ -125,10 +125,10 @@ if [ "$SLUG" = "__factory__" ]; then
   STEP3="(3) A follow-up request is a new tracked step — re-enter the flow (§4): track it BEFORE building, append the session's learnings to brain/learnings/ after. Commands you can name in 'Try next': /hamzaish /work-on /portfolio-pulse /brain-ask /brain-ingest /reflect /learn-loop /repo-scout /pr /release /security-check /tidy /checkpoint."
 elif [ "$SLUG" = "__active__" ]; then
   LABEL="an active factory session"
-  STEP3="(3) A follow-up request is a new tracked step — re-enter the flow (§4): pin it in the product's status.md under ~/Claude/Hamzaish/products/ BEFORE building, feed status + learnings after. Commands you can name in 'Try next': /hamzaish /work-on /build /spec /plan /test /review /ship /goal /security-check /tidy /portfolio-pulse /brain-ask."
+  STEP3="(3) A follow-up request is a new tracked step — re-enter the flow (§4): pin it in the product's status.md under $ROOT/products/ BEFORE building, feed status + learnings after. Commands you can name in 'Try next': /hamzaish /work-on /build /spec /plan /test /review /ship /goal /security-check /tidy /portfolio-pulse /brain-ask."
 else
   LABEL="product: ${SLUG}"
-  STEP3="(3) A follow-up request is a new tracked step — re-enter the flow (§4): pin it in ~/Claude/Hamzaish/products/${SLUG}/status.md BEFORE building, feed status + learnings after. Commands you can name in 'Try next': /hamzaish /work-on /build /spec /plan /test /review /ship /goal /security-check /tidy /portfolio-pulse /brain-ask."
+  STEP3="(3) A follow-up request is a new tracked step — re-enter the flow (§4): pin it in $ROOT/products/${SLUG}/status.md BEFORE building, feed status + learnings after. Commands you can name in 'Try next': /hamzaish /work-on /build /spec /plan /test /review /ship /goal /security-check /tidy /portfolio-pulse /brain-ask."
 fi
 
 if [ "$BRIEF" = "1" ]; then

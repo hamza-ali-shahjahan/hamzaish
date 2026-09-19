@@ -46,7 +46,8 @@ fi
 
 # 4. Setup (idempotent; never clobbers existing .local files)
 say "Running setup…"
-( cd "$DIR" && bun run setup )
+# HAMZAISH_INSTALLER=1: setup skips its own "Next" block — the one below is the only one.
+( cd "$DIR" && HAMZAISH_INSTALLER=1 bun run setup )
 
 # 5. Claude Code (the agent that drives the factory — check, don't assume)
 printf '\n'
@@ -56,15 +57,16 @@ else
   say "Claude Code not found — install it to drive the factory: https://claude.ai/code"
 fi
 
-# 6. The first command
+# 6. The first command — the only "Next" on screen (setup skipped its own)
+case "$DIR" in /*) SHOW="$DIR" ;; *) SHOW="./$DIR" ;; esac
 cat <<EOF
 
-  ✅ Ready. Your factory is at ./$DIR
+  ✅ Ready. Your factory is at $SHOW
 
-  Next:
-    cd $DIR
+  Next — open Claude Code in it and type /builder-mode with your idea:
+    cd "$DIR"
     claude                                         # open Claude Code here
     /builder-mode a tip calculator for freelancers
 
-  Builder Mode: build first, wire your stack when you want it, ship when ready.
+  Stuck? Run  bun run doctor  inside that folder — it prints the fix.
 EOF

@@ -75,8 +75,9 @@ corporate-funded agent host with a 100%-coverage merge gate and 961 test files �
 found that **neither ships any way to measure whether its agent succeeds at
 tasks.** Both prove their machinery is correct. Neither shows it is good.
 
-That gap is where the judge here lives. It is early — 10 of 78 skills carry eval
-cases — and the README says so in its own weaknesses section. But it is the
+That gap is where the judge here lives. It is early — most agents and skills don't
+carry behavioral eval cases yet, and `bun run check-evals` prints the live coverage
+rather than a number that goes stale in this paragraph. But it is the
 differentiated bet, and the reason the factory is not just a nicer prompt folder.
 
 **Hamzaish rides a host rather than being one** because the host is the commodity

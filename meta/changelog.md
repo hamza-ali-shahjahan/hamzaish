@@ -10,6 +10,33 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-09-19 — v2.33.0 · an install anywhere works, and says so when it doesn't
+
+**What changed**
+
+- **Setup records where Hamzaish lives.** New step 6.5 writes `HAMZAISH_ROOT` into `~/.claude/settings.json` → `env` (Claude Code applies settings `env` to every session and its subprocesses — Bash tool calls and hooks), and the global pointer stubs now name the install's absolute path instead of `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}`. The first install wins: setup run in a second clone (a worktree, a backup) never takes the global commands over, and an install already at the old default keeps them. Hooks whose folder moved are re-pointed. Rules and their tests: `scripts/lib/install.ts`.
+- **`bun run doctor`** (`scripts/doctor.ts`) — one command that says whether a first session will work: tools, where Hamzaish lives, whether every global command and hook points at a file that exists, the brain index, your local files, git identity. Every problem prints its fix; exit 1 only for real breakage.
+- **One next step.** Setup's closing list (five items, none of them `/builder-mode`) is now one line — `/builder-mode <your idea>` — and install.sh suppresses it to print its own, so the one-line install shows exactly one.
+- **Scripts and hooks fall back to their own folder**, not the maintainer's: `factory-freshness.sh`, `auto-commit.sh`, `auto-pull-rebase.sh`; the session hook's instructions name `$ROOT/products/`.
+- **`scripts/stranger-install.test.ts`**, run in CI: copies the repo the way a clone sees it into a throwaway folder with a throwaway `HOME`, runs setup and the installer, and asserts the location is recorded, every global command and hook points inside the install, the newcomer gets an empty portfolio, there is exactly one next step, `doctor` says Ready, and a re-run changes nothing.
+- **`check-counts` reads what it missed.** Shields.io badge URLs (the header said 51 playbooks while the body said 53; an unrecognized count badge now fails too), each README playbook row against its folder (the rows summed to 49 of 53 — four playbooks were never listed), "stage agents" as its own count (31, not 35), and `docs/` (philosophy.md said 78 skills; there are 45). The `code_path` rule now reads tracked configs only, which closes v2.32.0's open item about untracked product folders failing it locally.
+- **README:** the badge and table fixes above, the nav bar's two dead anchors, and the `## Architecture` heading that rendered as literal text.
+- **Operator rules out of CLAUDE.md:** hard rule 9 is now the general rule (another product's folder is off-limits unless invited); operator-specific rules belong in the gitignored `CLAUDE.local.md`.
+- **`/pr` step 9** learns the untracked-files exception: never sync by switching to an old `main` that still tracks them.
+- Landed earlier this cycle (#104): user product state and the portfolio snapshot are no longer committed — `products/*` is gitignored, `check-user-state` fails CI otherwise, and a fresh install gets `products/_portfolio.example.md` as an honest empty snapshot.
+
+**Why**
+
+On any machine but the maintainer's, a fresh install's global commands and freshness hook pointed at `~/Claude/Hamzaish` — a folder that didn't exist there — because nothing ever set `HAMZAISH_ROOT` and the fallback is one person's layout. Every check was green, because every check ran on that one machine. Found by installing into a throwaway folder with a throwaway `HOME`; the same fresh-clone discipline caught two tests that passed only because the maintainer's products were on disk. It is the 2026-09-04 lesson (*prove a portable starter in a scratch repo*) applied to the factory itself.
+
+**Retro:** skipped — the lesson is encoded as the CI check it produced (`scripts/stranger-install.test.ts`) and recorded in `brain/learnings/2026-09-19.md`.
+
+**What to revisit**
+
+Whether `bun run doctor` is what a stuck newcomer actually reaches for. The time from install to a running app is still unmeasured, so the README's "60 seconds" stays unverified until it is. Product state still lives inside the clone folder — ignored, but co-located; the durable split into a separate workspace path is still staged.
+
+---
+
 ## 2026-09-06 — v2.32.0 · the gate that separates "rejected" from "never tested"
 
 **What changed**

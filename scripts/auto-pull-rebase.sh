@@ -71,7 +71,8 @@ run_with_timeout() {
 is_hamzaish_managed() {
   [ -f "$REPO/.hamzaish-managed" ] && return 0
 
-  local hamzaish_root="${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}"
+  # Fallback: the clone this script lives in (not the maintainer's ~/Claude/Hamzaish).
+  local hamzaish_root="${HAMZAISH_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
   local repo_canon root_canon
   repo_canon=$( cd "$REPO" 2> /dev/null && pwd -P )

@@ -86,7 +86,7 @@ When adding a new file with personal content: create it as `.local.<ext>` AND sh
 
 ## Path portability rule
 
-**Never hardcode `/Users/<name>/Claude/Hamzaish/`** in any committed file. Use `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}` in scripts, slash commands, and instructions. The default works for anyone who clones to `~/Claude/Hamzaish`; the env var override lets them clone anywhere.
+**Never hardcode `/Users/<name>/Claude/Hamzaish/`** in any committed file. Use `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}` in slash commands and instructions. `bun run setup` records the real install folder as `HAMZAISH_ROOT` (in `~/.claude/settings.json` → `env`, so every session and hook sees it); the `~/Claude/Hamzaish` fallback is only the maintainer's layout. Shell scripts fall back to their own location (`$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)`), never to that default. `bun run doctor` checks it all.
 
 ## Auto-commit safety net (on the operator's machine, not in the repo)
 
