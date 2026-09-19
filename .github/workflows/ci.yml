@@ -71,6 +71,9 @@ jobs:
       - name: Layout guard — no product code committed inside this public repo
         run: bun run check-product-layout
 
+      - name: User-state guard — no user's product state committed inside this public repo
+        run: bun run check-user-state
+
       - name: Namespace guard — no skill/command name collision (each /name has one home)
         run: bun run check-skill-command-collision
 

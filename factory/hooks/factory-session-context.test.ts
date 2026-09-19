@@ -2,7 +2,7 @@
 // narrow again (the 2026-08-06 gap: the factory repo itself got zero enablement;
 // meta/retros/2026-08-06-enablement-gap-factory-repo.md).
 import { test, expect, describe } from "bun:test";
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -87,20 +87,27 @@ describe("session that ENTERED the factory but is rooted nowhere near a product"
   test("a Hamzaish command stamps the session, and every later message is reminded", () => {
     const sid = `t-entered-${process.pid}`;
     rmSync(markerFor(sid), { force: true });
+    // A throwaway registered product. Product state is user-local since
+    // 2026-09-19, so a fresh clone holds no real product to stamp with.
+    const slug = `hz-fixture-${process.pid}`;
+    const productDir = join(FACTORY_ROOT, "products", slug);
+    mkdirSync(productDir, { recursive: true });
+    try {
+      const stamp = runHookWithPayload(
+        neutral,
+        { session_id: sid, tool_name: "Skill", tool_input: { skill: "work-on", args: slug } },
+        "--stamp",
+      );
+      expect(stamp.code).toBe(0);
+      expect(readFileSync(markerFor(sid), "utf8")).toBe(slug);
 
-    const stamp = runHookWithPayload(
-      neutral,
-      { session_id: sid, tool_name: "Skill", tool_input: { skill: "work-on", args: "copyright" } },
-      "--stamp",
-    );
-    expect(stamp.code).toBe(0);
-    expect(readFileSync(markerFor(sid), "utf8")).toBe("copyright");
-
-    // The load-bearing assertion: neutral directory, reminder fires anyway.
-    const brief = runHookWithPayload(neutral, { session_id: sid }, "--brief");
-    expect(JSON.parse(brief.out).hookSpecificOutput.additionalContext).toContain("(copyright)");
-
-    rmSync(markerFor(sid), { force: true });
+      // The load-bearing assertion: neutral directory, reminder fires anyway.
+      const brief = runHookWithPayload(neutral, { session_id: sid }, "--brief");
+      expect(JSON.parse(brief.out).hookSpecificOutput.additionalContext).toContain(`(${slug})`);
+    } finally {
+      rmSync(markerFor(sid), { force: true });
+      rmSync(productDir, { recursive: true, force: true });
+    }
   });
 
   test("a command with no product argument still marks the session active", () => {

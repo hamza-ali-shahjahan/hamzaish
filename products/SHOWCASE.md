@@ -14,4 +14,4 @@ Curated proof list — products where the factory's `/full-cycle` orchestration 
 
 **Also live in the portfolio — onboarded, not factory-built:** [formpad.app](https://formpad.app) (beautiful branded forms for $1/month) was built on Lovable in March 2026, *before Hamzaish existed*, and onboarded into the portfolio afterward. It's live and it's ours — but this page claims only what the factory built, so it sits on this line, not in the table.
 
-_More as they ship. A product earns this list by shipping something users can touch — not by being in the portfolio. Twelve more in earlier stages, tracked with the same honesty across this folder's per-product subdirectories (`products/<slug>/`)._
+_More as they ship. A product earns this list by shipping something users can touch — not by being in the portfolio. Twelve more in earlier stages, tracked with the same honesty in the maintainer's own factory — on their machine, because a product's state is never committed to this public repo._

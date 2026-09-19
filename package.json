@@ -29,6 +29,7 @@
     "check-assets": "bun scripts/check-assets.ts",
     "check-starter": "bun scripts/check-starter.ts",
     "check-product-layout": "bun scripts/check-product-layout.ts",
+    "check-user-state": "bun scripts/check-user-state.ts",
     "check-skill-command-collision": "bun scripts/check-skill-command-collision.ts",
     "check-counts": "bun scripts/check-counts.ts",
     "check-evals": "bun scripts/check-evals.ts",

@@ -4,7 +4,7 @@
 // confidently told you something out of date."
 
 import { test, expect, afterEach } from "bun:test";
-import { writeFile, unlink, appendFile, utimes } from "node:fs/promises";
+import { writeFile, unlink, appendFile, utimes, mkdir, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { existsSync } from "node:fs";
 import { computeFingerprint } from "./freshness.ts";
@@ -64,17 +64,27 @@ test("stat mode misses a same-length edit with a preserved mtime; hash mode catc
 });
 
 test("the corpus walk still covers each layer the brain indexes", async () => {
-  const sources = new Set<string>();
-  let sawOperatingPrinciples = false;
-  for await (const entry of corpusFiles()) {
-    sources.add(entry.source);
-    if (entry.path === "brain/operating-principles.md") sawOperatingPrinciples = true;
+  // Product state is user-local (gitignored) since 2026-09-19, so a fresh clone
+  // holds no products at all. Plant a throwaway one so the products rule is
+  // exercised on every machine, not only on one that happens to hold a portfolio.
+  const fixture = join(HAMZAISH_ROOT, "products", `hz-fixture-${process.pid}`);
+  await mkdir(fixture, { recursive: true });
+  await writeFile(join(fixture, "product.config.json"), "{}\n");
+  try {
+    const sources = new Set<string>();
+    let sawOperatingPrinciples = false;
+    for await (const entry of corpusFiles()) {
+      sources.add(entry.source);
+      if (entry.path === "brain/operating-principles.md") sawOperatingPrinciples = true;
+    }
+    // Regression guard for the 2026-08-20 extraction of this walk out of ingest.ts:
+    // a rule silently dropped here would make those files unsearchable AND unwatched.
+    for (const expected of ["root", "brain", "brain/learnings", "brain/anti-patterns",
+                            "factory/playbooks", "meta", "stack", "products/config"]) {
+      expect(sources.has(expected)).toBe(true);
+    }
+    expect(sawOperatingPrinciples).toBe(true);
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
   }
-  // Regression guard for the 2026-08-20 extraction of this walk out of ingest.ts:
-  // a rule silently dropped here would make those files unsearchable AND unwatched.
-  for (const expected of ["root", "brain", "brain/learnings", "brain/anti-patterns",
-                          "factory/playbooks", "meta", "stack", "products/config"]) {
-    expect(sources.has(expected)).toBe(true);
-  }
-  expect(sawOperatingPrinciples).toBe(true);
 });

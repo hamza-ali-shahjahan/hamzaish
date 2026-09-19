@@ -23,6 +23,11 @@ cp -r products/_template products/<slug>     # fill in the files
 /portfolio-pulse                              # refresh products/_portfolio.md
 ```
 
+**These folders are user-local and never committed.** `products/*` is gitignored
+apart from the factory's fixtures, so your portfolio stays on your machine even
+though it lives beside the tool. Don't `git add -f` your way around that — CI's
+`check-user-state` will fail the build, which is the point.
+
 Fill in: `product.config.json` (manifest), `README.md` (the wedge), `scope.md`
 (does / deliberately-doesn't), `status.md`, and start a `learnings.md`.
 

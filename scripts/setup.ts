@@ -9,7 +9,7 @@
 //   2. Check git identity — placeholder emails misattribute your commits on GitHub
 //   3. Create code-paths.local.json from the example (skip if you already have one)
 //   4. Create brain/identity/operator.local.md from the example (skip if yours exists)
-//   5. Create products/_active.local.md sprint state from the example
+//   5. Create products/_active.local.md + products/_portfolio.md from their examples
 //   6. Install the global slash commands into ~/.claude/commands/ as REAL copies
 //   7. Build the brain index (bun brain/ingest.ts)
 //   8. Offer to register the factory enablement hook (SessionStart) in
@@ -136,8 +136,8 @@ step(4, "Operator identity (your working style + stack defaults — never commit
   }
 }
 
-// Step 3b — active-product sprint state (yours, never committed) ------------
-step(5, "Active-sprint state (which product the factory orients on — never committed)");
+// Step 3b — your portfolio + active-sprint state (yours, never committed) ----
+step(5, "Your portfolio + sprint state (local to this machine — never committed)");
 {
   const dst = join(ROOT, "products", "_active.local.md");
   const src = join(ROOT, "products", "_active.example.md");
@@ -152,8 +152,20 @@ step(5, "Active-sprint state (which product the factory orients on — never com
     skip("No _active.example.md template found — skipping (sessions fall back to /portfolio-pulse).");
     skipped++;
   }
-  console.log(c.dim("     The committed products/ folders are the maintainer's showcase — proof the factory ships."));
-  console.log(c.dim("     YOUR portfolio starts empty and fills via /scaffold. /portfolio-pulse keeps the two separate."));
+  // The snapshot /portfolio-pulse maintains. Agents read it at session start, so a
+  // fresh install gets an honest empty one instead of a missing file.
+  const pDst = join(ROOT, "products", "_portfolio.md");
+  const pSrc = join(ROOT, "products", "_portfolio.example.md");
+  if (existsSync(pDst)) {
+    skip("products/_portfolio.md already exists — leaving your portfolio snapshot untouched.");
+    skipped++;
+  } else if (existsSync(pSrc)) {
+    await copyFile(pSrc, pDst);
+    ok("Created products/_portfolio.md (empty) — /portfolio-pulse keeps it current.");
+    created++;
+  }
+  console.log(c.dim("     products/ is yours and stays on this machine: gitignored, never committed to this public repo."));
+  console.log(c.dim("     It starts empty and fills as you build with /builder-mode."));
 }
 
 // Step 3c — factory control plane (orders / authority / heartbeat) ----------
