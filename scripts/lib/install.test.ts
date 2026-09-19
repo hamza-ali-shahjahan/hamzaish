@@ -8,7 +8,8 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { chooseRoot, expandRoot, hamzaishHook, repointStaleHooks, stubTarget } from "./install";
+import { resolve } from "node:path";
+import { CLAUDE_BUILTIN_NAMES, chooseRoot, expandRoot, globalCommands, hamzaishHook, repointStaleHooks, stubTarget } from "./install";
 
 let dirs: string[] = [];
 const temp = () => {
@@ -55,6 +56,20 @@ describe("chooseRoot — the first install wins", () => {
       root: here,
       why: "repoint",
     });
+  });
+});
+
+describe("globalCommands — every factory command, minus Claude Code's own names", () => {
+  const cmds = globalCommands(resolve(import.meta.dir, "..", ".."));
+
+  test("includes the front door and every step it hands off to", () => {
+    for (const n of ["builder-mode", "hamzaish", "full-cycle", "build", "test", "ship", "spec", "auto"]) {
+      expect(cmds).toContain(n);
+    }
+  });
+
+  test("never claims a name Claude Code ships as a built-in", () => {
+    for (const n of CLAUDE_BUILTIN_NAMES) expect(cmds).not.toContain(n);
   });
 });
 

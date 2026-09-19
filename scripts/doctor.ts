@@ -13,7 +13,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
-import { CORE_COMMANDS, hamzaishHook, hookCommands, isFactory, samePath, stubTarget } from "./lib/install";
+import { globalCommands, hamzaishHook, hookCommands, isFactory, samePath, stubTarget } from "./lib/install";
 
 const ROOT = resolve(import.meta.dir, "..");
 const HOME = homedir();
@@ -89,7 +89,8 @@ const sessionEnv = { HOME, HAMZAISH_ROOT: configured };
 const missing: string[] = [];
 const dangling: string[] = [];
 const customized: string[] = [];
-for (const name of CORE_COMMANDS) {
+const commands = globalCommands(ROOT);
+for (const name of commands) {
   const file = join(HOME, ".claude", "commands", `${name}.md`);
   if (!existsSync(file)) {
     missing.push(`/${name}`);
@@ -103,7 +104,7 @@ if (missing.length) fail(`Global command(s) not installed: ${missing.join(" ")}`
 if (dangling.length) fail(`Global command(s) point at a folder that doesn't exist: ${dangling.join(" ")}`, "bun run setup");
 if (customized.length) note(`Global command(s) you customized weren't checked: ${customized.join(" ")}`);
 if (!missing.length && !dangling.length) {
-  pass(`${CORE_COMMANDS.length - customized.length} global commands point at files that exist`);
+  pass(`${commands.length - customized.length} global commands point at files that exist`);
 }
 
 // 4. Hooks ------------------------------------------------------------------------
@@ -152,6 +153,6 @@ if (problems) {
   process.exit(1);
 }
 console.log(
-  `${c.green("Ready.")} Open Claude Code in this folder and type ${c.bold("/builder-mode <your idea>")}` +
+  `${c.green("Ready.")} Open Claude Code in any folder and type ${c.bold("/builder-mode <your idea>")}` +
     (advice ? c.dim(`  (${advice} note${advice === 1 ? "" : "s"} above — advice, not breakage)`) : ""),
 );

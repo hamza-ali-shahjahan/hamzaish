@@ -7,7 +7,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { CORE_COMMANDS } from "./lib/install";
+import { globalCommands } from "./lib/install";
 
 const REPO = resolve(import.meta.dir, "..");
 let homes: string[] = [];
@@ -16,13 +16,13 @@ afterEach(() => {
   homes = [];
 });
 
-/** A throwaway HOME: this settings.json, plus a pointer stub per core command reading from `stubRoot`. */
+/** A throwaway HOME: this settings.json, plus a pointer stub per global command reading from `stubRoot`. */
 function homeWith(settings: object, stubRoot: string): string {
   const home = mkdtempSync(join(tmpdir(), "hz-doctor-"));
   homes.push(home);
   mkdirSync(join(home, ".claude", "commands"), { recursive: true });
   writeFileSync(join(home, ".claude", "settings.json"), JSON.stringify(settings));
-  for (const name of CORE_COMMANDS) {
+  for (const name of globalCommands(REPO)) {
     writeFileSync(
       join(home, ".claude", "commands", `${name}.md`),
       `<!-- Generated pointer stub (bun run setup) -->\n\nRead \`${stubRoot}/factory/commands/${name}.md\` and follow it.\n`,

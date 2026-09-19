@@ -70,10 +70,9 @@ cat <<EOF
 
   ✅ Ready. Your factory is at $SHOW
 
-  Next — open Claude Code in it and type /builder-mode with your idea:
-    cd "$DIR"
-    claude                                         # open Claude Code here
-    /builder-mode a tip calculator for freelancers
+  Next — open Claude Code in any folder and type /builder-mode with your idea:
+    claude
+    /builder-mode <your idea>
 
   Stuck? Run  bun run doctor  inside that folder — it prints the fix.
 EOF

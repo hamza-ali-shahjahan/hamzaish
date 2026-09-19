@@ -39,24 +39,24 @@ Point Hamzaish at an idea — and run the whole company around the code your age
 
 **Pick your path:** 🌱 [First time? Use the desktop app](#-using-the-claude-desktop-app-easiest-no-terminal) · 💻 [Prefer Terminal?](#-using-terminal) · ⚡ [Already use Claude Code?](#-already-use-claude-code) · 🔧 [Advanced](#-advanced)
 
+Install once, and Hamzaish works in every new chat, in any folder.
+
 ### 🌱 Using the Claude desktop app (easiest, no Terminal)
 
 On Windows? Follow the [Windows guide](docs/start-here.md) for now.
 
 1. **Get the app:** download it from [claude.com/download](https://claude.com/download), open it, and log in (Pro or Max plan).
-2. **Open the Code tab** and choose a folder to work in. Documents is fine.
-3. **Paste this message and press Enter:**
+2. **Install Hamzaish:** open the **Code** tab, pick any folder (Documents is fine), paste this message, and press **Enter**. Click **Allow** when Claude asks to run it.
 
    ```
    Install Hamzaish for me by running this, then tell me in plain words what happened:
    curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | HAMZAISH_REGISTER_HOOK=yes HAMZAISH_REGISTER_GUARDS=yes sh
    ```
 
-   When Claude asks permission to run it, click **Allow**. The `yes` parts turn on the plans and receipts, update notices, and safety guards.
-4. **Start a new Code session** and choose the new **hamzaish** folder.
-5. **Type** `/builder-mode a tip calculator for freelancers` and press **Enter**.
+   The `yes` parts turn on its reminders, update notices, and safety guards.
+3. **Start building:** open a new chat in the Code tab so Claude picks up Hamzaish, type `/builder-mode`, and describe what you want to build.
 
-**Stuck?** Type: *run bun run doctor and fix what it finds*.
+**Stuck?** Ask Claude: *run bun run doctor in my hamzaish folder and fix what it finds.*
 
 ### 💻 Using Terminal
 
@@ -88,23 +88,17 @@ It asks three yes/no questions. Type **y** and press **Enter** each time. They t
 
 ✅ You'll see: **Ready. Your factory is at ./hamzaish**
 
-**Step 4 — Start Claude Code inside Hamzaish**
+**Step 4 — Start Claude Code**
 
 ```bash
-cd hamzaish && claude
+claude
 ```
 
-The first time, your browser opens so you can log in with your Claude account (Pro or Max plan). If Claude Code asks whether you trust this folder, choose **Yes**.
+Any folder works: Hamzaish is now in every Claude Code chat. The first time, your browser opens so you can log in with your Claude account (Pro or Max plan). If Claude Code asks whether you trust this folder, choose **Yes**.
 
 **Step 5 — Build your idea**
 
-Type this into Claude Code and press **Enter**. Swap in your own idea any time:
-
-```
-/builder-mode a tip calculator for freelancers
-```
-
-Hamzaish shows you a plan first, then builds it step by step. You approve each step.
+Type `/builder-mode` followed by what you want to build, and press **Enter**. Hamzaish shows you a plan first, then builds it step by step. You approve each step.
 
 **If something goes wrong**
 
@@ -118,7 +112,7 @@ Hamzaish shows you a plan first, then builds it step by step. You approve each s
 curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
 ```
 
-Then run `cd hamzaish && claude` and type `/builder-mode <your idea>`. Update any time with `bun run update`, and check your setup with `bun run doctor`.
+Then open Claude Code in any folder and type `/builder-mode <your idea>`. Update any time with `bun run update`, and check your setup with `bun run doctor`.
 
 ### 🔧 Advanced
 
