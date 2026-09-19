@@ -25,10 +25,12 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 // The factory's OWN fixtures under products/ — these are tool, not user data.
 // `_template` is what a user copies; `_smoke` is CI's fixture; `_community` is
-// contributed examples; the loose files are the repo's own docs.
+// contributed examples; the loose files are the repo's own docs and the empty
+// starters `bun run setup` copies. NOT here: `_portfolio.md` — the snapshot
+// /portfolio-pulse writes is the user's live business state (untracked 2026-09-19).
 const FACTORY_FIXTURES = new Set([
   "_template", "_smoke", "_community",
-  "README.md", "SHOWCASE.md", "_portfolio.md", "_active.example.md",
+  "README.md", "SHOWCASE.md", "_portfolio.example.md", "_active.example.md",
 ]);
 
 let tracked: string[];
@@ -42,10 +44,13 @@ try {
 
 // products/<entry>/... — anything whose first path entry isn't a fixture is user state.
 const offenders = new Map<string, number>();
+const folders = new Set<string>();
 for (const path of tracked) {
-  const entry = path.split("/")[1];
+  const parts = path.split("/");
+  const entry = parts[1];
   if (!entry || FACTORY_FIXTURES.has(entry)) continue;
   offenders.set(entry, (offenders.get(entry) ?? 0) + 1);
+  if (parts.length > 2) folders.add(entry);
 }
 
 if (offenders.size === 0) {
@@ -56,7 +61,7 @@ if (offenders.size === 0) {
 const total = [...offenders.values()].reduce((a, b) => a + b, 0);
 console.error(`✗ check-user-state: ${total} file(s) of USER product state are tracked in this public repo.\n`);
 for (const [slug, n] of [...offenders].sort((a, b) => b[1] - a[1])) {
-  console.error(`    products/${slug}/  — ${n} file(s)`);
+  console.error(`    products/${slug}${folders.has(slug) ? "/" : ""}  — ${n} file(s)`);
 }
 console.error(`
   A product's state belongs to the person who built it, not to the factory.

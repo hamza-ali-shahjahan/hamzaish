@@ -82,7 +82,10 @@ meta/research/
 # on any machine, the person using the factory is a USER of it.
 #
 # So: ignore every products/<slug>/ and re-include only the TOOL's own fixtures
-# (the template a user copies, the smoke fixtures CI runs, community examples).
+# (the template a user copies, the smoke fixtures CI runs, community examples,
+# and the empty *.example.md starters setup copies). The portfolio snapshot
+# products/_portfolio.md is USER state too — /portfolio-pulse writes a person's
+# live business numbers into it — so only its empty starter is tracked.
 # scripts/check-user-state.ts enforces this in CI.
 #
 # Pre-existing check-product-layout.ts covers a narrower case (product CODE in
@@ -93,7 +96,7 @@ products/*
 !products/_community/
 !products/README.md
 !products/SHOWCASE.md
-!products/_portfolio.md
+!products/_portfolio.example.md
 !products/_active.example.md
 
 # ...but market-xray raw evidence stays local even inside the re-included

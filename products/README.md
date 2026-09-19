@@ -1,18 +1,19 @@
 # Products
 
-The portfolio. One folder per product — **metadata and learnings only**. Product
-*code* never lives here; it stays in its own (often private) repo. This folder is
-the shareable layer: safe to back up publicly and, later, safe for collaborators
-to contribute to without exposing anyone's secret sauce.
+Your portfolio. One folder per product — **metadata and learnings only** — and it
+stays **on your machine**. `products/*` is gitignored, and CI
+(`bun run check-user-state`) fails if a product's state is ever committed: this repo
+is permanently public, and your roadmap, pricing notes and validation data are yours,
+not the factory's. Product *code* never lives here either; it stays in its own repo.
 
-## What's public vs private
+## What's tracked vs what's yours
 
-| Lives here (shareable) | Stays private (never committed here) |
+| Tracked here (the factory's own files) | Yours — local only, never committed |
 |---|---|
-| `product.config.json` — manifest (no secrets; analytics IDs only) | Source code, algorithms, the actual build |
-| `README.md`, `scope.md` | API keys, credentials, `.env` of any kind |
-| `status.md`, `decisions/` | Customer data, proprietary internals |
-| `learnings.md` — *transferable* lessons | The specific "how" that is your moat |
+| `_template/` — the skeleton a new product copies | `products/<slug>/` — every product you register |
+| `_smoke/`, `_community/` — CI fixtures, contributed examples | `_portfolio.md` — your snapshot, kept current by `/portfolio-pulse` |
+| `README.md`, `SHOWCASE.md` | `_active.local.md` — your current sprint |
+| `_portfolio.example.md`, `_active.example.md` — the starters `bun run setup` copies | |
 
 Code locations are wired per-machine in the git-ignored `../code-paths.local.json`
 (copy `../code-paths.example.json`). Nothing about where your code lives is published.
@@ -37,12 +38,12 @@ products/<slug>/
 > **Dogfood first.** A product earns a folder here only once we've **actually used it for its real job and it worked for us** — not when its repo merely ships. Until then, keep notes in `brain/learnings/`. See the [Admission Policy](../meta/admission-policy.md) (Gate 1). Community products follow Gate 2 in [`_community/`](./_community/README.md).
 
 ```bash
-cp -r _template products/<slug>          # then fill in the files
-# add the slug → local code path to ../code-paths.local.json (git-ignored)
+cp -r products/_template products/<slug>   # from the repo root; then fill in the files
+# add the slug → local code path to code-paths.local.json (git-ignored)
 ```
 
-Then run `/portfolio-pulse` to refresh [`_portfolio.md`](./_portfolio.md), the
-generated index of all products.
+Then run `/portfolio-pulse` to refresh `_portfolio.md`, your generated index of all
+products (it starts as a copy of [`_portfolio.example.md`](./_portfolio.example.md)).
 
 ## Working on a product (especially in parallel)
 
