@@ -153,6 +153,6 @@ if (problems) {
   process.exit(1);
 }
 console.log(
-  `${c.green("Ready.")} Open Claude Code in this folder and type ${c.bold("/builder-mode <your idea>")}` +
+  `${c.green("Ready.")} Open Claude Code in any folder and type ${c.bold("/builder-mode <your idea>")}` +
     (advice ? c.dim(`  (${advice} note${advice === 1 ? "" : "s"} above — advice, not breakage)`) : ""),
 );

@@ -643,7 +643,7 @@ console.log(`   ${c.dim("created")} ${created}   ${c.dim("already-set")} ${skipp
 // screen. install.sh prints its own copy (with the cd), so it sets HAMZAISH_INSTALLER=1.
 if (process.env.HAMZAISH_INSTALLER !== "1") {
   console.log(`
-${c.bold("Next:")} open Claude Code in this folder and type
+${c.bold("Next:")} open Claude Code in any folder and type
       ${c.gold("/builder-mode <your idea>")}
 
 ${c.dim("Stuck? bun run doctor checks your setup and prints the fix for anything wrong.")}
