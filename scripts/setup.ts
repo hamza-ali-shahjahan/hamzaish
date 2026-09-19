@@ -10,15 +10,19 @@
 //   3. Create code-paths.local.json from the example (skip if you already have one)
 //   4. Create brain/identity/operator.local.md from the example (skip if yours exists)
 //   5. Create products/_active.local.md + products/_portfolio.md from their examples
-//   6. Install the global slash commands into ~/.claude/commands/ as REAL copies
-//   7. Build the brain index (bun brain/ingest.ts)
-//   8. Offer to register the factory enablement hook (SessionStart) in
-//      ~/.claude/settings.json — the factory announces itself in product sessions
-//      (consent prompt; HAMZAISH_REGISTER_HOOK=yes|no to skip the prompt)
-//   9. Offer to register the four guard hooks (PreToolUse) in ~/.claude/settings.json
+//   6. Create the factory control-plane files (orders, standing orders, heartbeat)
+//   6.5 Record where Hamzaish lives — env.HAMZAISH_ROOT in ~/.claude/settings.json — and
+//      re-point any hook whose folder moved. The first install wins: setup run inside a
+//      second clone (a worktree, a backup) never takes the global commands over.
+//   7. Install the global slash commands into ~/.claude/commands/ as pointer stubs
+//      aimed at that folder
+//   8. Build the brain index (bun brain/ingest.ts)
+//   9. Offer to register the factory enablement + freshness hooks (SessionStart) in
+//      ~/.claude/settings.json (consent prompt; HAMZAISH_REGISTER_HOOK=yes|no skips it)
+//  10. Offer to register the four guard hooks (PreToolUse) in ~/.claude/settings.json
 //      — they block unrecoverable actions before the tool call runs
 //      (consent prompt; HAMZAISH_REGISTER_GUARDS=yes|no to skip the prompt)
-//   then print what to do next
+//   then print the one next step (install.sh prints its own, so it sets HAMZAISH_INSTALLER=1)
 //
 // It NEVER overwrites your existing .local files or any command file you've customized.
 // Re-running it is harmless — it just fills in whatever's missing.
@@ -28,6 +32,7 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { decideCommandAction } from "./lib/command-refresh";
+import { CORE_COMMANDS, chooseRoot, repointStaleHooks, samePath } from "./lib/install";
 
 const ROOT = resolve(import.meta.dir, "..");
 const HOME = homedir();
@@ -196,8 +201,61 @@ step(6, "Factory control plane (weekly mandate + autonomous-program authority �
   console.log(c.dim("     → Run /factory-launch in Claude Code for the guided fill-in (mandate, weekly cap, WIP caps)."));
 }
 
+// Step 6.5 — where Hamzaish lives -----------------------------------------------
+// Factory files say ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}, and until 2026-09-19
+// nothing set HAMZAISH_ROOT — so on any machine but the maintainer's, the global
+// commands and the freshness hook pointed at a folder that did not exist. Record the
+// location in ~/.claude/settings.json → env: Claude Code applies it to every session
+// and its subprocesses (Bash tool calls, hooks). Rules live in scripts/lib/install.ts.
+let INSTALL_ROOT = ROOT;
+step(6.5, "Where Hamzaish lives (so commands and hooks find it from any folder)");
+{
+  const settingsPath = join(HOME, ".claude", "settings.json");
+  try {
+    let settings: Record<string, any> = {};
+    if (existsSync(settingsPath)) settings = JSON.parse(await readFile(settingsPath, "utf8"));
+    const configured: string | undefined = settings.env?.HAMZAISH_ROOT || process.env.HAMZAISH_ROOT || undefined;
+    const choice = chooseRoot({ configured, home: HOME, thisRoot: ROOT });
+    INSTALL_ROOT = choice.root;
+
+    const recording = settings.env?.HAMZAISH_ROOT !== choice.root;
+    if (recording) settings.env = { ...(settings.env ?? {}), HAMZAISH_ROOT: choice.root };
+    const repointed = repointStaleHooks(settings, choice.root, HOME);
+    if (recording || repointed) {
+      await mkdir(join(HOME, ".claude"), { recursive: true });
+      await writeFile(settingsPath, JSON.stringify(settings, null, 2) + "\n");
+    }
+
+    const here = samePath(choice.root, ROOT);
+    if (!recording) {
+      skip(here ? "HAMZAISH_ROOT already points at this folder." : `HAMZAISH_ROOT already points at ${choice.root}.`);
+      skipped++;
+    } else if (choice.why === "repoint") {
+      ok(`HAMZAISH_ROOT named a folder that no longer holds Hamzaish (${configured}) — re-pointed here.`);
+      created++;
+    } else {
+      ok(`Recorded ${here ? "this folder" : choice.root} as your Hamzaish (HAMZAISH_ROOT in ~/.claude/settings.json) — new Claude Code sessions find it from any folder.`);
+      created++;
+    }
+    if (!here) {
+      console.log(c.dim(`     This folder is a second copy — global commands and hooks stay with ${choice.root}.`));
+      console.log(c.dim(`     To switch, set "HAMZAISH_ROOT": "${ROOT}" under "env" in ${settingsPath}, then re-run setup.`));
+    }
+    if (repointed) {
+      ok(`Re-pointed ${repointed} hook(s) whose folder had moved.`);
+      created++;
+    }
+  } catch (e) {
+    warn(
+      `Couldn't safely update ${settingsPath} (${e instanceof Error ? e.message : e}) — ` +
+        `add "env": { "HAMZAISH_ROOT": "${ROOT}" } to it yourself.`,
+    );
+    warned++;
+  }
+}
+
 // Step 4 — global slash commands -------------------------------------------
-step(7, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work from any folder)");
+step(7, "Global slash commands (so /builder-mode, /work-on, /brain-ask, etc. work from any folder)");
 {
   // POINTER STUBS, not full copies or symlinks. Three constraints meet here:
   //   • Symlinks fail — Claude Code's loader does not reliably follow them ("Unknown command").
@@ -217,8 +275,12 @@ step(7, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
   // frontmatter changes); dest!=manifest → user customized it, never clobber. Scope: the
   // CORE set installs if missing; ANY ~/.claude/commands/*.md with a factory/commands
   // counterpart is refresh-managed (having it there is the opt-in).
-  const CORE = ["hamzaish", "builder-mode", "work-on", "portfolio-pulse", "brain-ask", "brain-ingest", "idea-gate"];
-  const FACTORY_CMD = "${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/factory/commands";
+  //
+  // The stub names the install's absolute path (decided in step 6.5) rather than
+  // ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}: the Read tool expands no variables, and
+  // that fallback is the maintainer's layout — on any other machine it pointed at nothing.
+  const CORE = CORE_COMMANDS;
+  const FACTORY_CMD = join(INSTALL_ROOT, "factory", "commands");
   const buildStub = (name: string, srcContent: string): string => {
     const fm = /^---\n([\s\S]*?)\n---/.exec(srcContent)?.[1] ?? "";
     const srcDesc = /^description:\s*(.+)$/m.exec(fm)?.[1]?.trim();
@@ -233,6 +295,8 @@ step(7, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
       "<!-- Generated pointer stub (bun run setup) — do not hand-edit; the real command lives in the factory. -->",
       "",
       `The user invoked: \`/${name} $ARGUMENTS\``,
+      "",
+      `Hamzaish lives at \`${INSTALL_ROOT}\` — wherever a factory file says \`$HAMZAISH_ROOT\` (or \`\${HAMZAISH_ROOT:-…}\`), it means that folder.`,
       "",
       `Read \`${FACTORY_CMD}/${name}.md\` and follow it exactly as if it were this command's body, applying \`$ARGUMENTS\` as it specifies. It always reflects the current factory version — never answer from a stale copy.`,
       "",
@@ -255,11 +319,11 @@ step(7, "Global slash commands (so /hamzaish, /work-on, /brain-ask, etc. work fr
 
   const names = new Set(CORE);
   for (const f of readdirSync(CMD_DIR)) {
-    if (f.endsWith(".md") && existsSync(join(ROOT, "factory", "commands", f))) names.add(f.slice(0, -3));
+    if (f.endsWith(".md") && existsSync(join(INSTALL_ROOT, "factory", "commands", f))) names.add(f.slice(0, -3));
   }
 
   for (const name of [...names].sort()) {
-    const target = join(ROOT, "factory", "commands", `${name}.md`);
+    const target = join(INSTALL_ROOT, "factory", "commands", `${name}.md`);
     const dest = join(CMD_DIR, `${name}.md`);
     if (!existsSync(target)) {
       warn(`/${name}: source missing at factory/commands/${name}.md — skipped.`);
@@ -346,7 +410,7 @@ step(8, "Brain index (full-text search over the factory)");
 step(9, "Enablement hook (factory Flight Plan/Receipt in every product session)");
 {
   const settingsPath = join(HOME, ".claude", "settings.json");
-  const hookCmd = join(ROOT, "factory", "hooks", "factory-session-context.sh");
+  const hookCmd = join(INSTALL_ROOT, "factory", "hooks", "factory-session-context.sh");
   type HookEntry = { type: string; command?: string; [k: string]: unknown };
   type HookGroup = { matcher?: string; hooks?: HookEntry[] };
   try {
@@ -424,7 +488,7 @@ step(9.5, "Freshness notice (tells you when your clone has gone stale — never 
   // a fresh one. This hook is the only thing that makes staleness visible; it informs and
   // never acts (see factory/hooks/factory-freshness.sh).
   const settingsPath = join(HOME, ".claude", "settings.json");
-  const hookCmd = join(ROOT, "factory", "hooks", "factory-freshness.sh");
+  const hookCmd = join(INSTALL_ROOT, "factory", "hooks", "factory-freshness.sh");
   type HookEntry = { type: string; command?: string; [k: string]: unknown };
   type HookGroup = { matcher?: string; hooks?: HookEntry[] };
   try {
@@ -479,7 +543,7 @@ step(9.5, "Freshness notice (tells you when your clone has gone stale — never 
 step(10, "Guard hooks (block unrecoverable actions before they run)");
 {
   const settingsPath = join(HOME, ".claude", "settings.json");
-  const guardDir = join(ROOT, "factory", "hooks", "guardhooks");
+  const guardDir = join(INSTALL_ROOT, "factory", "hooks", "guardhooks");
   type HookEntry = { type: string; command?: string; [k: string]: unknown };
   type HookGroup = { matcher?: string; hooks?: HookEntry[] };
 
@@ -569,16 +633,15 @@ console.log(c.gold(`
    └─────────────────────────────────────────┘`));
 console.log(`   ${c.dim("created")} ${created}   ${c.dim("already-set")} ${skipped}${warned ? `   ${c.red("needs-attention")} ${warned}` : ""}`);
 
-console.log(`
-${c.bold("Next:")}
-  1. ${c.gold("Fill in your identity")} — open ${c.dim("brain/identity/operator.local.md")} (2 min)
-  2. ${c.gold("See the factory")}      — in Claude Code, run ${c.dim("/portfolio-pulse")}
-  3. ${c.gold("Start a product")}      — ${c.dim("/work-on <slug>")}  or scaffold a new one with ${c.dim("/scaffold")}
-  4. ${c.gold("Ask the brain")}        — ${c.dim('/brain-ask "what should I focus on"')}
-  5. ${c.gold("Launch the factory")}   — ${c.dim("/factory-launch")} (fill your orders + budget; then ${c.dim("bun run check-gates")})
+// ONE next step. Until 2026-09-19 this printed five (none of them /builder-mode), right
+// after install.sh had said "/builder-mode" — two contradicting first steps on one
+// screen. install.sh prints its own copy (with the cd), so it sets HAMZAISH_INSTALLER=1.
+if (process.env.HAMZAISH_INSTALLER !== "1") {
+  console.log(`
+${c.bold("Next:")} open Claude Code in this folder and type
+      ${c.gold("/builder-mode <your idea>")}   ${c.dim("e.g. /builder-mode a tip calculator for freelancers")}
 
-${c.dim("Optional power-up: auto-commit + auto-push on every Claude turn —")}
-${c.dim("see CLAUDE.md → \"Auto-commit safety net\" to enable the hooks.")}
-
-${c.dim("Re-run this anytime — it only fills in what's missing.")}
+${c.dim("Stuck? bun run doctor checks your setup and prints the fix for anything wrong.")}
+${c.dim("Re-run setup anytime — it only fills in what's missing.")}
 `);
+}

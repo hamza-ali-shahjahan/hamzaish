@@ -107,7 +107,8 @@ is_hamzaish_managed() {
   # (C) explicit marker file — cheapest, check first
   [ -f "$REPO/.hamzaish-managed" ] && return 0
 
-  local hamzaish_root="${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}"
+  # Fallback: the clone this script lives in (not the maintainer's ~/Claude/Hamzaish).
+  local hamzaish_root="${HAMZAISH_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
   # (A) the repo IS the Hamzaish repo itself (compare canonical, symlink- and
   # case-resolved paths so e.g. .../Hamzaish and .../hamzaish match).

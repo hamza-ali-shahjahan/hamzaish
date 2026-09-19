@@ -52,6 +52,9 @@ function topLevelMd(dir: string): string[] {
 }
 
 const agents = mdFilesRecursive(r("factory/agents")).length;
+// lifecycle-stage agents only — excludes engineering/ subagents and the _orchestrator router
+const stageAgents = ["idea", "mvp", "launch", "scale", "portfolio"]
+  .reduce((n, s) => n + mdFilesRecursive(r("factory/agents", s)).length, 0);
 const skills = entriesWithChild(r("factory/skills"), "SKILL.md").length; // incl. plugin symlinks
 const commands = topLevelMd(r("factory/commands")).length;
 const playbooks = readdirSync(r("factory/playbooks"), { withFileTypes: true })
@@ -72,7 +75,7 @@ const skillsAndCommands = skills + commands;
 
 console.log(
   `derived from disk:\n` +
-  `  agents=${agents}  skills=${skills}  commands=${commands}  (skills+commands=${skillsAndCommands})\n` +
+  `  agents=${agents} (stage=${stageAgents})  skills=${skills}  commands=${commands}  (skills+commands=${skillsAndCommands})\n` +
   `  playbooks=${playbooks}  practices=${practices} (✅${proven} 🟡${partial} ⏳${research})  security-checks=${securityChecks}`
 );
 
@@ -80,11 +83,13 @@ console.log(
 type Fail = string;
 const fails: Fail[] = [];
 
-// generic keyword scan across the three fact-bearing files — these words only
-// appear as headline counts, so any `<N> <kw>` must equal the disk count.
-const FACT_FILES = ["README.md", "BEST-PRACTICES.md", "scripts/hero.ts"];
-function assertKeyword(kw: string, expected: number) {
-  const re = new RegExp(`(\\d+)\\s+${kw}\\b`, "g");
+// generic keyword scan across the fact-bearing files — these words only appear as
+// headline counts, so any `<N> <kw>` must equal the disk count. docs/ joined
+// 2026-09-19: it was never scanned, and docs/philosophy.md had drifted to "78 skills".
+const DOC_FILES = readdirSync(r("docs")).filter((n) => extname(n) === ".md").map((n) => `docs/${n}`);
+const FACT_FILES = ["README.md", "BEST-PRACTICES.md", "scripts/hero.ts", ...DOC_FILES];
+function assertKeyword(kw: string, expected: number, notFollowedBy?: string) {
+  const re = new RegExp(`(\\d+)\\s+${kw}\\b${notFollowedBy ? `(?!${notFollowedBy})` : ""}`, "g");
   for (const f of FACT_FILES) {
     const lines = read(f).split("\n");
     lines.forEach((line, i) => {
@@ -97,9 +102,12 @@ function assertKeyword(kw: string, expected: number) {
 assertKeyword("agents", agents);
 assertKeyword("playbooks", playbooks);
 assertKeyword("practices", practices);
+assertKeyword("skills", skills, "\\s*&\\s*commands"); // "69 skills & commands" is the combined count, checked below
+assertKeyword("commands", commands);
 
 // targeted assertions (pattern → expected), file-scoped
 const TARGETED: { file: string; re: RegExp; expected: number; what: string }[] = [
+  { file: "README.md", re: /(\d+)\s+(?:lifecycle-)?stage agents/g, expected: stageAgents, what: "stage agents (engineering subagents + the router aren't stage agents)" },
   { file: "README.md", re: /(\d+)\s+skills\s*\+\s*(\d+)\s+commands/g, expected: skills, what: `skills (+ commands=${commands})` },
   { file: "README.md", re: /skills & commands \((\d+)\)/g, expected: skillsAndCommands, what: "skills & commands header" },
   { file: "README.md", re: /(\d+)\s+skills & commands/g, expected: skillsAndCommands, what: "skills & commands badge" },
@@ -128,6 +136,40 @@ for (const t of TARGETED) {
   });
 }
 
+// ─── README badges: the number lives in the image URL ───────────────────────
+// The scans above read "53 playbooks" in prose but never ".../badge/51-playbooks-blue.svg"
+// in a URL — which is how the header badge said 51 while the body said 53 (2026-09-19).
+// An unrecognized count badge fails too, so a new one can't ship unchecked.
+const BADGE_COUNTS: Record<string, number> = {
+  "agents": agents,
+  "skills & commands": skillsAndCommands,
+  "playbooks": playbooks,
+  "security checks": securityChecks,
+};
+read("README.md").split("\n").forEach((line, i) => {
+  for (const m of line.matchAll(/img\.shields\.io\/badge\/(\d+)-([^-"]+)-/g)) {
+    const label = decodeURIComponent(m[2]).replace(/_/g, " ");
+    if (!(label in BADGE_COUNTS)) fails.push(`README.md:${i + 1}  count badge "${m[1]} ${label}" isn't checked — use a label from BADGE_COUNTS or add it there`);
+    else if (Number(m[1]) !== BADGE_COUNTS[label]) fails.push(`README.md:${i + 1}  badge "${m[1]} ${label}" → should be ${BADGE_COUNTS[label]}`);
+  }
+});
+
+// ─── README playbook table: each stage row's "(N)" and links match its folder ───
+// The rows summed to 49 while the headline said 53: four playbooks were never listed.
+const STAGE_DIRS: Record<string, string> = {
+  "Idea": "idea-stage", "MVP": "mvp-stage", "Launch": "launch-stage", "Scale": "scale-stage",
+  "Founder's wisdom": "founders-wisdom", "AI-native": "ai-native-2026",
+};
+read("README.md").split("\n").forEach((line, i) => {
+  const m = /^\| \*\*\S+\s+(.+?) \((\d+)\)\*\* \|/.exec(line);
+  if (!m || !(m[1] in STAGE_DIRS)) return;
+  const dir = STAGE_DIRS[m[1]];
+  const onDisk = topLevelMd(r("factory/playbooks", dir));
+  if (Number(m[2]) !== onDisk.length) fails.push(`README.md:${i + 1}  playbook row "${m[1]} (${m[2]})" → should be ${onDisk.length}`);
+  const unlisted = onDisk.filter((f) => !line.includes(`factory/playbooks/${dir}/${f}`));
+  if (unlisted.length) fails.push(`README.md:${i + 1}  playbook row "${m[1]}" doesn't link: ${unlisted.join(", ")}`);
+});
+
 // ─── path-leak guard: no real `/Users/hamza` in tracked files ────────────────
 // learnings & anti-patterns quote leaked paths as the incident evidence; the changelog
 // & _archive are history; and this guard's own source has to name the pattern it hunts.
@@ -143,14 +185,19 @@ try {
 }
 
 // ─── product code_path must be null (the real path lives in code-paths.local.json) ──
-for (const e of readdirSync(r("products"), { withFileTypes: true })) {
-  if (!e.isDirectory() || e.name.startsWith("_")) continue;
-  const cfg = r("products", e.name, "product.config.json");
-  if (!existsSync(cfg)) continue;
+// Only a TRACKED config can leak a path into this public repo. Since 2026-09-19 every
+// user product is gitignored (check-user-state), so this now guards the fixtures
+// (_template, …) — walking the disk instead flagged a user's own, never-committed files.
+let trackedConfigs: string[] = [];
+try {
+  trackedConfigs = execSync("git ls-files -- 'products/*/product.config.json'", { cwd: root, encoding: "utf8" })
+    .trim().split("\n").filter(Boolean);
+} catch { /* not a git checkout — nothing tracked to check */ }
+for (const rel of trackedConfigs) {
   let json: any;
-  try { json = JSON.parse(readFileSync(cfg, "utf8")); } catch { fails.push(`products/${e.name}/product.config.json — invalid JSON`); continue; }
+  try { json = JSON.parse(read(rel)); } catch { fails.push(`${rel} — invalid JSON`); continue; }
   if ("code_path" in json && json.code_path !== null)
-    fails.push(`products/${e.name}/product.config.json — code_path must be null (got ${JSON.stringify(json.code_path)})`);
+    fails.push(`${rel} — code_path must be null (got ${JSON.stringify(json.code_path)})`);
 }
 
 // ─── version consistency: one source of truth (package.json), no drift ───────

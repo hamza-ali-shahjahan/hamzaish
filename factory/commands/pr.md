@@ -68,10 +68,17 @@ Never dump raw git unless asked.
 9. **Sync local.** `git switch main && git pull --ff-only`. If this fails with
    "diverged", local `main` has unpushed commits — `git pull --rebase` and tell the
    user those commits exist locally but are **not** published.
-   Then: if the merged change touched `factory/commands/`, run `bun run setup` —
-   the global `~/.claude/commands/` copies refresh automatically (manifest-tracked;
-   customized copies are never clobbered). Copies rot silently otherwise —
-   `brain/learnings/2026-07-02.md`.
+   **Exception — the change untracked files** (a `git rm --cached`, a new ignore
+   rule): the old local `main` still tracks them, so switching to it overwrites the
+   now-ignored copies on disk with older versions and the pull then deletes them.
+   Don't `git switch main` first, and don't merge with `--delete-branch` (it switches
+   for you). Instead: `git fetch`, confirm `git diff --quiet HEAD origin/main` from
+   the branch, then `git branch -f main origin/main && git switch main` — the working
+   tree never passes through the old commit (`brain/learnings/2026-09-19.md`).
+   Then: if the merged change touched `factory/commands/` or `scripts/setup.ts`, run
+   `bun run setup` — the global `~/.claude/commands/` stubs refresh automatically
+   (manifest-tracked; customized copies are never clobbered). Copies rot silently
+   otherwise — `brain/learnings/2026-07-02.md`.
 
 10. **(Optional) Release.** If the user says this is a release point, `git tag vX.Y.Z`
    + `gh release create` with notes — the moment the

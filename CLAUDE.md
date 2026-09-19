@@ -162,7 +162,7 @@ The operator's active product + sprint state lives in **`products/_active.local.
 6. **Playbook files are short** (300–800 words). Depth lives in linked sources, not inline essays.
 7. **Default tech stack lives in `stack/`.** Deviate only with a written reason in the product's `decisions/`.
 8. **Never modify another product's code from this product's session.** Cross-product changes require explicit invitation.
-9. **Muakkil's working directory is off-limits** unless the user explicitly invites edits there. Cd into it for context, don't modify.
+9. **Another product's working directory is off-limits** unless the user explicitly invites edits there. Cd into it for context, don't modify. (Operator-specific exceptions and extra rules belong in the gitignored `CLAUDE.local.md`, never here.)
 10. **Before destructive edits, state the plan.** Whole-file rewrites, large deletions, or schema changes get a one-paragraph "what I'm about to do" in the response BEFORE the edit. Pair with `/checkpoint <message>` if the user wants a named pre-edit save-point.
 11. **Before creating any new repo, check filesystem + existing remotes for the name.** See `brain/anti-patterns/accidental-public-repo.md`. The cost of asking is zero; the cost of an accidentally-public repo is reversible-but-embarrassing.
 12. **A product's CODE never lives inside this repo.** `products/<slug>/` is metadata only (markdown + `product.config.json` + the standard subfolders); the code goes in its own sibling repo, registered in gitignored `code-paths.local.json` with `code_path: null` in the config. Hamzaish is always public and nothing gitignores `products/*/code`. Enforced by `bun run check-product-layout` (CI). See `brain/anti-patterns/product-code-inside-factory-repo.md`.
@@ -224,7 +224,7 @@ Examples in this repo:
 
 **Rule for future Claude sessions**: when adding a file that contains *personal* content (identity, machine paths, secrets-adjacent context), create it as `<name>.local.<ext>` AND ship a `<name>.example.<ext>` template next to it. Anything that's universally useful stays as a regular committed file.
 
-**Path portability rule**: never hardcode `/Users/<name>/Claude/Hamzaish/` in any committed file. Use `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}` in scripts and slash commands. The default works for anyone who clones to `~/Claude/Hamzaish`; the env var lets anyone override.
+**Path portability rule**: never hardcode `/Users/<name>/Claude/Hamzaish/` in any committed file. Use `${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}` in slash commands and instructions. `bun run setup` records the real install folder as `HAMZAISH_ROOT` in `~/.claude/settings.json` → `env` (every session and hook sees it); the `~/Claude/Hamzaish` fallback is only the maintainer's layout — until 2026-09-19 nothing set the variable, so every install elsewhere pointed at nothing. Shell scripts fall back to their own location, never to that default. `bun run doctor` checks it all.
 
 ## Auto-commit + auto-push safety net (global on this machine)
 
@@ -261,7 +261,7 @@ Place in any repo's root to disable behavior just for that repo:
 |---|---|
 | `.hamzaish-managed` | **Opt this repo INTO the hooks' scope.** Required for repos that aren't the Hamzaish repo itself and aren't registered in `code-paths.local.json`. Without it (and without one of the other two scope conditions), the hooks do nothing in this repo. `.gitignore` it in product repos. |
 | `.auto-push` | **Opt IN to auto-push.** Without it, the Stop hook commits locally but never pushes (the safe default). With it, pushes happen — but only after a clean secret scan, and `.no-auto-push` still overrides it. |
-| `.no-auto-commit` | Full opt-out (no commit, no push, no auto-pull). Recommended for repos where commits must be explicit (e.g., Muakkil — Lovable round-trip). |
+| `.no-auto-commit` | Full opt-out (no commit, no push, no auto-pull). Recommended for repos where commits must be explicit (e.g., a repo another tool also writes to, like a Lovable round-trip). |
 | `.no-auto-push` | Never push, even if `.auto-push` is present (extra hard guard). Redundant under the new opt-in default, but kept so an explicit "do not push this repo" marker keeps working. |
 | `.no-auto-pull` | Commit (+ push if opted in), but don't auto-pull on session start. Rare; for repos where you manage your own rebase strategy. |
 

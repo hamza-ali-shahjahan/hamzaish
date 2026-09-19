@@ -39,7 +39,9 @@ set -u
 CHECK_INTERVAL_HOURS="${HAMZAISH_CHECK_INTERVAL_HOURS:-24}"
 FETCH_TIMEOUT=10
 
-ROOT="${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}"
+# Fallback: the clone this script lives in — not the maintainer's ~/Claude/Hamzaish,
+# which on any other machine is a folder that doesn't exist (2026-09-19).
+ROOT="${HAMZAISH_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 STATE="$HOME/.claude/.hamzaish-freshness.json"
 FORCE=0
 [ "${1:-}" = "--force" ] && FORCE=1

@@ -1,6 +1,6 @@
 {
   "name": "hamzaish",
-  "version": "2.32.0",
+  "version": "2.33.0",
   "private": true,
   "type": "module",
   "description": "The AI Co-builder & Startup OS \u2014 a brain + orchestrator for builders to run a portfolio of products from idea to scale.",
@@ -10,6 +10,7 @@
   },
   "scripts": {
     "setup": "bun scripts/setup.ts",
+    "doctor": "bun scripts/doctor.ts",
     "update": "git pull --ff-only && bun scripts/setup.ts",
     "ingest": "bun brain/ingest.ts",
     "ask": "bun brain/ask.ts",
