@@ -47,7 +47,14 @@ fi
 # 4. Setup (idempotent; never clobbers existing .local files)
 say "Running setup…"
 # HAMZAISH_INSTALLER=1: setup skips its own "Next" block — the one below is the only one.
-( cd "$DIR" && HAMZAISH_INSTALLER=1 bun run setup )
+# Under `curl | sh` this shell's stdin is the script itself, so setup's yes/no questions
+# would read end-of-file and silently answer "no". Give them the keyboard when there is
+# one; with no terminal (CI, an agent's shell) they keep today's safe default of "no".
+if (exec < /dev/tty) 2>/dev/null; then
+  ( cd "$DIR" && HAMZAISH_INSTALLER=1 bun run setup < /dev/tty )
+else
+  ( cd "$DIR" && HAMZAISH_INSTALLER=1 bun run setup )
+fi
 
 # 5. Claude Code (the agent that drives the factory — check, don't assume)
 printf '\n'
