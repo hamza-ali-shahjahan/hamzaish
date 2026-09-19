@@ -7,7 +7,6 @@ Your AI writes the code. Hamzaish runs the company.
 
 [![🌱 Beginner-Friendly](https://img.shields.io/badge/%F0%9F%8C%B1_Beginner--Friendly-8957e5.svg)](docs/start-here.md)
 [![Secure by default](https://img.shields.io/badge/Secure-by%20default-success.svg)](docs/security.md)
-[![License AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 [![version](https://img.shields.io/github/package-json/v/hamza-ali-shahjahan/hamzaish?label=version&color=8957e5)](meta/changelog.md)
 [![guards](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml/badge.svg)](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml)
 
