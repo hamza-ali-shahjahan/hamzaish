@@ -35,6 +35,8 @@ On any machine but the maintainer's, a fresh install's global commands and fresh
 
 Whether `bun run doctor` is what a stuck newcomer actually reaches for. The time from install to a running app is still unmeasured, so the README's "60 seconds" stays unverified until it is. Product state still lives inside the clone folder — ignored, but co-located; the durable split into a separate workspace path is still staged.
 
+**/release v2.33.0** (2026-09-19): cut from 3 changelog entries since v2.31.0 (this one + v2.32.0 + the 2026-09-04 `/learn-loop`) — [releases/tag/v2.33.0](https://github.com/hamza-ali-shahjahan/hamzaish/releases/tag/v2.33.0), announced in [Discussions #106](https://github.com/hamza-ali-shahjahan/hamzaish/discussions/106). The pinned Welcome's counts were stale (146 practices · 50 playbooks) and now read 148 · 53.
+
 ---
 
 ## 2026-09-06 — v2.32.0 · the gate that separates "rejected" from "never tested"
