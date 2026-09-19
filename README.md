@@ -37,41 +37,108 @@ Point Hamzaish at an idea — and run the whole company around the code your age
 
 ## Quick start
 
-You need [Claude Code](https://claude.ai/code) on a paid plan, [Bun](https://bun.sh),
-and the [GitHub CLI](https://cli.github.com) for the git-facing skills.
+**Pick your path:** 🌱 [First time? Use the desktop app](#-using-the-claude-desktop-app-easiest-no-terminal) · 💻 [Prefer Terminal?](#-using-terminal) · ⚡ [Already use Claude Code?](#-already-use-claude-code) · 🔧 [Advanced](#-advanced)
+
+### 🌱 Using the Claude desktop app (easiest, no Terminal)
+
+On Windows? Follow the [Windows guide](docs/start-here.md) for now.
+
+1. **Get the app:** download it from [claude.com/download](https://claude.com/download), open it, and log in (Pro or Max plan).
+2. **Open the Code tab** and choose a folder to work in. Documents is fine.
+3. **Paste this message and press Enter:**
+
+   ```
+   Install Hamzaish for me by running this, then tell me in plain words what happened:
+   curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | HAMZAISH_REGISTER_HOOK=yes HAMZAISH_REGISTER_GUARDS=yes sh
+   ```
+
+   When Claude asks permission to run it, click **Allow**. The `yes` parts turn on the plans and receipts, update notices, and safety guards.
+4. **Start a new Code session** and choose the new **hamzaish** folder.
+5. **Type** `/builder-mode a tip calculator for freelancers` and press **Enter**.
+
+**Stuck?** Type: *run bun run doctor and fix what it finds*.
+
+### 💻 Using Terminal
+
+No coding and no GitHub account needed. You'll paste three lines into a window called Terminal.
+On Windows? Follow the [Windows guide](docs/start-here.md) instead.
+
+**Step 1 — Open Terminal**
+
+- **Mac:** press `⌘ Command` + `Space`, type **Terminal**, and press **Enter**.
+- **Linux:** press `Ctrl` + `Alt` + `T`.
+
+A window opens with a blinking cursor. For each step below, paste the line into that window and press **Enter**. Never used Terminal before? Here's a [short guide](https://code.claude.com/docs/en/terminal-guide).
+
+**Step 2 — Install Claude Code** (the AI that does the building)
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+✅ When it finishes, you'll see a success message.
+
+**Step 3 — Install Hamzaish**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
 ```
 
-<details><summary>…or set it up by hand</summary>
+It asks three yes/no questions. Type **y** and press **Enter** each time. They turn on Hamzaish's plans and receipts, update notices, and safety guards.
+
+✅ You'll see: **Ready. Your factory is at ./hamzaish**
+
+**Step 4 — Start Claude Code inside Hamzaish**
 
 ```bash
-git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
-cd hamzaish
-bun run setup        # idempotent — creates YOUR factory, never touches existing data
+cd hamzaish && claude
 ```
+
+The first time, your browser opens so you can log in with your Claude account (Pro or Max plan). If Claude Code asks whether you trust this folder, choose **Yes**.
+
+**Step 5 — Build your idea**
+
+Type this into Claude Code and press **Enter**. Swap in your own idea any time:
+
+```
+/builder-mode a tip calculator for freelancers
+```
+
+Hamzaish shows you a plan first, then builds it step by step. You approve each step.
+
+**If something goes wrong**
+
+- **`command not found`?** Close Terminal, open a new window, and repeat that step.
+- **Your Mac asks to install "command line developer tools"?** Click **Install**, wait until it's done, then repeat Step 3.
+- **Anything else:** in a new Terminal window, run `cd hamzaish && bun run doctor`. It tells you what's wrong and how to fix it.
+
+### ⚡ Already use Claude Code?
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | sh
+```
+
+Then run `cd hamzaish && claude` and type `/builder-mode <your idea>`. Update any time with `bun run update`, and check your setup with `bun run doctor`.
+
+### 🔧 Advanced
+
+<details><summary>Install by hand, choose the folder, check everything, go live, or install single pieces</summary>
+
+- **Install by hand** (needs git and [Bun](https://bun.sh)):
+  ```bash
+  git clone https://github.com/hamza-ali-shahjahan/hamzaish.git
+  cd hamzaish
+  bun run setup
+  ```
+- **Choose the folder:** `curl -fsSL https://raw.githubusercontent.com/hamza-ali-shahjahan/hamzaish/main/install.sh | HAMZAISH_DIR=~/code/hamzaish sh`
+- **Answer setup's questions up front:** `HAMZAISH_REGISTER_HOOK=yes HAMZAISH_REGISTER_GUARDS=yes bun run setup` (or `no`).
+- **Check the whole factory:** `bun run verify --all`
+- **Take a product live:** `/go-live` connects your accounts once, `/security-check` reviews the product, and `/ship` puts it on a URL you can share.
+- **Just want one piece?** `claude plugin marketplace add hamza-ali-shahjahan/hamzaish` installs `web-launch` or `repo-scout` into your own project.
+- **Windows:** use [WSL](https://learn.microsoft.com/windows/wsl/install) and follow the Mac and Linux steps, or use the [desktop-app guide](docs/start-here.md).
+- **Git-facing commands** such as `/pr` use the [GitHub CLI](https://cli.github.com).
+
 </details>
-
-Watch it check itself before you build anything with it:
-
-```bash
-bun run verify --all
-```
-
-Then open Claude Code in the folder and type:
-
-```
-/builder-mode <your idea>
-```
-
-You get a **local-first product running in 60 seconds.** Local is mile one:
-**`/go-live`** wires the accounts you set up once, **`/security-check`** gates it,
-and **`/ship`** puts it on a URL you can share.
-([The 10-minute guided version →](docs/your-first-product.md) · [never used a terminal? →](docs/start-here.md))
-
-**Just want the pieces?** `claude plugin marketplace add hamza-ali-shahjahan/hamzaish`
-installs `repo-scout` or `web-launch` into your own repo.
 
 ## What it is
 
