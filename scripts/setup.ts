@@ -32,7 +32,7 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { decideCommandAction } from "./lib/command-refresh";
-import { CORE_COMMANDS, chooseRoot, repointStaleHooks, samePath } from "./lib/install";
+import { CORE_COMMANDS, chooseRoot, globalCommands, repointStaleHooks, samePath } from "./lib/install";
 
 const ROOT = resolve(import.meta.dir, "..");
 const HOME = homedir();
@@ -272,9 +272,12 @@ step(7, "Global slash commands (so /builder-mode, /work-on, /brain-ask, etc. wor
   //
   // The manifest (.hamzaish-installed.json) is still the conffile pattern: dest==manifest
   // → we installed it, safe to refresh (now: when the stub template or the source's
-  // frontmatter changes); dest!=manifest → user customized it, never clobber. Scope: the
-  // CORE set installs if missing; ANY ~/.claude/commands/*.md with a factory/commands
-  // counterpart is refresh-managed (having it there is the opt-in).
+  // frontmatter changes); dest!=manifest → user customized it, never clobber. Scope:
+  // EVERY factory command installs if missing (2026-09-19 — before that only CORE did,
+  // so /builder-mode's hand-offs to /full-cycle, /build, /ship … were unknown in any chat
+  // opened outside the Hamzaish folder), minus the names Claude Code ships as built-ins
+  // (CLAUDE_BUILTIN_NAMES: a user-scope stub could change what typing /plan does in every
+  // project). ANY ~/.claude/commands/*.md with a factory counterpart stays refresh-managed.
   //
   // The stub names the install's absolute path (decided in step 6.5) rather than
   // ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}: the Read tool expands no variables, and
@@ -296,7 +299,9 @@ step(7, "Global slash commands (so /builder-mode, /work-on, /brain-ask, etc. wor
       "",
       `The user invoked: \`/${name} $ARGUMENTS\``,
       "",
-      `Hamzaish lives at \`${INSTALL_ROOT}\` — wherever a factory file says \`$HAMZAISH_ROOT\` (or \`\${HAMZAISH_ROOT:-…}\`), it means that folder.`,
+      `Hamzaish lives at \`${INSTALL_ROOT}\` — wherever a factory file says \`$HAMZAISH_ROOT\` (or \`\${HAMZAISH_ROOT:-…}\`), it means that folder, and relative paths such as \`products/…\` start there too.`,
+      "",
+      `When a factory file hands off to another Hamzaish command or skill by name, use Hamzaish's version: if this chat doesn't offer it, open \`${FACTORY_CMD}/<name>.md\` or \`${join(INSTALL_ROOT, "factory", "skills")}/<name>/SKILL.md\` and follow that. Claude Code's own \`/goal\`, \`/plan\` and \`/review\` are different commands — for those names, always use Hamzaish's file.`,
       "",
       `Read \`${FACTORY_CMD}/${name}.md\` and follow it exactly as if it were this command's body, applying \`$ARGUMENTS\` as it specifies. It always reflects the current factory version — never answer from a stale copy.`,
       "",
@@ -317,7 +322,7 @@ step(7, "Global slash commands (so /builder-mode, /work-on, /brain-ask, etc. wor
     /* first run under the manifest scheme */
   }
 
-  const names = new Set(CORE);
+  const names = new Set(globalCommands(INSTALL_ROOT));
   for (const f of readdirSync(CMD_DIR)) {
     if (f.endsWith(".md") && existsSync(join(INSTALL_ROOT, "factory", "commands", f))) names.add(f.slice(0, -3));
   }
@@ -639,7 +644,7 @@ console.log(`   ${c.dim("created")} ${created}   ${c.dim("already-set")} ${skipp
 if (process.env.HAMZAISH_INSTALLER !== "1") {
   console.log(`
 ${c.bold("Next:")} open Claude Code in this folder and type
-      ${c.gold("/builder-mode <your idea>")}   ${c.dim("e.g. /builder-mode a tip calculator for freelancers")}
+      ${c.gold("/builder-mode <your idea>")}
 
 ${c.dim("Stuck? bun run doctor checks your setup and prints the fix for anything wrong.")}
 ${c.dim("Re-run setup anytime — it only fills in what's missing.")}

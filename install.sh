@@ -73,7 +73,7 @@ cat <<EOF
   Next — open Claude Code in it and type /builder-mode with your idea:
     cd "$DIR"
     claude                                         # open Claude Code here
-    /builder-mode a tip calculator for freelancers
+    /builder-mode <your idea>
 
   Stuck? Run  bun run doctor  inside that folder — it prints the fix.
 EOF

@@ -11,7 +11,7 @@ import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { CORE_COMMANDS, hamzaishHook, hookCommands, stubTarget } from "./lib/install";
+import { CLAUDE_BUILTIN_NAMES, globalCommands, hamzaishHook, hookCommands, stubTarget } from "./lib/install";
 
 const REPO = resolve(import.meta.dir, "..");
 const plain = (s: string) => s.replace(/\x1b\[[0-9;]*m/g, "");
@@ -79,13 +79,23 @@ describe("a stranger's fresh install", () => {
     expect(settings().env?.HAMZAISH_ROOT).toBe(clone);
   });
 
-  test("every global command points at a file inside this install", () => {
-    for (const name of CORE_COMMANDS) {
+  test("every Hamzaish command works in every chat, pointing at a file inside this install", () => {
+    const names = globalCommands(clone);
+    expect(names.length).toBeGreaterThanOrEqual(20);
+    for (const name of names) {
       const stub = readFileSync(join(home, ".claude", "commands", `${name}.md`), "utf8");
       // No HAMZAISH_ROOT passed: the stub must work without it.
       const target = stubTarget(stub, { HOME: home });
       expect(target).toBe(join(clone, "factory", "commands", `${name}.md`));
       expect(existsSync(target!)).toBe(true);
+      // Hand-offs (/full-cycle, the `plan` skill, …) resolve from any folder.
+      expect(stub).toContain(join(clone, "factory", "skills"));
+    }
+  });
+
+  test("never claims a name Claude Code ships as a built-in", () => {
+    for (const name of CLAUDE_BUILTIN_NAMES) {
+      expect(existsSync(join(home, ".claude", "commands", `${name}.md`))).toBe(false);
     }
   });
 

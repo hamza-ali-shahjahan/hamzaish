@@ -7,13 +7,38 @@
 // `env.HAMZAISH_ROOT` in ~/.claude/settings.json (Claude Code applies settings `env`
 // to every session and its subprocesses — Bash tool calls and hooks included), bakes
 // it into the global pointer stubs, and re-points hooks whose clone has moved.
-import { existsSync, realpathSync } from "node:fs";
+import { existsSync, readdirSync, realpathSync } from "node:fs";
 import { join } from "node:path";
 
-/** Commands setup installs globally even if the user never copied them. */
+/** Commands whose global stub keeps the source's full description (natural-language routing). */
 export const CORE_COMMANDS = [
   "hamzaish", "builder-mode", "work-on", "portfolio-pulse", "brain-ask", "brain-ingest", "idea-gate",
 ];
+
+/**
+ * Hamzaish command names that Claude Code also ships as built-ins
+ * (https://code.claude.com/docs/en/commands): `/goal`, `/plan` (plan mode), `/review`
+ * (alias of `/code-review`). Never installed for every chat — a user-scope stub could
+ * change what typing them does in every project on the machine. Inside the Hamzaish
+ * folder they still resolve as project commands, and every stub tells Claude to read
+ * Hamzaish's own file for these names when a factory file hands off to them.
+ */
+export const CLAUDE_BUILTIN_NAMES = new Set(["goal", "plan", "review"]);
+
+/**
+ * Every factory command setup installs for every chat (since 2026-09-19 — before that,
+ * only CORE_COMMANDS, so /builder-mode's hand-offs to /full-cycle, /build, /ship … were
+ * unknown in any chat opened outside the Hamzaish folder).
+ */
+export function globalCommands(root: string): string[] {
+  const dir = join(root, "factory", "commands");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((f) => f.endsWith(".md"))
+    .map((f) => f.slice(0, -3))
+    .filter((n) => !CLAUDE_BUILTIN_NAMES.has(n))
+    .sort();
+}
 
 /** Hook scripts Hamzaish registers, by their path inside a clone. */
 export const HOOK_SCRIPTS = [
