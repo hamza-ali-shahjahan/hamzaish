@@ -16,7 +16,7 @@ Your AI writes the code. Hamzaish runs the company.
 <img src="https://img.shields.io/badge/70-security_checks-success.svg" alt="70 security checks">
 
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
-[![AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+[![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **[Install](#quick-start) · [What it is](#what-it-is) · [What's inside](#whats-inside) · [Philosophy](docs/philosophy.md) · [Docs](docs/)**
 
@@ -401,11 +401,11 @@ The backbone is hard-won venture experience — the Business-SWAT roles, opportu
 
 ## License
 
-**TL;DR — free for builders. Don't take it closed-source and sell it.**
+**MIT — use it for anything, including your own paid products.**
 
-In plain English: use, study, modify, and self-host freely. If you run a *modified* version as a network service, your source must be AGPL too — your work stays open for solo builders and teams; nobody quietly turns it into a closed product.
+In plain English: copy it, change it, build and sell whatever you make with it. Just keep the copyright notice in copies of Hamzaish. See [`LICENSE`](LICENSE).
 
-**AGPL-3.0** — clean, no added clauses; see [`LICENSE`](LICENSE).
+The license covers the code, not the name. Fork freely, but give your fork its own name and logo.
 
 ---
 

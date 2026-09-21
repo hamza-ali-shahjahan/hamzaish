@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-09-22 — v2.34 · MIT: build on it, keep what you build
+
+**What changed**
+
+- **`LICENSE` swapped AGPL-3.0 → MIT** (canonical text, copyright Hamza Ali Shahjahan); `package.json` says `MIT`, so GitHub detects the repo as MIT.
+- **README's `## License` section rewritten** — "use it for anything, including your own paid products", plus one line stating the license covers the code, not the Hamzaish name or logo. (#111 had already cut the duplicate license badge from the header row.)
+- **Every statement of the project's own license follows** — `docs/FAQ.md` (free / commercial use), `docs/contributing.md` (contributions are inbound-MIT; the relicensing grant the dual-license model needed is retired), `AGENTS.md`, `BEST-PRACTICES.md`.
+- **hamzaish.com** — the FAQ, the page's structured data and `llms.txt` say MIT; "commercial license on request" is gone.
+- Left as history: the v1.9 entry below (MIT → AGPL) and the AGPL case studies in `docs/LEARN-FROM-REPOS.md`, which study other repos, not this one.
+
+**Why**
+
+Hamzaish is a kit people copy into their own products — the Next.js starter, the hooks, the templates — not an app people run. Under AGPL, a founder who builds on the starter and serves a modified version over a network owes their users the source, on the standard reading. That founder is exactly who Hamzaish is for, so the license was taxing the audience it was written for. The v1.9 choice (2026-06-02, MIT → AGPL) bought a commercial-license path that nobody has asked for in three and a half months at 9 stars; adoption is worth more than that option today. The three projects Hamzaish credits and sits beside — agent-skills, gbrain, hermes-agent — are all MIT.
+
+**Retro:** skipped — a license swap with a recorded decision (`brain/decision-log/2026-09-22-license-mit.md`), not a build cycle with lessons to mine.
+
+**What to revisit**
+
+Whether a README line is enough to protect the name, or whether a fork shipping as "Hamzaish" forces a real trademark note. This is one-way for anything already published: every version released from here is MIT forever, and earlier versions stay AGPL for whoever holds a copy.
+
+---
+
 ## 2026-09-19 — v2.33.0 · an install anywhere works, and says so when it doesn't
 
 **What changed**

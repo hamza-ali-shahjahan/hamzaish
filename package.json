@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "description": "The AI Co-builder & Startup OS \u2014 a brain + orchestrator for builders to run a portfolio of products from idea to scale.",
-  "license": "AGPL-3.0-or-later",
+  "license": "MIT",
   "engines": {
     "bun": ">=1.0.0"
   },
