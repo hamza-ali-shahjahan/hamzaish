@@ -116,15 +116,15 @@ Four layers: **`brain/`** (what it knows — identity, principles, learnings),
 changelog, retros, evals). ([Full architecture →](architecture.md))
 
 ### Is Hamzaish free?
-Yes — Hamzaish itself is free and open source (AGPL-3.0): clone, fork, and use it at
+Yes — Hamzaish itself is free and open source (MIT): clone, fork, and use it at
 no cost. You do need a paid Claude plan to run the AI engine. There's no separate
 Hamzaish subscription.
 
 ### Can I use Hamzaish commercially?
-The factory is licensed AGPL-3.0 — use it, fork it, and build commercial products
-with it freely; products you build are yours. The one ask: don't take Hamzaish itself
-closed-source and resell the factory. A commercial license for the factory is
-available on request.
+Yes. Hamzaish is MIT-licensed — use it, fork it, and build and sell whatever you
+make with it; products you build are yours, closed-source or not. The only condition
+is MIT's own: keep the copyright notice in copies of Hamzaish itself. The name and
+logo aren't part of the license — give a public fork its own name.
 
 ### How can I contribute?
 Issues and PRs are welcome — see [docs/contributing.md](contributing.md). High-value

@@ -197,4 +197,4 @@ When a ⏳ practice survives its first real-world test, it gets re-badged with t
 
 ---
 
-*Part of [Hamzaish](README.md) — the Claude Code setup that doesn't stop at code. AGPL-3.0.*
+*Part of [Hamzaish](README.md) — the Claude Code setup that doesn't stop at code. MIT.*
