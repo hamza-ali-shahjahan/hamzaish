@@ -32,6 +32,8 @@ built one of these: thank you. You moved us forward, and we're loud about it.
 - **[openclaw](https://github.com/openclaw/openclaw)** — multi-channel gateway patterns.
 - **[ponytail](https://github.com/DietrichGebert/ponytail)** by **DietrichGebert** (MIT) — the one-skill-many-agents portability layout, and the lazy-senior-dev creed that *the best code is the code never written.*
 
+- **[Suraj Sharma](https://x.com/suraj_sharma14/status/2107478486227071360)** (@suraj_sharma14): his post on the six legal traps hiding in vibe-coded apps became `/legal-check`, the legal scan in `/security-check`, and the `/ship` gate (v2.34.0).
+
 *Frameworks woven through the playbooks: Sean Ellis (the 40% PMF signal we won't
 fake), Rob Fitzpatrick's* The Mom Test, *and Clayton Christensen's
 Jobs-to-be-Done. We didn't invent them; we lean on them daily.*
