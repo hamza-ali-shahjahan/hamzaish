@@ -71,12 +71,15 @@ const research = practiceLines.filter((l) => l.includes("⏳")).length;
 const securityChecks = read("factory/playbooks/mvp-stage/security-checklist.md")
   .split("\n").filter((l) => /^\s*[-*] \[/.test(l) || l.includes("☐")).length;
 
+// one `const id = "…"` per check in the legal-traps scanner (age gate, fonts, …)
+const legalChecks = (read("scripts/check-legal-traps.ts").match(/^\s+const id = "[a-z-]+"/gm) ?? []).length;
+
 const skillsAndCommands = skills + commands;
 
 console.log(
   `derived from disk:\n` +
   `  agents=${agents} (stage=${stageAgents})  skills=${skills}  commands=${commands}  (skills+commands=${skillsAndCommands})\n` +
-  `  playbooks=${playbooks}  practices=${practices} (✅${proven} 🟡${partial} ⏳${research})  security-checks=${securityChecks}`
+  `  playbooks=${playbooks}  practices=${practices} (✅${proven} 🟡${partial} ⏳${research})  security-checks=${securityChecks}  legal-checks=${legalChecks}`
 );
 
 // ─── assertions against the claim sites ──────────────────────────────────────
@@ -145,6 +148,7 @@ const BADGE_COUNTS: Record<string, number> = {
   "skills & commands": skillsAndCommands,
   "playbooks": playbooks,
   "security checks": securityChecks,
+  "legal checks": legalChecks,
 };
 read("README.md").split("\n").forEach((line, i) => {
   for (const m of line.matchAll(/img\.shields\.io\/badge\/(\d+)-([^-"]+)-/g)) {
