@@ -82,3 +82,11 @@ Saved to `products/<name>/scale/compliance-YYYY-MM.md`:
 - Don't certify compliance — you're a gap analysis, not a real audit.
 - Don't recommend HIPAA work if there's no PHI. Don't recommend SOC2 work if there's no enterprise pipeline.
 - Don't conflate frameworks. SOC 2 ≠ ISO 27001 ≠ GDPR. They overlap but require separate evidence.
+
+## Before any formal framework: the six per-unit traps
+SOC 2 and GDPR audits come later. The cheapest exposure to remove is the six traps
+fined per child, visitor, session, email, renewal or work (COPPA age gate, Google-hosted
+fonts, session replay, CAN-SPAM footer, auto-renewal terms, DMCA agent). Run
+`/legal-check <slug>` first, and `/legal-check --all --fix` across the portfolio. Playbook:
+`factory/playbooks/launch-stage/legal-launch-traps.md`.
+

@@ -1,0 +1,41 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: scanner-flags-seeded-traps
+skill: legal-check
+description: >
+  The /legal-check + /security-check § 7a backend (scripts/check-legal-traps.ts)
+  must flag a fixture app seeded with all six traps: magic-link signup with no
+  age question, a fonts.googleapis.com stylesheet, posthog.init without the
+  replay off-switch, a Resend newsletter with no unsubscribe or postal address,
+  a subscription checkout whose Subscribe button has no renewal copy, and a
+  Supabase storage upload (chained over three lines) with no DMCA policy.
+  True-positive half of the pair. Verified live 2026-10-07 (5 FAIL, 1 WARN, exit 1).
+invoke:
+  cmd:
+    - bun
+    - scripts/check-legal-traps.ts
+    - meta/evals/skills/legal-check/fixtures/traps-seeded
+  timeout_ms: 15000
+preflight:
+  commands: ["bun"]
+  must_exist:
+    - scripts/check-legal-traps.ts
+    - meta/evals/skills/legal-check/fixtures/traps-seeded/src/app/login/page.tsx
+checks:
+  - type: exit_code
+    equals: 1
+  - type: stdout_matches
+    regex: "FAIL Age gate on signup"
+  - type: stdout_matches
+    regex: "FAIL Self-hosted fonts"
+  - type: stdout_matches
+    regex: "WARN Session replay"
+  - type: stdout_matches
+    regex: "FAIL Unsubscribe link \\+ postal address"
+  - type: stdout_matches
+    regex: "FAIL Renewal terms next to the subscribe button"
+  - type: stdout_matches
+    regex: "FAIL Registered DMCA agent"
+  - type: stdout_count_min
+    regex: "^❌ FAIL"
+    min: 5

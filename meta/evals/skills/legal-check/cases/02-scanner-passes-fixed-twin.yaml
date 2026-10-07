@@ -1,0 +1,28 @@
+# AGENT-BLIND: the system under test must never read this file. cases/ is
+# excluded from the brain index (brain/ingest.ts SKIP_PATHS).
+name: scanner-passes-fixed-twin
+skill: legal-check
+description: >
+  The false-positive guard: the same app with every house fix applied
+  (birth-year gate in the auth code, next/font, disable_session_recording,
+  unsubscribe + POSTAL_ADDRESS footer, renewal copy beside the button, a /dmca
+  page) must produce no FAIL and exit 0. DMCA stays WARN by design — agent
+  registration can't be checked from code. Verified live 2026-10-07 (0 FAIL, exit 0).
+invoke:
+  cmd:
+    - bun
+    - scripts/check-legal-traps.ts
+    - meta/evals/skills/legal-check/fixtures/traps-clean
+  timeout_ms: 15000
+preflight:
+  commands: ["bun"]
+  must_exist:
+    - scripts/check-legal-traps.ts
+    - meta/evals/skills/legal-check/fixtures/traps-clean/src/app/dmca/page.tsx
+checks:
+  - type: exit_code
+    equals: 0
+  - type: stdout_matches
+    regex: "no blocking traps found"
+  - type: stdout_matches
+    regex: "WARN Registered DMCA agent"

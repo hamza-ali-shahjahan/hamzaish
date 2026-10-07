@@ -41,6 +41,9 @@ A remediation list saved to `products/<name>/decisions/security-review-YYYY-MM-D
 ### Rate limiting & abuse
 - [ ] ...
 
+### Legal launch traps (per-unit fines)
+- [ ] age gate · fonts · session replay · marketing email · renewal terms · DMCA, from `/legal-check <slug>`
+
 ## Severity guide
 - Critical: ship-blocker (data leak, auth bypass, secret in repo)
 - High: fix before next release
@@ -55,7 +58,8 @@ A remediation list saved to `products/<name>/decisions/security-review-YYYY-MM-D
 ## Protocol
 1. Read the product's `CLAUDE.md` to know the stack and patterns.
 2. Read `package.json` and `pnpm-lock.yaml` for dependency baseline.
-3. Run through this checklist:
+3. Run `/legal-check <slug>` (scan only) and copy its confirmed findings into the *Legal launch traps* section. Each one is a High at minimum: they're fined per user, so launch day is when they hurt. Fixes live in `factory/playbooks/launch-stage/legal-launch-traps.md`.
+4. Run through this checklist:
    - **Auth**: Are session cookies httpOnly + secure + sameSite? Are reset flows rate-limited? Are tokens scoped?
    - **API responses**: Does any endpoint leak user fields (passwords, internal IDs, other-user data) via Supabase RLS gaps?
    - **Input**: Are all server-side handlers using zod or equivalent validation? Are SQL params parameterized? Are file uploads scoped?

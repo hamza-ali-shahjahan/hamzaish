@@ -11,7 +11,7 @@ Your AI writes the code. Hamzaish runs the company.
 [![guards](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml/badge.svg)](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml)
 
 <img src="https://img.shields.io/badge/35-agents-8957e5.svg" alt="35 agents">
-<img src="https://img.shields.io/badge/69-skills_%26_commands-d97757.svg" alt="69 skills & commands (45 skills, 24 commands)">
+<img src="https://img.shields.io/badge/70-skills_%26_commands-d97757.svg" alt="70 skills & commands (45 skills, 25 commands)">
 <img src="https://img.shields.io/badge/54-playbooks-blue.svg" alt="54 playbooks">
 <img src="https://img.shields.io/badge/70-security_checks-success.svg" alt="70 security checks">
 
@@ -142,7 +142,7 @@ what makes those hands a company:
 - **A brain** — learnings, decisions, and anti-patterns in markdown, SQLite-indexed,
   searchable from any session. When a mistake generalizes it becomes a guardrail
   the next build inherits, so your second product starts smarter than your first.
-- **A factory** — 35 agents and 45 skills + 24 commands across
+- **A factory** — 35 agents and 45 skills + 25 commands across
   Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down. Most AI tools stop
   when the code is done; solo projects die *after* that — in the security review,
   the launch, the pricing call, the kill decision.
@@ -173,6 +173,7 @@ The honesty is enforced, not promised. Every claim below has a command you can r
 | Decisions record what they beat | decision · why · alternatives · wrong-if · revisit | `bun run check-decisions` |
 | A deployed product is really live | read-only assertions against the real URL — DNS, TLS, authz, build-SHA | `bun scripts/verify-live.ts <url>` |
 | Nothing ships unreviewed | 70-check security review with a forced BLOCK/CLEAR verdict | `/security-check` |
+| No per-user legal fines on launch day | Age gate, self-hosted fonts, replay off, CAN-SPAM footer, renewal terms, DMCA — scanned before every ship, fixed by PR | `/legal-check` |
 | What was actually checked | exit codes recorded to a hash-chained ledger, rendered into the receipt | `bun run verify --show` |
 
 Green looks like `✓ all headline counts match disk`, an eval summary of
@@ -183,7 +184,7 @@ Green looks like `✓ all headline counts match disk`, an eval summary of
 | | | |
 |---|---|---|
 | 🧠 **A brain that remembers** | learnings, decisions, and anti-patterns — SQLite-indexed, searchable from any session via `/brain-ask` | [`brain/`](brain/) |
-| 🏭 **A factory that acts** | 35 agents + 69 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
+| 🏭 **A factory that acts** | 35 agents + 70 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
 | 📖 **Playbooks with receipts** | 54 playbooks · 148 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
 | 🔒 **A gate that blocks** | 70-check pre-launch security review (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict | [security checklist](factory/playbooks/mvp-stage/security-checklist.md) |
 | 🧪 **An engine that proves** | eval-gated build cycle — a feature slice without a named eval + an end-to-end test doesn't get built | [`/full-cycle`](factory/commands/full-cycle.md) |
@@ -264,9 +265,9 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 
 </details>
 
-<details><summary><b>🛠️ The skills & commands (69)</b></summary>
+<details><summary><b>🛠️ The skills & commands (70)</b></summary>
 
-45 skills + 24 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
+45 skills + 25 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
 
 | Invoke | What it does |
 |---|---|
@@ -289,7 +290,8 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 | `/name-clearance` | Clear a name BEFORE buying the domain: collision, trademark signal, availability |
 | `/competitor-research` | Map the competitive landscape; persists per-product so it compounds |
 | `/go-live` | Guided, stateful stack provisioning — deep-links, key validation, `.env.local` writes, resumable; then hands to `/security-check` → `/ship` |
-| `/security-check` | Fast security baseline: tracked secrets, vulnerable Actions, workflow permissions |
+| `/security-check` | Fast security baseline: tracked secrets, vulnerable Actions, workflow permissions, legal launch traps |
+| `/legal-check` | The six per-unit legal traps (age gate, Google Fonts, session replay, marketing email, renewal terms, DMCA): scan, or `--fix` to patch and open a PR; `--all` for every product |
 | `/ship` | The single deploy action — gates on `/security-check`, promotes reviewed commits to production |
 | `/checkpoint` | Named save-point commit between auto-commits |
 | `/brain-ask` | Search every learning, decision, playbook, and product doc — ranked citations |

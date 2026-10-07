@@ -1,6 +1,7 @@
 # Legal launch traps — six per-unit fines an AI-built app ships by default
 
-> **Scanner:** `bun scripts/check-legal-traps.ts <code_path>` (runs as `/security-check` § 8 and gates `/ship`).
+> **Fix it:** `/legal-check <slug> --fix` (or `--all --fix` for every product) — scan, refute false positives, patch, re-scan, PR.
+> **Scanner:** `bun scripts/check-legal-traps.ts <code_path>` (also runs as `/security-check` § 7a and gates `/ship`).
 > Not legal advice — it finds the trigger and checks for the fix's marker. A lawyer decides what *your* app owes.
 
 The danger is the unit. Each of these is assessed **per child, per visitor, per session, per email, per renewal, or per work** — so an app with zero sales and a busy launch day can rack up a six-figure exposure. Every fix below is an afternoon. Each trap only applies when its trigger exists; the scanner reports N/A otherwise.
@@ -41,8 +42,6 @@ Hosted ESPs (Mailchimp, Beehiiv, Kit, Loops) add the footer — set the address 
 **Fix:** register a designated agent at **dmca.copyright.gov** ($6, expires after 3 years — calendar the renewal), then publish `/dmca` (or a terms section) with the agent's name, address, email and the takedown/counter-notice steps. Registration is manual; code can only publish the page. Read the agent details from config so the page can't ship with a placeholder (`DMCA_AGENT_*`).
 
 ## Applying it to an existing app
-1. Run the scanner; fix every ❌ on a branch (`legal/launch-traps`), one commit per trap.
-2. Never invent a postal address or agent — wire env vars and list them in the PR as "operator must fill".
-3. Re-run the scanner on the branch; open a PR with the before/after table.
+Run `/legal-check <slug> --fix`. It verifies each ❌ against the code (the regex raises false alarms on seed data, tool catalogs and CSV imports), fixes on `legal/launch-traps` with one commit per trap, never invents an address or agent, re-scans, and opens a PR with the before/after table and the operator to-dos.
 
 Sources: FTC COPPA Rule (16 CFR 312); LG München I, 3 O 17493/20 (20 Jan 2022); Cal. Penal Code § 631/637.2; 15 U.S.C. § 7704; Cal. Bus. & Prof. Code §§ 17600–17606; 17 U.S.C. § 512(c)(2), 37 CFR 201.38.
