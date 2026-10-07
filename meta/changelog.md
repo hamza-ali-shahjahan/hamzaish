@@ -10,6 +10,28 @@ At a major-cycle boundary, the entries accumulated here since the last tag are p
 
 ---
 
+## 2026-10-07 — v2.35 · legal launch traps: six per-unit fines, checked before ship
+
+**What changed**
+
+- **`scripts/check-legal-traps.ts`** (`bun run check-legal-traps <code_path>`) — a deterministic scanner for six legal traps AI-built apps ship by default, each fined per unit: signup with no age gate (COPPA, per child), fonts from Google's servers (GDPR, per visitor), session replay without opt-in (CIPA, per session), marketing email without unsubscribe + postal address (CAN-SPAM, per email), subscription checkout without renewal terms beside the button (California ARL), user uploads without a DMCA agent (§ 512 safe harbor). PASS / FAIL / WARN / N/A with file:line evidence. A verified false positive is accepted in `legal-traps.json` with a written reason — never silently. 24 unit tests in `scripts/check-legal-traps.test.ts`.
+- **`/security-check` § 7a** runs the scanner; an unaccepted FAIL is a **BLOCK**, so **`/ship`** refuses to promote. Operator-only inputs the scanner can't verify (a real `POSTAL_ADDRESS`, a registered DMCA agent) are listed in the ship report and asked for in **`/go-live`**.
+- **New command `/legal-check <slug> [--fix] | --all`**: the retrofit workflow. It scans, has a reader refute the regex's false positives, fixes each confirmed trap on a branch with house defaults, re-scans, and opens a PR with the operator to-dos. `--all` sweeps every product in `code-paths.local.json`. It's a command, not a skill, so `bun run setup` installs it as a global stub and every user can type it from any product repo. Eval pair `meta/evals/skills/legal-check/` checks the scanner against a seeded fixture and its fixed twin. `mvp/security-reviewer` and `scale/compliance-auditor` now run it.
+- **New playbook `factory/playbooks/launch-stage/legal-launch-traps.md`** — each trap's trigger, fix and "done when" test; routed from `CLAUDE.md`. `launch-gotchas` gains the entry.
+- **The Next.js starter is clean on all six out of the box:** neutral birth-year gate on magic-link sign-in (`src/lib/legal.ts`, `MIN_AGE = 13`, refusal sticky for the session, nothing sent to auth or analytics); `disable_session_recording: true` in `posthog.init`; renewal terms under every trial button and in Stripe Checkout's `custom_text.submit`; `sendMarketingEmail()` that refuses to send without `POSTAL_ADDRESS`, adds the unsubscribe footer and one-click `List-Unsubscribe` headers; `/api/unsubscribe` (HMAC-signed tokens) + migration `0003_waitlist_unsubscribed.sql`. Starter type-check, `next build` and 30 vitest tests pass.
+
+**Why**
+
+A sweep of the maintainer's 78 other repos with this scanner (plus a manual refutation pass) found **37 with at least one confirmed trap** — 28 signups with no age question, 20 sites on Google-hosted fonts, 9 with replay left to a dashboard toggle, 8 storing uploads with no DMCA agent, 6 subscribe buttons with no renewal terms, 2 digest emails with no unsubscribe or address. Every one came from a scaffolder default, so the fix belongs in the factory's defaults and its ship gate, not in 37 memories. Each repo got a fix PR. The sweep also tightened the scanner: terms-page "18+" no longer passes as an age gate, `crypto.digest()` isn't a newsletter, CSV imports aren't hosting, "billed annually" isn't a renewal disclosure.
+
+**Retro:** skipped — the lessons are encoded as the scanner's tests and the launch-gotchas entry; no build cycle to mine.
+
+**What to revisit**
+
+It's regex, not a lawyer: watch the accept-file for patterns that keep recurring and turn them into scanner rules. Google sign-in on Supabase creates the account before any front-end gate runs — a server-side `before user created` hook would close it; not in the starter yet. EU audiences may need `MIN_AGE = 16` and a consent banner for GA4, both outside these six.
+
+---
+
 ## 2026-09-22 — v2.34 · MIT: build on it, keep what you build
 
 **What changed**

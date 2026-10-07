@@ -10,6 +10,7 @@ export function initAnalytics() {
       api_host: env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
       capture_pageview: true,
       capture_pageleave: true,
+      disable_session_recording: true,
     });
   }
   initialized = true;

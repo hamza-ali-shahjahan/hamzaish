@@ -117,6 +117,15 @@ description: A library of real, hard-won website-launch failure modes — each w
 
 ---
 
+## Legal traps (billed per unit, not per sale)
+
+### Six launch-day fines an AI-built app ships by default
+**What happened:** A sweep of 78 of the maintainer's own repos (2026-10-07) found 37 with at least one confirmed legal trap: 28 signups with no age question, 20 sites pulling fonts from Google's servers, 9 with session replay left to a dashboard toggle (one recording unmasked inputs), 6 subscribe buttons with no renewal terms beside them, 8 apps storing user uploads with no DMCA agent, and 2 digest emails with no unsubscribe or postal address.
+**Root cause:** Every scaffolder's defaults (Google Fonts links, `posthog.init` without `disable_session_recording`, magic-link signup, a pricing card with a bare "Start trial") are legal in isolation and fined per child / visitor / session / email / renewal / work in combination with real traffic.
+**Prevent:** `bun scripts/check-legal-traps.ts <code_path>` (runs as `/security-check` § 7a, gates `/ship`). Fixes in `factory/playbooks/launch-stage/legal-launch-traps.md`. Verify each FAIL by reading the evidence — the sweep refuted many regex hits (seed data, tool-catalog text, CSV imports that never leave the browser) and the scanner was tightened from them.
+
+---
+
 ## Performance traps
 
 ### Compare-page-performance-disaster (cascade)

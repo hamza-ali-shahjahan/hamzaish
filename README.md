@@ -11,8 +11,8 @@ Your AI writes the code. Hamzaish runs the company.
 [![guards](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml/badge.svg)](https://github.com/hamza-ali-shahjahan/hamzaish/actions/workflows/ci.yml)
 
 <img src="https://img.shields.io/badge/35-agents-8957e5.svg" alt="35 agents">
-<img src="https://img.shields.io/badge/69-skills_%26_commands-d97757.svg" alt="69 skills & commands (45 skills, 24 commands)">
-<img src="https://img.shields.io/badge/53-playbooks-blue.svg" alt="53 playbooks">
+<img src="https://img.shields.io/badge/70-skills_%26_commands-d97757.svg" alt="70 skills & commands (45 skills, 25 commands)">
+<img src="https://img.shields.io/badge/54-playbooks-blue.svg" alt="54 playbooks">
 <img src="https://img.shields.io/badge/70-security_checks-success.svg" alt="70 security checks">
 
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
@@ -142,7 +142,7 @@ what makes those hands a company:
 - **A brain** — learnings, decisions, and anti-patterns in markdown, SQLite-indexed,
   searchable from any session. When a mistake generalizes it becomes a guardrail
   the next build inherits, so your second product starts smarter than your first.
-- **A factory** — 35 agents and 45 skills + 24 commands across
+- **A factory** — 35 agents and 45 skills + 25 commands across
   Ideate → MVP → Launch → Sell → Scale → Kill-or-double-down. Most AI tools stop
   when the code is done; solo projects die *after* that — in the security review,
   the launch, the pricing call, the kill decision.
@@ -173,6 +173,7 @@ The honesty is enforced, not promised. Every claim below has a command you can r
 | Decisions record what they beat | decision · why · alternatives · wrong-if · revisit | `bun run check-decisions` |
 | A deployed product is really live | read-only assertions against the real URL — DNS, TLS, authz, build-SHA | `bun scripts/verify-live.ts <url>` |
 | Nothing ships unreviewed | 70-check security review with a forced BLOCK/CLEAR verdict | `/security-check` |
+| No per-user legal fines on launch day | Age gate, self-hosted fonts, replay off, CAN-SPAM footer, renewal terms, DMCA — scanned before every ship, fixed by PR | `/legal-check` |
 | What was actually checked | exit codes recorded to a hash-chained ledger, rendered into the receipt | `bun run verify --show` |
 
 Green looks like `✓ all headline counts match disk`, an eval summary of
@@ -183,8 +184,8 @@ Green looks like `✓ all headline counts match disk`, an eval summary of
 | | | |
 |---|---|---|
 | 🧠 **A brain that remembers** | learnings, decisions, and anti-patterns — SQLite-indexed, searchable from any session via `/brain-ask` | [`brain/`](brain/) |
-| 🏭 **A factory that acts** | 35 agents + 69 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
-| 📖 **Playbooks with receipts** | 53 playbooks · 148 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
+| 🏭 **A factory that acts** | 35 agents + 70 skills & commands across the lifecycle — idea validation, architecture, scope-guarding, landing copy, SEO, cold outreach, retention, kill-or-double-down | [`factory/`](factory/) |
+| 📖 **Playbooks with receipts** | 54 playbooks · 148 practices — each badged ✅ proven by a real ship / 🟡 partial / ⏳ research-baked | [BEST-PRACTICES.md](BEST-PRACTICES.md) |
 | 🔒 **A gate that blocks** | 70-check pre-launch security review (backend-reality, auth, authz, data exposure, secrets) with a forced BLOCK/CLEAR verdict | [security checklist](factory/playbooks/mvp-stage/security-checklist.md) |
 | 🧪 **An engine that proves** | eval-gated build cycle — a feature slice without a named eval + an end-to-end test doesn't get built | [`/full-cycle`](factory/commands/full-cycle.md) |
 | 📡 **Senses that record** | four local-only instruments from your first session (gitignored, nothing leaves your machine): session traces (`bun run trace-report`), friction (`bun run friction`), the defect registry (`bun run defect`), and per-skill trust states (`bun run skill-report`) — retros ground in what happened, not what you remember | [`scripts/trace-report.ts`](scripts/trace-report.ts) |
@@ -264,9 +265,9 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 
 </details>
 
-<details><summary><b>🛠️ The skills & commands (69)</b></summary>
+<details><summary><b>🛠️ The skills & commands (70)</b></summary>
 
-45 skills + 24 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
+45 skills + 25 commands under [`factory/skills/`](factory/skills/) and [`factory/commands/`](factory/commands/) — auto-discovered by Claude Code after `bun run setup`. Every `/name` has exactly one home — a skill folder or a command file, never both (same-name pairs double-load into session context; CI enforces it).
 
 | Invoke | What it does |
 |---|---|
@@ -289,7 +290,8 @@ One router + 31 lifecycle-stage agents + 3 engineering subagents under [`factory
 | `/name-clearance` | Clear a name BEFORE buying the domain: collision, trademark signal, availability |
 | `/competitor-research` | Map the competitive landscape; persists per-product so it compounds |
 | `/go-live` | Guided, stateful stack provisioning — deep-links, key validation, `.env.local` writes, resumable; then hands to `/security-check` → `/ship` |
-| `/security-check` | Fast security baseline: tracked secrets, vulnerable Actions, workflow permissions |
+| `/security-check` | Fast security baseline: tracked secrets, vulnerable Actions, workflow permissions, legal launch traps |
+| `/legal-check` | The six per-unit legal traps (age gate, Google Fonts, session replay, marketing email, renewal terms, DMCA): scan, or `--fix` to patch and open a PR; `--all` for every product |
 | `/ship` | The single deploy action — gates on `/security-check`, promotes reviewed commits to production |
 | `/checkpoint` | Named save-point commit between auto-commits |
 | `/brain-ask` | Search every learning, decision, playbook, and product doc — ranked citations |
@@ -323,7 +325,7 @@ Backed by **22 engineering skills** under [`factory/skills/`](factory/skills/) �
 
 </details>
 
-<details><summary><b>📖 The playbooks (53) + the practices ledger (148)</b></summary>
+<details><summary><b>📖 The playbooks (54) + the practices ledger (148)</b></summary>
 
 **[BEST-PRACTICES.md](BEST-PRACTICES.md)** — 148 practices for shipping products with Claude Code: **46 ✅ proven** by real ships and dated incidents · **3 🟡 partially proven** · **99 ⏳ research-baked** from named sources. Anti-patterns lead — each one cost us something real. Every line links to its deep-dive playbook and its source.
 
@@ -333,7 +335,7 @@ Playbooks are short (300–800 words), sourced, stage-gated:
 |---|---|
 | **💡 Idea (6)** | [The Mom Test](factory/playbooks/idea-stage/mom-test.md) · [Jobs-to-be-Done](factory/playbooks/idea-stage/jobs-to-be-done.md) · [Problem-Statement Rubric](factory/playbooks/idea-stage/problem-statement-rubric.md) · [TAM/SAM/SOM](factory/playbooks/idea-stage/tam-sam-som-templates.md) · [YC Startup School notes](factory/playbooks/idea-stage/yc-startup-school-notes.md) · [Landscape Research Before Roadmap](factory/playbooks/idea-stage/landscape-research-before-roadmap.md) |
 | **🏗️ MVP (10)** | [Security Checklist — 70 checks](factory/playbooks/mvp-stage/security-checklist.md) · [Architecture Decisions](factory/playbooks/mvp-stage/architecture-decisions.md) · [AI-Native Dev Loop](factory/playbooks/mvp-stage/ai-native-dev-loop.md) · [Scope Document](factory/playbooks/mvp-stage/scope-document.md) · [Measurement Framework](factory/playbooks/mvp-stage/measurement-framework.md) · [Sean Ellis Survey](factory/playbooks/mvp-stage/sean-ellis-survey.md) · [Agent Handoff Contracts](factory/playbooks/mvp-stage/agent-handoff-contracts.md) · [Fleet Patterns](factory/playbooks/mvp-stage/fleet-patterns.md) · [Enforce the Invariant](factory/playbooks/mvp-stage/enforce-the-invariant.md) · [Metered Spend Belongs to a Customer](factory/playbooks/mvp-stage/spend-belongs-to-a-customer.md) |
-| **🚀 Launch (15)** | [First 100 Customers](factory/playbooks/launch-stage/first-100-customers.md) · [Hacker News Launch](factory/playbooks/launch-stage/hacker-news-launch.md) · [Product Hunt Launch](factory/playbooks/launch-stage/product-hunt-launch.md) · [Pricing](factory/playbooks/launch-stage/pricing-playbook.md) · [Cold Outreach Templates](factory/playbooks/launch-stage/cold-outreach-templates.md) · [SEO+AEO Foundation](factory/playbooks/launch-stage/seo-aeo-foundation.md) · [SEO Content Strategy](factory/playbooks/launch-stage/seo-content-strategy.md) · [OSS Publishing Checklist](factory/playbooks/launch-stage/oss-publishing-checklist.md) · [Output Validation for Code-Gen Tools](factory/playbooks/launch-stage/output-validation-for-codegen-tools.md) · [Lenny's Frameworks Distilled](factory/playbooks/launch-stage/lenny-newsletter-distilled.md) · [Release Cadence as Content](factory/playbooks/launch-stage/release-cadence-as-content.md) · [Repo Go-Public Checklist](factory/playbooks/launch-stage/repo-go-public-checklist.md) · [Community Flywheel](factory/playbooks/launch-stage/community-flywheel.md) · [Wiring Stripe](factory/playbooks/launch-stage/stripe-wiring-runbook.md) · [API Compatibility as Distribution](factory/playbooks/launch-stage/api-compatibility-as-distribution.md) |
+| **🚀 Launch (16)** | [Legal Launch Traps](factory/playbooks/launch-stage/legal-launch-traps.md) · [First 100 Customers](factory/playbooks/launch-stage/first-100-customers.md) · [Hacker News Launch](factory/playbooks/launch-stage/hacker-news-launch.md) · [Product Hunt Launch](factory/playbooks/launch-stage/product-hunt-launch.md) · [Pricing](factory/playbooks/launch-stage/pricing-playbook.md) · [Cold Outreach Templates](factory/playbooks/launch-stage/cold-outreach-templates.md) · [SEO+AEO Foundation](factory/playbooks/launch-stage/seo-aeo-foundation.md) · [SEO Content Strategy](factory/playbooks/launch-stage/seo-content-strategy.md) · [OSS Publishing Checklist](factory/playbooks/launch-stage/oss-publishing-checklist.md) · [Output Validation for Code-Gen Tools](factory/playbooks/launch-stage/output-validation-for-codegen-tools.md) · [Lenny's Frameworks Distilled](factory/playbooks/launch-stage/lenny-newsletter-distilled.md) · [Release Cadence as Content](factory/playbooks/launch-stage/release-cadence-as-content.md) · [Repo Go-Public Checklist](factory/playbooks/launch-stage/repo-go-public-checklist.md) · [Community Flywheel](factory/playbooks/launch-stage/community-flywheel.md) · [Wiring Stripe](factory/playbooks/launch-stage/stripe-wiring-runbook.md) · [API Compatibility as Distribution](factory/playbooks/launch-stage/api-compatibility-as-distribution.md) |
 | **📈 Scale (8)** | [100→1000 Customers](factory/playbooks/scale-stage/100-to-1000-customers.md) · [Production Operations](factory/playbooks/scale-stage/production-operations.md) · [Abuse & Cost Controls](factory/playbooks/scale-stage/abuse-and-cost-controls.md) · [Churn Reduction](factory/playbooks/scale-stage/churn-reduction.md) · [Growth Loops (Reforge)](factory/playbooks/scale-stage/growth-loops-reforge.md) · [Moat Building](factory/playbooks/scale-stage/moat-building.md) · [Enterprise Readiness](factory/playbooks/scale-stage/enterprise-readiness.md) · [Security at Scale](factory/playbooks/scale-stage/security-at-scale.md) |
 | **🧭 Founder's wisdom (4)** | [$100K ARR Tactics](factory/playbooks/founders-wisdom/100k-arr-tactics.md) · [Gary Tan / YC era advice](factory/playbooks/founders-wisdom/gary-tan-yc-advice.md) · [Paul Graham essays](factory/playbooks/founders-wisdom/paul-graham-essays.md) · [Solopreneur Stack 2026](factory/playbooks/founders-wisdom/solopreneur-stack.md) |
 | **🤖 AI-native (10)** | [Eval-Driven Development](factory/playbooks/ai-native-2026/eval-driven-development.md) · [Cost-to-Outcome & Model-Independence](factory/playbooks/ai-native-2026/cost-to-outcome-and-model-independence.md) · [Founder's Playbook distilled](factory/playbooks/ai-native-2026/founders-playbook-distilled.md) · [Auth Go-Live](factory/playbooks/ai-native-2026/auth-go-live.md) · [Go-Live Provisioning](factory/playbooks/ai-native-2026/go-live-provisioning.md) · [MCP Servers per Product](factory/playbooks/ai-native-2026/mcp-servers.md) · [Hermes & Fallback Models](factory/playbooks/ai-native-2026/hermes-and-fallback-models.md) · [Skill Authoring](factory/playbooks/ai-native-2026/skill-authoring.md) · [Handoff vs Supervision](factory/playbooks/ai-native-2026/handoff-vs-supervision.md) · [Multi-Agent, One Repo](factory/playbooks/ai-native-2026/multi-agent-one-repo.md) |
