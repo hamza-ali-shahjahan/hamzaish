@@ -30,6 +30,9 @@ A sweep of the maintainer's 78 other repos with this scanner (plus a manual refu
 
 It's regex, not a lawyer: watch the accept-file for patterns that keep recurring and turn them into scanner rules. Google sign-in on Supabase creates the account before any front-end gate runs — a server-side `before user created` hook would close it; not in the starter yet. EU audiences may need `MIN_AGE = 16` and a consent banner for GA4, both outside these six.
 
+
+/release v2.34.0: cut from 2 changelog entries since v2.33.0 (v2.34 MIT, v2.35 legal launch traps). Credit: @suraj_sharma14, whose post started it.
+
 ---
 
 ## 2026-09-22 — v2.34 · MIT: build on it, keep what you build
