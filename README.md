@@ -14,6 +14,7 @@ Your AI writes the code. Hamzaish runs the company.
 <img src="https://img.shields.io/badge/70-skills_%26_commands-d97757.svg" alt="70 skills & commands (45 skills, 25 commands)">
 <img src="https://img.shields.io/badge/54-playbooks-blue.svg" alt="54 playbooks">
 <img src="https://img.shields.io/badge/70-security_checks-success.svg" alt="70 security checks">
+<img src="https://img.shields.io/badge/6-legal_checks-success.svg" alt="6 legal checks">
 
 [![works with Claude Code, Cursor, Codex, Windsurf](https://img.shields.io/badge/works_with-Claude_Code,_Cursor,_Codex,_Windsurf-d97757.svg)](AGENTS.md)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
