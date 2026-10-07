@@ -22,6 +22,10 @@ const envSchema = z.object({
   // Email
   RESEND_API_KEY: optional,
   RESEND_FROM_EMAIL: optional,
+  // Marketing email (CAN-SPAM): both required before sendMarketingEmail will send.
+  // POSTAL_ADDRESS is your real physical mailing address (a PO box or virtual office works).
+  POSTAL_ADDRESS: optional,
+  UNSUBSCRIBE_SECRET: optional,
 
   // Analytics — all optional during early setup
   NEXT_PUBLIC_POSTHOG_KEY: optional,

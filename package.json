@@ -50,7 +50,8 @@
     "tidy": "bun scripts/tidy.ts",
     "xray-harvest": "bun scripts/xray-harvest.ts",
     "check-work-at-risk": "bun scripts/check-work-at-risk.ts",
-    "check-boundaries": "bun scripts/check-import-boundaries.ts"
+    "check-boundaries": "bun scripts/check-import-boundaries.ts",
+    "check-legal-traps": "bun scripts/check-legal-traps.ts"
   },
   "_note": "Zero runtime dependencies \u2014 everything uses Bun + Node built-ins (bun:sqlite, node:fs, etc.). No `bun install` needed. Just `bun run setup`."
 }

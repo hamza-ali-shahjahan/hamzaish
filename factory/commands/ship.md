@@ -24,7 +24,11 @@ production branch = **`production`**.
    the user to commit, `/checkpoint`, or stash first. Never ship uncommitted work.
 2. **Security baseline.** Run `/security-check <slug>`. If the verdict is **BLOCK**,
    stop and surface the findings — do not promote a repo with tracked secrets,
-   unpinned/vulnerable actions, or over-broad workflow permissions.
+   unpinned/vulnerable actions, over-broad workflow permissions, or an unaccepted
+   legal-trap FAIL (§ 7a: age gate, Google Fonts, session replay, marketing email,
+   renewal terms, DMCA — `scripts/check-legal-traps.ts`). Operator-only to-dos the
+   scanner can't verify (a real `POSTAL_ADDRESS`, a registered DMCA agent) are listed
+   in the ship report, not silently assumed.
 3. **Show what will ship.** `git -C <code_path> log --oneline <production>..<reviewed-sha>`
    (for the first ship, show the full history that will become `production`).
    Print the commit list and a `--stat` summary so the user sees exactly what

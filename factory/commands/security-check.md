@@ -86,10 +86,29 @@ recognize — the scanner can't judge publisher trust; you must.
 - `.no-auto-push` marker present in the code repo (wip snapshots stay local). Missing = **WARN**.
 - Production branch is `production` and Vercel's Production Branch is set to it (confirm with the user if unknown).
 
+### 7a. Legal launch traps (per-unit fines — COPPA, GDPR fonts, CIPA replay, CAN-SPAM, auto-renewal, DMCA)
+Six legal traps AI-built apps ship by default, each fined **per** child / visitor /
+session / email / renewal / work — the way zero sales becomes a six-figure exposure.
+Run the deterministic scanner:
+
+```bash
+bun ${HAMZAISH_ROOT:-$HOME/Claude/Hamzaish}/scripts/check-legal-traps.ts <code_path>
+```
+
+It reports age gate on signup, self-hosted fonts, session replay, marketing-email
+unsubscribe + postal address, renewal terms beside the subscribe button, and DMCA
+agent for user uploads — each PASS / FAIL / WARN / N/A with file:line evidence.
+It's regex-based: **verify every FAIL by reading the evidence** before acting. A FAIL
+you've refuted goes in `legal-traps.json` at the repo root with a written reason
+(`{"accept": {"<id>": "<why it doesn't apply>"}}`) — it then reports as WARN and
+stops blocking. Never accept one silently. Fixes and the "done when" test for each:
+`factory/playbooks/launch-stage/legal-launch-traps.md`. A DMCA WARN means "policy page
+exists — confirm the agent is registered at dmca.copyright.gov"; code can't check that.
+
 ## Live mode — `--live` (drift + exposure; the repo checks above verify the code, these verify the RUNNING system)
 
 Ship-time gates decay: a table added in the Supabase dashboard, a policy dropped in a
-hotfix, or a bucket flipped public never touches the repo, so sections 0–7 can't see it.
+hotfix, or a bucket flipped public never touches the repo, so sections 0–7a can't see it.
 Live mode closes that. Run it **quarterly for every Launch+ product**, after any
 dashboard-made schema/storage change, and before a scale push — triggers and the why
 live in `factory/playbooks/scale-stage/security-at-scale.md`.
@@ -143,7 +162,7 @@ file/line for every finding and the one-line fix. Then force a verdict:
 - **❌ BLOCK** — any FAIL (a "static / no backend" claim contradicted by env-gated
   backend code, tracked secret, unpinned/vulnerable action, over-broad
   permissions, untrusted-input trigger, inline credential or wildcard allowlist
-  in an MCP config, missing RLS on user data; in live mode also: live RLS drift,
+  in an MCP config, missing RLS on user data, an unaccepted legal-trap FAIL; in live mode also: live RLS drift,
   a public bucket with user content, an ERROR-level advisor finding, or an
   unprotected exposure surface).
 - **⚠️ CLEAR WITH CAVEATS** — only WARNs; list them with an owner/date.

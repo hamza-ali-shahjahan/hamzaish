@@ -91,7 +91,8 @@ State plainly what you can't do: you can't sign the user up, accept their ToS, o
 When the **required-to-deploy** set is `done`:
 1. **Verify**: every required var is present and well-formed (re-run the format checks). On fnox: `fnox check` + `fnox list` (names only). On `.env.local`: non-printing `grep -qE` checks. Confirm `LOCAL_MODE` will now be off (Supabase set).
 2. **Verify the server is actually up before sharing any localhost link** (global rule: never hand over a dead localhost link). If the product uses **pitchfork**, `pitchfork start web` (idempotent) then `pitchfork status web` — or curl the port for a 2xx — before emitting the URL. pitchfork keeps the server supervised across sessions, so the link stays live. Multiple products: distinct ports (a readiness check confirms "something answers," not "*this* server" — a collision can false-positive).
-3. **Offer the handoff**: "Stack wired. Run `/security-check <slug>` (gate), then `/ship <slug>` (deploy)?" — `/go-live` provisions; `/ship` deploys. Don't deploy from here.
+3. **Legal operator inputs** (code can't invent these — ask, never guess): a physical `POSTAL_ADDRESS` (a PO box or virtual office is fine) if the product will send any marketing email, and — if users can upload files — a DMCA agent registered at dmca.copyright.gov ($6, renew every 3 years) whose details go in the product's DMCA config. Record each as `done` / `later` in the ledger; `/security-check` § 7a reports what's still open. See `factory/playbooks/launch-stage/legal-launch-traps.md`.
+4. **Offer the handoff**: "Stack wired. Run `/security-check <slug>` (gate), then `/ship <slug>` (deploy)?" — `/go-live` provisions; `/ship` deploys. Don't deploy from here.
 
 ## The live gate — A1–A10 (blocking; go-live is not done at handoff)
 

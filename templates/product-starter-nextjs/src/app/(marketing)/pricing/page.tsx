@@ -9,6 +9,8 @@ const tiers: Array<{
   cadence: string;
   features: string[];
   cta: string;
+  /** Auto-renewal disclosure shown directly under the button (California Automatic Renewal Law). */
+  terms?: string;
   href: Route;
   highlight?: boolean;
 }> = [
@@ -26,6 +28,7 @@ const tiers: Array<{
     cadence: '/mo',
     features: ['{{PRO_FEATURE_1}}', '{{PRO_FEATURE_2}}', '{{PRO_FEATURE_3}}', '{{PRO_FEATURE_4}}'],
     cta: 'Start free trial',
+    terms: 'After the free trial, $29/month. Renews automatically every month until you cancel. Cancel anytime in Settings → Billing.',
     href: '/login?plan=pro',
     highlight: true,
   },
@@ -35,6 +38,7 @@ const tiers: Array<{
     cadence: '/mo',
     features: ['Everything in Pro', '{{TEAM_FEATURE_1}}', '{{TEAM_FEATURE_2}}'],
     cta: 'Start free trial',
+    terms: 'After the free trial, $99/month. Renews automatically every month until you cancel. Cancel anytime in Settings → Billing.',
     href: '/login?plan=team',
   },
 ];
@@ -72,11 +76,12 @@ export default function PricingPage() {
             >
               {t.cta}
             </Link>
+            {t.terms && <p className="text-xs text-muted-foreground text-center -mt-3">{t.terms}</p>}
           </div>
         ))}
       </div>
       <p className="text-center text-sm text-muted-foreground mt-12">
-        Annual billing saves 15%. Enterprise pricing is custom —{' '}
+        Annual billing saves 15% and renews automatically every year until you cancel. Enterprise pricing is custom —{' '}
         {/* plain <a>: mailto is not a route; next/link + typedRoutes rightly rejects it */}
         <a href="mailto:sales@example.com" className="underline">
           talk to us

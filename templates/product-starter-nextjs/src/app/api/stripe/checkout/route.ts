@@ -18,6 +18,16 @@ export async function POST(req: Request) {
   if (!parsed.success) return NextResponse.json({ error: 'invalid_input' }, { status: 400 });
 
   const customerId = await getOrCreateCustomer(user.id, user.email);
+
+  // Renewal terms beside Stripe's Pay button (California Automatic Renewal Law).
+  const price = await stripe.prices.retrieve(parsed.data.priceId);
+  const interval = price.recurring?.interval ?? 'month';
+  const amount =
+    price.unit_amount != null
+      ? `${(price.unit_amount / 100).toFixed(2)} ${price.currency.toUpperCase()}/${interval}`
+      : `the plan price per ${interval}`;
+  const renewalTerms = `${amount}, renews automatically every ${interval} until you cancel. Cancel anytime from Settings → Billing.`;
+
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',
     customer: customerId,
@@ -25,6 +35,7 @@ export async function POST(req: Request) {
     success_url: `${env.NEXT_PUBLIC_APP_URL}/dashboard?upgraded=1`,
     cancel_url: `${env.NEXT_PUBLIC_APP_URL}/pricing`,
     allow_promotion_codes: true,
+    custom_text: { submit: { message: renewalTerms } },
   });
 
   return NextResponse.json({ url: session.url });
